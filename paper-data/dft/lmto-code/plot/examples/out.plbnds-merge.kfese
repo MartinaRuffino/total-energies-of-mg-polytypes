@@ -1,5 +1,0 @@
- plbnds : bands file contains two sets of color weights
- plbnds: 47 bands  fermi=-0.06352
- panel 1  nq=81  ebot=-1.1586  etop=2.1635  delta q=0.707107
- panel 2  nq=61  ebot=-1.1586  etop=2.2935  delta q=0.5
- Exit 0 merged file written 

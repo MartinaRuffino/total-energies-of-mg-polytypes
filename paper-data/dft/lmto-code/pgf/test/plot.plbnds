@@ -1,6 +1,0 @@
-fplot -frme 0,1,0,1 -p0 -x 0,1  -noxn
- -lt 0,bold=0 -ab x+.5 -s circ:col=.9,.5,.9 out2.dat
- -lt 0,bold=0 -ab x+.5 -s circ:col=.5,.9,.9 out1.dat
- -lt 2,bold=3,2,.5,.3,.5 -tp 2~0,0.0705,1,0.0705 -lt 3,bold=5 -colsy 2:nband -qr bnd1.dat
-
-

@@ -1,2 +1,0 @@
-ar dv slatsm.a {zgemm,dgemm,dspfa,dspsl,dspdi,dsisl,dsifa,dsi,daxpy,ddot,dscal,zaxpy}.o )
-

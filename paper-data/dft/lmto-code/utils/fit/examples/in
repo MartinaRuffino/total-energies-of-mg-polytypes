@@ -1,3 +1,0 @@
-% repeat i=0:20
-i  i^2
-% end

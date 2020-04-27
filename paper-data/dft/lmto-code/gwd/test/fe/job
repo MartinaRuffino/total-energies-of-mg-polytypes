@@ -1,1 +1,0 @@
-/export/svan2/nbin/lmgwsc --iter=1 --maxit=1 --sym --metal --band:fn=syml --tol=1e-5 --getsigp --save= bas2.tpd4/fpgw033a6-modsgp4 --exonly=no --multitet fe

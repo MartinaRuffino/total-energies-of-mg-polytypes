@@ -1,5 +1,0 @@
-% echo CoPt in the CuAu structure
-% var cbya=0.975048
-% site-data vn=3.0 xpos fast io=15 nbas=2 alat=5.08431 plat= 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 {cbya*sqrt(2)}
-Co        0.0000000    0.0000000    0.0000000
-Pt        0.5000000    0.5000000    0.5000000

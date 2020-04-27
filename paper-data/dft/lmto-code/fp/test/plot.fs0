@@ -1,9 +1,0 @@
-# Make contours 2..5 by
-# mcx -r:open bnds.fe -shft=0 -w b2 -r:open bnds.fe -shft=0 -w b3 -r:open bnds.fe -shft=0 -w b4 -r:open bnds.fe -shft=0 -w b5
-
-fplot
-% var ef=-0.006661
-  -lt 1,col=0,0,.5 -con {ef} b2
-  -lt 1,col=0,1,.8 -con {ef} b3
-  -lt 1,col=0,1,0 -con {ef} b4
-  -lt 1,col=1,0,0 -con {ef} b5

@@ -1,4 +1,0 @@
-ifort -132 -warn unused -g -c augmbl.f
-ifort -132 -warn unused -g -c dfrce.f
-ifort -132 -warn unused -g -c sopert.f
-

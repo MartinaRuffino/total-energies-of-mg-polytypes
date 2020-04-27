@@ -1,1 +1,0 @@
--vnsp=2 -vfile=t -vasa=f -vlmf=t -vnit=4 -vlmxb=4 -vnl=5 -vbzj=0 --pr31,20 -vtppc=3 -vtpdc=4 -vtpsa=0 -vtppa=0 -vlfc=1 -vlfa=1 -vlgc=0 -vbigbas=11 -vehmax=-.5 -vmetal=5 -vles=10 -vlmbe=1 -vnk=6 -vnkgw=4 -vrwc=1.1 -vrwa=.85 -vrwea=.65 -vrwec=.65 -vbsig=.11 -vemaxs=2.5 -vconvc=1d-5

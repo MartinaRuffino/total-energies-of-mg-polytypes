@@ -1,6 +1,0 @@
-# Init file for Silicon
-LATTICE
-   SPCGRP=227
-   A=10.26
-SITE
-    ATOM=Si X=0 0 0

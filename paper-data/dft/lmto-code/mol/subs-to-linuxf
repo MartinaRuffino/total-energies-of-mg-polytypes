@@ -1,5 +1,0 @@
-echo --- subs-to-linuxf: ccomp to LINUXF-specific ---
-
-../startup/ccomp-files -CCOMP=`egrep -E '\bCCOMP\b' Make.inc  | awk '{print $3}'` LINUXF .
-
-echo --- completed subs-to-linuxf ---

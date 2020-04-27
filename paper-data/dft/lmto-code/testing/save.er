@@ -1,4 +1,0 @@
-i so=0 ldau=1 nsp=2 nk=4 nk2=3 convc=1e-5 beta=.3 met=2 nl=4 nit=50 sclwsr=1 asa=1 gam=1 twoc=0 ccor=1 sharm=1 udiag=0 mmom=7.2069902 ehf=-7.4841283 ehk=-7.4841315
-i so=0 ldau=1 nsp=2 nk=4 nk2=3 convc=1e-5 beta=.3 met=2 nl=4 nit=50 sclwsr=1 asa=1 gam=1 twoc=0 ccor=1 sharm=1 udiag=0 mmom=7.2069902 ehf=-7.4683923 ehk=-7.4683923
-i so=0 ldau=1 nsp=2 nk=4 nk2=3 convc=1e-5 beta=.3 met=2 nl=4 nit=50 sclwsr=1 asa=1 gam=1 twoc=0 ccor=1 sharm=1 udiag=0 mmom=7.2067622 ehf=-7.468375 ehk=-7.4683751
-c so=0 ldau=1 nsp=2 nk=4 nk2=3 convc=1e-5 beta=.3 met=2 nl=4 nit=50 sclwsr=1 asa=1 gam=1 twoc=0 ccor=1 sharm=1 udiag=0 mmom=7.2067963 ehf=-7.4683747 ehk=-7.4683749

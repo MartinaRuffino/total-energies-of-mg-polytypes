@@ -1,9 +1,0 @@
-%char0 ltb="1,col=0,0,0,colw=1,0,0,colw2=0,1,0,colw3=0,0,1"
-fplot
-% var ymin=-4 ymax=4
- -frme 0,1,0,1 -p0 -x 0,1 -y {ymin},{ymax} -noxn -1p
- -lt 2,bold=3,col=0,0,0,1,.5,.3,.5 -tp 2~0,0,1,0 -lt 1
- -colsy 2:25 -colsw 26:49 -colsw2 50:73 -lt {ltb} -qr bnd1.mapi2
- -font t24 -lblu 0,{ymin-(ymax-ymin)/60} cd k1
-
- -font t24 -lblu 1,{ymin-(ymax-ymin)/60} cd k2

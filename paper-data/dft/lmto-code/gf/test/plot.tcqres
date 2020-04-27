@@ -1,5 +1,0 @@
-fplot -frmt -th=3,1,1 -k 0.1,300
-      -l RPA -lt 1,col=0,1,0 -ord x2*1000 tcqres.fe 
-      -l MF  -lt 1,col=0,0,1 -ord x3*1000 tcqres.fe 
-      -l DOSx100 -lt 1,col=.5,.5,.5 -ord x4*100 tcqres.fe 
-      -xl &\{q}  -yl "&\{T}_\{c} (meV)"

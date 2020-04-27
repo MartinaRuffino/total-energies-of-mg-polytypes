@@ -1,7 +1,0 @@
-#!/bin/tcsh
-
-# uncompresses .gz and renames to .Z if no zdiff available
-
-foreach i (*.gz)
-gunzip -c $i | compress >$i:r.Z
-end

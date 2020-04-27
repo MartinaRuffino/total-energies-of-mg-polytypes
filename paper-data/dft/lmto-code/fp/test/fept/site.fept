@@ -1,5 +1,0 @@
-% echo FePt in the CuAu structure  Pearson.1817275 
-% var cbya=0.963121
-% site-data vn=3.0 xpos fast io=15 nbas=2 alat=5.151018 plat= 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 {cbya*sqrt(2)}
-Fe        0.0000000    0.0000000    0.0000000
-Pt        0.5000000    0.5000000    0.5000000
