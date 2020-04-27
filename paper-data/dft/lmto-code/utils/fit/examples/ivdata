@@ -1,0 +1,8 @@
+% var np=50
+% var kt=.0259 a1x=1.234d-15 a2x=1d-10 n1x=1.3 n2x=2.5 tmp=ran(1) rx=1.5
+% rows {np} cols 2
+% repeat i= 1:np
+% var x=i/np
+% var j=(a1x*(exp(x/(n1x*kt))-1)+a2x*(exp(x/(n2x*kt))-1))*(1+{ran(0)}*.50)
+  {x} {a1x*(exp((x-j*rx)/(n1x*kt))-1)+a2x*(exp((x-j*rx)/(n2x*kt))-1)}*(1+{ran(0)}*.50)
+% end

@@ -1,0 +1,22 @@
+# Use rdfile on this file for symmetry lines as functions a,b,c, for bct lattice, c>a
+# Run with --band~mq~...
+# bct2 lattice is taken from Computational Materials Science 49, 299 (2010)
+
+# R.S. Lattice vectors are: (units of a)
+# -1/2  1/2   0               P1
+#  1/2 -1/2   0               P2
+#  1/2  1/2  1/2*cbya         P3
+% const eta=(1+1/cbya/cbya)/4 zeta=1/2/cbya/cbya
+% vec G[3] 0   0   0                 # G
+% vec N[3] 0   1/2 0                 # N
+% vec P[3] 1/4 1/4 1/4               # P
+% vec X[3] 0   0   1/2               # X
+% vec S[3] -{eta} {eta} {eta}        # Sigma
+% vec Y[3] -{zeta} {zeta} 1/2        # Y
+% vec Z[3] 1/2 1/2 -1/2              # Z
+
+# Sequence Z-G-X-N
+11 {Z}  {G}      Z to G
+11 {G}  {X}      G to X
+11 {X}  {N}      X to N
+

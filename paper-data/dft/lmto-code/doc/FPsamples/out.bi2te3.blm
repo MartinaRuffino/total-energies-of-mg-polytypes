@@ -1,0 +1,77 @@
+<!DOCTYPE html><html>
+This output was generated for <A href="../../doc/Building_FP_input_file.html#run">this tutorial</A>.
+<pre>
+ -----------------------  START BLM -----------------------
+
+ ... Reading lattice data
+ ... Generating space group from SPCGRP=R-3M      
+     Space group: R-3m       No.:166
+     Crystal system: trigonal                      
+     Bravais system: rhombohedral; hexagonal axes
+     Generators: I R3Z MY                                             
+
+ ... Reading site data ...  3 sites, 2 species found
+
+ ... Reading species data ... species data read for 0 species
+
+ ... Complete basis for supplied symmetry
+ SGROUP: 12 symmetry operations from 3 generators
+
+<A name="addbas"></A>
+ ADDBAS: The basis was enlarged from 3 to 5 sites
+         The additional sites are: 
+
+        ATOM=Te   POS=   0.0000000   0.0000000   2.5538193
+        ATOM=Bi   POS=   0.0000000   0.0000000  -4.8185270
+ 
+ SYMLAT: Bravais system is rhombohedral with 12 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: 0 generator(s) were added to complete the group
+ FIXPOS: shifted site positions by average 2.49e-14
+
+ Lattice vectors : alat = 4.78255 a.u.  vol=1141.20 a.u.
+
+                 Plat                         Conventional unit cell
+   1.0000000  0.0000000  4.0154392       1.5000000 -0.8660254  0.0000000
+  -0.5000000  0.8660254  4.0154392       0.0000000  1.7320508  0.0000000
+  -0.5000000 -0.8660254  4.0154392       0.0000000  0.0000000 12.0463175
+
+ Basis vectors after sorting and shortening:
+ site spec        pos (Cartesian coordinates)         pos (multiples of plat)
+   1  Te        0.000000   0.000000   0.000000    0.000000   0.000000   0.000000
+   2  Te       -0.500000  -0.866025   1.461620   -0.212000  -0.212000   0.788000
+   3  Te        0.500000   0.866025  -1.461620    0.212000   0.212000  -0.788000
+   4  Bi        0.500000   0.866025   0.803088    0.400000   0.400000  -0.600000
+   5  Bi       -0.500000  -0.866025  -0.803088   -0.400000  -0.400000   0.600000
+
+<A name="rmt"></A>
+ ... Make sphere radii
+
+ pairc, ib=  1:  45 neighbors in range  2.768*alat =  13.24
+ pairc:  45 pairs total  45 is max cluster size
+
+ pairc, ib=  2:  39 neighbors in range  2.768*alat =  13.24
+ pairc:  39 pairs total  39 is max cluster size
+
+ pairc, ib=  3:  39 neighbors in range  2.768*alat =  13.24
+ pairc:  39 pairs total  39 is max cluster size
+
+ pairc, ib=  4:  45 neighbors in range  2.819*alat =  13.48
+ pairc:  45 pairs total  45 is max cluster size
+
+ pairc, ib=  5:  45 neighbors in range  2.819*alat =  13.48
+ pairc:  45 pairs total  45 is max cluster size
+
+ makrm0: initial MT radii from first estat potential maximum
+  site   spec            rmt       rmt-       rmt-       rold   lock
+                                  <spec avg>  spec-min
+    1    1:Te           3.0328     0.1303     0.1954     0.0000    
+    2    1:Te           2.8374    -0.0651     0.0000     0.0000    
+    3    1:Te           2.8374    -0.0651     0.0000     0.0000    
+    4    2:Bi           2.8883     0.0000     0.0000     0.0000    
+    5    2:Bi           2.8883     0.0000     0.0000     0.0000    
+ SCLWSR:  vol = 1141.2 a.u..   Initial sphere packing = 44.6%  scaled to 43.1%
+ constr omax1=   0.0   0.0   0.0 %    omax2=   0.0   0.0   0.0 %
+ actual omax1=   0.0   0.0   0.0 %    omax2=   0.0   0.0   0.0 %
+
+ ... Create input file actrl.bi2te3                                           

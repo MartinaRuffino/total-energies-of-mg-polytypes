@@ -1,0 +1,17 @@
+ fplot file "-tp"  pass 1
+ expand:  4 points generated
+ fplot file "-tp"  pass 2
+ mapdat: 2 points
+ FRME : axes at x=.95 2.05  y=.95 2.05  bold=3  fill cs=103 col=1,1,1
+ xt1=1 tsx=.1 mtx=2 h=(.025,.015)  yt1=1 tsy=.1 mty=2 h=(.025,.015)
+ plcrv: new curve, 2 pts lt 1 bold 3
+ pstr: tx: rot=75 blk=T  "hello" at 1.5,1.5(u) 342.0,432.0(m)
+ pstr: tx: blk=T  "start" at 1.2,1(u) 234.0,252.0(m)
+
+ File fplot.ps created ... remake Bounding Box (file ps.ps) with system call:
+ awk -vbbox="`echo quit|gs -sDEVICE=bbox -dNOPAUSE fplot.ps 2>&1|grep BoundingBox:|head -1`" '{print ; if (NR == 1) printf "%s\n", bbox;}' fplot.ps >ps.ps
+
+ File psfrag.tex was created ... 
+ Do the following to make TeX substitutions: (file fplot.ps)
+ latex psfrag.tex
+ dvips -E -f psfrag.dvi > fplot.ps

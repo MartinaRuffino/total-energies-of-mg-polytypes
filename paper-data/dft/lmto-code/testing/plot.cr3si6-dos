@@ -1,0 +1,37 @@
+%char0 ltdos="1,bold=3,col=0,0,0"
+%char0 ltdos2="3,bold=4,col=1,0,0"
+
+fplot
+
+% var ymax=1.4 dy=0.062 dw=.00 ymax+=dy emin=-0.8 emax=0.5 ef=0
+
+% var ymax-=dy+dw dy=0.062 dmin=0 dmax=10
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 2 -lt {ltdos} -qr dosp.asa
+ -colsy 2 -lt {ltdos2} -qr dosp.fp
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.093 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 3 -lt {ltdos} -qr dosp.asa
+ -colsy 3 -lt {ltdos2} -qr dosp.fp
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.28 dmin=0 dmax=45
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 4 -lt {ltdos} -qr dosp.asa
+ -colsy 4 -lt {ltdos2} -qr dosp.fp
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.156 dmin=0 dmax=25
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 5 -lt {ltdos} -qr dosp.asa
+ -colsy 5 -lt {ltdos2} -qr dosp.fp
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.28 dmin=0 dmax=45
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p
+ -colsy 6 -lt {ltdos} -qr dosp.asa
+ -colsy 6 -lt {ltdos2} -qr dosp.fp
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+

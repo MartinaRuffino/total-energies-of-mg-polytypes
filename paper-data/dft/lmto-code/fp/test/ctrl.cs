@@ -1,0 +1,33 @@
+TESTLMF lmfa cs
+        lmf  cs -vnk=8
+
+VERS
+ LM=7 FP=7
+IO
+ VERBOS=30
+OPTIONS
+ WRONSK=T
+HAM
+ GMAX=7.4 XCFUN= 0 101 130 NSPIN=1 ELIND=-1.0 TOL=1e-16
+ AUTOBAS[ LMTO=5 MTO=14 LOC=1 PFLOAT=11 PNU=0 QLOC=0.002 ELOC=-1.0 EH=-0.5 EIN=2.0 EOUT=2.0]
+BZ
+% const nk=12
+ NKABC={nk} METAL=5
+EWALD
+ TOL=1e-16
+ITER
+ NIT=80 CONV=1e-05 CONVC=0.0001 MIX=B4,b=1.0
+SYMGRP
+ find
+SITE
+ FILE=site
+STRUC
+ FILE=site 
+% const sc=1.0
+ DALAT={11.64360885*(sc^(1/3)-1.0)}
+SPEC
+ 
+% const minsc=0.94
+ ATOM=Cs R={5.042012*minsc^(1/3)} Z=55 LMX=3 LMXA=4 KMXV=4 A=0.01 
+ P=0,6.5
+ # PZ= 0 0 6.3 0

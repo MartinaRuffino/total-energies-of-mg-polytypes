@@ -1,0 +1,67 @@
+         /home/ms4/lm/lmgf ni -vnk=16 -vbzj=0 -vccor=f -vtwoc=f -vgfmod=10 --no-iactiv -ef=-0.052666+.000
+ ----------------------  START LMGF  ----------------------
+ HEADER Study of Ni
+
+ LMGF:     nbas = 1  nspec = 1  verb 31,20
+ special:  transverse J
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gam-rep, Q2:Power-moments
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 6.621  Cell vol = 72.562255
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.62100   awald= 0.480   lmax=6
+         r1=  1.965   nkd= 135      q1=  5.931   nkg= 229
+
+ SGROUP: 48 symmetry operations from 3 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH: 145 irreducible QP from 4096 ( 16 16 16 )  shift= F F F
+ TETIRR: sorting 24576 tetrahedra ... 570 inequivalent ones found
+
+ EXASA: (gamma repsn) make transverse exchange J (LW)
+
+ Override file fermi level, use ef= -0.052666, delef= -0.052666
+
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 9 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+  
+ ZMESH: nz=12 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.0527,-0.0527
+
+ done iz=1  z = (-1.052266,0.010004)
+ done iz=6  z = (-0.516484,0.249345)
+ done iz=11  z = (-0.05548,0.026488)
+
+ Sum rule: ib  1   pTpT =  -14.0435,   2.1397; -p(T+ - T-) =  -14.0435,   2.1397
+
+ Sum rule: ib  1   lifetime (mRy) =  318.4902,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =   1.518969391749189E-016 Re Sum7  0.318490208995956     
+ done iz=12  z = (-0.052767,0.005035)
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1           2.140      -1.498       3.637       3.637     382.7
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1       -0.010 -0.005 -0.005 -0.005  1.006  1.006  0.322  1.006  0.322
+
+ Moments and charges for ef=-0.052666:
+        ATOM=A        P=  4.6749452  4.4204881  3.8388244
+                          4.6730207  4.4098229  3.8738994
+                      Q=  0.3343283 -0.0001913  0.0061824
+                          0.3984782 -0.0002611  0.0067155
+                          3.9341932 -0.0032796  0.0348976
+                          0.3284939 -0.0004564  0.0062269
+                          0.3683329 -0.0001837  0.0058794
+                          4.6064266 -0.0017925  0.0414317
+
+ Class   dq     amom
+   1  -0.0297 -0.6363  |
+ Sum of sphere charges = -0.029747
+ Exit 0 LMGF 
+ CPU time:  1.576s   Wall clock 1.608s  at  19:36:10 21.07.2018  on  ellery

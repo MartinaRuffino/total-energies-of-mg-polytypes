@@ -1,0 +1,5 @@
+echo i | nlfitlm -maxit=100 -save=datx -sig=x2 kt=.0259 a1=1.41782e-19 a2=1.52507e-11 n1=1 n2=2 r=.1 'a1*(exp((x1-x2*r)/(n1*kt))-1)+a2*(exp((x1-x2*r)/(n2*kt))-1)' a1,a2,n1,n2,r ivdata | tee out
+echo to compare to reference:
+echo ' ' diff out out.nlfitlm
+echo to plot data against fit:
+echo ' ' fplot -frme:ly 0,1,0,1  -colsy 2,3 datx

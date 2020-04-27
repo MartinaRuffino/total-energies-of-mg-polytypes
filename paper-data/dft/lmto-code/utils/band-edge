@@ -1,0 +1,578 @@
+#!/bin/tcsh -f
+# Shell script to find band edges or effective masses from lmf
+#  Dependencies : pfit, fmin
+# You must edit the script before using it!
+#   Modify the command that makes the bands
+# Example for GaAs:
+#   band-edge -maxit=11 --bin -edge2=.3 -r=.01 -band=9 -q0=.1,.2,.3 gas
+# To calculate mass of conduction band
+#   band-edge -cmd=lmf --bin -mass n=12 -alat=10.66 -r=.001,.002,.003,.004 -band=10 -q0=0,0,0 gas
+# Magnetic example
+#   band-edge -cmd="mpix -n 16 lmf -vso=1 --rsig:rs" -mass -alat=1.88972688 -r=.0005/2,.001/2,.002/2,.003/2 -band=120 -q0=0,0,0 mcs
+#  Updates
+#    25 Jul 18  switches --noexec -spin1 -spin2
+#    16 Sep 15  additional switches
+#    11 Sep 15  first created
+#---------------------------------------------
+
+alias findcmd  'set retcall = \!\!:1 ; set prognam = \!\!:2 ; set prog_cmd = \!\!:3 ; set path_name = \!\!:4 ; set make_path = \!\!:5 ; goto findcmd'
+alias walltime  'set retcall = \!\!:1; set time_var = \!\!:2 ; set time_start = \!\!:3; goto walltime'
+alias pdtime  'set retcall = \!\!:1; set time_start = \!\!:2; goto pdtime'
+set space = '        '
+set vsn = 1.0
+set testfile = $0
+set testdir = $testfile:h
+set topdir
+
+# Set the command to the specific calculation
+set cmd = 'lmf'
+set maxit = 5
+set gtol = .001
+set dqmx = .05
+set spin
+set noexec = 0
+
+findcmd chk00a fmin fmin "$path" "yes"
+chk00a:
+findcmd chk00b pfit pfit "$path" "yes"
+chk00b:
+
+set mcx = `which mcx`
+if (-x "$mcx") then
+  if `$mcx --h |& sed -n 1,1p | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.04))}'` set have_mcx
+endif
+if (! $?have_mcx) then
+  echo "oops!  put mcx calculator in your path"
+  exit -1
+endif
+
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+  set arg1 = "$1"; shift
+
+  switch ("$arg1")
+    case "-edge":
+      set edge
+      set nbox = n=6+o
+      breaksw
+
+    case "-floatmx":
+      set floatmx
+      set nbox = n=12+o
+      breaksw
+
+    case "-floatmn":
+      set floatmn
+      set nbox = n=12+o
+      breaksw
+
+    case "-spin1":
+      set spin="~spin1"
+      breaksw
+
+    case "-spin2":
+      set spin="~spin2"
+      breaksw
+
+    case "--noexec":
+      set noexec = 1
+      breaksw
+
+    case "-edge2=*":
+      set edge
+      set edge2=`echo $arg1 | sed s/-edge2=//`
+      set nbox = n=12+o
+      breaksw
+
+    case "-edge2":
+      set edge
+      set edge2=1
+      set nbox = n=12+o
+      breaksw
+
+    case "-mass":
+      set mass
+      set nbox = n=32+o
+      breaksw
+
+    case "-n=32":
+      set usen = n=32+o
+      breaksw
+
+    case "-n=20":
+      set usen = n=20+o
+      breaksw
+
+    case "-n=12":
+      set usen = n=12+o
+      breaksw
+
+    case "-alat=*":
+      set alat=`echo $arg1 | sed s/-alat=//`
+      breaksw
+
+    case "-r=*":
+      set r=`echo $arg1 | sed s/-r=//`
+      breaksw
+
+    case "-dqmx=*":
+      set dqmx=`echo $arg1 | sed s/-dqmx=//`
+      breaksw
+
+    case "-gtol=*":
+      set gtol=`echo $arg1 | sed s/-gtol=//`
+      breaksw
+
+    case "-maxit=*":
+      set maxit=`echo $arg1 | sed s/-maxit=//`
+      breaksw
+
+    case "-q0=*":
+      set q0=`echo $arg1 | sed s/-q0=//`
+      breaksw
+
+    case "-band=*":
+      set band=`echo $arg1 | sed s/-band=//`
+      breaksw
+
+    case "-cmd=*":
+      set cmd = "`echo $arg1 | sed s/-cmd=//`"
+      breaksw
+
+    case "--bin":
+      set bin
+      breaksw
+
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+end
+
+if ($#argv != 1) goto usage
+if ($?usen) then
+  set nbox = $usen
+endif
+set ext = $argv[1]
+set cmd = "$cmd $ext"
+echo -n "$space" check that \"$cmd\" "reads input file without error ... "
+$cmd --show=2 > /dev/null
+if ($status != 0) then
+  echo "oops!"
+  echo "$space $cmd does not read ctrl file ... aborting"
+  exit -1
+endif
+echo ok
+
+if ($?q0 == 0) then
+  echo band-edge requires -q0
+  exit -1
+else
+  set q0 = `echo $q0 | awk -F , '{print $1, $2, $3}'`
+  if ($#q0 != 3) then
+    echo "$space found only $#q0 arguments for -q0=#,#,#"
+    exit -1
+  endif
+endif
+
+if ($?edge == 0 && $?edge2 == 0 && $?mass == 0 && $?floatmn == 0 && $?floatmx == 0) then
+  echo "$space band-edge requires -edge or -edge2 or -mass or -floatmn or -floatmx"
+  exit -1
+endif
+
+if ($?r == 0) then
+  echo band-edge requires -r=#
+  exit -1
+endif
+
+if ($?dqmx == 0) then
+  set dqmx = $r
+endif
+
+if ($?band == 0) then
+  echo band-edge requires -band=#
+  exit -1
+else
+# Sanity check that band is an integer
+  @ i = $band
+endif
+
+# Set initial qnow
+  set qnow = ($q0) # abc
+
+# --- block: (1) minimize gradient by floating or by fitting bands to 2nd order polynomial around current q; or (2) finds m* ---
+  if ($?edge2 || $?floatmx || $?floatmn || $?mass) then
+
+    set ix = 0
+    if ($?mass) set maxit = 1
+
+    while ($ix < $maxit)
+    @ ix = $ix + 1
+
+#   Reset maxit if file maxit exists
+    if (-r maxit) then
+      set maxit = `head -1 maxit`
+      echo "    band-edge : found file maxit ... resetting maxit to $maxit"
+      rm maxit
+    endif
+    if ($?mass) set maxit = 1
+
+    echo "$space start iteration $ix of $maxit"
+
+#   Build the argument to the lm program
+    set bndarg = --band$spin~lst=$band~box=$r,$nbox,q0=`echo $qnow | sed 's/  */,/g'`
+    if ($?bin) then
+      set bndarg = --band$spin~bin~lst=$band~box=$r,$nbox,q0=`echo $qnow | sed 's/  */,/g'`
+    endif
+
+#   band pass
+    echo "$space $cmd $bndarg > out.lmf"
+    if ($noexec == 0) then  
+                 $cmd $bndarg > out.lmf
+      set retval = $status
+      if ($retval != 0) then
+        echo "$space oops! ... $cmd returned nonzero exit value  ... aborting"
+        exit -1
+      endif
+    endif
+
+#   convert bin to ascii
+    if ($?bin) then
+      echo "$space mcx -f4f20.15 -r:br bbnds.$ext > bnds.$ext"
+    if ($noexec == 0) then
+                   mcx -f4f20.15 -r:br bbnds.$ext > bnds.$ext
+    endif
+    endif
+
+    if ($noexec > 0) exit
+
+#   Use 2nd order pfit to estimate gradient at qnow
+    echo -n "qnow, E  :"
+    mcx -f3f13.6,f16.7 bnds.$ext | grep -v rows | head -1
+    echo -n "gradient :"
+    set qgrad = `echo $qnow | $pfit 2 bnds.$ext | grep "f'=" | tail -1 | awk '{printf "%12f %12f %12f\n", $(NF-2),$(NF-1),$(NF)}'`
+    echo $qgrad | mcx -f3f13.6,f15.6 . -p -p -xe -csum -e1 'sqrt(x1)' -ccat | grep -v rows
+    set gnorm = `echo $qgrad | mcx -f3f13.6,f15.6 . -p -p -xe -csum -e1 'sqrt(x1)' | grep -v rows`
+    if (! $?gmin) set gmin = $gnorm
+
+    if ($?mass) then
+    else if (`echo $gmin $gnorm | awk '{{k=($1-$2)>=0?1:0;} print k}'` == 0) then
+      echo "$space ! Warning gradient is larger than minimum value"
+    else
+      set qmin = ($qnow)
+      set gmin = $gnorm
+    endif
+
+#   Find q2 = estimate of extremal point from quadratic fit to band
+    echo -n "q*       :"
+    set q2 = `echo q | $pfit 2 bnds.$ext | grep 'at x=' | awk  '{printf "%12f %12f %12f\n", $(NF-2),$(NF-1),$(NF)}'`
+    echo $q2 | mcx -f3f13.6 . | grep -v rows
+
+#   ... This branch for finding effective mass
+    if ($?mass) then
+       echo "$space rm -f bndsa.$ext"
+                    rm -f bndsa.$ext 
+       echo "$space mcx -f4f20.15 -va=$alat bnds.$ext -e4 'x1*2*pi/a' 'x2*2*pi/a' 'x3*2*pi/a' x4 >bndsa.$ext"
+                    mcx -f4f20.15 -va=$alat bnds.$ext -e4 'x1*2*pi/a' 'x2*2*pi/a' 'x3*2*pi/a' x4 >bndsa.$ext
+       echo "$space echo princ | pfit 2 bndsa.$ext | grep eval | sed s/eval// | mcx . -e3 2/x1 2/x2 2/x3"
+                    echo princ | pfit 2 bndsa.$ext | grep eval | sed s/eval// | mcx . -e3 2/x1 2/x2 2/x3
+       exit
+    endif
+
+#   ... This branch for reducing gradient by float technique
+    if ($?floatmx || $?floatmn) then
+      if ($?floatmx) then
+        set qtest = `mcx bnds.$ext -sort  x4 -coll 1,2,3 | tail -1`
+      else
+        set qtest = `mcx bnds.$ext -sort -x4 -coll 1,2,3 | tail -1`
+      endif
+      if ("$qtest" == "$qnow") then
+        echo "$space cluster center is extremal point ... exiting loop"
+        echo
+        goto endq
+      endif
+      set qnow = ($qtest)
+
+#   ... This branch for -edge2
+    else
+      set fac = $edge2
+      set dqx = `echo $qnow $q2 | mcx -f3f13.6 . -e3 x4-x1 x5-x2 x6-x3 -abs -max:g -e1 x3 | grep -v rows`
+      set fac = $edge2
+      set fac = `echo $dqx $dqmx $edge2 | mcx . -e2 x2/x1 x3 -e1 'x1<x2?x1:x2' | grep -v rows`
+      set qnow = `echo $qnow $q2 | mcx -f3f13.6 -nc=3 . -p -rowl 1 -s1-$fac -tog -rowl 2 -s$fac -+ | grep -v rows`
+    endif
+    echo -n "use      :"
+    echo $qnow | mcx -f3f13.6 . | grep -v rows
+
+    if ($?edge2 && `echo $gmin $gtol | awk '{{k=($1-$2)>=0?1:0;} print k}'` == 0) then
+      echo
+      echo "gradient converged to tolerance gtol = $gtol"
+      goto endq
+    endif
+
+    end # of quadratic minimization loop
+    echo
+
+endq:
+    echo -n q @ minimum gradient :
+    echo $qmin | mcx -f3f13.6 . | grep -v rows
+    echo -n Final estimate for q :
+    echo $qnow | mcx -f3f13.6 . | grep -v rows
+
+# --- End of quadratic minimization algorithm : start fmin minimization algorithm ---
+  else if ($?edge) then
+
+    rm -f fmin.val; set ix = 0
+
+    while ($ix < $maxit)
+    @ ix = $ix + 1
+
+#   Reset maxit if file maxit exists
+    if (-r maxit) then
+    set maxit = `head -1 maxit`
+    echo "    lmgwsc : found file maxit ... resetting maxit to $maxit"
+    rm maxit
+    endif
+
+    echo "$space start iteration $ix"
+
+#   fmin call
+    echo "$space $fmin -gtol=$gtol -dxmx=$dqmx -broyden -eps=0 q1=$q0[1] q2=$q0[2] q3=$q0[3] q1,q2,q3 > out.fmin"
+                 $fmin -gtol=$gtol -dxmx=$dqmx -broyden -eps=0 q1=$q0[1] q2=$q0[2] q3=$q0[3] q1,q2,q3 > out.fmin
+    set retval = $status
+    if ($retval == 0) then
+      echo "$space converged ... exiting"
+      exit
+    endif
+
+#   Assign qnow to current values
+    set qnow = (`tail -1 fmin.val | awk '{sub("val:",""); gsub("q.=",""); print}'`)
+
+#   Build the argument to the lm program
+    set bndarg = --band$spin~lst=$band~box=$r,$nbox,q0=`echo $qnow | sed 's/  */,/g'`
+    if ($?bin) then
+      set bndarg = --band$spin~bin~lst=$band~box=$r,$nbox,q0=`echo $qnow | sed 's/  */,/g'`
+    endif
+
+#   band pass
+#   echo "$space rm -f bnds.$ext"
+#                rm -f bnds.$ext
+    echo "$space $cmd $bndarg > out.lmf"
+                 $cmd $bndarg > out.lmf
+    set retval = $status
+    if ($retval != 0) then
+      echo "$space oops! ... $cmd returned nonzero exit value  ... aborting"
+      exit -1
+    endif
+
+#   convert bin to ascii
+    if ($?bin) then
+      rm -f bnds.$ext
+      echo "$space mcx -f4f20.15 -r:br bbnds.$ext > bnds.$ext"
+                   mcx -f4f20.15 -r:br bbnds.$ext > bnds.$ext
+    endif
+
+    echo -n "qnow, E  :"
+    mcx -f3f13.6,f16.7 bnds.$ext | grep -v rows | head -1
+    set qgrad = `echo 1 | $pfit 1 bnds.$ext | grep "f'=" | tail -1 | awk  '{printf "%f %f %f", $(NF-2),$(NF-1),$(NF)}'`
+    echo -n "gradient :"
+    echo $qgrad | mcx -f3f13.6,f15.6 . -p -p -xe -csum -e1 'sqrt(x1)' -ccat | grep -v rows
+    echo gra: $qgrad >> fmin.val
+
+    set gnorm = `echo $qgrad | mcx -f3f13.6,f15.6 . -p -p -xe -csum -e1 'sqrt(x1)' | grep -v rows`
+    if (! $?gmin) set gmin = $gnorm
+
+    if (`echo $gmin $gnorm | awk '{{k=($1-$2)>=0?1:0;} print k}'` == 0) then
+      echo "$space ! Warning gradient is larger than minimum value"
+    else
+      set qmin = ($qnow)
+      set gmin = $gnorm
+    endif
+
+  end # Minimization loop
+
+  echo
+  echo -n q @ minimum gradient :
+  echo $qmin | mcx -f3f13.6 . | grep -v rows
+  echo -n Final estimate for q :
+  echo $qnow | mcx -f3f13.6 . | grep -v rows
+
+  endif # End fmin minimization algorithm
+
+
+exit
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label program-name executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prognam = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+
+# if (! $?quiet) then
+#   if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+#   if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+# endif
+
+if ($found == 'no' && "$make_path" != "no") then
+  if ($?maindir == 0) set maindir
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir $maindir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- walltime --------------
+exit
+# Returns wall-clock time.
+# Usage: walltime return_label time_var time_start
+# have_bc or have_dval should be set.
+exit
+walltime:
+if ($?have_bc) then
+  echo `date  +%d`'*24*60'+`date  +%H`'*60'+`date  +%M`+`date  +%S`/60   | $have_bc -l >datenow~; set datenow = `cat datenow~`
+else if ($?have_dval) then
+  dval -fd3 d=`date  +%d` h=`date  +%H` m=`date  +%M` s=`date  +%S` '(d*24+h)*60+m+s/60' >datenow~; set datenow = `cat datenow~`
+else
+  set $time_var = 0
+  goto $retcall
+endif
+#cat datenow~
+if ($time_start == 0) then
+  set $time_var = $datenow
+  goto $retcall
+else
+  if ($?have_bc) then
+    set $time_var = `echo $datenow-$time_start | bc -l | awk '{printf("%.1f",$1)}'`
+  else if ($?have_dval) then
+    set $time_var = `dval -fd1 $datenow-$time_start`
+  endif
+endif
+goto $retcall
+
+# ---------------- Prints out difference between current wall clock time and time_start --------------
+exit
+# Returns wall-clock time
+# Usage: if ($?pwtime) pdtime return_label time_start
+# To work, have_bc or have_dval must be set.  Otherwise prints ' '
+exit
+pdtime:
+set retcallp = $retcall
+if ($?have_bc) then
+  set time0 = $time_start
+  walltime pdtime2 deltat 0
+  pdtime2:
+  echo $deltat $time0 | awk '{printf(" ... %.1fm (%.1fh)\n",$1-$2,($1-$2)/60.)}'
+else if ($?have_dval) then
+  set time0 = $time_start
+  walltime pdtime3 deltat 0
+  pdtime3:
+  dval -a " ... %;1dm (%;2dh)"  $deltat-$time0 $deltat/60-$time0/60
+else
+#   echo ' ... (*)'
+  echo
+endif
+goto $retcallp
+
+exit
+usage:
+echo 'usage : band-edge switches extension'
+echo '        For further documentation, see www.questaal.org/tutorial/lmf/bandedge/'
+echo '        Switches:'
+echo '          --help'
+echo '          --h'
+echo '            show this message'
+echo ''
+echo '          ... Choose one of the following modes:'
+echo ''
+echo '          -edge'
+echo  '             Seek extremal q for one energy band'
+echo  '             Calculates gradients and minimizes with Broyden'
+echo ''
+echo '          -edge2=fac'
+echo  '             Seek extremal q for one energy band'
+echo  '             Calculates 1st and 2nd derivatives, and updates q with'
+echo  '               qnew = (1-fac)*qold + fac*qmin'
+echo  '             where qmin is extremal point estimated from quadratic fit'
+echo ''
+echo '          -edge2'
+echo  '             same as -edge2=fac, but with fac=1'
+echo ''
+echo '          -floatmx'
+echo  '             Find q with maximal Eband in cluster, use as new trial point.'
+echo  '             Iterate until the cluster center is the minimum point'
+echo ''
+echo '          -floatmn'
+echo  '             Find q with minimal Eband in cluster, use as new trial point.'
+echo  '             Iterate until the cluster center is the minimum point'
+echo ''
+echo '          -mass'
+echo  '             Fit bands around q0 to estimate effective mass tensor'
+echo ''
+echo '          ... The following switches are required'
+echo ''
+echo '          -q0=#,#,#'
+echo  '             Starting value of q'
+echo ''
+echo '          -r=#'
+echo  '             Range of excursion around current q for finite difference'
+echo ''
+echo '          -band=#'
+echo  '             Specify band number'
+echo ''
+echo '          -alat=#'
+echo  '             Lattice constant (a.u.).  Not needed except for the calculation of effective mass'
+echo ''
+echo '          ... The following switches are optional'
+echo ''
+echo '          -cmd=strn'
+echo  '             use strn in place of default command to generate bands, e.g.'
+echo  '             mpirun -n 16 lmf'
+echo ''
+echo '          -n=32'
+echo '          -n=20'
+echo '          -n=12'
+echo  '             Specify number of points in shell'
+echo ''
+echo '          -dqmx=#'
+echo  '             Maximum step size in any component'
+echo ''
+echo '          -gtol=#'
+echo  '             Convergence tolerance in the gradient (for -edge and -edge2)'
+echo ''
+echo '          --maxit=#'
+echo  '             Maximum number of iterations to attempt'
+echo ''
+echo '          --spin1'
+echo  '             replace --band with -band~spin1'
+echo ''
+echo '          --spin2'
+echo  '             replace --band with -band~spin2'
+echo ''
+echo '          --noexec'
+echo  '             Show what command will be executed, without executing it'
+echo ''
+echo '          --bin'
+echo  '             Tell the bands maker to write bands in binary format'
+exit -1
+
+error:
+echo "lmgw (abort): program failed to return with zero value"
+exit -1

@@ -1,0 +1,73 @@
+#!/usr/bin/env python
+
+# Behave as close as possible as the original rdcmd (now renamed to xrdcmd) while avoiding issues of launcher and mpi integration.
+# The main reason not to reuse xrdcmd and not remove it, is that reimplementing the input file preprocessor (handy at times) will be a big task.
+
+import sys, re
+from subprocess import Popen,PIPE
+
+prog = sys.argv[0]
+flags = [a for a in sys.argv[1:] if a.startswith('-') and not a.startswith('-f')]
+args = [a for a in sys.argv[1:] if not a.startswith('-')]
+
+fmt = (['>> ']+[a[3:] for a in sys.argv[1:] if a.startswith('-f:')])[-1]
+fmt = fmt.replace('%f','%1f')
+fmt = re.sub(r'%(\d+)f',lambda mo: int(mo.group(1))*' ', fmt)
+
+noexec = '--n' in flags
+noerr = '--noerr' in flags
+
+if not noexec: flags.insert(-1,'--n')
+if noerr: flags.remove('--noerr')
+flags.insert(-1,"-f:")
+
+prog = re.sub(r'\brdcmd$','xrdcmd',prog)
+p = Popen([prog] + flags + args, shell = False, stdout = PIPE, stderr = PIPE, bufsize=0)
+
+o,e = p.communicate()
+del p
+
+for cmd in o.splitlines():
+    sys.stdout.write(fmt+cmd.decode()+'\n'); sys.stdout.flush()
+    if not noexec:
+# shell=True because `cat switches-for...` and pipes are used sometimes
+        p = Popen(cmd, shell = True, stdout = sys.stdout, stderr = sys.stderr, stdin = sys.stdin)
+        rc = p.wait()
+        if noerr and rc != 0:
+            sys.stdout.write('# rdcmd aborting because of nonzero exit status %d\n' % rc)
+            sys.exit(rc)
+        del p
+
+
+
+
+
+# A quick attempt at doing the above in portable bash failed. The leftovers follow:
+
+##!/bin/bash
+
+#set -xe
+
+##for i in $@; do
+##    echo "$i"
+##done
+##
+##for i in "$@"; do
+##    echo "$i"
+##done
+
+#n=$(($#-1))
+
+#IFS=...
+#echo "$*" > oo
+#echo $*
+#echo $IFS
+
+##echo "f=$(mktemp -p . tmp.rdcmd.XXXX)"
+
+##| sed s:'^>>\s*'::
+##echo "rdcmd -f:'' --n \"$@\" > $f"
+
+##echo "/bin/bash $f"
+
+##rm $f

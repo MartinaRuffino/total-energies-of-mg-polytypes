@@ -1,0 +1,1145 @@
+dnl configure.in
+dnl Process this file with autoconf to produce a configure script.
+dnl Revisions
+dnl   3 Jul 03  (Stephen Brink) Redesigned so configure can automatically determine
+dnl             various things, most importantly system stuff and fortran-C linkage
+dnl   3 Jul 01  Revised compiler environment variable from 'F77' to 'FC'
+dnl             Added code to use find fftw, or use alternative c3fft
+
+dnl Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+dnl This file is free software; the Free Software Foundation
+dnl gives unlimited permission to copy and/or distribute it,
+dnl with or without modifications, as long as this notice is preserved.
+
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+dnl PARTICULAR PURPOSE.
+
+AC_INIT(fmain.c)
+
+AC_CONFIG_AUX_DIR(startup)
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_RANLIB
+AC_PROG_MAKE_SET
+AC_CANONICAL_SYSTEM
+
+dnl these lines are help autoconf 2.53 to be compatible with 2.13
+echo $ac_n
+if test -z "$ac_n"; then
+  ac_n="$ECHO_N"
+fi
+if test -z "$ac_c"; then
+  ac_c="$ECHO_C";
+fi
+if test -z "$ECHO_N"; then
+  ECHO_N="$ac_n"
+fi
+if test -z "$ECHO_C"; then
+  ECHO_C="$ac_c"
+fi
+
+#### Make srcdir absolute, if it isn't already.  It's important to
+#### avoid running the path through pwd unnecessarily, since pwd can
+#### give you automounter prefixes, which can go away.  We do all this
+#### so Emacs can find its files when run uninstalled.
+## Make sure CDPATH doesn't affect cd (in case PWD is relative).
+unset CDPATH
+case "${srcdir}" in
+  /* ) ;;
+  . )
+    ## We may be able to use the $PWD environment variable to make this
+    ## absolute.  But sometimes PWD is inaccurate.
+    if test ".${PWD}" != "." && test ".`(cd ${PWD} ; sh -c pwd)`" = ".${PWD}"  ;
+    then
+      srcdir="$PWD"
+    else
+      srcdir="`(cd ${srcdir}; pwd)`"
+    fi
+  ;;
+  *  ) srcdir="`(cd ${srcdir}; pwd)`" ;;
+esac
+
+dnl ac_rm_init holds list of files that will be removed by configure.  
+dnl configure may add to this initial list
+ac_rm_init="f2c.h symvec.c c3fft.c dqinv.c dqinvb.c ysbnv.c yyqinv.c yysbnv.c"
+AC_MSG_NOTES(["init"])
+SLDIR=$srcdir
+LIBSLA=$SLDIR/slatsm.a
+PATH=$PATH:$SLDIR
+dnl prefix=$HOME
+version=45
+AC_SUBST(LIBSLA)
+AC_SUBST(LIBSLA_MPI)
+AC_SUBST(LIBLOC_MPI)
+AC_SUBST(SLDIR)
+
+
+AC_ARG_ENABLE(blas, [  --enable-blas           include BLAS source code], enable_blas=$enableval, enable_blas=no)
+
+AC_ARG_ENABLE(blas3, [  --enable-blas3          include BLAS3 source code], enable_blas3=$enableval, enable_blas3=no)
+
+AC_ARG_ENABLE(lapack, [  --enable-lapack         include LAPACK source code], enable_lapack=$enableval, enable_lapack=no)
+
+AC_ARG_ENABLE(fftw,   [  --enable-fftw           fftw library is expected to be present], enable_fftw=$enableval, enable_fftw=yes)
+
+AC_ARG_WITH(gcc, [  --with-gcc              use gcc instead of the native compiler cc], ok=$withval, ok=no)
+if test "$ok" = "yes"; then
+	CC=gcc
+fi
+
+if test -n "$MACHINE"; then
+   AC_MSG_RESULT([Machine type supplied by environment variable MACHINE=$MACHINE])
+else
+   AC_MSG_RESULT([configure will find a machine mnemonic (none supplied by environment variable MACHINE)])
+fi
+if test -n "$CC"; then
+   AC_MSG_RESULT([C compiler supplied by environment variable CC=$CC])
+else
+   AC_MSG_RESULT([configure will find the C compiler (none specified by environment variable CC)])
+fi
+if test -n "$FC"; then
+   AC_MSG_RESULT([Fortran compiler supplied by environment variable FC=$FC])
+else
+   AC_MSG_RESULT([configure find the fortran compiler (none specified by environment variable FC)])
+fi
+if test -n "$LIBLOC"; then
+   AC_MSG_RESULT([Libraries specified by supplied by environment variable LIBLOC=$LIBLOC])
+dnl else
+dnl    AC_MSG_RESULT([])
+fi
+
+# --- Machine mnemonic specified: check whether startup/Makemakefile can handle it ---
+if test ! -z "$MACHINE"; then
+  AC_MSG_CHECKING([whether Makemakefile recognizes mnemonic MACHINE=$MACHINE])
+  if `startup/Makemakefile $MACHINE --check >/dev/null 2>&1` ; then
+    MACHINE=`startup/Makemakefile $MACHINE --check`
+  fi
+
+  if test -z "$MACHINE"; then
+    echo  ' '
+    echo  '  ... oops, this command failed:'
+    echo  "      startup/Makemakefile $MACHINE --check"
+    echo  "      startup/Makemakefile failed to recognize machine mnemonic $MACHINE"
+    echo  '      configure aborting, sorry (see config.notes)'
+    AC_MSG_NOTES([**],
+[startup/Makemakefile cannot handle the mnemonic you supplied to configure])
+    if test ! -z "$FC"; then
+    AC_MSG_NOTES([],[  Possibly Makemakefile rejected the compiler you specified via FC=$FC])
+    fi
+    if test ! -z "$CC"; then
+    AC_MSG_NOTES([],[  Possibly Makemakefile rejected the compiler you specified via CC=$CC])
+    fi
+    AC_MSG_NOTES([],
+[  Look at step 2 in the INSTALLATION section of startup/README.
+]) 
+    exit -1
+
+  else
+    echo ' yes'
+dnl FCdef=`startup/Makemakefile $MACHINE -defs | egrep '^FC *=' | tail -1 | sed 's/FC *=//'`
+dnl CCdef=`startup/Makemakefile $MACHINE -defs | egrep '^CC *=' | tail -1 | sed 's/CC *=//'`
+    FCdef=`startup/Makemakefile $MACHINE --getfc`
+    CCdef=`startup/Makemakefile $MACHINE --getcc`
+  fi
+
+  if (test -z "$FC") ; then 
+     FC=$FCdef
+     AC_MSG_RESULT([Using default fortran compiler \"$FC\" corresponding to $MACHINE])
+  elif (test "$FCdef" != "$FC") ; then 
+    echo "*** Warning *** you specified both the MACHINE mnemonic ($MACHINE) and fortran compiler ($FC)"
+    echo "    but your choice is at variance with expected compiler ($FCdef)"
+  fi
+
+  if (test -z "$CC") ; then 
+     CC=$CCdef
+     AC_MSG_RESULT([Using default C compiler \"$CC\" corresponding to mnemonic $MACHINE])
+  elif (test "$CCdef" != "$CC") ; then 
+    echo "*** Warning *** you specified both the MACHINE mnemonic ($MACHINE) and C compiler ($CC)"
+    echo "    but your choice is at variance with expected compiler ($CCdef)"
+  fi
+
+# --- Find and check C compiler---
+  if test -z "$CC"; then
+      AC_CHECK_PROG(CC,icc pgcc ccc cc, cc)
+      if test -z "$CC"; then
+         echo "*** Couldn't find a C compiler ...  aborting"
+         exit -1
+      fi
+  else
+    AC_MSG_CHECKING([C compiler])
+    CCC=
+    AC_CHECK_PROG(CCC, $CC, "ok", "no")
+    if test "$CCC" = "no"; then
+       echo "*** Couldn't find C compiler \"$CC\" ...  aborting"
+       exit -1
+    fi
+  fi
+
+# --- Find and check fortran compiler---
+  if test -z "$FC"; then
+      AC_CHECK_PROGS(FC,ifc pgf90 epcf90 fort f95 lf95 fort xlf xlf90 f90 cf90 pgf77 fort77 cf77 fl32 af77 xlf77 cf77 cft77 fc frt f77 g77 , false)
+    if test "$FC" = "false"; then
+         echo "*** Couldn't find a fortran compiler ...  aborting"
+       exit -1
+    fi
+  else
+    FCOMP=
+    AC_CHECK_PROG(FCOMP, $FC, "ok", "no")
+    if test "$FCOMP" = "no"; then
+       echo "*** Couldn't find fortran compiler \"$FC\" ...  aborting"
+       exit -1
+    fi
+  fi
+
+# --- Machine mnemonic NOT specified: Try to determine it  ---
+else
+
+  ARCH=`startup/config.guess`
+
+# Try to find the compilers first.
+  AC_MSG_RESULT([No machine mnemonic specified ... look for working C and fortran compilers])
+
+# --- Find and check C compiler---
+  if test -z "$CC"; then
+    AC_CHECK_PROGS(CC, icc pgcc ccc cc, false)
+    if test "$CC" = "false"; then
+       echo 'configure could not find C compiler, sorry.  See config.notes.'
+       AC_MSG_NOTES([**],
+[ No C compiler was found, so configure cannot proceed.
+  You can specify it through 'env CC=name ./configure.
+  Consider also specifying a machine mnemonic.
+  Look at step 2 in the INSTALLATION section of startup/README.
+])
+       exit -1
+    fi
+  else
+    CCC=
+    AC_CHECK_PROG(CCC, $CC, "ok", "no")
+    if test "$CCC" = "no"; then
+       AC_MSG_RESULT([configure could not find C compiler \"$CC\" ... sorry.  Look at config.notes])
+       AC_MSG_NOTES([**],
+[ configure could not make the C compiler \"$CC\" you specified work properly.
+  Look at step 2 in the INSTALLATION section of startup/README.
+])
+       exit -1
+    fi
+  fi
+
+# --- Find and check fortran compiler---
+  if test -z "$FC"; then
+    AC_CHECK_PROGS(FC, ifc pgf90 epcf90 fort f95 lf95 fort xlf xlf90 f90 cf90 pgf77 fort77 cf77 fl32 af77 xlf77 cf77 cft77 fc frt f77 g77, false)
+    if test "$FC" = "false"; then
+
+       AC_MSG_RESULT([configure could not find fortran compiler, sorry.  See config.notes.])
+       AC_MSG_NOTES([**],
+[ No fortran compiler was found, so configure cannot proceed.
+  You can specify it through 'env FC=name ./configure.
+  Consider also specifying a machine mnemonic.
+  Look at step 2 in the INSTALLATION section of startup/README.
+])
+    exit -1
+    fi
+  else
+    FCOMP=
+    AC_CHECK_PROG(FCOMP, $FC, "ok", "no")
+    if test "$FCOMP" = "no"; then
+       AC_MSG_RESULT([configure could not find fortran compiler \"$FC\" ... sorry.  Look at config.notes])
+       AC_MSG_NOTES([**],
+[ configure could not make the fortran \"$FC\" compiler you specified work properly.
+  Look at step 2 in the INSTALLATION section of startup/README.
+])
+       exit -1
+    fi
+  fi
+
+  export CC
+  export FC
+
+  AC_MSG_NONL([Try and identify a machine mnemonic for fortran FC=$FC...])
+# if `env FC=$FC CC= startup/Makemakefile -- --check >/dev/null 2>&1 && true` ; then
+  if `eval FC=$FC CC= startup/Makemakefile -- --check >/dev/null 2>&1` ; then
+    MNEMONIC=`env FC=$FC CC= startup/Makemakefile -- --check 2>/dev/null`
+    echo $MNEMONIC
+    if test "$MNEMONIC" = "VANILLA"; then 
+      AC_MSG_NOTES([**],
+[ startup/Makemakefile returned mnemonic= VANILLA, which means it failed to
+  recognize the compiler / architecture combination FC=\"$FC\" / \"$ARCH\" .
+  Execution will proceed, but user is advised to 
+  look at step 2 in the INSTALLATION section of startup/README.
+])
+
+#...A mnemonic was identified for the fortran compiler ... see if the C compiler is compatible
+    else
+      AC_MSG_NOTES([*],
+[ Machine mnemonic $MNEMONIC was identified for FC=\"$FC\" and architecture \"$ARCH\"
+])
+    fi
+
+    AC_MSG_CHECKING([whether $MNEMONIC is compatible with CC=$CC and FC=$FC])
+    if `eval startup/Makemakefile $MNEMONIC --check >/dev/null 2>&1` ; then
+      echo yes
+    else
+      echo no
+      AC_MSG_CHECKING([for default C compiler associated with $MNEMONIC])
+      CCdef=`env FC=$FC CC= startup/Makemakefile $MNEMONIC --getcc`
+      echo found $CCdef
+         AC_MSG_NOTES([**],
+[ C compiler $CC is not compatible with mnemonic $MNEMONIC .
+  Default C compiler for mnemonic $MNEMONIC is \"$CCdef\"])
+      AC_CHECK_PROGS(CCtry, $CCdef, false)
+      if test "$CCtry" = "false"; then
+        AC_MSG_NOTES([
+**],
+[ default C compiler \"$CCdef\" was not found.
+  configure requires that the C compiler is compatible with the machine mnemonic.
+  Consider specifying the machine mnemonic, or
+  modifying startup/Makemakefile to accept compiler CC=\"$CC\" with mnemonic $MNEMONIC.
+  Look at step 2 in the INSTALLATION section of startup/README.
+])
+        AC_MSG_ERROR(configure could not find C compiler.  See config.notes.)
+      fi
+#     Default compiler works ... substitute unless compiler was specified by user
+
+      if test x"$CCC" = x"ok"; then
+        AC_MSG_NOTES([
+**],
+[ User-supplied C compiler \"$CC\" does not work with this command:
+  env FC=$FC CC=$CC startup/Makemakefile $MNEMONIC --check
+  Consider also specifying the appropriate machine mnemonic yourself, or
+  modifying startup/Makemakefile to accept the compiler \"$CC\" with mnemonic $MNEMONIC.
+  Look for \"PROBLEMS with mnemonic selection\" in startup/README.
+])
+        AC_MSG_ERROR(the C compiler is apparently incompatible with the machine mnemonic.
+See configure.notes)
+      fi
+      AC_MSG_RESULT([Use CC=$CCtry])
+      AC_MSG_NOTES(, [  CC=$CCtry appears to work with $MNEMONIC ... use it.
+])
+      CC=$CCtry
+      ac_cv_prog_CC=$CC
+      export CC
+      export ac_cv_prog_CC
+    fi
+
+# Something wrong, with FC and ARCH ... giving up
+  else
+    AC_MSG_NOTES([**],
+[ startup/Makemakefile failed to recognize a machine mnemonic associated with
+  fortran compiler \"$FC\" and architecture \"$ARCH\"
+  Look at step 2 in the INSTALLATION section of startup/README.
+])
+    echo ' '
+    AC_MSG_ERROR(startup/Makemakefile cannot identify this machine.  See config.notes)
+  fi
+
+MACHINE=$MNEMONIC
+fi  # End of checks for machine mnemonic
+
+# --- Fatal error if startup/Makemakefile doesn't return normally ---
+AC_MSG_CHECKING([whether 'startup/Makemakefile $MACHINE -defs' returns normally ])
+if (! eval env startup/Makemakefile $MACHINE -defs >/dev/null 2>&1) ; then
+  echo no
+  AC_MSG_NOTES([**],
+[ This command (needed to obtain compiler flags) failed:
+     startup/Makemakefile $MACHINE -defs
+   Compilers are FC=$FC and CC=$CC
+   configure requires startup/Makemakefile recognize mnemonic $MACHINE with these compilers.
+   Look at step 2 in the INSTALLATION section of startup/README.])
+  AC_MSG_ERROR(startup/Makemakefile script failed to return normally.
+                  See configure.notes)
+else
+  echo ok
+fi
+
+# --- Get name for linker ---
+LK=`startup/Makemakefile ${MACHINE} -defs | grep 'LK =' | awk '{print $3}'`
+if test x"$LK" = x; then
+  LK="$FC $FFLAGS"
+fi
+export LK
+AC_MSG_RESULT([Using $MACHINE for machine mnemonic, ${CC-cc} for C compiler, $FC for fortran compiler, $LK for linker])
+
+# --- Special flags so fortran compile/link works w/out error ---
+case "${MACHINE}" in
+
+  SGI* ) CFLAGS="$CFLAGS -64"; FFLAGS="$FFLAGS -64";;
+
+  HP ) CFLAGS="$CFLAGS +U77"; FFLAGS="$FFLAGS +U77";;
+
+# OSXI )   CFLAGS="$CFLAGS"; FFLAGS="$FFLAGS";;
+
+  OSXI64 ) CFLAGS="$CFLAGS -arch x86_64"; FFLAGS="$FFLAGS -arch x86_64";;
+
+esac
+
+# --- Find C-fortran correspondences ---
+# AC_FC_F2C_LINKS generates the following:
+# ac_cv_fc_main names the entry point the linker assigns as the program start
+# ac_cv_fc_mangling, which describes the fortran name-mangling scheme
+# CFLAGS and FFLAGS: flags for C and fortran
+AC_FC_F2C_LINKS
+# Begin commenting for manual definition of C main
+if test $ac_cv_fc_main = "lastchoice"; then 
+  echo "First attempt to find C main entry point name failed.  Configure will try to find the name by using an alternative method"
+  echo "      call nosuchfunction" > conftest.f
+  echo "      end" >> conftest.f
+  $FC $FCARGS conftest.f > ./conftest 2>&1
+  correct=`cat ./conftest | awk '/[[Mm]][[Aa]][[Ii]][[Nn]]/ {i=0 ; while (i++ < NF) {if (match($i,"[[Mm]][[Aa]][[Ii]][[Nn]]")) print $i}}'`
+  rm ./conftest*
+  if test -z `echo $correct | egrep "\:"` ; then colon=no; else colon=yes; fi
+  if test $colon = "yes"; then correct=`echo $correct | awk -F "\:" '{i=0; while (i++<NF) {if (match($i,"[[Mm]][[Aa]][[Ii]][[Nn]]")) print $i'}}`; fi
+  if test -z `echo $correct | egrep "\""` ; then dubquote=no; else dubquote=yes; fi
+  if test $dubquote = "yes"; then correct=`echo $correct | awk -F "\"" '{i=0; while (i++<NF) {if (match($i,"[[Mm]][[Aa]][[Ii]][[Nn]]")) print $i'}}`; fi 
+  if test -z `echo $correct | egrep "\'"` ; then singquote=no; else singquote=yes; fi
+  if test $singquote = "yes"; then correct=`echo $correct | awk -F "\'" '{i=0; while (i++<NF) {if (match($i,"[[Mm]][[Aa]][[Ii]][[Nn]]")) print $i'}}`; fi
+    if test -z `echo $correct | egrep '\`'` ; then accent=no; else accent=yes; fi
+  if test $accent = "yes"; then correct=`echo $correct | awk -F '\`' '{i=0; while (i++<NF) {if (match($i,"[[Mm]][[Aa]][[Ii]][[Nn]]")) print $i'}}`; fi
+  if test -z $correct; then
+  AC_MSG_ERROR(Configure failed to find a correct C main entry point name.  For information about fixing this problem see the README file.)
+  else
+    export ac_cv_fc_main=$correct
+    echo "Alternative method found $correct for C main entry point name"
+  fi
+fi
+# End commenting for manual definition of C main
+CMAIN=$ac_cv_fc_main
+AC_SUBST(CMAIN)
+export CMAIN
+
+# --- Get fortran flags from Makemakefile ---
+FCFLAGS=`startup/Makemakefile $MACHINE -defs | egrep 'FFLAGS *=' | head -1 | sed s/'FFLAGS *=//'`
+AC_MSG_RESULT([Flags for Machine mnemonic $MACHINE : $FCFLAGS])
+AC_MSG_CHECKING([whether fortran compiler accepts flags $FCFLAGS])
+AC_FC_SUBPROG([$FCFLAGS],)
+echo $ac_success
+if test "$ac_success" = "no"; then
+  echo "         This command failed: " $ac_error
+  echo "         configure aborting, sorry (see config.notes)"
+AC_MSG_NOTES([**],
+[ Flags corresponding to machine mnemonic $MACHINE were extracted by invoking this script:
+     startup/Makemakefile ${MACHINE} -defs | egrep 'FFLAGS *=' | head -1
+   This compilation failed: $ac_error
+   Fix the Makemakefile script or change the machine mnemonic before continuing.
+])
+fi
+
+AC_MSG_NOTES([*],
+[ Fortran flags corresponding to machine mnemonic $MACHINE and compiler $FC are:
+     $FCFLAGS
+  Flags were extracted by invoking this script:
+    startup/Makemakefile ${MACHINE} -defs | egrep 'FFLAGS *='
+])
+
+AC_MSG_NOTES([*],
+[ Using ${CC-cc} for C compiler, $FC $FFLAGS for fortran compiler, $LK $LDFLAGS for linker])
+
+AC_MSG_NOTES(,
+[  Function \`$CMAIN' is apparently the entry point when linking with $FC
+])
+
+# --- Set variables that describe C-fortran correspondences ---
+lcase=`echo $ac_cv_fc_mangling | awk '{split($0,a,","); print a[[1]]}'`
+uscore1=`echo $ac_cv_fc_mangling | awk '{split($0,a,","); print a[[2]]}'`
+uscore2=`echo $ac_cv_fc_mangling | awk '{split($0,a,","); print a[[3]]}'`
+if test "$lcase" = "lower case"; 
+then FC_UPPERCASE=0
+else FC_UPPERCASE=1 
+fi
+FC_UNDERSCORE=0
+if test "$uscore1" = " underscore";
+then FC_UNDERSCORE=1
+fi
+if test "$uscore2" = " extra underscore";
+then FC_UNDERSCORE=2
+fi
+# For this distribution, the distinction between FC_UNDERSCORE =1 and =2 is     irrelevant.  If this is changed, the definition may have to be adjusted to fit  the case in which there is no underscore but there is an extra underscore. 
+export FC_UPPERCASE
+export FC_UNDERSCORE
+AC_SUBST(FC_UPPERCASE)
+AC_SUBST(FC_UNDERSCORE)
+
+# --- Check whether fortran-C linkage is successful ---
+AC_FC_FUNC(fmain)
+AC_MSG_CHECKING([whether fortran program links to C main links without error])
+AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main(argc,argv)],
+                       [int argc; char *argv[];],,
+		       [$fmain()],,[$LDFLAGS],,)
+echo $ac_success
+if test "$ac_success" = "no"; then
+  echo "         This command failed: " $ac_error
+  echo "         configure aborting, sorry"
+  AC_MSG_NOTES([**],
+[ configure could not link this fortran with this C file:
+  ])
+  cat contest.c >>config.notes
+  AC_MSG_NOTES(,[fortran file:])
+  cat conftest.f >>config.notes
+  AC_MSG_NOTES(,[This command failed: $ac_error])
+  exit
+fi
+ac_link_success=$ac_success
+
+# --- See whether libraries specified in LIBLOC exist ---
+if test -n "$LIBLOC" ; then
+# AC_MSG_RESULT([Using libraries specified by LIBLOC=\"$LIBLOC\"])
+  AC_MSG_CHECKING([whether linker can link LIBLOC without error])
+  AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main(argc,argv)],
+                         [int argc; char *argv[];],,
+  		         [$fmain()],,[$LIBLOC],,,)
+  echo $ac_success
+  if test "$ac_success" = "no"; then
+    AC_MSG_NOTES([**],
+[ The supplied LIBLOC library does not link successfully:
+  LIBLOC=$LIBLOC
+  This command failed:
+  $ac_error])
+    AC_MSG_ERROR(configure failed to link the LIBLOC library.  See config.notes)
+  else
+AC_MSG_NOTES([*],
+[ Starting with LIBLOC=$LIBLOC
+])
+  fi
+else
+  AC_MSG_RESULT([No environment variable LIBLOC specified; no user-supplied libraries to link ...])
+fi
+
+# --- Parameters for fortran-C linkage ---
+if test "$ac_link_success" = "ok"; then 
+  # See whether argc is passed on the command-line
+  AC_MSG_CHECKING([whether C main passes command-line args to main])
+  AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main(argc,argv)],[int argc; char *argv[];],
+                         [printf(\"%d\",argc);],
+  		       [$fmain()],,[$LIBLOC],,[a b c])
+  if test "$ac_success" = "4"; 
+
+    then NOPASSEDARGS=0; echo yes; AC_MSG_NOTES([*],
+[ Command-line arguments are apparently available from entry point $ac_cv_fc_main(argc,argv)
+])
+
+    else NOPASSEDARGS=1; echo no
+
+  fi
+else
+  echo "        " You will have to determine the appropriate fortran-C linkages by hand, sorry.
+fi
+export NOPASSEDARGS
+AC_SUBST(NOPASSEDARGS)
+
+# --- Look for function call that returns number of command-line arguments ---
+if test "$NOPASSEDARGS" = "1"; then
+  AC_MSG_RESULT([Look for function call that returns number of command-line arguments:])
+
+  for tryfun in nargs iargc ; do
+
+    AC_FC_FUNC($tryfun,nargfcall)
+    AC_MSG_CHECKING([whether $nargfcall can be linked])
+    AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main()],,
+                           [$nargfcall();],
+                           [$fmain()],,[$LIBLOC],,)
+    echo $ac_success
+    if test "$ac_success" = "ok"; then 
+      AC_MSG_CHECKING([invocation with three command-line arguments: $nargfcall returns ])
+      AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main()],,
+                             [printf(\"%d\",$nargfcall());],
+                             [$fmain()],,[$LIBLOC],,[a b c])
+      
+      echo $ac_n $ac_success
+      if (test 4 -eq $ac_success) ; then 
+        NARGFCALL=$nargfcall 
+        ADD_TO_NARGFCALL=0
+        echo " ... ok"
+        AC_MSG_NOTES([*],
+[ Function $NARGFCALL returns the number of command-line arguments
+  Adding to CMFLAGS these switches:
+ -DNARGFCALL=$NARGFCALL -DADD_TO_NARGFCALL=$ADD_TO_NARGFCALL
+])
+        break
+#      elif (test 4 -eq `expr $ac_success + 1` ) ; then 
+#      elif (test m4_decr(4) -eq $ac_success) ; then 
+      elif (test 3 -eq $ac_success) ; then 
+        NARGFCALL=$nargfcall 
+        ADD_TO_NARGFCALL=1
+        echo " ... ok"
+        AC_MSG_NOTES([*],
+[ Function $NARGFCALL returns (number of command-line arguments - 1)
+  Adding to CMFLAGS these switches:
+ -DNARGFCALL=$NARGFCALL -DADD_TO_NARGFCALL=$ADD_TO_NARGFCALL
+])
+        break
+      else
+        echo " ... unsuitable" 
+      fi
+
+    fi
+  done
+
+  AC_MSG_RESULT([Look for function call that returns a command-line argument:])
+  for tryfun in getarg ; do
+
+    AC_FC_FUNC($tryfun,nargfcall)
+
+dnl Don't know how to put '[' in to string.  Assume fortran call equivalent
+dnl AC_MSG_CHECKING([whether $nargfcall can be linked])
+dnl AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main()],,
+dnl                        [$nargfcall();],
+dnl                        [$fmain()],,[$LIBLOC],,)
+dnl echo $ac_success
+dnl if test "$ac_success" = "ok"; then 
+dnl    AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main()],,
+dnl                           [int len, i; char pargi[256];
+dnl                            i = 1;  len = 256 -1;  *pargi = '\0';
+dnl                            getarg_(&i,pargi,len);
+dnl                            *(pargi+4) = '\0';
+dnl                            printf(\"%s\\n\",pargi);],
+dnl                           [$fmain()],[ ],[$LIBLOC],,[XYZ])
+
+    AC_MSG_CHECKING([whether fortran call to \`$tryfun' can be linked])
+    AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main()],,,
+                           [$fmain()],[call $tryfun()],[$LIBLOC],,)
+    echo $ac_success
+    if test "$ac_success" = "ok"; then 
+      AC_MSG_CHECKING([whether fortran \`$tryfun' returns command-line argument ])
+      AC_FC_PROG_WITH_C_MAIN([$ac_cv_fc_main()],,,
+                             [$fmain()],[character*40 strn
+                                         strn = ' '
+                                         call getarg(1,strn)
+                                         print '('':'',a3,'':'')', strn],[$LIBLOC],,[XYZ])
+      if test "$ac_success" = ":XYZ:"; then 
+        echo "ok"
+        ARGFCALL=$nargfcall
+        AC_MSG_NOTES([*],
+[ Function $tryfun correctly returned a command line argument 
+  when called from a fortran program.
+  Adding to CFLAGS this switch:  -DARGFCALL=$ARGFCALL
+  The call will be done from fmain.c to preserve possible MPI usage.
+  If the C code fails to work correctly, consider recompiling syscall.f
+  replacing call to \`gtargc' with a call to \`$tryfun'.
+])
+      else
+        echo "no"
+      fi
+
+    fi
+  done
+
+  if test x"$ARGFCALL" = x; then
+  AC_MSG_NOTES([**],
+[ No function found that returns a command line argument.
+  User should determine a function call that works with this compiler
+  and replace call to \`gtargc' with that function; see file syscall.f.])
+  fi
+
+fi
+dnl export NARGFCALL
+dnl export ADD_TO_NARGFCALL
+dnl export ARGFCALL
+AC_SUBST(NARGFCALL)
+AC_SUBST(ADD_TO_NARGFCALL)
+AC_SUBST(ARGFCALL)
+
+# --- Find or compile ccomp ---
+AC_PATH_PROG(CCOMP, ccomp, "no")
+if test "$CCOMP" = "no"; then
+   AC_MSG_RESULT([Compiling  ccomp using : \"$CC -Dunix startup/ccomp.c -o ccomp\"])
+   $CC $CFLAGS -Dunix startup/ccomp.c -o ccomp
+   CCOMP=$SLDIR/ccomp
+fi
+if test "$CCOMP" = "./ccomp"; then CCOMP=$SLDIR/ccomp; fi
+echo CCOMP=$CCOMP >>config.cleanup
+CCOMPDIR=`startup/absolute-path $CCOMP`
+AC_SUBST(CCOMPDIR)
+
+# --- Check for fortran compiler extensions ---
+AC_ADD_TO_CCOMP_SWITCHES([yes],[yes],[quiet],[$MACHINE])
+AC_MSG_RESULT([... Looking for fortran compiler extensions])
+AC_MSG_CHECKING([whether fortran compiler accepts QUAD precision])
+AC_CHECK_FOR_QUAD
+echo $FC_USES_QUAD
+AC_ADD_TO_CCOMP_SWITCHES([no],$FC_USES_QUAD,quiet,[NOQUAD])
+dnl AC_SUBST(FC_USES_QUAD)
+AC_MSG_CHECKING([whether fortran compiler is an f90 compiler])
+AC_CHECK_FOR_F90
+echo $FC_IS_F90
+AC_ADD_TO_CCOMP_SWITCHES([yes],$FC_IS_F90,,[F90])
+AC_SUBST(FC_IS_F90)
+
+# ... Extensions that are standard in F90 
+#FC_IS_F90=no
+if test "$FC_IS_F90" = "no"; then
+
+AC_MSG_CHECKING([whether fortran compiler allows automatic arrays])
+AC_CHECK_FOR_AUTO_ARRAY
+echo $FC_AUTOARRAY
+AC_SUBST(FC_AUTOARRAY)
+AC_ADD_TO_CCOMP_SWITCHES([yes],$FC_AUTOARRAY,,[AUTO-ARRAY])
+
+AC_MSG_CHECKING([whether fortran compiler allows POINTER declaration])
+AC_FC_SUBPROG([$FCFLAGS],[pointer (iarr, arr)
+                          double precision arr(20)])
+echo $ac_success
+AC_ADD_TO_CCOMP_SWITCHES([yes],$ac_success,[quiet],[POINTER])
+FC_POINTER=$ac_success
+AC_SUBST(FC_POINTER)
+
+AC_MSG_CHECKING([whether fortran compiler allows recursive call])
+AC_FC_SUBPROG([$FCFLAGS],[call fmain])
+AC_ADD_TO_CCOMP_SWITCHES([yes],$ac_success,[quiet],[RECUR])
+echo $ac_success
+FC_RECUR=$ac_success
+AC_SUBST(FC_RECUR)
+
+fi
+
+AC_MSG_CHECKING([whether fortran compiler allows strings of variable length])
+AC_CHECK_FOR_FORTRAN_VARIABLE_STRINGS
+echo $FC_VSTRINGS
+AC_SUBST(FC_VSTRINGS)
+AC_ADD_TO_CCOMP_SWITCHES([no],$FC_VSTRINGS,[quiet],[FIXEDLENGTH])
+AC_SUBST(CCOMP_SW)
+
+# --- Check whether to add zero's to output file or eliminate (-) sign in -0.000.. ---
+AC_MSG_CHECKING([whether floating point formats are of the IBM type])
+case "${host}" in
+  *aix* ) echo yes
+          ADD0=--add0;;
+      * ) echo no;;
+esac
+AC_MSG_CHECKING([whether floating point formats are of the gnu fortran type])
+case "$MACHINE" in
+   OSXI ) echo yes
+          POSZER=--poszer;;
+      * ) echo no;;
+esac
+AC_SUBST(ADD0)
+AC_SUBST(POSZER)
+
+# samples
+dnl ACX_FIND_ROUTINE_IN_LIB(dcopy, -lblas, cmain, [], [echo HI], [echo BYE])
+dnl ACX_FIND_ROUTINE_IN_LIB(dcopy, -lblas, fmain, [], [echo HI], [echo BYE])
+dnl ACX_FIND_ROUTINE_IN_LIB(dcopy, -lblas, fmain, [$LIBLOC], [echo HI], [echo BYE])
+dnl ACX_FIND_ROUTINE_IN_LIB(dgetrs, [-llapack -lblas],,, [LIBLOCL="$LIBLOCL -llapack -lblas"], [LIBLOCL="$LIBLOCL -lblas"]))
+
+# --- Find math libraries, do other architecture-specific stuff  ---
+# Look for machine-specific libraries
+case "${MACHINE}" in
+
+  LINUX_PGI ) AC_MSG_RESULT([... special to LINUX_PGI])
+              AC_MSG_RESULT([    copying files to . : BLAS/xerbla.f and LAPACK/dlamch.f])
+              cp BLAS/xerbla.f LAPACK/dlamch.f .
+              AC_MSG_RESULT([    Add NOQUAD to ccomp switches])
+              AC_ADD_TO_CCOMP_SWITCHES([no],[no],quiet,[NOQUAD])
+dnl     ACX_FIND_ROUTINE_IN_LIB(acos__, -lpgftnrtl,cmain,[$LIBLOC],  [LIBLOCL="$LIBLOCL -lpgftnrtl"], )
+    ;;
+
+  LINUXF ) ACX_FIND_ROUTINE_IN_LIB(dcopy, -lcxml, fmain, [], [LIBLOCL="$LIBLOCL -lcxml"])  ;;
+
+dnl   LINUX* ) AC_CHECK_LIB(atlas, main, [LIBLOCL="$LIBLOCL -latlas"]) ;;
+
+  DECA ) ACX_FIND_ROUTINE_IN_LIB(dcopy, -lcxml, fmain, [], [LIBLOCL="$LIBLOCL -lcxml"])  ;;
+
+  HP* ) AC_CHECK_LIB(lapack, main, [LIBLOCL="$LIBLOCL -llapack"])
+        AC_CHECK_LIB(blas, main, [LIBLOCL="$LIBLOCL -lblas"])
+        AC_CHECK_LIB(m, main, [LIBLOCL="$LIBLOCL -lm"])
+        AC_CHECK_LIB(vec, main, [LIBLOCL="$LIBLOCL -lvec"]) ;;
+
+  AIX* ) AC_CHECK_LIB(essl, main, [LIBLOCL="$LIBLOCL -lessl"])
+         AC_MSG_CHECKING([whether fortran compiler accepts -qfixed])
+         AC_FC_SUBPROG([-qfixed],)
+         echo $ac_success
+         if test "$ac_success" = "yes"; then
+         AC_MSG_NOTES([**],
+[ This compiler accepts flag  -qfixed  ... you probably need to include in
+   as a flag.  Edit startup/Makemakefile and uncomment the line
+      set extra = -qfixed
+  and rerun configure.
+])
+fi
+;;
+
+  SGI* ) AC_CHECK_LIB(complib.sgimath_mp, main, [LIBLOCL="$LIBLOCL -mp -lcomplib.sgimath_mp"]);;
+
+  CRAY* ) AC_CHECK_LIB(-lsci, main, [LIBLOCL="$LIBLOCL -lsci"]);;
+
+esac
+
+# --- Look for generic libraries ---
+# ... Seek fftw library.
+#     3 Jul 01 If disabled, use alternative c3fft.f, or machine-specific if available
+#              If enabled, ensure fftz3 set to call fftw.
+ACX_FIND_ROUTINE_IN_LIB(dcopy, -lblas, cmain, [$LIBLOC],
+                        ACX_FIND_ROUTINE_IN_LIB(dgetrs, [-llapack -lblas], cmain, [$LIBLOC], [LIBLOCL="$LIBLOCL -llapack -lblas"], [LIBLOCL="$LIBLOCL -lblas"]))
+
+have_fftw=no
+#if test "$enable_fftw" = "yes"; then
+  ACX_WARN_LIB_MISSING(fftw,fftw_f77_one)
+  if test "$have_fftw" = "no"; then
+    ACX_FIND_ROUTINE_IN_LIB(fftw_f77_one, [-lfftw],,, [LIBLOCL="$LIBLOCL -lfftw"; have_fftw="yes"], have_fftw="no")
+  fi
+#fi
+
+if test "$enable_fftw" = "yes"; then
+  AC_MSG_RESULT([fftw enabled ... remove file c3fft.f])
+  rm -f c3fft.f
+fi
+
+if test "$enable_fftw" = "no"; then
+  case "${MACHINE}" in
+
+     SGI* ) AC_MSG_RESULT([fftw disabled ... use call to SGI library])
+dnl         LST=`egrep -l '^[[Cc]]#elseif  *FFTW' fftz3.f`
+dnl         AC_CCOMP($LST,[SGI], [FFTW IN_PLACE], mv_to_fortran)
+
+            AC_ADD_TO_CCOMP_SWITCHES([yes],$enable_fftw,,[FFTW])
+            ac_rm_init="$ac_rm_init c3fft.f";;
+
+        * ) AC_MSG_RESULT([fftw disabled ... use substitute c3fft.f and check whether to remake fftz3])
+            AC_MSG_RESULT([  cp startup/c3fft.f .])
+            cp startup/c3fft.f .
+            AC_ADD_TO_CCOMP_SWITCHES([yes],$enable_fftw,,[FFTW]);;
+  esac
+
+else
+dnl  if grep 'C#elseif FFTW' fftz3.f >/dev/null; then : ; else
+dnl # AC_MSG_RESULT([  enable -dFFTW -dIN_PLACE , file fftz3.f])
+dnl   AC_CCOMP(fftz3.f, [FFTW IN_PLACE], [SGI], mv_to_fortran)
+dnl  fi
+  AC_ADD_TO_CCOMP_SWITCHES([yes],$enable_fftw,quiet,[FFTW])
+  AC_ADD_TO_CCOMP_SWITCHES([yes],$enable_fftw,quiet,[IN_PLACE])
+  ac_rm_init="$ac_rm_init"
+fi
+
+# ... 27 Nov 00 if -latlas, look for -lf77blas
+have_atlas=no
+have_f77blas=no
+for llocl in $LIBLOC $LIBLOCL; do
+  if test "$llocl" = "-latlas"; then have_atlas=yes; fi
+  if test "$llocl" = "-lf77blas"; then have_f77blas=yes; fi
+done
+if (test "$have_atlas" = "yes") && (test "$have_f77blas" = "no"); then
+  AC_CHECK_LIB(f77blas, main, [LIBLOC=`echo $LIBLOC | sed "s/-latlas/-lf77blas -latlas/"`;
+                              LIBLOCL=`echo $LIBLOCL | sed "s/-latlas/-lf77blas -latlas/"`])
+fi
+
+# --- Merge LIBLOC and LIBLOCL, paring duplicate libraries ---
+if test -n "$LIBLOCL" ; then 
+  AC_MSG_RESULT([Found libraries $LIBLOCL ... merge with LIBLOC])
+  libnew="$LIBLOC"
+  for llocl in $LIBLOCL; do
+  for lloc  in $LIBLOC; do
+    if test "$lloc" = "$llocl"; then break; fi
+  done
+    if test "$lloc" != "$llocl"; then libnew="$libnew $llocl"; fi
+  done
+  LIBLOC="$libnew"
+  AC_MSG_RESULT([Using new LIBLOC = \"$LIBLOC\" ])
+  AC_MSG_NOTES([*],[ Using LIBLOC = \"$LIBLOC\"
+  ])
+  LIBLOCL= 
+fi
+
+AC_SUBST(LIBLOC)
+
+dnl # --- Look for standard blas, lapack, fftw libraries ---
+dnl for libn in $LIBLOC; do
+dnl   if test "$libn" = "-lblas"; then
+dnl   ACX_FIND_ROUTINE_IN_LIB(dcopy, $LIBLOC,,,, lblas_can_link=no)
+dnl   fi
+dnl   if test "$libn" = "-llapack"; then
+dnl   ACX_FIND_ROUTINE_IN_LIB(dgetrs, $LIBLOC,,, lapack_can_link=no)
+dnl   fi
+dnl   if test "$libn" = "-lfftw"; then
+dnl   ACX_FIND_ROUTINE_IN_LIB(fftw_77_one, $LIBLOC,,,, fftw_can_link=no)
+dnl   fi
+dnl done
+
+# --- Machine-specific initialization ---
+rm -f Make.init.in
+touch Make.init.in
+echo "# Make.init generated by configure" >>Make.init.in
+echo " " >>Make.init.in
+echo '# --- Shell variables and compiler switches ---' >>Make.init.in
+echo "include Make.inc" >>Make.init.in
+echo "# Name of script for machine-specific initialization" >>Make.init.in
+echo 'ISCRIPT = @ISCRIPT@' >>Make.init.in
+echo ' ' >>Make.init.in
+echo 'init:' >>Make.init.in
+if test ! -z "$ac_rm_init"; then
+echo '#	Remove files that may have been added to standard distribution' >>Make.init.in
+echo "	rm -f $ac_rm_init" >>Make.init.in
+echo ' ' >>Make.init.in
+fi
+echo '#	Machine-specific fortran, using ccomp flags, copying .f to .for' >>Make.init.in
+echo '#	for f in `echo *.f` ; do \' >>Make.init.in
+echo '#	  echo mv -f $$f $${f%.f}.for ;\' >>Make.init.in
+echo '#	  $(CCOMP) $(CCOMP_SW) $${f%.f}.for $$f ;\' >>Make.init.in
+echo '#	done' >>Make.init.in
+echo ' ' >>Make.init.in
+echo '#	Machine-specific fortran, using ccomp flags' >>Make.init.in
+echo '	for f in `echo *.for` ; do \' >>Make.init.in
+echo '	  $(CCOMP) $(CCOMP_SW) $$f $${f%.for}.f;\' >>Make.init.in
+echo '	done' >>Make.init.in
+echo ' ' >>Make.init.in
+echo '#	Machine-specific initialization script' >>Make.init.in
+echo '	if test -r "$(ISCRIPT)"; then \' >>Make.init.in
+echo '	env PATH=$(PATH):$(CCOMPDIR) /bin/csh -f $(ISCRIPT) ; \' >>Make.init.in
+echo '	fi' >>Make.init.in
+
+case "$host" in
+
+  *aix*)
+    AC_MSG_RESULT([See whether to adapt Makefile to essl library])
+    AC_CHECK_LIB(essl, main, [ESSL=yes], [ESSL=no] )
+    if test "$ESSL" = "yes"; then :
+      echo '#	For AIX essl library' >>Make.init.in
+      echo '	touch fessl.f ' >>Make.init.in
+    fi ;;
+
+  *) ESSL=no;;
+esac
+
+# --- Include (exclude) BLAS libray into source ---
+AC_MSG_RESULT([removing blas routines ieeeck.f ilaenv.f dlamch.f xerbla.f])
+rm -f ieeeck.f ilaenv.f dlamch.f xerbla.f
+
+lst=`(cd BLAS; ls *.f)`
+if test "$enable_blas" = "yes"; then
+  AC_MSG_RESULT([copying blas library from directory BLAS])
+  cp -p BLAS/*.f .
+else
+  AC_MSG_RESULT([removing blas library from current directory])
+  rm -f $lst
+fi
+if test "$MACHINE" = "AIX90"; then
+  cp -p BLAS/dcopy.f .
+  AC_MSG_RESULT([copying dcopy.f to current directory])
+fi
+
+# Some strange problems with 0 unit stride in gnu lib dcopy, daxpy
+dnl touch dcopy.f
+if test "$MACHINE" = "OSXI"; then
+  AC_MSG_RESULT([Make soft links to BLAS/dcopy.f and BLAS/daxpy.f to current directory (OSXI workaround)])
+  for fn_ in dcopy.f daxpy.f ; do
+    if (test -r $fn_); then
+      AC_MSG_RESULT([... file $fn_ exists in this directory ... leave untouched])
+    else
+      AC_MSG_RESULT([... ln -s -f BLAS/$fn_])
+      ln -s -f BLAS/$fn_
+    fi
+  done
+
+  AC_MSG_NOTES([*],[ zhev may not work properly invoking LAPACK from standard gfortran LAPACK library ...
+                     Workaround: ccomp -uLAPACK zhev.f to remake zhev after Make -f Make.init])
+
+fi
+
+# --- Include (exclude) BLAS3 libray into source ---
+if test "$enable_blas3" = "yes"; then
+  AC_MSG_RESULT([copying blas3 library from directory BLAS])
+  cp -p BLAS/{dgemm,dtrmm,dtrsm,zgemm,zher2k,ztrmm,ztrsm}.f .
+else
+  AC_MSG_RESULT([removing blas3 library from current directory])
+  rm -f {dgemm,dtrmm,dtrsm,zgemm,zher2k,ztrmm,ztrsm}.f
+fi
+
+# If -lgoto, add it
+ACX_FIND_ROUTINE_IN_LIB(dgemm, -lgoto, cmain, [$LIBLOC], 
+[    AC_MSG_NOTES([*],
+[ Library -lgoto was linked ... consider adding to LIBLOC if not already
+     ])
+],
+[    AC_MSG_NOTES([**],
+[ Library -lgoto was not successfully linked ...
+  consider getting fast dgemm; see http://www.tacc.utexas.edu/~kgoto
+])
+])
+
+# --- Include (exclude) LAPACK libray into source, or possible portions of it ---
+lst=`(cd LAPACK; ls *.f)`
+if test "$enable_lapack" = "yes"; then
+  AC_MSG_RESULT([copying lapack library from directory LAPACK])
+  cp -p LAPACK/*.f .
+else
+  AC_MSG_RESULT([removing lapack files from current directory])
+  rm -f $lst
+  ACX_FIND_ROUTINE_IN_LIB(dgetrs, [], cmain, [$LIBLOC], [have_lapack=yes],)
+  if test "$have_lapack" = "yes"; then
+    ACX_FIND_ROUTINE_IN_LIB(ilaenv, [], cmain, [$LIBLOC], [have_ilaenv="yes"], have_ilaenv="no")
+    if test "$have_ilaenv" = "no"; then
+      AC_MSG_RESULT([copying ilaenv.f from directory LAPACK])
+      cp -p LAPACK/ilaenv.f .
+    fi
+    ACX_FIND_ROUTINE_IN_LIB(ieeeck, [], cmain, [$LIBLOC], [have_ieeeck="yes"], have_ieeeck="no")
+    if test "$have_ieeeck" = "no"; then
+      AC_MSG_RESULT([copying ieeeck.f from directory LAPACK])
+      cp -p LAPACK/ieeeck.f .
+    fi
+  fi
+fi
+
+# --- Warning messages if BLAS, BLAS3, LAPACK cannot be linked ---
+echo checking whether BLAS and LAPACK libraries are present in LIBLOC ...
+ACX_WARN_LIB_MISSING(blas,dcopy)
+ACX_WARN_LIB_MISSING(blas3,dtrmm)
+ACX_WARN_LIB_MISSING(lapack,dgetrs)
+
+# --- Copy some source codes from startup  ---
+#     symvec handled in f90 now ... not needed
+
+dnl # 27 Nov 00 if g77 or linux f77, check whether f2c is in path
+dnl F2C=no
+dnl case "${MACHINE}" in
+dnl   LINUX* ) if (test "$FC" = "f77") || (test "$FC" = "g77"); then
+dnl            AC_PATH_PROG(F2C, f2c, "no")
+dnl #          if test $F2C = "no"; then touch No_f2c; fi
+dnl            fi
+dnl            ;;
+dnl esac
+
+# --- Create Makefile.patch.in and Makefile.in ---
+rm -f contest contest.c contest.o conftest.f conftest.o
+
+# --- Make.inc.in using Makemakefile ---
+AC_MSG_RESULT([Creating file Make.inc.in using startup/Makemakefile $MACHINE --in --defs -LIBSLA '@LIBSLA@' -LIBLOC '@LIBLOC@' > Make.inc.in])
+startup/Makemakefile $MACHINE --in --defs -LIBSLA '@LIBSLA@' -LIBLOC '@LIBLOC@' >Make.inc.in
+
+# Make.inc used by MakeArchiveMakefile; copy for now; then delete
+cp Make.inc.in Make.inc
+AC_MSG_RESULT([Creating file Make.patch.in using startup/MakeArchiveMakefile --patch --name slatsm --mnemonic $MACHINE >Make.patch.in])
+(startup/MakeArchiveMakefile --patch --name slatsm --mnemonic $MACHINE >Make.patch.in)
+AC_MSG_RESULT([Creating file Makefile.in using startup/MakeArchiveMakefile --name slatsm --clist='fmain.c csubs.c' '--flist=iso_c_binds.f90 nullmpi.f90 nullmagma.f90 nullsca.f90 mod_ctx.f90 fmagma.f90 darrayops.f90 elpaglue.f90 fcuda.f90 unievp.f90 vbdist.f90 proc_stat.f90 posix.f90 fsubs.f90 mod_crs.f90 initldev.f90 *.f *.for' --mnemonic $MACHINE >Makefile.in])
+(startup/MakeArchiveMakefile --name slatsm --clist='fmain.c csubs.c' '--flist=iso_c_binds.f90 nullmpi.f90 nullmagma.f90 nullsca.f90 mod_ctx.f90 fmagma.f90 darrayops.f90 elpaglue.f90 fcuda.f90 unievp.f90 vbdist.f90 proc_stat.f90 posix.f90 fsubs.f90 mod_crs.f90 initldev.f90 *.f *.for' --mnemonic $MACHINE >Makefile.in)
+
+# add 'make check'
+echo ' ' >> Makefile.in
+echo 'check:'  >> Makefile.in
+echo '	(cd tests; ./test.slatsm --quiet)' >> Makefile.in
+# add stuff for essl library
+if test "$ESSL" = "yes"; then
+  AC_MSG_RESULT([Add essl library to Makefile.in; original file is Makefile.in~])
+  cp Makefile.in Makefile.in~
+  cat Makefile.in~ | awk '{ if ($1 == "all:") {print "all:\t$(SLATSM) $(LIBESSL) $(LIBESSLP2)"} else {print ; if ($1 == "SLATSM") {print "LIBESSL = myessl.a"; print "LIBESSLP2 = myesslp2.a"}}}' > Makefile.in
+
+  echo ' ' >> Makefile.in
+  echo '$(LIBESSL):	fessl.o startup/essl.lst' >> Makefile.in
+  echo '	ld -bh:4 -T512 -H512 fessl.o -bnso -bI:/lib/syscalls.exp -berok -lessl -o $@ -bexport:startup/essl.lst'  >> Makefile.in
+  echo ' ' >> Makefile.in
+  echo '$(LIBESSLP2):	fessl.o startup/essl.lst' >> Makefile.in
+  echo '	ld -bh:4 -T512 -H512 fessl.o -bnso -bI:/lib/syscalls.exp -berok -lesslp2 -o $@ -bexport:startup/essl.lst'  >> Makefile.in
+fi
+
+
+# --- Set miscellaneous shell variables for use in Make.inc and Makefile ---
+AC_SUBST(srcdir)
+AC_SUBST(RANLIB)
+AC_SUBST(SHELL)
+AC_SUBST(ISCRIPT)
+AC_SUBST(F90M)
+# machine-specific initialization
+ISCRIPT=slatsm-to-`echo $MACHINE | awk '{print tolower($1)}'`
+AC_MSG_CHECKING([whether initialization script $ISCRIPT exists])
+if test -r "$ISCRIPT"; then
+  echo yes
+else
+  echo no
+  ISCRIPT=
+fi
+
+# --- Set variables involving path names to relative paths when possible ---
+AC_CHANGE_ABSOLUTE_PATH_TO_SRCDIR(LIBSLA,makefile)
+AC_CHANGE_ABSOLUTE_PATH_TO_SRCDIR(CCOMP,makefile)
+AC_CHANGE_ABSOLUTE_PATH_TO_SRCDIR(CCOMPDIR,makefile)
+
+ACX_ZDIFF_KSH(startup,$host)
+
+AC_OUTPUT(Make.inc Makefile Make.init Make.patch )
+
+# --- Cleanup ----
+
+if test "$have_lapack" = "yes"; then
+  if test "$enable_lapack" = "yes"; then
+    AC_MSG_NOTES([*],
+[ LIBLOC apparently contains the lapack library :
+  consider rerunning configure without --enable-lapack
+    ])
+  fi
+else
+  if test "$enable_lapack" = "no"; then
+    AC_MSG_NOTES([**],
+[ LIBLOC is apparently missing lapack library --- 
+  rerun configure with --enable-lapack, 
+  or include path to lapack library archive in LIBLOC.
+    ])
+  fi
+fi
+if test "$have_blas3" = "yes"; then
+  if test "$enable_blas3" = "yes"; then
+    AC_MSG_NOTES([*],
+[ LIBLOC apparently contains the blas3 library :
+  consider rerunning configure without --enable-blas3
+    ])
+  fi
+else
+  if test "$enable_blas3" = "no"; then
+    AC_MSG_NOTES([**],
+[ LIBLOC is apparently missing blas3 library --- 
+  rerun configure with --enable-blas3, 
+  or include path to blas3 library archive in LIBLOC.
+    ])
+  fi
+fi
+if test "$have_blas" = "yes"; then
+  if test "$enable_blas" = "yes"; then
+    AC_MSG_NOTES([*],
+[ LIBLOC apparently contains the blas library :'
+  consider rerunning configure without --enable-blas
+    ])
+  fi
+else
+  if test "$enable_blas" = "no"; then
+    AC_MSG_NOTES([**],
+[ LIBLOC is apparently missing blas library --- 
+  rerun configure with --enable-blas, 
+  or include path to blas library archive in LIBLOC.
+    ])
+  fi
+fi
+
+if test "$have_fftw" = "yes"; then
+  if test "$enable_fftw" = "no"; then
+    AC_MSG_NOTES([*],
+[ LIBLOC apparently contains the fftw library :'
+  consider rerunning configure with --enable-fftw=yes
+    ])
+  fi
+else
+  if test "$enable_fftw" = "yes"; then
+    AC_MSG_NOTES([**],
+[ LIBLOC is apparently missing fftw library :
+  rerun configure with --enable-fftw=no, 
+  or include path to fftw library archive in LIBLOC.
+    ])
+  fi
+fi
+
+AC_MSG_RESULT([
+configure has finished successfully.  To complete the installation:
+
+1. Look at file "config.notes" for information and possible problems.
+
+2. Delete existing archive
+   rm -f slatsm.a
+
+3. Invoke initialization Makefile
+     make -f Make.init
+   You make want to inspect it before invoking it.
+
+4. Make the slatsm library
+     make -f Makefile slatsm.a
+   or just
+     make
+
+5. See whether the slatsm library will pass some tests.
+      make check
+])

@@ -1,0 +1,16 @@
+HEADER LiFeAs https://arxiv.org/pdf/0807.2228.pdf /home/swagata/Downloads/LIFEAS/*.cif 
+# % const a=3.7712 
+% const a=7.120113 cbya=1.67607087
+
+LATTICE 
+  A={a} C={a*cbya} SPCGRP=P4/nmm  ORIGIN=2
+  # ALAT={a} 
+  # PLAT= 1.0000000  0.0000000  0.0000000 
+  #       0.0000000  1.0000000  0.0000000 
+  #       0.0000000  0.0000000  {cbya}
+  # GENS= 'SYMGRP i r4z::(1/2,0,0) mx::(1/2,0,0)'
+SITE 
+    ATOM=Li       C=     1/4     1/4     1-0.3450000
+    ATOM=Fe       C=     3/4     1/4     0.0000000 
+    ATOM=As       C=     1/4     1/4     0.2362600
+

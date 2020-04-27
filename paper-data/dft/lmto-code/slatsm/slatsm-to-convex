@@ -1,0 +1,23 @@
+echo --- slatsm-to-convex: ccomp to CONVEX-specific ---
+
+rm -f xx.f ; ccomp -uCONVEX cpudel.f xx.f
+ccomp -uAIX -uAPOLLO -dCONVEX -uCRAY -uDEC -uHP -uLINUX -uSGI -uSUN xx.f cpudel.f
+
+#foreach i (dampy.f yaxcpy.f yaxpy.f yhmul.f zhmpy.f hcinv.f yhchd.f)
+foreach i (zhmpy.f)
+  rm -f xx.f ; ccomp -uBLAS $i xx.f
+  ccomp -dBLAS xx.f $i
+end
+
+foreach i (htribk.f htridi.f)
+  rm -f xx.f ; ccomp -uCRAY $i xx.f
+  ccomp -dCRAY xx.f $i
+end
+
+foreach i (dampy.f zampy.f yhmpy.f)
+  rm -f xx.f ; ccomp -uBLAS3 $i xx.f
+  ccomp -dBLAS3 xx.f $i
+end
+
+if (-e fmain.f) mv -f fmain.f fmain.fortran
+rm -f xx.f

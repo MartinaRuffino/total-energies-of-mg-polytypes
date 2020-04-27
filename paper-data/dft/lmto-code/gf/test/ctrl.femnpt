@@ -1,0 +1,39 @@
+HEADER  FePt with L1_0 CPA calculation
+VERS    LMASA-7.0 LM:7 ASA:7 LMGF:7
+IO      SHOW=F HELP=F VERBOS=31,20 WKP=F IACTIV=F
+% const gamma=5
+OPTIONS ASA[CCOR=F GAMMA={gamma} TWOC=F]
+CONST   a=7.400164 nk=12 c0=.956 #a=7.296 nk=10 c0=0.981   #
+HAM 	NSPIN=2 REL=T 
+STR     
+BZ      TETRA=T NKABC=nk METAL=1 BZJOB=0 INVIT=F
+#       EMESH=501 2 -.5 .2  .001 0   #for dos
+% const nz=51
+       EMESH={nz} 10 -.85 0 .4 0
+STRUC   NBAS=8 NSPEC=5 NL=3
+        ALAT=a 
+	PLAT= 1.0  0.0 0.0
+              0.0 1.0 0.0
+              0.0  0.0 2*c0
+#----------------------------
+SITE    ATOM=Fe POS=0 0 0
+	ATOM=Fe POS=0.5 0.5 0
+	ATOM=Pt POS=.5  0  .5*c0 
+	ATOM=Pt POS=.0  0.5   .5*c0
+	ATOM=Fe POS=0 0  c0
+	ATOM=Fe POS=0.5 0.5 c0
+	ATOM=Pt POS=.5  0   1.5*c0
+	ATOM=Pt POS=0  0.5   1.5*c0
+#-------------------------
+SPEC    ATOM=Pt R/W=1 Z=78 
+        ATOM=Fe R/W=1 Z=26 CPA=2 4 C=.6 0.4   #.75 .25
+        ATOM=FeDn R/W=1 Z=26 CPA=3 5 C=.6 0.4   #.75 .25
+	ATOM=Mn R/W=1 Z=25
+	ATOM=MnDn R/W=1 Z=25
+%const  nit=1
+ITER    NIT={nit}   MIX=B5,b=0.05 CONV=1e-6 CONVC=1e-6
+START   CNTROL=F BEGMOM=T 
+%const  gfmod=1 
+GF      MODE={gfmod} DLM=12+20*0
+#  GFOPTS=padtol=.001;omgmix=0.4;padtol=1d-3;omgtol=1d-3;lotf;nitmax=30 
+ GFOPTS=p3;padtol=.001;omgmix=0.4;padtol=1d-3;omgtol=1d-3;lotf;nitmax=30 

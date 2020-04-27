@@ -1,0 +1,145 @@
+#! /bin/tcsh
+# Use ccomp to set a switch in a fortran file.
+# Switch SW is passed as a command-line argument.
+# Files .f for which SW occurs but not set are renamed to .fortran
+# and ccomp is invoked to set the switch.
+# Example :   ccomp-files F90 [abc]*.f
+
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+set scriptfile = $0
+set space = '       '
+set CCOMP=.
+
+options:
+switch ("$1")
+  case "-CCOMP=*":
+    set CCOMP=`echo $1 | sed s/-CCOMP=//` ; shift; goto options
+
+  case "-q":
+    set quiet; shift; goto options
+
+  case "-u":
+    set undo; shift; goto options
+
+  case "-n":
+    set noexec; shift; goto options
+
+  case "-*":
+     echo 'ccomp-files : no switch "'$1'"' ... aborting ; exit -1
+endsw
+
+if ($#argv < 2) goto message
+
+# First non "-"  argument is CCOMP SW
+set SW = $1
+shift
+
+# Next argument is search list
+set searchlist
+while ("$#argv" > 0)
+  while (-e "$1" && ! -d "$1")
+    set fn = $1
+    if ("$1:e" != "f" && -e $1.f) set fn = $1.f
+#     if (! -e "$fn") echo trying $fn ... no
+#     if (-e "$fn") echo trying $fn ... yes
+    if (-e "$fn") set searchlist = ($searchlist $fn)
+    shift
+  end
+  if (-d "$1") then
+    set searchlist = ($searchlist $1/*.f)
+    shift
+  endif
+end
+
+# find path to ccomp
+if (-d "$CCOMP") set CCOMP=$CCOMP/ccomp
+findcmd chk1 ccomp "$CCOMP:h $path" "quit"
+chk1:
+set CCOMP=$ccomp
+
+# List of files
+if (! $?undo) then
+ set filel = `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*'$SW $searchlist`
+else
+ set filel = `egrep -l '^[Cc]#(ifdef |ifndef[Cc]|elseif ).*'$SW $searchlist`
+endif
+
+if (! $?quiet) then
+  if ($#filel) then
+    echo "$space ccomp-files : files $filel"
+  else
+    echo "$space ccomp-files : no files"
+    exit 0
+  endif
+else if ($?noexec) then
+  if ($#filel) echo $filel
+endif
+
+foreach i ($filel)
+  if (! $?quiet)   echo " "
+  if (! $?quiet) echo "$space" mv $i $i:r.fortran
+  if (! $?noexec)              mv $i $i:r.fortran
+
+  if (! $?undo) then
+  if (! $?quiet) echo "$space  $CCOMP -u$SW -d$SW $i:r.fortran $i >/dev/null"
+  if (! $?noexec)              $CCOMP -u$SW -d$SW $i:r.fortran $i >/dev/null
+  else
+  if (! $?quiet) echo "$space  $CCOMP -u$SW $i:r.fortran $i >/dev/null"
+  if (! $?noexec)              $CCOMP -u$SW $i:r.fortran $i >/dev/null
+  endif
+end
+
+# ---------------- usage --------------
+exit 0
+message:
+  echo "usage: ccomp-files [-CCOMP=ccomp-path] [-q] [-n] -u] SW dir|files"
+  echo "       Files .f for which SW is commented out are renamed to .fortran"
+  echo "       and ccomp is invoked to set switch SW."
+  echo "       -q sets quiet mode"
+  echo "       -u ccomp is invoked to undo files with switch SW already set"
+  echo "       -n prints out what program would do, but does not execute commands"
+  echo "          Used in conjunction with -q mode, a list of files is printed"
+  echo " "
+  echo "       Example : $scriptfile F90 [abc]*.f"
+  exit -1
+
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : findcmd returns silently.
+# If make_path = 'quit' : findcmd aborts with error status -1
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set space = '       '
+set found = 'no'
+foreach ac_dir ($path_name)
+#echo findcmd trying path $ac_dir
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ccomp-files : using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ccomp-files : executable $prog_cmd not found in path"
+endif
+if ($found == 'no' && $make_path == "quit") exit -1
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir $maindir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+

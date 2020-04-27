@@ -1,0 +1,136 @@
+Standard test case; invoke with: echo i | lm -show tc >out.tc
+   ehf=-37850.855212
+Test slow potential mixing:     lm -vvmx=t tc. Get:
+vmix2:  rms delta V = 0.0217    ehf=-37850.852051
+  it 2  rms delta V = 0.003435  ehf=-37850.859653
+  it 3  rms delta V = 0.003725  ehf=-37850.855850
+  it 4  rms delta V = 0.001749  ehf=-37850.855146
+HEADER  La2 Cu O4, Adapted from Paola
+TEST    lmstr tc >/dev/null
+        lm --show --no-iactiv tc
+TEST3   lmstr tc >/dev/null
+        lm -vqasa=3 -vconve=1d-6 --no-iactiv --rs=0,1 -vnit=0 tc
+        lm -vqasa=3 -vconve=1d-6 --no-iactiv --rs=1 tc
+#         mpirun -n 6 lm -vqasa=3 -vconve=1d-6 --no-iactiv --rs=0,1 -vnit=0 tc
+#         mpirun -n 6 lm -vqasa=3 -vconve=1d-6 --no-iactiv --rs=1 -vmet=3 tc
+TESTMPI lmstr tc >/dev/null
+        mpirun -n 6 lm -vqasa=3 -vconve=1d-6 --no-iactiv --rs=0,1 -vnit=0 tc
+        mpirun -n 6 lm -vqasa=3 -vconve=1d-6 --no-iactiv --rs=1 -vmet=3 tc
+TESTN   lm tc --pr31 --no-iactiv -vnmto=3
+        lm tc --pr31 --no-iactiv -vnmto=3 --band:fn=syml
+# Make contour plots of envelopes:
+# Make line plots of envelopes: Plot the O atom; use --atom=1 for Cu
+# lmstr tc --plot:smh:line:-10,-10,-10,10,10,10 -vgmode=1 --edge=12 --iactiv=no --ikap=1 --atom=2
+# fplg -y -1,1 -colsy $i plot.tc -lt 2,col=1,0,0 -colsy $i plot.tc~
+# fplg -frme:ly 0,1,0,1 -colsy $i -ord 'abs(y)' -map -inc 'abs(y)>1e-6' 1:nr plot.tc \
+#       -lt 2,col=1,0,0 -colsy $i -ord 'abs(y)' -map -inc 'abs(y)>1e-6' 1:nr plot.x
+TLMSTR  lmstr --pr40 tc --plot:onec     -vgmode=1 --iactiv=no --ikap=1 --atom=7 --ixi=1
+        lmstr --pr40 tc --plot:onec     -vgmode=1 --iactiv=no --ikap=1 --atom=7 --ixi=2
+        lmstr --pr40 tc --plot:smh:onec -vgmode=1 --iactiv=no --ikap=1 --atom=7 --ixi=1
+        lmstr --pr40 tc --plot:smh:onec -vgmode=1 --iactiv=no --ikap=1 --atom=7 --ixi=2
+VERS    LMASA-6.0 LM:7 ASA:7
+IO      SHOW=f HELP=f  WKP=F IACTIV=t VERBOS=42
+% const frz=f nsp=1 nmto=0 qasa=0
+HAM     FTMESH=12 NMTO={nmto} KMTO=-.2 .2 .5 .8 EWALD=T
+        QASA={qasa}
+# for Version 7:
+        NSPIN={nsp} REL=t
+HAM     FTMESH=12 NMTO={nmto} KMTO=-.1 .5 -.4 1 EWALD=T
+HAM     FTMESH=12 NMTO={nmto} KMTO=.3 .7 1 -.4 EWALD=T
+HAM     FTMESH=12 NMTO={nmto} KMTO=.3 .7 1 -.4 EWALD=T
+OPTIONS NSPIN={nsp} REL=t LMH=F NRMIX=80 2 FRZ={frz}
+        ZBAK: f,3
+# for Version 7:
+        ASA[ MTCOR=0 CCOR=T ]
+SYMGRP  r4z find
+%const met=1
+# INVIT=F avoids problem in PGI compiler
+BZ      TETRA NKABC=5 5 5  SAVDOS=f BZJOB=0 METAL={met} INVIT=F EFMAX=.5
+#       ZBAK=3
+% const gmode=0
+STR     NOCALC=F .RMAX=4.5 SHOW=f LMAXW=0-1
+        ENV[ MODE={gmode} NEL={gmode==1?1:2} EL=-.3 -1 ]
+STRUC   NBAS=7 NCLASS=4 NSPEC=4 NL=3
+        ALAT=7.14638 PLAT= -.5 .5 1.7517  .5 -.5 1.7517  .5 .5 -1.7517
+CLASS   ATOM=LA  Z=57  R=3.84000  IDMOD= 0 1 0 0 IDXDN=1 1 1 1 GROUP=2  A=0.03 # KMXA=4
+        ATOM=CU  Z=29  R=2.34601  IDMOD= 0 0 0 0 IDXDN=1 1 1 2 GROUP=1  A=0.03 # KMXA=4
+        ATOM=OX  Z=8   R=1.87681  IDMOD= 0 0 0 0 IDXDN=1 1 2 2 GROUP=-1 A=0.03 # KMXA=4
+        ATOM=OX3 Z=8   R=1.87681  IDMOD= 0 0 0 0 IDXDN=1 1 2 2 GROUP=-2 A=0.03 # KMXA=4
+SITE    ATOM=CU  POS=  0   0   0
+        ATOM=OX  POS= .5   0   0
+        ATOM=OX  POS=  0   .5  0
+        ATOM=OX  POS=  0   0    .63902
+        ATOM=OX  POS=  0   0   -.63902
+        ATOM=LA  POS=  0   0    1.26384
+        ATOM=LA  POS=  0   0   -1.26384
+
+% const vmx=f conve=0 nit=2
+# for Version 7:
+ITER    MIX=B,b=.8 XIPMX={vmx} BETV=.5 CONV={conve} NIT={nit} CONVC=1D-4 NRMIX=80 2
+MIX     MODE=B,b=.8 XIPMX={vmx} BETV=.5 CONV={conve}
+MIX MODE=A0,b=.01,bv=1,n=2;A2,n=2,k=2;A1,b=.2,bv=.1/8,n=2,k=2
+.START   BEGMOM=f  CNTROL=F
+-- self-consistent for NKABC=5 5 5, nl=3, dnf Oxd
+%ifdef qasa==3
+-- self-consistent for NKABC=5 5 5, nl=3, dnf Oxd, QASA=3
+START   BEGMOM=T  CNTROL=T RDVES=t
+        ATOM=LA       P=  6.3055046  6.3000000  5.2308707
+                      Q=  0.4770507  0.0000000  0.0610692
+                          0.9882047 -0.3905638  0.2327244
+                          2.0252993  0.0000000  0.1272500
+        ATOM=CU       P=  4.6331214  4.3438861  3.8947075
+                      Q=  0.4910799  0.0000000  0.0974578
+                          0.6087341  0.0000000  0.1140513
+                          9.4164169  0.0000000  0.2018023
+        ATOM=OX       P=  2.8833091  2.8438183  3.1896353
+                      Q=  1.6741779  0.0000000  0.0653497
+                          4.2304006  0.0000000  0.1036699
+                          0.0404676  0.0000000  0.0023966
+        ATOM=OX2      P=  2.8840328  2.8447249  3.1806967
+                      Q=  1.6660490  0.0000000  0.0257208
+                          4.1318836  0.0000000  0.0365535
+                          0.0083512  0.0000000  0.0003608
+%endif
+START   BEGMOM=T  CNTROL=T RDVES=t
+          ATOM=LA    P=  0.2880611  6.3000000  5.2193984
+                     Q=  0.4745673  0.0000000  0.0674771
+                         0.9974260 -0.4999286  0.4263853
+                         1.9827563  0.0000000  0.2223404
+                     V= -0.0389370 DV=.01
+          ATOM=CU    P=  4.6283115  4.3405078  3.8797167
+                     Q=  0.4952734  0.0000000  0.0657139
+                         0.6157692  0.0000000  0.0838573
+                         9.4566561  0.0000000  0.2811211
+                     V= -0.2127990 DV=.01
+          ATOM=OX    P=  2.8979228  2.8419247  3.1888932
+                     Q=  1.6736517  0.0000000  0.0541786
+                         4.2247992  0.0000000  0.0864389
+                         0.0400471  0.0000000  0.0023066
+                     V= -0.1499180 DV=.01
+          ATOM=OX2   P=  2.9004992  2.8393791  3.1807455
+                     Q=  1.6646248  0.0000000  0.0200114
+                         4.1501168  0.0000000  0.0292757
+                         0.0081616  0.0000000  0.0003433
+                     V= -0.0216300 DV=-.01
+-- Following self-consistent for NKABC=5 5 5, nl=4
+START   BEGMOM=T  CNTROL=T
+          ATOM=LA    P=  6.2567902  6.3000000  5.1978806 4.1126792
+                     Q=  0.4093848  0.0000000  0.0540866
+                         0.9084451 -0.4074975  0.2401632
+                         1.6499419  0.0000000  0.1131703
+                         0.9100957 -0.0000116  0.0539857
+          ATOM=CU    P=  4.6301626  4.3414845  3.8945978 4.1162348
+                     Q=  0.4638935  0.0000000  0.0837733
+                         0.5793499  0.0000000  0.1001975
+                         9.2407418  0.0000000  0.1846485
+                         0.1184602  0.0000000  0.0218645
+          ATOM=OX    P=  2.8887194  2.8436658  3.1853330 4.1124224
+                     Q=  1.6207332  0.0000000  0.0522240
+                         4.1427969  0.0000000  0.0870691
+                         0.0376006  0.0000000  0.0027797
+                         0.0114938  0.0000000  0.0004176
+          ATOM=OX2   P=  2.8888706  2.8438915  3.1770658 4.1075189
+                     Q=  1.6074593  0.0000000  0.0143251
+                         3.9933712  0.0000000  0.0243876
+                         0.0060803  0.0000000  0.0001821
+                         0.0013746  0.0000000  0.0002200

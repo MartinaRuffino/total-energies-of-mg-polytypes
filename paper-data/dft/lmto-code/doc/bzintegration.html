@@ -1,0 +1,553 @@
+<!DOCTYPE html><html>
+
+<head>
+<title>BZ Integration</title>
+<style>
+
+/* For hyperlinks */
+a:link {color:#FF0000;}      /* unvisited link */
+a:link {color:#222288;}      /* unvisited link */
+a:visited {color:#228822;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+body {
+       background-color:#ffffgg;
+     }
+ h1 {
+      color:#880000;
+      text-align:center;
+      font-size:12px;
+    }
+ h2 {
+      color:#bb3300;
+      font-size:120%;
+      font-weight:normal;
+      font-style:italic;
+    }
+
+ h3 {
+      color:#2255bb;
+      font-size:110%;
+      font-weight:normal;
+      font-style:italic;
+      text-indent: 0.5em;
+    }
+
+ h4 {
+      color:#000000;
+      font-size:100%;
+      font-weight:bold;
+      text-indent: 1.0em;
+    }
+
+ h5 {
+      color:#444488;
+      font-size:100%;
+      font-weight:bold;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+  P {
+<!--  font-family:"Times New Roman"; -->
+<!--  font-size:12px; -->
+<!--  color: red; -->
+    }
+
+  q {
+      color: red;
+    }
+
+  a {
+        color: blue;
+    }
+
+  tlarge {
+       <font-size="+1">
+    }
+
+</style>
+
+<!-- Enables the use of latex -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+
+<!--
+<script type="text/javascript" src="/Users/markvanschilfgaarde/MathJax/MathJax.js"></script>
+-->
+<script type="text/javascript"  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+
+</head>
+
+<h1><B><FONT size="+2">Brillouin zone integration</FONT></B></h1>
+
+<!--
+<latex>$ {\text{Write the energy corresponding to }}V_{xc}^{{\text{QS}}GW}{\text{ in eigenfunction basis: }}\frac{1}{2}(\bar n - \bar n\bar n)\bar U{\text{ : }}n{\text{ is 0 or 1}} $</latex>
+-->
+
+Numerical integrations over the Brillouin zone (BZ) occur in several contexts, such as the sum of single
+particle energies.  Care must be taken when performing this integration.  In practice the first BZ
+is divided into a uniform mesh of (<i>n</i><sub>1</sub>, <i>n</i><sub>2</sub>, <i>n</i><sub>3</sub>)
+<b>k</b>-points parallel to the three primitive reciprocal lattice vectors,
+<b>G</b><sub>1</sub>, <b>G</b><sub>2</sub>, <b>G</b><sub>3</sub>.
+
+<P>
+The definition of the <b>G</b> vectors is standard:  define
+<b>G</b>=(<b>P</b><sup>&minus;1</sup>)<sup>&dagger;</sup>
+where <b>P</b> is 3&times;3 matrix constructed from the 
+ three primitive lattice vectors <b>P</b><sub>1</sub>, <b>P</b><sub>2</sub>, <b>P</b><sub>3</sub>.
+&ensp;
+<b>G</b><sub>1</sub>, <b>G</b><sub>2</sub>, <b>G</b><sub>3</sub> are the three vectors
+composing the 3&times;3 matrix <b>G</b>.
+
+<P> Dividing <b>G</b><sub>1</sub>, <b>G</b><sub>2</sub>, <b>G</b><sub>3</sub> respectively into
+<i>n</i><sub>1</sub>, <i>n</i><sub>2</sub>, <i>n</i><sub>3</sub> sections creates
+a set of (<i>n</i><sub>1</sub>&times;<i>n</i><sub>2</sub>&times;<i>n</i><sub>3</sub>)
+microcells all of the same shape and size.  The BZ integration is performed numerically by summing over each of the microcells.
+
+You specify (<i>n</i><sub>1</sub>, <i>n</i><sub>2</sub>, <i>n</i><sub>3</sub>)
+through <A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_NKABC</tt></FONT></A>.
+Thus the total number of <i>k</i> points in the Z is
+<i>n</i><sub>1</sub><i>n</i><sub>2</sub><i>n</i><sub>3</sub>.
+If symmetry operations apply, this number may be reduced.
+
+<P> 
+
+A uniform mesh is the optimal general purpose quadrature for analytic, periodic functions, in the following sense.
+Consider the 1D case; the 3D case is exactly analogous.<br>
+A numerical quadrature from a set of <i>n</i> uniformly spaced points integrates exactly any function representable by a Fourier series of <i>n</i> Fourier components or fewer, i.e. <br>
+&emsp;&emsp;&emsp;<i>f</i>(<i>x</i>) = &sum;<sub><i>i</i>=0:<i>n</i>&minus;1</sub> <i>C</i><sub><i>i</i></sub> cos(2&pi;<i>ix</i>/<i>L</i>)
+                                         +<i>S</i><sub><i>i</i></sub> sin(2&pi;<i>ix</i>/<i>L</i>) &emsp; for a function periodic in <i>L</i>. <br>
+Thus when integrating analytic functions, such as the single particle sum for the energy bands of an insulator, 
+the uniform mesh is a good general purpose quadrature.  In order to return the discussion to the three dimensional BZ, make the substitution <i>i</i>&rarr;<b>G</b> where
+<b>G</b> is a reciprocal lattice vector (some integer multiple of <b>G</b><sub>1</sub>, <b>G</b><sub>2</sub>, <b>G</b><sub>3</sub>).
+The band energy can be represented in a Fourier series as
+\begin{equation}
+E({\bf{k}}){\rm{ }} = {\rm{ }}\sum\nolimits_{\bf{T}} {{C_{\bf{T}}}{e^{2\pi i{\bf{k}} \cdot {\bf{T}}}}}
+\label{eq:ek}
+\end{equation}
+<b>k</b> is the analog of <i>x</i>; it is periodic in the <b>G</b> vectors.
+
+Provided that the Fourier coefficients
+<i>C</i><sub><b>T</b></sub> decay exponentially with |<b>G</b>|, integration with a uniform quadrature converges exponentially with the number of <b>k</b> points.  
+<i>C</i><sub><b>T</b></sub> does more or less decay this way, typically.  In one-band tight-binding
+theory <i>C</i><sub><b>T</b></sub> would correspond to a hopping matrix element a separated by distance 1/|<b>G</b>|.
+
+<P>
+
+<IMG border-color:green height=15% width=15% ALIGN="LEFT" style="border:20px solid white" SRC="nh4-eps.gif"/>
+
+
+For each of
+the <b>G</b><sub>1</sub>, <b>G</b><sub>2</sub>, <b>G</b><sub>3</sub>
+directions independently, there are two ways to choose a uniform mesh:
+it may contain a point that coincides with the origin, or it is offset so that
+the points straddle the origin.  You specify this choice
+through <A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_BZJOB</tt></FONT></A>.
+
+Under what circumstances does this matter?  For band calculations the
+main reason is that sometimes a staggered mesh will yield fewer
+irreducible <i>k</i> points, even while the total number of points is
+unchanged.  In the somewhat different context of linear response calculations, the response function
+as <b>q</b>&rarr;0 is difficult to treat.  The <i>GW</i> code has an option
+to supply a staggered <i>k</i> for calculating &epsilon;(<b>r</b>,<b>r</b>',&omega;).
+Sometimes an offset mesh can significantly improve matters.
+
+One striking example of this is the recently discovered solar cell material, NH<sub>4</sub>PbI<sub>3</sub>.
+The figure on the left shows the static dielectric constant (more precisely 
+&epsilon;<sub>&infin;</sub>), calculated in the Quasiparticle Self-Consistent <i>GW</i> approximation
+as a function of 
+<i>n</i> (<i>n</i> = <i>n</i><sub>1</sub> = <i>n</i><sub>2</sub> = <i>n</i><sub>3</sub>).
+The abscissa is scaled so that points are uniformly spaced in 1/<i>n</i> with the origin corresponding
+to <i>n</i>&rarr;&infin;. 
+Calculations with both the normal mesh (which includes the &Gamma; point) and
+an offset mesh are shown.  Extrapolating either curve to
+<i>n</i>&rarr;&infin; results in an estimate for &epsilon;<sub>&infin;</sub> of 4.3.  
+
+But it is remarkable how far from converged the normal mesh is even for <i>n</i>=14 divisions
+of <i>k</i>.  14 divisions is already a rather fine mesh: calculations with a still finer mesh, especially
+one fine enough to obtain a reasonably converged result <i>without</i> extrapolating, would be
+prohibitively expensive.  On the other hand calculations with the offset mesh depend only weakly
+on 1/<i>n</i>.
+
+<P>
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> 
+Meshes generated by 
+<FONT size="+1"><tt>BZ_NKABC</tt></FONT>
+and <FONT size="+1"><tt>BZ_BZJOB</tt></FONT> 
+are identical to meshes generated by the Monkhorst Pack scheme, with suitably chosen parameters.
+But the present specification is simpler and more transparent.
+
+<h3>The Single Particle Sum</h3>
+
+Numerical integration over the BZ is necessary for band calculations,
+to obtain charge densities and the sum of single particle energies for
+total energy. 
+The single-particle sum is the energy-weighted integral of the density-of-states <i>D</i>(<i>E</i>), 
+\begin{equation}
+E_{\rm{band}}=\int_{ - \infty }^{{E_F}} {E\,D(E)\,dE} = \int_{ - \infty }^\infty  {f(E)E\,D(E)\,dE} 
+\end{equation}
+where &nbsp;<i>f</i>(<i>E</i>) is the Fermi function.
+&nbsp;<i>D</i>(<i>E</i>) itself is given by a sum over eigenstates
+<i>i</i> as &nbsp;<i>D</i>(<i>E</i>) = &Sigma;<i><sub>i</sub>&delta;</i>(<i>E-E<sub>i</sub></i>).
+<br>
+In a crystal with Bloch states, <b>k</b> is a good quantum number we can write it as an integral over the BZ for each band:
+<latex>$D(E) = \frac{V}{{{{(2\pi )}^3}}}\sum\nolimits_n {\int_{BZ} {\delta \left( {{E_n}(k) - E} \right){d^3}{\bf{k}}} }$<latex>.
+
+
+<P> 
+When the material is an insulator, sum over occupied states means sum over all the filled bands.
+Then <i>E</i><sub>band</sub> can be written simply as
+\begin{equation}
+{E_{{\rm{band}}}} = \frac{V}{{{{(2\pi )}^3}}} \sum\nolimits_{n}^{\rm{occ}} {\int_{{\rm{BZ}}} {{E_n}({\bf{k}}){d^3}{\bf{k}}} } 
+\end{equation}
+Each band is an analytic, periodic function of <b>k</b>, so numerical integration on the uniform mesh
+enables the band sum to converge with the <b>k</b> mesh in proprtion to how quickly the <i>C</i><sub><b>T</b></sub> of Eq.(\ref{eq:ek}) decay.
+
+<P> For a metal the situation is more complicated.  There is an abrupt truncation of the occupied part of the band at the Fermi level
+<i>E<sub>F</sub></i>.  At 0K the behavior is non-analytic; at normal finite temperatures
+the non-analyticity is only a little softened.
+
+
+<P>
+
+<A name="methods"></A>
+<h2>Choices in Numerical Integration Methods</h2>
+
+The band codes have three integration schemes that determine integration weights for every QP level at each <b>k</b>.
+
+<OL>
+
+<LI> Tetrahedron integration, enhanced by Peter Bloechl's
+<A href="#blochlweights">improved treatment</A> of the Fermi surface.
+It divides space into tetrahedra (there are 6 tetra for each parallelepiped)
+and interpolates the energy linearly between the points of the tetrahedron.
+To use the tetrahedron integration scheme, set
+<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_TETRA</tt></FONT></A>=1.
+
+<LI> <A href="#sampling">Gaussian-broadened sampling integration</A>, as extended by
+<A href="http://link.aps.org/doi/10.1103/PhysRevB.40.3616">Methfessel and Paxton</A>.
+The basic idea of Gaussian broadening is that a quasiparticle level, which is a
+&delta;-function of the energy in band theory, is smeared out into a
+Gaussian function.  This makes properties analytic again.
+Methfessel and Paxton extended definition of the &delta;-function from
+the traditional choice of a simple Gaussian of width <FONT size="+1"><tt>w</tt></FONT>, to the product a Gaussian and
+a Hermite polynomial of order 2<FONT size="+1"><tt>N</tt></FONT>.  The resulting form of &delta;-function has a richer shape: it is still peaked at the quasiparticle level
+and decays as a Gaussian, but it oscillates as it decays.  The generalized gaussian can
+rather dramatically improve convergence, as we show below.
+To use this method, turn off the tetrahedron method
+(<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_TETRA</tt></FONT></A>=0)
+and specify <FONT size="+1"><tt>N</tt></FONT> and <FONT size="+1"><tt>w</tt></FONT> with
+<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_N</tt></FONT></A> and
+<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_W</tt></FONT></A>.
+
+<LI> Fermi-Dirac-broadened sampling integration.  This is the correct description for finite temperature.
+But for rapid convergence, artificially high temperatures are often used.
+To employ FD sampling, turn off the tetrahedron method 
+(<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_TETRA</tt></FONT></A>=0)
+and set
+<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_N</tt></FONT></A> to &minus;1.
+This tells the integrator to broaden the QP level with the (derivative of a) Fermi Dirac function 
+instead of a Gaussian function.  Specify the electron temperature <i>k<sub>B</sub>T</i> through
+<A href="tokens.html#BZcat"><FONT size="+1"><tt>BZ_W</tt></FONT></A> (in Ry).
+For a test case that illustrates Fermi-Dirac sampling, try
+<pre>
+  fp/test/test.fp copt
+</pre>
+
+</OL>
+
+
+<A name="tetrahedron"></A>
+<h3>Tetrahedron Integration</h3>
+
+<IMG border-color:green height=15% width=15% ALIGN="LEFT" style="border:20px solid white" SRC="mnbi-etet.gif"/>
+
+For self-consistent LDA calculations, Bl&ouml;chl-enhanced tetrahedron integration is usually the method of choice for small
+metallic systems.  The Figure on the left shows the power of the tetrahedron integration, especially when enhanced with
+the Bloechl weights.  It shows the integration error &Delta;<i>E</i> in the Harris-Foulkes total energy for a fixed density (equivalent
+to the convergence of the single-particle sum) in MnBi, as a function of the number of <i>k</i> divisions.  The <i>x</i>
+axis is scaled so that points are uniformly spaced in 1/<i>n</i><sup>2</sup> with the origin corresponding
+to <i>n</i>=&infin;.  MnBi forms in the NiAs structure, which is hexagonal with <i>c</i>/<i>a</i> slightly less than
+3/2.  Accordingly, the number of divisions along the three directions was chosen to be (<i>n</i>,<i>n</i>,2<i>n</i>/3),
+for an approximately uniform mesh spacing in the three directions.
+
+With Bloechl corrections (green line), the single particle sum is converged to better than 2 &mu;Ry at 48 divisions.
+The blue line shows the Bloechl correction term (scaled by 1/100 to fit on the graph): without this term convergence is
+only 100 &mu;Ry at 60 divisions.  The integration error from the regular tetrahedron method scales as
+1/<i>n</i><sup>2</sup>; the Bloechl correction knocks out the leading 1/<i>n</i><sup>2</sup> term, as is evident from
+the Figure.  For a simple band the scaling improves to 1/<i>n</i><sup>3</sup>. 
+
+<P>
+
+There are caveats to keep in mind with respect to this method.
+Sometimes a pair of bands can cross near
+<i>E<sub>F</sub></i>.  The tetrahedron integrator, which must 
+interpolate a single band between the four corners of a tetrahedron, expects the band to behave in an analytic
+way.  If two bands cross inside the tetrahedron, the both the
+lower band and upper band are non-analytic (in reality both are
+analytic but the integrator isn't smart enough to detect that there
+is a band crossing and switch the levels).  When this occurs usually the
+integrator yields a non-integral number of electrons.
+It will detect this and print out a warning message:
+<pre>
+  (warning): non-integral number of electrons --- possible band crossing at E_f
+</pre>
+When you get this message usually (not always!) it is because of a
+band crossing problem.  As you proceed to self-consistency it may go
+away.  If not, you need to modify your <b>k</b> mesh.  The larger the
+system with a denser mesh of bands, the more serious this issue
+becomes.
+
+<P> Another drawback with the tetrahedron scheme is that <i>all</i> the
+eigenvalues must be known before the weight for any one can be
+determined.  This is because integrals are done over tetrahedra, each
+of which involves four <b>k</b> points.  Thus unless some trickery is
+used, <i>two</i> band passes are required: one pass to get all the
+eigenvalues to determine integration weights, and a second pass to
+accumulate quantities that depend on eigenfunctions, such as the charge
+density.
+
+The FP code has a "mixed" scheme available: the charge density is
+calculated by sampling while the band sum is calculated by the
+tetrahedron method.  This avoids a double band pass, and is effective because,
+thanks to the variational principle, density can be evaluated to less precision
+than <i>E</i><sub>band</sub>.
+
+<A name="sampling"></A>
+<h3>Sampling</h3>
+
+As the mesh spacing becomes infinitely fine (<i>n</i>&rarr;&infin;),
+the quadrature estimate for integrated property of interest (e.g. <i>E</i><sub>band</sub>) becomes independent of <i>n</i>.   
+But with sampling the converged result at the 1/<i>n</i>&rarr;0 limit
+is not exact, but depends on <FONT size="+1"><tt>w</tt></FONT>: the exact (or 0K) result is
+obtained only for <i>n</i>&rarr;&infin; and <FONT size="+1"><tt>w</tt></FONT>&rarr;0.  This
+should be immediately obvious on physical grounds: the band energy
+should depend e.g. on temperature.
+
+<IMG border-color:green height=15% width=15% ALIGN="LEFT" style="border:20px solid white" SRC="mnbi-samp1.gif"/>
+
+Thus with sampling there are two independent issues to contend with:
+how rapidly the result converges with <i>n</i>, and the error in the
+converged result.  These issues are not entirely independent: 
+how rapidly the quadrature convergences with <i>n</i>
+also depends on <FONT size="+1"><tt>w</tt></FONT>: the larger <FONT size="+1"><tt>w</tt></FONT>, the more rapid the convergence.
+This is also easy to understand: the greater the broadening, the smoother and more analytic the behavior
+at <i>E<sub>F</sub></i>.  
+
+<IMG border-color:green height=10% width=10% ALIGN="RIGHT" style="border:20px solid white" SRC="MPDelta.gif"/>
+
+
+<P> The left figure illustrates these points.  The BZ integration in the Harris-Foulkes energy is shown for MnBi ---
+the same system used to demonstrate tetrahedron integration.  In this figure integrations are carried out with
+Methfessel-Paxton (MP) sampling described below using <FONT size="+1"><tt>N</tt></FONT>=1 for various
+widths <FONT size="+1"><tt>w</tt></FONT>.  When <FONT size="+1"><tt>w</tt></FONT> is 0.015 (rather large), the energy
+has converged to within 1&mu;Ry of the <i>n</i>&rarr;&infin; limit for <i>n</i>&ge;42.  But, it converges to a result
+differing from the exact one by 40&mu;Ry.  As <FONT size="+1"><tt>w</tt></FONT>&rarr;0, &Delta;<i>E</i>
+should vanish with <i>n</i>&rarr;&infin;.  Indeed this is the case:
+if <FONT size="+1"><tt>w</tt></FONT>=2 mRy the integral is converged to well within 1&mu;Ry.  But the <i>approach</i> to
+convergence is much slower: only for <i>n</i>&ge;90 does the integral stabilize to within 1&mu;Ry.
+The <FONT size="+1"><tt>w</tt></FONT>=5 and 10 mRy cases show behavior intermediate between
+<FONT size="+1"><tt>w</tt></FONT>=2 and 15 mRy.  The converged integration
+errors are 2.6&mu;Ry and 3.5&mu;Ry, respectively.
+
+
+<A name="MPsampling"></A>
+<h4>Methfessel-Paxton sampling</h4>
+
+<P> If the &delta;-function is broadened with a gaussian in the standard manner, good results are obtained only
+when <FONT size="+1"><tt>w</tt></FONT> is very small, and the situation would seem to be hopeless.  What saves the day is 
+<A href="http://link.aps.org/doi/10.1103/PhysRevB.40.3616">Methfessel and Paxton's</A> generalization of the broadening function.
+It starts from the representation of the exact &delta;-function as bilinear combinations of Hermite polynomials and a gaussian
+\begin{equation}
+\delta (x) = \mathop {\lim }\limits_{N \to \infty } {D_N}(x), \hspace{0.5cm} D_N(x) = \sum\nolimits_{m = 0}^N  {{A_m} {H_{2m}}(x){e^{ - {x^2}}}}
+\end{equation}
+Standard gaussian broadening represents &delta;(<i>x</i>) by the <i>m</i>=0 term alone.  But
+by truncating the series at some low order <FONT size="+1"><tt>N</tt></FONT> larger than 0, better representations
+of the &delta;-function are possible (figure above, right) and the integration quality can be dramatically improved. 
+<i>E</i><sub>band</sub> can be well converged without requiring an excessively small <FONT size="+1"><tt>w</tt></FONT>.
+
+<br><P>
+<IMG border-color:green height=15% width=15% ALIGN="LEFT" style="border:20px solid white" SRC="mnbi-samp3.gif"/>
+
+<IMG border-color:green height=15% width=15% ALIGN="RIGHT" style="border:20px solid white" SRC="mnbi-samp2.gif"/>
+
+Choosing <i>any</i> <FONT size="+1"><tt>N</tt></FONT>&gt;0 can dramatically improve the quality of sampling integration.
+
+The figure on the left shows how |&Delta;<i>E</i>| for MnBi depends
+on <FONT size="+1"><tt>N</tt></FONT>, for a relatively coarse <i>k</i> mesh (<i>n</i>=12),
+a very fine one (<i>n</i>=90), and  intermediate one (<i>n</i>=42).
+For the coarse mesh no advantage is found by varying <FONT size="+1"><tt>N</tt></FONT>.
+This is because the <i>k</i> mesh integration error (i.e. the number of <i>C</i><sub><b>T</b></sub> 
+in Eq.(\ref{eq:ek}) integrated exactly by the mesh is finite, and essentially equal to <i>n</i><sub>1</sub><i>n</i><sub>2</sub><i>n</i><sub>3</sub>) is larger than the error originating from
+approximations to the &delta;-function.
+
+<P> For the intermediate mesh (<i>n</i>=42) the situation is a bit different. If <FONT size="+1"><tt>N</tt></FONT>=0,
+the approximation to the &delta;-function dominates &Delta;<i>E</i>: increasing <FONT size="+1"><tt>N</tt></FONT> from 0&rarr;1 reduces it by a factor of almost 100!
+But increasing <FONT size="+1"><tt>N</tt></FONT> above 1 has no additional effect: the error remains fixed in the 3-4&mu;Ry range.
+It has already become dominated by the fineness of the <i>k</i>-mesh, any adequate (<FONT size="+1"><tt>N</tt></FONT>&ge;1) representation of the &delta;-function will 
+serve equally well.  Not insignificantly, &Delta;<i>E</i> from the tetrahedron method is in the same range (4&mu;Ry).
+
+<P> For the very fine mesh (<i>n</i>=90) much the same story appears, only now that the transition from &Delta;<i>E</i>
+being dominated by &delta;-function error to the discreteness of the <i>k</i> mesh doesn't occur until 
+<FONT size="+1"><tt>N</tt></FONT>=4.  Because the mesh is so fine, &Delta;<i>E</i> is tiny, of order 0.1&mu;Ry.
+
+<P> MP makes it possible to perform quality integrations with sampling.  The right figure shows
+the MnBi test case, now fixing <FONT size="+1"><tt>w</tt></FONT> at 0.015 and varying <FONT size="+1"><tt>N</tt></FONT>.
+(<FONT size="+1"><tt>N</tt></FONT>=0 is not shown: &Delta;<i>E</i> is a couple orders of magnitude larger for this <FONT size="+1"><tt>w</tt></FONT>.)
+
+In the <i>n</i>&rarr;&infin; limit, increasing the polynomial
+order <FONT size="+1"><tt>N</tt></FONT> has an effect somewhat analogous to
+decreasing <FONT size="+1"><tt>w</tt></FONT>.  The discrepancy with the exact (0K) result decreases,
+but the quadrature converges more slowly with <i>n</i>.
+
+<P>
+
+<P> There is tradeoff: another parameter is available to tinker with.  &Delta;<i>E</i> is now a function of an additional variable: 
+&Delta;<i>E</i>=&Delta;<i>E</i>(<i>n</i><sub>1</sub>, <i>n</i><sub>2</sub>, <i>n</i><sub>3</sub>, <FONT size="+1"><tt>N</tt></FONT>, <FONT size="+1"><tt>w</tt></FONT>).
+
+The optimum combination of (<i>n</i><sub>1</sub>, <i>n</i><sub>2</sub>, <i>n</i><sub>3</sub>, <FONT size="+1"><tt>N</tt></FONT>, <FONT size="+1"><tt>w</tt></FONT>)
+depends on the precision you need and computer time available.
+While there is no universal prescription that can be worked out in advance,
+the following guidelines seem to work fairly well:
+
+<OL>
+
+<LI> Choose the ratios <i>n</i><sub>1</sub>:<i>n</i><sub>2</sub>:<i>n</i><sub>3</sub> as closely as possible to
+the ratios <i>G</i><sub>1</sub>:<i>G</i><sub>2</sub>:<i>G</i><sub>3</sub>, where the latter are the lengths
+primitive reciprocal lattice vectors.
+
+<LI> Use at least <FONT size="+1"><tt>N</tt></FONT>=1 and unless you are looking for  energy resolution (see next section)
+preferably <FONT size="+1"><tt>N</tt></FONT>=3 or 4 with <FONT size="+1"><tt>w</tt></FONT>~0.01.  There doesn't seem to be much downside to using a sizeable 
+<FONT size="+1"><tt>N</tt></FONT>, but there can be a significant gain.
+
+
+<LI> If you want very hiqh quality integration, use a fine mesh with <FONT size="+1"><tt>w</tt></FONT>~0.005 and <FONT size="+1"><tt>N</tt></FONT> around 3 or 4.
+
+</OL>
+
+<P>
+<h2>Comparing Sampling to Tetrahedron Integration</h2>
+
+Which method should you choose?  The answer depends strongly on context.  
+
+<h3>Response functions</h3>
+
+<IMG border-color:green height=22% width=22% ALIGN="right" style="border:20px solid white" SRC="ageps.jpg"/>
+
+Consider first the calculation of quantities that involve transitions between two states, such as the joint density-of-states or dielectric function.
+The Figure on the right compares
+Im &epsilon;(&omega;) calculated for Ag, tetrahedron to MP sampling (<FONT size="+1"><tt>N</tt></FONT>=1, <FONT size="+1"><tt>W</tt></FONT>=0.02).
+Calculations for 24, and 48 <i>k</i> divisions are shown.  The sharp shoulder at 0.2 Ry marks the onset of transitions from the Ag <i>d</i> states to conduction band states.
+This shoulder is seen in experiment, at a slightly higher energy; this is because the LDA puts the Ag <i>d</i> states too shallowly.
+
+<P> In the tetrahedron case, doubling the mesh affects Im &epsilon;(&omega;) only slightly,
+showing that it is already well converged at 24 divisions.
+Sampling with 24 divisions shows Im &epsilon;(&omega;) oscillating around the converged result.
+With 48 divisions, the oscillations are much weaker, but you can still see Im &epsilon;(&omega;) dip below 0 just before the onset of the shoulder,
+and round off the first peak around &omega;=0.28&nbsp;Ry.
+
+<P>
+
+<IMG border-color:green height=15% width=15% ALIGN="left" style="border:20px solid white" SRC="ageps2.jpg"/>
+
+It is possible to get good definition in Im &epsilon;(&omega;) via MP sampling, by increasing <FONT size="+1"><tt>N</tt></FONT> or reducing <FONT size="+1"><tt>W</tt></FONT>, or
+some judicious combination of the two.  However, many more <FONT size="+1"><tt>k</tt></FONT>-points are required.
+The left hand figure shows that Im &epsilon;(&omega;), calculated with
+<FONT size="+1"><tt>N</tt></FONT>=1, <FONT size="+1"><tt>W</tt></FONT>=.01, can pick up the shoulder at &omega;=0.28&nbsp;Ry,
+but there is ringing around the converged result.  This is because <i>D<sub>N</sub></i>(<i>x</i>) oscillates around 0 for <FONT size="+1"><tt>N</tt></FONT>&ge;1, as seen in the figure 
+for <i>D<sub>N</sub></i> (<A href="#sampling">sampling section</A>).
+Increasing <i>n</i> to 96 divisions yields Im &epsilon;(&omega;) with definition almost as good as the tetrahedron method.
+
+In general, the larger <FONT size="+1"><tt>N</tt></FONT> you choose, the better definition you will have if your 
+<FONT size="+1"><tt>k</tt></FONT> mesh is sufficiently fine.  But the larger <FONT size="+1"><tt>N</tt></FONT>, the
+more 'wiggly' response function will be when you haven't converged the <i>k</i> mesh sufficiently.
+
+<P> Generally speaking, for linear response calculations the tetrahedron method is superior.
+But, be advised:
+<P>
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> the existing
+implementations of tetrahedron may have a problem for tetrahedra that
+contain multiple bands crossing <i>E<sub>F</sub></i>.  We have not
+fully understood the problem yet, but have discovered that for some
+metals, (e.g. a four-atom supercell of Ag), a spurious peak in Im
+&epsilon;(&omega;) can appear for &omega;&rarr;0.  A peak actually
+should exist there, but it originates from the Drude term which is not
+properly accounted for in this method.  So if the peak appears, it
+does so for spurious reasons.
+
+<P>  
+<h3>The Self Consistency Cycle</h3>
+
+BZ integration is also required to make the ordinary density-of-states (either total, or resolved by orbital)
+for the self-consistency cycle or to calculate the single-particle sum for total energy.
+
+Here also tetrahedron integration is generally superior, and is usually preferred unless problems arise, e.g. issues with band crossings.
+
+<P> 
+
+Nevertheless there are circumstances where sampling is a better
+choice, even apart from the band crossing issue.  To calculate the
+shear modulus of Al, tetrahedron integration requires a very
+fine <i>k</i> mesh.  But doing integrations with Fermi Dirac
+statistics at a rather high temperature, rapidly convergent results
+can be obtained.  To check convergence you can use several
+temperatures and extrapolate to 0K.  
+
+<P> Another example is the magnetic anisotropy.  As with the Al shear constant, it is the absolute
+value of the energy (mostly single particle sum) that matters, but its variation with some
+perturbation such as a shear or the addition <i>L</i>&middot;<i>S</i> coupling to the hamiltonian.
+In such cases the error of the energy <i>difference</i> can be smaller, and more stable, with a
+suitably chosen sampling method.  The table below shows the magnetic anisotropy, in Ry, for CoPt in
+the L10 structure, using a <i>k</i> mesh of 30&times30&times24 divisions.  (A check was made
+with 40&times40&times32 divisions using sampling, and essentially the same results were found.)
+
+Calculations were carried out in the LDA with both tetrahedron and sampling methods, either by
+evaluating the change in the Harris-Foulkes total energy, or by calculating the energy through
+coupling constant integration of <i>L</i>&middot;<i>S</i>.  Calculations were both of the
+non-self-consistent variety (frozen density at some suitable starting point) and also
+self-consistent.  While all the numbers are fairly similar, there is more variation in the
+tetrahedron results.  Note especially the '<FONT size="+1"><tt>ehf</tt></FONT>' and '<FONT size="+1"><tt>cc-int</tt></FONT>' column.
+They should give the same answer in all cases.
+
+<pre>
+                                                    ehf(tet)   cc-int(tet)  ehf(samp)  cc-int(samp)  
+   non self-consistent, rho from L.S=0             -0.000084   -0.000077    -0.000078   -0.000077    
+   non self-consistent, rho from full L.S || z     -0.000076   -0.000069    -0.000075   -0.000075    
+   self consistent with 8 symmetry operations      -0.000077   -0.000070    -0.000078   -0.000078    
+   self consistent with no symmetry                -0.000078                -0.000077   -0.000076    
+                                                   
+</pre>
+
+
+<br><br><br>
+
+<P><P> <b>References</b>
+
+<FN ID=blochlweights><P>
+<A href="http://link.aps.org/doi/10.1103/PhysRevB.49.16223"> P.E. Bloechl, O. Jepsen and O.K. Andersen, Phys. Rev. B 49, 16223 (1994).
+</FN>
+
+<br>
+
+<FN ID=methfesselpaxton<P>
+<A href="http://link.aps.org/doi/10.1103/PhysRevB.40.3616">M. Methfessel and A.T. Paxton, Phys. Rev. B, 40, 3616 (1989)</A>.
+
+</FN>
+
+

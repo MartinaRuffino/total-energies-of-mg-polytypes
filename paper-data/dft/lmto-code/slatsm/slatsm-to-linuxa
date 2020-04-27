@@ -1,0 +1,4 @@
+echo --- slatsm-to-linuxa: linux running on a DEC alpha ---
+
+cp -p startup/f2c.LINUXA.h f2c.h
+source slatsm-to-linux_g77

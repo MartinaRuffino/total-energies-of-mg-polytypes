@@ -1,0 +1,17 @@
+This package is a collection of electronic structure codes based mainly on the LMTO method.
+
+  Written by M. van Schilfgaarde, D. Pashov T. Kotani, A.T.Paxton, and M. Methfessel
+             with extensions by many others.
+  email      Mark.vanSchilfgaarde@gmail.com
+
+For html documentation, see Getting_Started.html in this directory.
+
+This code is now being distributed through a git repository.
+Python scripts maintain and install the package.
+
+Historically it was distributed through a series of tar files, using `configure'.
+It is still maintained that way for internal reasons, but users are
+recommended to use the git repository.  
+
+See README.old for a brief description of the original format.
+

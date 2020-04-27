@@ -1,0 +1,292 @@
+rdcmd:  lmfa -vfrz=f -vtiz=.00 -veloc=0 srtio3
+ -----------------------  START LMFA -----------------------
+ HEADER SrTiO3 cubic Sr 4p and Ti 4p with using local orbitals
+
+ LMFA:     nbas = 5  nspec = 3  vn 7.11.j  verb 30
+ pot:      XC:BH
+ autogen:  none
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 7.369935  Cell vol = 400.304933
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.36993   awald= 0.271
+         r1=  2.885   nkd= 93       q1=  3.426   nkg= 171
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ Species Sr:  Z=38  Qc=30  R=3.100000  Q=0
+ mesh:   rmt=3.100000  rmax=48.492956  a=0.025  nr=439  nr(rmax)=549
+  Pl=  5.5     4.5     4.5     4.5    
+  Ql=  2.0     6.0     0.0     0.0    
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   38.000000   6.883E+03      190.0000    0.1890E+03      -76.3637   0.30
+   52   38.000000   4.259E-05      403.4766    0.8848E+05     -286.3760   0.30
+
+
+ sumev=-10.653596  etot=-6351.428258  eref=-6351.428100  diff= -0.000158
+
+ Optimise free-atom basis for species Sr, rmt=3.1
+ l  it    Rsm      Eh     stiffR   stiffE      Eval      Exact     Pnu    Ql
+ 0  30   4.453  -0.567      35.1     21.8   -0.27004  -0.27402    5.60   2.00
+ ... rsm exceeded rmt .. repeat with rsm=rmt
+ 0   7   3.100  -0.114      35.1   2821.8   -0.26342  -0.27402    5.60   2.00
+ 1  38   1.185  -1.202       9.4     13.0   -1.68425  -1.68426    4.93   6.00
+ 2  19   1.873  -0.100     336.1     16.1   -0.09791  -0.10924    4.81   0.00
+ eigenvalue sum:  exact -10.65360    opt basis -10.63232    error 0.02127
+
+ tailsm: fit tails to 6 smoothed hankels, rmt= 3.10000, rsm= 1.55000
+    q(fit):     1.675877    rms diff:   0.000007
+    fit: r>rmt  1.675877   r<rmt  3.374534   qtot  5.050412
+    rho: r>rmt  1.675877   r<rmt  6.324123   qtot  8.000000
+
+ coretail: q=0.00245, rho(rmt)=0.00754.  Fit with Hankel e=-11.699  coeff=305.|
+
+ Species Ti:  Z=22  Qc=12  R=2.334795  Q=0
+ mesh:   rmt=2.334795  rmax=49.799821  a=0.03  nr=311  nr(rmax)=413
+  Pl=  4.5     3.5     3.5     4.5    
+  Ql=  2.0     6.0     2.0     0.0    
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   22.000000   2.559E+03      110.0000    0.1094E+03      -44.1832   0.30
+   49   22.000000   4.738E-05      184.3498    0.9149E+04     -195.4639   0.30
+
+
+ sumev=-18.484448  etot=-1703.408096  eref=-1703.489000  diff= 0.080904
+
+ Optimise free-atom basis for species Ti, rmt=2.334795
+ l  it    Rsm      Eh     stiffR   stiffE      Eval      Exact     Pnu    Ql
+ 0  38   3.548  -0.572      68.5     41.2   -0.33728  -0.34441    4.55   2.00
+ ... rsm exceeded rmt .. repeat with rsm=rmt
+ 0   7   2.335  -0.120      68.5   4009.2   -0.32345  -0.34441    4.55   2.00
+ 1  18   0.815  -2.057       5.6      6.3   -2.85469  -2.85472    3.93   6.00
+ 2  22   1.137  -0.100     692.5    228.2   -0.33192  -0.33365    3.87   2.00
+ eigenvalue sum:  exact -18.48445    opt basis -18.43885    error 0.04560
+
+ tailsm: fit tails to 6 smoothed hankels, rmt= 2.33480, rsm= 1.16740
+    q(fit):     2.096434    rms diff:   0.000022
+    fit: r>rmt  2.096434   r<rmt  3.392408   qtot  5.488842
+    rho: r>rmt  2.096434   r<rmt  7.903566   qtot 10.000000
+
+ coretail: q=0.00695, rho(rmt)=0.00979.  Fit with Hankel e=-18.137  coeff=337.|
+
+ Species O:  Z=8  Qc=2  R=1.450000  Q=0
+ mesh:   rmt=1.450000  rmax=24.361575  a=0.03  nr=217  nr(rmax)=311
+  Pl=  2.5     2.5     3.5    
+  Ql=  2.0     4.0     0.0    
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1    8.000000   6.277E+02       40.0000    0.3979E+02      -16.0806   0.30
+   45    8.000000   3.910E-05       44.3390    0.3163E+03      -49.6414   0.30
+
+
+ sumev=-6.230702  etot=-149.071489  eref=-149.182200  diff= 0.110711
+
+ RNATM: renormalize sphere density  rc=3.2  w=0.4
+ Ql before scaling:  2.00000  4.00000
+ Ql after  scaling:  1.96332  3.83409
+ valence q after renormalisation:  6.00000
+
+ Optimise free-atom basis for species O, rmt=1.45
+ l  it    Rsm      Eh     stiffR   stiffE      Eval      Exact     Pnu    Ql
+ 0   6   0.854  -1.289     748.0    106.5   -1.75130  -1.75151    2.87   2.00
+ 1  19   0.767  -0.330    1751.7    385.1   -0.68024  -0.68192    2.84   4.00
+ eigenvalue sum:  exact  -6.23070    opt basis  -6.22355    error 0.00715
+
+ tailsm: fit tails to 6 smoothed hankels, rmt= 1.45000, rsm= 0.72500
+    q(fit):     1.612617    rms diff:   0.000062
+    fit: r>rmt  1.612617   r<rmt  4.193123   qtot  5.805740
+    rho: r>rmt  1.612526   r<rmt  4.387474   qtot  6.000000
+ Exit 0 LMFA 
+ CPU time:  0.225s   Wall clock 0.262s  at  17:46:29 21.08.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  lmf --rs=0 -vnk=20 -vfrz=f -vtiz=.00 -veloc=0 srtio3 --dos:npts=1001:rdm:ef0:window=-.5,.5 --quit=dos --newvesmt
+ -----------------------  START LMF -----------------------
+ HEADER SrTiO3 cubic Sr 4p and Ti 4p with using local orbitals
+
+ LMF:      nbas = 5  nspec = 3  vn 7.11.j  verb 30
+ special:  forces
+ pot:      XC:BH, v8-Bessel
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       nonmetal, tetra, invit 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 7.369935  Cell vol = 400.304933
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.36993   awald= 0.271
+         r1=  2.885   nkd= 93       q1=  3.426   nkg= 171
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  220 irreducible QP from 8000 ( 20 20 20 )  shift= T T T
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Sr       3.100  1.240    3    5         3  0.775  1.550    15    1   1.240
+ Ti       2.335  0.934    3    5         3  0.584  1.167    15    1   0.934
+ O        1.450  0.580    2    3         2  0.362  0.725    15    0   0.580
+
+ GVLIST: gmax = 10.23 a.u. created 7123 vectors of 13824 (51%)
+         mesh has 24 x 24 x 24 divisions; length 0.307, 0.307, 0.307
+ SGVSYM: 224 symmetry stars found for 7123 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 58 0 7 95
+ suham :  59 augmentation channels, 59 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Sr       0    1.00  -0.10   7.434    1.01E-06    2801 
+  Sr       1    1.20  -0.80   6.605    1.29E-06    1935 
+  Sr       2*   1.00  -0.10   8.508    1.11E-06    4139 
+  Sr       3    1.00  -0.10   9.038    1.49E-06    4945 
+  Ti       0    1.80  -0.10   4.130    2.37E-06     461 
+  Ti       1    0.90  -1.50   8.889    1.11E-06    4729 
+  Ti       2    1.00  -0.10   8.508    1.11E-06    4139 
+  O        0    0.85  -1.00   8.746    1.03E-06    4553 
+  O        1    0.80  -0.10  10.038    1.07E-06    6859 
+  O        2    2.40  -0.10   3.358    4.40E-06     251 
+ 
+
+ rdovfa: read and overlap free-atom densities (mesh density) ...
+ rdovfa: expected Sr,      read Sr       with rmt=  3.1000  mesh   439  0.025
+ rdovfa: expected Ti,      read Ti       with rmt=  2.3348  mesh   311  0.030
+ rdovfa: expected O,       read O        with rmt=  1.4500  mesh   217  0.030
+
+ Free atom and overlapped crystal site charges:
+   ib    true(FA)    smooth(FA)  true(OV)    smooth(OV)    local
+    1    6.324123    3.374534    7.067651    4.118063    2.949589
+
+ Free atom and overlapped crystal site charges:
+   ib    true(FA)    smooth(FA)  true(OV)    smooth(OV)    local
+    2    7.903566    3.392405    8.836496    4.325335    4.511161
+
+ Free atom and overlapped crystal site charges:
+   ib    true(FA)    smooth(FA)  true(OV)    smooth(OV)    local
+    3    4.387474    4.193123    4.558682    4.364332    0.194350
+
+ Free atom and overlapped crystal site charges:
+   ib    true(FA)    smooth(FA)  true(OV)    smooth(OV)    local
+    4    4.387474    4.193123    4.558682    4.364332    0.194350
+
+ Free atom and overlapped crystal site charges:
+   ib    true(FA)    smooth(FA)  true(OV)    smooth(OV)    local
+    5    4.387474    4.193123    4.558682    4.364332    0.194350
+
+ Smooth charge on mesh:           27.956198
+ Sum of local charges:             8.043801
+ Total valence charge:            35.999999
+ Sum of core charges:             48.000000
+ Sum of nuclear charges:         -84.000000
+ Homogeneous background:           0.000000
+ Deviation from neutrality:       -0.000001
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ Average es pot at rmt = 0.458920  avg sphere pot = 0.361294   vconst = -0.458920
+ smooth rhoves    111.659165   charge    27.956198
+ smooth rhoeps =  -27.497856   rhomu =  -35.926605  avg vxc =   -0.828820 
+
+ locpot:
+
+ site  1  z= 38.0  rmt= 3.10000  nr=439   a=0.025  nlml=16  rg=0.775  Vfloat=F
+ sm core charge = 0.374509 (sphere) + 0.007538 (spillout) = 0.382046
+ potential shift to crystal energy zero:    0.000245
+
+ site  2  z= 22.0  rmt= 2.33480  nr=311   a=0.030  nlml=16  rg=0.584  Vfloat=T
+ sm core charge = 0.425838 (sphere) + 0.009785 (spillout) = 0.435623
+ potential shift to crystal energy zero:    0.000356
+
+ site  3  z=  8.0  rmt= 1.45000  nr=217   a=0.030  nlml= 9  rg=0.362  Vfloat=T
+ potential shift to crystal energy zero:    0.001812
+
+ site  4  z=  8.0  rmt= 1.45000  nr=217   a=0.030  nlml= 9  rg=0.362  Vfloat=T
+ potential shift to crystal energy zero:    0.001812
+
+ site  5  z=  8.0  rmt= 1.45000  nr=217   a=0.030  nlml= 9  rg=0.362  Vfloat=T
+ potential shift to crystal energy zero:    0.001812
+
+ Energy terms:             smooth           local            total
+   rhoval*vef           -105.309063      -204.362394      -309.671458
+   rhoval*ves           -127.628830      -124.372581      -252.001412
+   psnuc*ves             350.947160    -33860.678781    -33509.731621
+   utot                  111.659165    -16992.525681    -16880.866517
+   rho*exc               -27.497856      -304.679627      -332.177483
+   rho*vxc               -35.926605      -403.591732      -439.518337
+   valence chg            27.956198         8.043801        35.999999
+   core charge            48.000000         0.000000        48.000000
+
+ Charges:  valence    36.00000   cores    48.00000   nucleii   -84.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+ bndfp:  kpt 1 of 220, k=  0.02500  0.02500  0.02500
+ -2.2733 -2.2733 -2.2729 -1.3885 -1.3190 -1.3190 -1.0572 -1.0572 -1.0567
+ bndfp:  kpt 11 of 220, k=  0.07500  0.07500  0.02500
+ -2.2742 -2.2738 -2.2734 -1.3871 -1.3185 -1.3182 -1.0568 -1.0567 -1.0538
+ bndfp:  kpt 21 of 220, k=  0.17500  0.12500  0.02500
+ -2.2761 -2.2748 -2.2738 -1.3830 -1.3166 -1.3146 -1.0555 -1.0552 -1.0464
+ bndfp:  kpt 31 of 220, k=  0.32500  0.17500  0.02500
+ -2.2804 -2.2762 -2.2736 -1.3775 -1.3135 -1.3022 -1.0533 -1.0516 -1.0376
+ bndfp:  kpt 41 of 220, k=  0.27500  0.27500  0.02500
+ -2.2793 -2.2789 -2.2736 -1.3700 -1.3097 -1.3068 -1.0519 -1.0514 -1.0395
+ bndfp:  kpt 51 of 220, k=  0.42500  0.37500  0.02500
+ -2.2826 -2.2818 -2.2734 -1.3520 -1.3046 -1.3011 -1.0488 -1.0473 -1.0434
+ bndfp:  kpt 61 of 220, k=  0.32500  0.07500  0.07500
+ -2.2801 -2.2742 -2.2740 -1.3838 -1.3159 -1.3004 -1.0550 -1.0520 -1.0364
+ bndfp:  kpt 71 of 220, k=  0.42500  0.12500  0.07500
+ -2.2823 -2.2749 -2.2740 -1.3816 -1.3138 -1.2921 -1.0552 -1.0490 -1.0333
+ bndfp:  kpt 81 of 220, k=  0.27500  0.22500  0.07500
+ -2.2791 -2.2776 -2.2741 -1.3717 -1.3112 -1.3076 -1.0547 -1.0525 -1.0384
+ bndfp:  kpt 91 of 220, k=  0.32500  0.32500  0.07500
+ -2.2807 -2.2804 -2.2740 -1.3606 -1.3066 -1.3032 -1.0531 -1.0509 -1.0392
+ bndfp:  kpt 101 of 220, k=  0.12500  0.12500  0.12500
+ -2.2752 -2.2752 -2.2744 -1.3815 -1.3161 -1.3161 -1.0560 -1.0560 -1.0456
+ bndfp:  kpt 111 of 220, k=  0.27500  0.17500  0.12500
+ -2.2790 -2.2762 -2.2750 -1.3725 -1.3125 -1.3074 -1.0569 -1.0530 -1.0375
+ bndfp:  kpt 121 of 220, k=  0.47500  0.22500  0.12500
+ -2.2830 -2.2776 -2.2749 -1.3648 -1.3080 -1.2940 -1.0591 -1.0449 -1.0400
+ bndfp:  kpt 131 of 220, k=  0.37500  0.37500  0.12500
+ -2.2818 -2.2817 -2.2748 -1.3480 -1.3031 -1.3002 -1.0566 -1.0522 -1.0418
+ bndfp:  kpt 141 of 220, k=  0.37500  0.17500  0.17500
+ -2.2816 -2.2762 -2.2761 -1.3659 -1.3092 -1.2987 -1.0599 -1.0496 -1.0369
+ bndfp:  kpt 151 of 220, k=  0.32500  0.27500  0.17500
+ -2.2805 -2.2791 -2.2761 -1.3549 -1.3057 -1.3030 -1.0603 -1.0553 -1.0372
+ bndfp:  kpt 161 of 220, k=  0.47500  0.37500  0.17500
+ -2.2830 -2.2817 -2.2760 -1.3364 -1.2998 -1.2972 -1.0620 -1.0532 -1.0485
+ bndfp:  kpt 171 of 220, k=  0.27500  0.27500  0.22500
+ -2.2792 -2.2790 -2.2775 -1.3523 -1.3052 -1.3050 -1.0610 -1.0589 -1.0364
+ bndfp:  kpt 181 of 220, k=  0.42500  0.37500  0.22500
+ -2.2825 -2.2816 -2.2774 -1.3301 -1.2979 -1.2960 -1.0665 -1.0595 -1.0494
+ bndfp:  kpt 191 of 220, k=  0.32500  0.32500  0.27500
+ -2.2804 -2.2804 -2.2790 -1.3355 -1.2997 -1.2993 -1.0661 -1.0635 -1.0428
+ bndfp:  kpt 201 of 220, k=  0.32500  0.32500  0.32500
+ -2.2804 -2.2804 -2.2804 -1.3288 -1.2976 -1.2976 -1.0672 -1.0672 -1.0462
+ bndfp:  kpt 211 of 220, k=  0.37500  0.37500  0.37500
+ -2.2815 -2.2815 -2.2815 -1.3107 -1.2919 -1.2919 -1.0732 -1.0732 -1.0589
+
+ BZWTS : --- Non-metal sampling ---
+ Fermi energy: -0.134901;  36 electrons;  Sum occ. bands: -33.096769
+ VBmax = -0.134901  CBmin = 0.184359  gap = 0.319260 Ry = 4.34194 eV
+
+ ... Generating total DOS
+ Highest occ. level = -0.13490  Lowest unocc. = 0.18436  average = 0.02473
+
+ Saved Fermi level to weights file ... ef = 0.024729
+ Exit 0 completed band pass 
+ CPU time:  15.567s   Wall clock 15.611s  at  17:46:45 21.08.2017  on  phpdl1.ph.kcl.ac.uk

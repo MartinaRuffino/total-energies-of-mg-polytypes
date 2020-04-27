@@ -1,0 +1,113 @@
+ -----------------------  START LM  -----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LM:       nbas = 2  nspec = 1  verb 31,20
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll
+ asa:      no-ccor, Q2:Power-moments
+ bz:       metal, tetra 
+ IOEULA:   reading l-independent Euler angles (file 10)
+
+ Automatic symmetry finder turned off.  Use: r2z(0,0,-0.8125)
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000  -0.577350   0.000000
+   0.500000   0.866025   0.000000        0.000000   1.154701   0.000000
+   0.000000   0.000000   1.625000        0.000000   0.000000   0.615385
+   alat = 4.703135  Cell vol = 146.401791
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379   lmax=6
+         r1=  3.068   nkd= 75       q1=  2.881   nkg= 135
+
+ SGROUP: 2 symmetry operations from 1 generators
+ MKSYM:  found 2 space group operations
+         no attempt to add inversion symmetry
+ BZMESH: 888 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 10368 inequivalent ones found
+
+ GETZV:  18 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000000   0.000000   0.000000   0.000000  -0.778132
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.778132 (up-dn=-0.019957)
+ cpudel    ...   Time this iter:  time(s):  0.0812   total:  0.0812s
+ QUERY: maxit (def=1)? 
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+          Euler angles:
+   ib   alpha      beta     gamma     class         spin quantization axis
+    1  1.570796  0.785398  0.000000   A         -0.707107  0.000000  0.707107
+    2 -1.570796  0.785398  0.000000   A         -0.707107  0.000000  0.707107
+
+ --- BNDASA : iteration 1 (KKR-qout, noncol) ---
+
+ AMAGNC: magnetic moments from Euler angles and sphere charges:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.000000 -1.131945 -1.131945    0.000000  0.000000 -1.600813  1.600813
+    2   *  0.000000  1.131945 -1.131945    0.000000  0.000000 -1.600813  1.600813
+ <Mx>=0.000000  <My>=0.000000  <Mz>=-1.131945  <M>=1.131945  <|M|>=1.600813
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 888, k=  0.00000  0.00000  0.00000
+ -0.7191 -0.7108 -0.4172 -0.3731 -0.2136 -0.2136 -0.2013 -0.1977 -0.1977
+ SECMAT:  kpt 101 of 888, k=  0.58333  -0.14434  0.05128
+ -0.3680 -0.3534 -0.3346 -0.3154 -0.2890 -0.2832 -0.2593 -0.2313 -0.2194
+ SECMAT:  kpt 201 of 888, k=  0.75000  -0.04811  0.10256
+ -0.3486 -0.3245 -0.3155 -0.2971 -0.2934 -0.2667 -0.2622 -0.2423 -0.2325
+ SECMAT:  kpt 301 of 888, k=  0.33333  -0.19245  0.20513
+ -0.4451 -0.4206 -0.3718 -0.3320 -0.3090 -0.2666 -0.2407 -0.1972 -0.1942
+ SECMAT:  kpt 401 of 888, k=  0.91667  -0.33679  0.25641
+ -0.4974 -0.4846 -0.4196 -0.4003 -0.2826 -0.2582 -0.2389 -0.2261 -0.2087
+ SECMAT:  kpt 501 of 888, k=  0.08333  0.43301  0.30769
+ -0.3947 -0.3947 -0.3546 -0.3546 -0.2853 -0.2853 -0.2099 -0.2099 -0.1761
+ SECMAT:  kpt 601 of 888, k=  0.08333  0.04811  0.41026
+ -0.6233 -0.6143 -0.4529 -0.4315 -0.2406 -0.2338 -0.2274 -0.2135 -0.2073
+ SECMAT:  kpt 701 of 888, k=  0.25000  0.14434  0.46154
+ -0.5337 -0.5219 -0.3565 -0.3196 -0.3013 -0.2531 -0.2455 -0.2195 -0.2037
+ SECMAT:  kpt 801 of 888, k=  0.41667  0.24056  0.51282
+ -0.4179 -0.3863 -0.3646 -0.3306 -0.3123 -0.2784 -0.2561 -0.2113 -0.2057
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.021546;  18.000000 electrons;  D(Ef):   30.789
+         Sum occ. bands:   -3.7838662  incl. Bloechl correction:   -0.001262
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+
+ IORBTM:  orbital moments :
+ class spec        spin   Moment decomposed by l ...
+    1    A            1    0.000000   -0.000002    0.000005
+    1    A            2    0.000000   -0.000001   -0.000024
+    1  L+ - L-  -0.000021
+
+ BNDASA warning! use --nosym to calculate orbital moments
+
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   * -0.000001 -0.918580 -1.289671    0.262401  0.000001 -1.561470  1.583364
+    2   *  0.000001  0.918580 -1.289671    0.262401  0.000001 -1.561470  1.583364
+ <Mx>=0.000000  <My>=0.000000  <Mz>=-1.289671  <M>=1.289671  <|M|>=1.583364
+
+ LM: ehf=-0.9618167  ehk=-0.9619782  sumev=-3.7838662  delsev=0.0313637
+  
+ mixing: mode=B  nmix=3  it 1 of 5  beta=1
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.43e-2
+ QUERY: beta (def=1)?  AMIX: nmix=0 mmix=8  nelts=24  beta=1  tm=10  rmsdel=1.43e-2
+ QUERY: redo, nmix= (def=0)? 
+ GETZV:  18 valence electrons
+ATOM=A    Z=27  Qc=18  R=2.595031  Qv=0  mom=-1.56147  a=0.01  nr=993
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000000   0.000000   0.000000   0.000000  -0.780681
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.780681 (up-dn=-0.013163)
+ Magnetization from sphere program: 3.122939  from output rho: 2.579342
+ SV:   1  1.430e-2 1.0000  2.737e-2      -0.96197820 2.579342 L
+
+   it  1  of  1    ehf=      -0.961817   ehk=      -0.961978
+x nit=1 twoc=0 nc=1 nk=12 bzj=0 ccor=0 gfmod=1 ldmat=0 cbya=1.625 mmom=2.5793424 ehf=-.9618167 ehk=-.9619782
+ cpudel    ...   Time this iter:  time(s):  0.625    total:  0.706s
+ QUERY: maxit (def=1)?  Exit 0 [1 severe warning] LM
+ CPU time:  0.706s   Wall clock 0.743s  at  17:50:15 20.07.2018  on  ellery

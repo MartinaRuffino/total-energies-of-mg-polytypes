@@ -1,0 +1,1438 @@
+<!DOCTYPE html><html>
+
+<head>
+<title>Sigma tutorials</title>
+<style>
+
+/* For hyperlinks */
+a:link {color:#FF0000;}      /* unvisited link */
+a:link {color:#222288;}      /* unvisited link */
+a:visited {color:#228822;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+body {
+       background-color:#ffffgg;
+     }
+ h1 {
+      color:#880000;
+      text-align:center;
+      font-size:12px;
+    }
+ h2 {
+      color:#bb3300;
+      font-size:120%;
+      font-weight:normal;
+      font-style:italic;
+    }
+
+ h3 {
+      color:#33bb00;
+      font-size:110%;
+      font-weight:normal;
+      font-style:italic;
+      text-indent: 0.5em;
+    }
+
+ h4 {
+      color:#000000;
+      font-size:100%;
+      font-weight:bold;
+      text-indent: 1.0em;
+    }
+
+ h5 {
+      color:#444488;
+      font-size:100%;
+      font-weight:bold;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+ hn {
+      color:#000000;
+      font-size:100%;
+      font-weight:normal;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+  P {
+<!--  font-family:"Times New Roman"; -->
+<!--  font-size:12px; -->
+<!--  color: red; -->
+    }
+
+  q {
+      color: red;
+    }
+
+  a {
+        color: blue;
+    }
+
+  tlarge {
+       <font-size="+1">
+    }
+
+  p.pos_left
+  {
+  position:relative;
+  left:-20px;
+  }
+
+  p.pos_right
+  {
+  position:relative;
+  left:20px;
+  right:520px;
+  }
+
+  div.ex
+  {
+  width:3in;
+  padding:10px;
+  border:5px solid gray;
+  margin:0px;
+  }
+
+</style>
+
+<!-- Enables the use of latex -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+
+<!--
+<script type="text/javascript"  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/javascript" src="/Users/markvanschilfgaarde/MathJax/MathJax.js"></script>
+-->
+
+</head>
+
+<h1><B><FONT size="+2">Tutorial for manipulations of the self-energy editors (v7.10)</FONT></B></h1>
+
+<h2>Purpose</h2>
+
+<P>
+There are two self-energy editors corresponding to the two forms of self energy in QS<i>GW</i>:
+<OL>
+
+  <LI> a static self-energy &Sigma;<sub>xc</sub>(<b>k</b>) analogous to (and a replacement for) the
+  exchange-correlation potential in LDA, GGA, Hartree-Fock or LDA+<i>U</i> theory.
+  The self-energy is static and hermitian, and gives rise to
+  a noninteracting hamiltonian <i>H</i><sub>0</sub> and a corresponding noninteracting Green's function
+  <i>G</i><sub>0</sub>.  This potential is generated automatically in
+  the QS<i>GW</i> cycle and &Sigma;<sub>xc</sub>(<b>k</b>) (<A href="gw.html#readsig">actually &Sigma;<sub>xc</sub>&minus;<i>V</i><sub>xc</sub><sup>LDA</sup></A>)
+  is saved on disk, usually as file <FONT size="+1"><tt>sigm.<i>ext</i></tt></FONT>.
+  There are numerous ways to use and transform
+  &Sigma;<sub>xc</sub>; most are accomplished through the static "&Sigma; editor" described 
+  <A href="gw.html#wsig">in the <i>GW</i> documentation</A> and <A href="#section1">in this tutorial</A>.<BR><BR>
+
+  <LI> a frequency-dependent, nonhermitian self energy &Sigma;(&omega;,<b>k</b>).  The &omega;-dependence broadens the states;
+  the non-hermitian part gives the quasiparticle a finite lifetime.
+  This is not generated automatically, but must be done 
+  using a <A href="gw.html#sectiondos">special setup</A> of the <i>GW</i> code.
+  Once made, there is an <A href="#section2">editor</A> to facilite analysis.
+
+</OL>
+
+<h2><A name="staticsigmaeditor"></A>The static &Sigma;<sub>xc</sub> editor</h2>
+
+
+<DL>
+<DD> <A href="#section1">Section 1</A> shows how to use the &Sigma; editor to read and generate real-space versions of &Sigma;<sub>xc</sub>;
+     <BR><BR>
+
+<DD> <A href="#SOcoupling">Section 2</A> uses the &Sigma; editor to calculate spin orbit coupling and magnetic anisotropy in Fe;
+     <BR><BR>
+
+<DD> <A href="#AsAntisiteGaAs">Section 3</A> shows how the &Sigma; editor can facilitate calculation of the As antisite defect level in GaAs.
+     <BR>
+</DL>
+
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> This tutorial uses the MPI parallel form of <b>lmf</b>, <FONT size="+1"><tt>lmf-MPIK</tt></FONT>.  It assumes
+a script <FONT size="+1"><tt>mpix</tt></FONT> is in your path that runs an MPI job with <FONT size="+1"><tt>'#'</tt></FONT> processors.
+<pre>
+  mpix -np=# MPI-job
+</pre>
+You can create such a script, or modify the <FONT size="+1"><tt> 'mpix -np=#' </tt></FONT> prefix in a format suitable for MPI jobs in your environment,
+or replace <FONT size="+1"><tt> 'mpix -np=# lmf-MPI' </tt></FONT> with the serial code <b>lmf</b>
+(at the cost of slower execution speed).
+
+<P> <FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> All of the output files indicated in this section can be found in directory '<FONT size="+1"><tt>outfiles</tt></FONT>'.
+
+<h3><A name="section1"></A>1 Reading and writing Real-Space &Sigma;<sub>xc</sub> Files </h3>
+
+For brevity we denote &Sigma;<sub>xc</sub> by just &Sigma; in this section, or possibly refer to
+its indices, e.g. &Sigma;<sub><b>R</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>(<b>k</b>).
+
+<P> Files associated with this tutorial are too large to be included with the basic distribution.  
+Download and unpack tar file <FONT size="+1"><tt>FeTutorial.tar.gz</tt></FONT>
+and change your working directory to <FONT size="+1"><tt>fetutorial/sc</tt></FONT>.
+Copy the necessary input files to your working directory:<a href="#fn1" id="ref1"><sup>&dagger;</sup></a>
+<pre>
+  cp input/* .
+  cp bas2.tppc3.tpd4.sep12/rst.fe .
+  cp bas2.tppc3.tpd4.sep12/nk12/* .
+  ln -s -f sigm sigm.fe
+</pre>
+and verify that the input conditions result in a self-consistent potential:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.001
+</pre>
+If you want to carry out a corresponding LDA calculation, do:
+<pre>
+  cp bas2.tppc3.tpd4.sep12/rst.lda rst.fe
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vsig=0 -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.lda.001
+</pre>
+
+Problems arise if you try to include use the given self-energy in a calculation with
+lower symmetry, e.g. a shear distortion or the addition of spin-orbit coupling.
+It immediately appears if you repeat the calculation <b>lmf</b> with SO coupling on
+(note the <FONT size="+1"><tt>SO={so}</tt></FONT> in the input file!):
+<pre>
+  lmf -vso=1 -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm`
+</pre>
+
+This is because by the given &Sigma;<sub>xc</sub> is stored on a mesh of <i>k</i>-points.  SO coupling
+reduces symmetry and requires that &Sigma; be available on a different <i>k</i>-mesh.
+
+You can work around this by saving &Sigma; in a real space form; that is, map
+&Sigma;<sub><b>R</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>(<b>k</b>) to
+&Sigma;<sub><b>R</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>(<b>T</b>) = &Sigma;<sub><b>R+T</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>.
+<b>T</b> is a crystal lattice translation vector; there are as many
+<b>T</b>-points as <b>k</b> points in <i>k</i>-space.  The
+transformation is exact and no information is lost.  (It is
+accomplished in practice using FFT techniques, and the original
+&Sigma;<sub><b>R</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>(<b>k</b>)
+can be recovered by a Bloch sum.)  Once generated &Sigma;(<b>T</b>)
+doesn't depend on the number of <i>k</i>-points, so it is
+preferable in this context even while it is less compact.
+
+<P> By default the &Sigma; reader reads
+&Sigma;(<b>k</b>), but it can read &Sigma;(<b>T</b>) instead.
+You can also write &Sigma; files, either &Sigma;(<b>k</b>) or &Sigma;(<b>T</b>).
+Use <FONT size="+1"><tt>--wsig</tt></FONT> to write &Sigma;(<b>k</b>), and
+<FONT size="+1"><tt>--wsig:rs</tt></FONT> to write &Sigma;(<b>T</b>).  Thus:
+<pre>
+  lmf -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` --wsig:rs
+  mv sigm2rs.fe sigmrs.fe
+</pre>
+
+The reader <i>reads</i> &Sigma;(<b>k</b>) stored in file <FONT size="+1"><tt>sigm.<i>ext</i></tt></FONT>,
+or &Sigma;(<b>T</b>) stored in file <FONT size="+1"><tt>sigmrs.<i>ext</i></tt></FONT>.
+For the latter use <FONT size="+1"><tt>--rsig:rs</tt></FONT>.
+<BR>
+The editor <i>writes</i> &Sigma;(<b>k</b>) to <FONT size="+1"><tt>sigm2.<i>ext</i></tt></FONT>, or
+&Sigma;(<b>T</b>) to <FONT size="+1"><tt>sigm2rs.<i>ext</i></tt></FONT>.
+The names are different so as to preserve any existing input file.
+<BR> After <b>lmf</b> executes rename <FONT size="+1"><tt>sigm2rs.fe</tt></FONT> to <FONT size="+1"><tt>sigmrs.fe</tt></FONT>.
+
+<P> To confirm that a calculation with &Sigma;(<b>T</b>) generates results identical to &Sigma;(<b>k</b>),
+repeat the above calculation but now reading &Sigma;(<b>T</b>):
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.rssig.001
+</pre>
+Compare the two outputs:
+<pre>
+diff out.noso.rssig.001 out.noso.001
+</pre>
+They should appear essentially identical except where reading of &Sigma; is indicated.
+
+<h3><A name="SOcoupling"></A>2 Spin Orbit Coupling in Fe</h3>
+
+<h4><A name="SOcoupling.1"></A>2.1 How to Include Spin Orbit Coupling in a Calculation</h4>
+
+<P> After completing <A href="#section1">Section 1</A>
+you are ready for a calculation that includes SO coupling.  Do one the following:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vso=1 --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.so.nosym.001
+  mpix -np=12 lmf-MPIK -vso=11 --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.so.nosym.001
+</pre>
+We use the latter form here (<FONT size="+1"><tt>SO=11</tt></FONT>).  It is slightly slower but more informative
+as it prints SO contribution to the energy explicitly, and (in multi-atom cases)
+resolves the contribution to spin-orbit coupling by site.  Switches
+'<FONT size="+1"><tt>-vnit=1 --rs=1,0</tt></FONT>' cause <b>lmf</b> to execute one iteration only,
+and not to overwrite <FONT size="+1"><tt>rst.fe</tt></FONT>.
+
+<P> When SO is turned on the automatic symmetry finder is not used because the cubic symmetry must be reduced on account of
+the magnetic degrees of freedom.  Unfortunately without symmetry this calculation requires a
+very large number of <i>k</i>-points:
+<pre>
+  13824 irreducible QP from 13824 ( 24 24 24 )  shift= F F F
+</pre>
+
+You can include the symmetry manually.
+Uncomment the first <FONT size="+1"><tt>SYMGRP</tt></FONT> line and make it read as follows (remove all '<FONT size="+1"><tt>#</tt></FONT>'s!):
+<pre>
+SYMGRP i*r3d r2(1,1,0)  SOC
+</pre>
+<FONT size="+1"><tt>i*r3d</tt></FONT> and
+<FONT size="+1"><tt>r2(1,1,0)</tt></FONT> are
+<A href="tokens.html#SYMGRPcat">representations</A> of two elements of
+the cubic symmetry group; and are sufficient to generate all 48
+operations of the group.
+'<FONT size="+1"><tt>SOC</tt></FONT>' tells the symmetry finder to eliminate any symmetry operations that
+do not preserve <i>z</i>&rarr;<i>z</i>  (the spin quantization axis is along <i>z</i>.)
+
+<P> Redo the calculation with <FONT size="+1"><tt>SYMGRP</tt></FONT> modified:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vso=11 --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.so.zsym.001
+</pre>
+Compare <FONT size="+1"><tt>out.so.zsym.001</tt></FONT> and
+<FONT size="+1"><tt>out.so.nosym.001</tt></FONT>.  They will be very similar but not identical,
+e.g. the output-input density difference is
+<FONT size="+1"><tt>RMS DQ=8.96e-5</tt></FONT> in the no-symmetry case, but
+<FONT size="+1"><tt>RMS DQ=9.22e-5</tt></FONT> in the magnetic-symmetry case.
+These small differences are artifacts of finite machine precision, and
+also the way the charge density is symmetrized (the latter should
+disappear as the number of <b>G</b> vectors becomes infinite).
+
+<P> You can also use a "generalized" magnetic symmetry which will admit symmetry operations preserving
+not only <i>z</i>&rarr;<i>z</i> but also <i>z</i>&rarr;<i>&minus;z</i>.  This is not in general allowed,
+but it should be ok in the ASA (which retains only spherical parts of the charge density) and
+some special cases.  Change the <FONT size="+1"><tt>SYMGRP</tt></FONT> line to read:
+<pre>
+SYMGRP i*r3d r2(1,1,0)  SOC=2
+</pre>
+Repeat the calculation one more time:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vso=11 --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.so.zmsym.001
+</pre>
+Compare the three cases,
+<FONT size="+1"><tt>out.so.nosym.001</tt></FONT>,
+<FONT size="+1"><tt>out.so.zsym.001</tt></FONT> and
+<FONT size="+1"><tt>out.so.zmsym.001</tt></FONT>.
+
+<TABLE border="1">
+  <TBODY>
+  <TR>
+    <TD bgcolor="#888888"><FONT color="#ffffff">Symmetry </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">Orbital moment </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; &lt;L&sdot;S&gt; </FONT></TD>
+     <TD bgcolor="#888888"><FONT color="#ffffff">moment  </FONT></TD>
+     <TD bgcolor="#888888"><FONT color="#ffffff">ehf </FONT></TD>
+     <TD bgcolor="#888888"><FONT color="#ffffff">ehk </FONT></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> no sym </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 0.045587 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746431 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 2.2027323 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2.1708697 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2.1709634 </pre></TD>
+  </TR>
+
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> SOC    </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 0.045585 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746428 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 2.2026698 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2.1708717 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2.1708847 </pre></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> change   </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 2&times;10<sup>-6</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 3&times;10<sup>-9</sup> </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 6&times;10<sup>-5</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2&times;10<sup>-6</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 7&times;10<sup>-5</sup> </pre></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> SOC=2  </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 0.045586 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746430 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 2.2026771 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2.1708726 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 2.1708769 </pre></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> change   </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 1&times;10<sup>-6</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 1&times;10<sup>-9</sup> </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 5&times;10<sup>-5</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 3&times;10<sup>-6</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> 9&times;10<sup>-5</sup> </pre></TD>
+  </TR>
+
+ </TBODY>
+</TABLE>
+
+The important point here is that the spin orbit coupling energy can be
+resolved with a precision better than 0.05&mu;eV.  In high symmetry
+systems such as Fe, it can be of order 0.5&mu;eV.
+
+<h4><A name="SOcoupling.2"></A>2.2 Magnetic Anisotropy in Fe</h4>
+
+As a consequence of the L&sdot;S coupling the total energy
+depends on spin quantization axis.  The dependence of energy on
+orientation of this axis is the magnetocrystalline anisotropy (MAE).
+
+<P> In this section we show how to calculate the energy difference, <i>E</i><sub>001</sub>&minus;<i>E</i><sub>111</sub>.
+We do this in practice by rotating the crystal axes.  This rotates the spin quantization axis as it is taken to be along <i>z</i>.
+
+<P> It is of course possible to repeat the entire QS<i>GW</i> calculation in a rotated coordinate system.
+But because the MAE is very small (about one &mu;eV in Fe), it is both challenging and expensive.
+Instead, the LMTO package has the ability to rotate the structural data (lattice, basis, symmetry operations) internally.
+Token <FONT size="+1"><tt>STRUC_ROT</tt></FONT> serves this purpose: it points to a string defining the rotation matrix as
+a sequence of successive rotations about axes of your choosing, as described 
+<a href="rotations.html">here</a>.
+
+<P> You can rotate the <i>z</i> axis to (111) by (1) rotating around <i>z</i> by &pi;/4, then rotating around <i>y</i> by
+<FONT size="+1"><tt>acos(1/sqrt(3))</tt></FONT>.  Thus <FONT size="+1"><tt>ctrl.fe</tt></FONT> has this text:
+<pre>
+%ifdef rot
+        ROT=z:pi/4,y:acos(1/sqrt(3))  # For 111 direction
+        ROT=z:-pi/4,y:pi/2            # for 110 direction
+%endif
+</pre>
+Add <FONT size="+1"><tt>-vrot=t</tt></FONT> to the command line and the code will perform rotations on lattice and basis vectors, and symmetry group operations.  Thus
+<pre>
+  lmchk -vrot=t ctrl.fe `cat switches-for-lm`
+</pre>
+generates 
+<pre>
+                Plat                                  Qlat
+  -0.408248   0.707107   0.288675       -0.408248   0.707107   1.154701
+  -0.408248  -0.707107   0.288675       -0.408248  -0.707107   1.154701
+   0.816497   0.000000   0.288675        0.816497   0.000000   1.154701
+...
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z r2(1,0,1.4142136)
+</pre>
+The new <i>z</i> axis now points along  (111).  You can verify this because
+the sum of the three primitive lattice vectors which in the unrotated system points along (111), is now
+<FONT size="+1"><tt>(0,0,3&times;0.288675)</tt></FONT>.
+Note also that the symmetry generators involve a 3D rotation around the new <i>z</i> axis.
+
+<P> Both the charge density (in <FONT size="+1"><tt>rst.fe</tt></FONT>), and &Sigma; (in
+<FONT size="+1"><tt>sigm.fe</tt></FONT>) also need to be rotated.  This is not done automatically, but you can accomplish these rotations as follows:
+<pre>
+  lmf -vrot=f -vnit=1 ctrl.fe `cat switches-for-lm` '--wsig~rot=z:pi/4,y:acos(1/sqrt(3))'
+  lmf -vrot=t -vnit=0 --rs=101 ctrl.fe `cat switches-for-lm`
+  cp sigm2.fe sigm.fe
+</pre>
+The first step rotates <FONT size="+1"><tt>sigm.fe</tt></FONT> (note that you
+invoke <b>lmf</b> in the unrotated coordinate system).   The second
+rotates the sites densities because of <FONT size="+1"><tt>--rs=101</tt></FONT>.
+
+<P> Now repeat the band pass in the rotated coordinate system:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vrot=t -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.111
+</pre>
+You will see a slight loss of precision: <FONT size="+1"><tt>RMS DQ</tt></FONT> is now 4&times;10<sup>&minus;6</sup> instead of
+2&times;10<sup>&minus;7</sup>.  Other quantities are also slightly changed: the band energy is now <FONT size="+1"><tt>-22.248588</tt></FONT> 
+instead of <FONT size="+1"><tt>-22.248613</tt></FONT>.  These small differences are cannot be easily controlled; 
+but they are not small on the scale of the MAE; thus we want to inspect the MAE by looking directly at the orientation dependence of
+L&sdot;S.
+
+<P> SO coupling lowers the symmetry, as we have <A href="#section1">already seen</A>.  We must carry out the conversion to a R.S. &Sigma;:
+<pre>
+  lmf -vrot=t -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` --wsig:rs
+  mv sigm2rs.fe sigmrs.fe
+</pre>
+Confirm that we can replicate the band structure with now change in accuracy:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vrot=t --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.rssig.111
+</pre>
+
+Finally, repeat the steps for a <a href="#SOcoupling">band pass with SO coupling</a>, this time with a rotated lattice:
+<pre>
+  rm -f mixm.fe log.fe
+  mpix -np=12 lmf-MPIK -vrot=t -vso=11 --rsig:rs -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out
+</pre>
+'<FONT size="+1"><tt>out</tt></FONT>' should be one of <FONT size="+1"><tt>out.so.nosym.111</tt></FONT>,
+<FONT size="+1"><tt>out.so.zsym.111</tt></FONT>, or <FONT size="+1"><tt>out.so.zmsym.111</tt></FONT>, depending on your treatment of the symmetry operations.
+
+
+<TABLE border="1">
+  <TBODY>
+  <TR>
+    <TD bgcolor="#888888"><FONT color="#ffffff">Symmetry </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; &lt;L&sdot;S&gt (001) </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; &lt;L&sdot;S&gt (111) </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; Difference (&mu;eV)</FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; LDA (001) </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; LDA (111) </FONT></TD>
+    <TD bgcolor="#888888"><FONT color="#ffffff">&nbsp; Difference (&mu;eV)</FONT></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> no sym </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746431 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> -0.001746723 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 4.0&times;10<sup>-6</sup> </pre></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> SOC    </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746428 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746767 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 4.6&times;10<sup>-6</sup> </pre></TD>
+  </TR>
+
+  <TR>
+   <TD bgcolor="c5c1ff"> <pre> SOC=2  </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746430 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001746769 </pre></TD>
+   <TD bgcolor="feffc1"> <pre> 4.6&times;10<sup>-6</sup> </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001655874 </pre></TD>
+   <TD bgcolor="c5c1ff"> <pre> -0.001656072</pre></TD>
+   <TD bgcolor="feffc1"> <pre> 2.7&times;10<sup>-6</sup> </pre></TD>
+  </TR>
+
+ </TBODY>
+</TABLE>
+
+
+<h3><A name="AsAntisiteGaAs"></A>3 As Antisite Defect</h3>
+
+<h4><A name="AsAntisiteGaAs.1"></A>3.1 QS<i>GW</i> gap in GaAs </h4>
+
+<P> Some files associated with this section are very large and are bundled in
+<FONT size="+1"><tt>gastest.tar.gz</tt></FONT>.
+Unpack this tar file and copy the necessary input files to your working directory:<a href="#fn1" id="ref1"><sup>&dagger;</sup></a>
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float0.aug14/nk6-pbveryfast/* .
+  ln -s -f sigm sigm.gas
+</pre>
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT>: the &Sigma; file
+&nbsp;<FONT size="+1"><tt>sigm.gas</tt></FONT>&nbsp;
+and density file &nbsp;<FONT size="+1"><tt>rst.gas</tt></FONT>&nbsp;
+were created using
+<pre>
+lmgwsc --wt --openmp=6 --code2 --insul=9 --band:fn=syml --tol=1e-6 --getsigp --save= bas12.tpdc3.gwbas.float0.aug14/nk6-pbveryfast gas
+</pre>
+Verify that the input conditions result in a self-consistent potential:
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=8 lmf-MPIK -vnit=1 --rs=1,0 ctrl.gas `cat switches-for-lm` > out.2atom
+</pre>
+Note that the gap, which you can extract with
+<pre>
+  grep gap log.gas 
+</pre>
+is 1.77 eV. This is larger than the experimental gap (1.5 eV), as is 
+<a href="http://link.aps.org/abstract/PRL/v96/e226402">generally the case</a>
+with QS<i>GW</i>, but slightly
+smaller than the fully converged QS<i>GW</i> gap, because small
+basis sets (wave function and product basis) were used for efficiency's sake.
+This makes QS<i>GW</i> calculations in a 32 atom cell feasible using a small Beowulf cluster.
+
+<P> To set up the corresponding LDA calculation, do:
+<pre>
+  cp bas12.tpdc3.gwbas.float0.aug14/rst.lda rst.gas
+  rm -f sigm
+  rm -f mixm.gas log.gas
+  mpix -np=8 lmf-MPIK -vnit=1 -vsig=0 --rs=1,0 ctrl.gas `cat switches-for-lm` > out.2atom.lda
+</pre>
+The LDA gap is 0.35 eV.
+
+<h4><A name="AsAntisiteGaAs.2"></A>3.2 Range of &Sigma; </h4>
+
+In contrast to LDA+<i>U</i> or LDA+DMFT theory, where &Sigma; is assumed to
+be site-local, &Sigma; is inherently nonlocal.
+In GaAs it is rather long ranged.  Precisely what this means is basis-dependent;
+but we can address the range-dependence of &Sigma; in the LMTO basis in
+a systematic way.  In <a href="#section1">Section 1</a> you saw how to generate
+a &Sigma; file in real space.  Here we use the R.S. form of 
+&Sigma; and use the text editor to zero out pairwise
+&Sigma;<sub><b>R+T</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>.
+for |<b>R+T</b>&minus;<b>R</b>&prime;| &lt; <i>d</i>, varying
+<i>d</i> parameterically.
+
+<P> You can do this with the following instructions to the editor.  Set shell variable
+<FONT size="+1"><tt>d</tt></FONT> to some number, e.g. 12 (<FONT size="+1"><tt><i>d</i></tt></FONT> is in multiples of <FONT size="+1"><tt>alat</tt></FONT>).
+<pre>
+  cp bas12.tpdc3.gwbas.float0.aug14/nk6-pbveryfast/{sigm,rst.gas} .
+  lmf ctrl.gas `cat switches-for-lm` "--wsig~rs~edit~zero -shorten r>$d/10.66~q"
+  cp sigm2rs.gas sigmrs.gas 
+  mpix -np=8 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 ctrl.gas `cat switches-for-lm` 
+</pre>
+The first <b>lmf</b> command generates a real-space file &nbsp;<FONT size="+1"><tt>sigm2rs.gas</tt></FONT>, with a condition that
+matrix elements for neighbors more distant that <FONT size="+1"><tt><i>d</i>*alat</tt></FONT> are eliminated.
+The individual instructions to the &Sigma; editor are:
+<pre>
+   ~rs~edit                  tells the sigma editor to edit the r.s. sigma
+   ~zero -shorten r>$d/10.66 tells it to zero out all pairs beyond a radius of $d lattice constant (<FONT size="+1"><tt>alat=10.66</tt></FONT>).
+                             The -shorten modifier tells the editors to eliminate pairs in the R.S. sigma which have been zeroed out.
+   ~q                        Causes the sigma editor to quit, writing R.S. sigma.
+</pre>
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> The editor will operate interactively if you use `<FONT size="+1"><tt>--wsig~rs~edit</tt></FONT>'.
+You will get a prompt with the editor waiting for additional instructions.  In this case you would type something like
+<pre>
+  zero -shorten r>12/10.66 &lt;RET&gt;
+  q &lt;RET&gt;
+</pre>
+
+<P>  The editor should generate this table, for <FONT size="+1"><tt><i>d</i>=12</tt></FONT> :
+<pre>
+ Option : zero -shorten r>12/10.66
+ Pairs for range > 1.125704
+ site  nclus  incl   excl
+   1   1105    992    113
+   2   1105    992    113
+   3   1105    992    113
+   4   1105    992    113
+</pre>
+In the '<FONT size="+1"><tt>zero</tt></FONT>' context, `<FONT size="+1"><tt>incl</tt></FONT>' identifies how many pairs will be zeroed out, while `<FONT size="+1"><tt>excl</tt></FONT> identifies how many will not be affected.
+
+<P>
+The line &nbsp;`<FONT size="+1"><tt>cp sigm2rs.gas sigmrs.gas</tt></FONT>'&nbsp; must be executed before the band pass because <b>lmf</b> <i>writes</i> the R.S. self-energy to file &nbsp;<FONT size="+1"><tt>sigm2rs.<i>ext</i></tt></FONT>&nbsp; but <i>reads</i> it from &nbsp;<FONT size="+1"><tt>sigmrs.<i>ext</i></tt></FONT>.
+
+The <b>lmf-MPIK</b> command makes a band pass reading <FONT size="+1"><tt>sigmrs.gas</tt></FONT> just generated.
+See how the bandgap evolves for increasing values of <FONT size="+1"><tt><i>d</i></tt></FONT>.  
+You should get something like this table:
+<pre>
+   r     r/alat pairs/site  gap
+   8     0.750     27     1.24464
+  10     0.938     59     1.60097
+  11     1.031     65     1.55791
+  12     1.125    113     1.73541
+  13     1.219    169     1.73541
+  15.5   1.454    181     1.71941
+  16     1.500    259     1.72964
+  20     1.876    459     1.75633
+  25     2.345    893     1.74824
+  30     2.814   1099     1.76639
+  99     9.287   1105     1.76752
+</pre>
+The gap stops changing when <FONT size="+1"><tt><i>d</i></tt></FONT> is large enough to enclose about 113 pairs per site.
+Note, however, that the range is a function of the choice of basis set.
+
+<h4><A name="Ideal32atoms"></A>3.3 Ideal 32 atom supercell of GaAs</h4>
+
+Before doing the As antisite defect, we show how to construct input
+for an ideal 32 atom supercell of GaAs.  <b>lmscell</b> generates the
+structural data for a 32 atom bcc superlattice of GaAs.  Either of the following commands
+<pre>
+<sup>(1)</sup>  echo    -1 1 1  1 -1 1  1 1 -1 | lmscell --wsite~map~site ctrl.gas `cat switches-for-lm`
+<sup>(2)</sup>  echo m 3 -1 -1 -1 3 -1 -1 -1 3 | lmscell --wsite~map~site ctrl.gas `cat switches-for-lm`
+</pre>
+will write the site data in file <FONT size="+1"><tt>site.gas</tt></FONT>.
+<b>lmscell</b> builds the supercell from three vectors read from <FONT
+size="+1"><tt>stdin</tt></FONT>.   These commands perform the same function,
+but the first specifies the superlattice in Cartesian coordinates, while the latter
+specifies it in multiples of the original lattice vectors (note the preceding '<FONT
+size="+1"><tt>m</tt></FONT>').  The latter is somewhat safer because
+the lattice vectors are guaranteed a supercell of the original
+lattice.  <b>lmscell</b> writes a <FONT size="+1"><tt>site</tt></FONT> file because of 
+the  '<FONT size="+1"><tt>--wsite~map~site</tt></FONT>' construct:
+<pre>
+  --wsite    tells lmscell to write a site file
+  ~map       appends a table pointing to the sites in the original cell that generated the supercell.
+             (look at the bottom of the file)
+  ~site      names the site file
+</pre>
+
+<P>
+The first line of <FONT size="+1"><tt>site.gas</tt></FONT> contains data about the lattice vectors and number of atoms in the cell:
+<pre>
+% site-data vn=3.0 fast io=62 nbas=64 alat=10.66 plat= -1.0 1.0 1.0 1.0 -1.0 1.0 1.0 1.0 -1.0
+</pre>
+There are 32 atoms and 32 floating <i>s</i>
+orbitals centered at interstitial sites.  Floating orbitals don't have
+an associated augmentation sphere but they improve on the interstitial part
+of the atom-centered smoothed LMTO basis.  These extra orbitals are not necessary for the
+LDA but they make about 0.2 eV difference in the QS<i>GW</i> gap because of
+the rather minimal LMTO basis we are using.
+Minimal basis sets are a challenge for QS<i>GW</i>;
+we could omit these orbitals if we used the
+<A href="http://link.aps.org/doi/10.1103/PhysRevB.81.125117">"PMT" basis</A>
+which combines APW's with generalized LMTO's. 
+But at present only one-shot <i>GW</i> calculations are possible with
+this basis.  The next generation basis set (now under construction)
+should be good enough to surmount this problem.
+
+<P> The supercell needs a restart file and &Sigma; file.
+Both can be obtained by starting a new calculation from scratch, but we can
+use editors to generate them from the two-atom cell.
+The steps are:
+<pre>
+ <sup>(a)</sup> cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32ideal site.gas 
+ <sup>(b)</sup> lmf ctrl.gas `cat switches-for-lm` --iactiv '--rsedit~rs~scell site'
+ <sup>(c)</sup> lmf ctrl.gas `cat switches-for-lm` '--wsig~edit~scell site'
+ <sup>(d)</sup> cp rst2.gas rst.gas 
+ <sup>(e)</sup> mv sigm2rs.gas sigmrs.gas 
+ <sup>(f)</sup> cp bas12.tpdc3.gwbas.float.sep12/32asga/switches-for-lm switches-for-lm 
+</pre>
+<sup>(a)</sup> If <b>lmscell</b> is working properly, you have already generated <FONT size="+1"><tt>site.gas</tt></FONT>
+and this should not be necessary.  But different binary versions of <b>lmscell</b> may arrange
+the supercell in different site order.  Subsequent files used in this tutorial
+require &nbsp;<FONT size="+1"><tt>sigm</tt></FONT>&nbsp; and &nbsp;<FONT size="+1"><tt>rst.gas</tt></FONT>&nbsp;
+corresponding to the &nbsp;<FONT size="+1"><tt>site</tt></FONT>&nbsp; file they were generated from.
+To ensure consistency, use the one in the &nbsp;<FONT size="+1"><tt>32asga</tt></FONT>&nbsp; directory.
+
+<P>
+<sup>(b)</sup> This command uses the restart file editor to make a density for the supercell.
+<pre>
+  --rsedit     invokes the restart file editor
+  ~rs          tells the editor to read the restart file from disk
+  ~scell site  tells the editor to generate a density for a supercell defined by the site file.
+</pre>
+
+<P>
+<sup>(c)</sup> This command uses the &Sigma; file editor to make a &Sigma; file for the supercell
+<pre>
+--wsig~edit    invokes the Sigma editor
+~scell site    generates a (real space) sigma for the supercell defined by the site file.
+</pre>
+&Sigma; files for supercells are always written real-space format, since it circumvents
+ambiguities with <i>k</i> point synchronization.
+
+<P> <sup>(d,e)</sup> the restart density of the supercell is written to `<FONT size="+1"><tt>rst2.<i>ext</i></tt></FONT>.'
+and the R.S. &Sigma; file is written to <FONT size="+1"><tt>sigm2rs.<i>ext</i></tt></FONT>.
+
+<P> <sup>(f)</sup> For the supercell you can reduce the number of <i>k</i>-points.  This modified `<FONT size="+1"><tt>switches-for-lm</tt></FONT>' file
+mainly reduces the number of k divisions.
+
+<P> The &nbsp;<FONT size="+1"><tt>ctrl</tt></FONT>&nbsp; file is
+constructed to enable you to read site information (lattice and basis
+vectors) from a &nbsp;<FONT size="+1"><tt>site</tt></FONT>&nbsp;
+file, in these lines:
+<A name="sitefile"></A>
+<pre>
+% ifdef file>1
+        FILE=site{file}
+SITE    FILE=site{file}
+% elseif file
+        FILE=site
+SITE    FILE=site
+% endif
+</pre>
+When you invoke a program like
+<b>lmf</b> with &nbsp;<FONT size="+1"><tt>-vfile=t</tt></FONT> or <FONT size="+1"><tt>-vfile=1</tt></FONT>,
+it will read lattice and basis vectors from &nbsp;<FONT size="+1"><tt>site.gas</tt></FONT>
+and ignore data in <FONT size="+1"><tt>STRUC</tt></FONT> and <FONT size="+1"><tt>SITE</tt></FONT> categories.
+Use &nbsp;<FONT size="+1"><tt>-vfile=<i>n</i></tt></FONT>&nbsp; and these data are read from 
+&nbsp;<FONT size="+1"><tt>site<i>n</i>.gas</tt></FONT>.
+
+<P> 
+With the preceding setup, the ideal GaAs crystal for a 32 atom supercell can be calculated with the same input file.
+Confirm that the 32 atom supercell is indeed self-consistent:
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 -vfile=1 ctrl.gas `cat switches-for-lm` > out.32.ideal
+</pre>
+You will see the input density and potential files, <FONT size="+1"><tt>(rst,sigm).gas</tt></FONT>, generate a nearly but not exactly self-consistent output:
+<pre>
+ mixrho:  sought 3 iter from file mixm; read 0.  RMS DQ=9.46e-5
+</pre>
+This is because the <i>k</i>-mesh is different in the supercell: if you
+were to do these steps with a fine mesh for both initial calculation and supercell calculations
+the <FONT size="+1"><tt>RMS DQ</tt></FONT> will be small in the supercell.
+Note that the bandgap, <FONT size="+1"><tt>1.75595 eV</tt></FONT>, is essentially identical
+to the 2-atom cell.
+
+<h4><A name="AsAntisite32atoms"></A>3.4 As Antisite Defect in an unrelaxed 32 Atom Supercell of GaAs </h4>
+
+Here we set up starting conditions for an As antisite defect.  The self-consistent calculation
+requires that we do QS<i>GW</i> in a 32-atom cell.  It's expensive, so we want to create
+a good starting point.  We need a trial starting density and &Sigma;.
+<P>
+Consider first the restart file.  Make a trial density this way:
+<pre>
+  lmf -vfile=t ctrl.gas `cat switches-for-lm` '--rsedit~rs~show~chsite 1,17~savea~a'
+</pre>
+The last command does the following
+<pre>
+  --rsedit~rs    invokes the restart file editor and reads file rst.<i>ext</i> from disk
+  ~show          prints out information related to the local and interstitial densities
+  ~chsite 1,17   pokes the local densities (true, smooth, core) currently belonging to site 17
+                 (an As atom) into site 1
+  ~savea~a'      write the density in ascii format to file rsta.<i>ext</i>, and exit.
+</pre>
+The site density subsitution (17&rarr;1) does not conserve charge.  To compensate for this
+the editor makes a smoothed version of the atomic density for a Ga at site 1, 
+a corresponding atomic density for an As at site 1, and takes the difference.  This difference
+times an appropriate factor so as to render the new entire density charge neutral.
+
+That is the meaning of the output after `<FONT size="+1"><tt>chsite 1,17</tt></FONT>':
+<pre>
+  ovlpfa: overlap smooth part of FA densities
+   site   1  spec  1  pos  0.0000  0.0000  0.0000  Qsmooth 5.134144
+   total smooth Q = 5.134144
+
+   Starting charges:   Qi = 166.579231  Sum QL = -166.579231  tot = 0.000000  QL(ib) = -4.601427  Qfa(ib) = 5.134144
+
+   ovlpfa: overlap smooth part of FA densities
+   site   1  spec  1  pos  0.0000  0.0000  0.0000  Qsmooth 6.085365
+   total smooth Q = 6.085365
+
+   After substitution: Qi = 166.579231  Sum QL = -167.787578  tot = -1.208347  Qfa(new ib) = 6.085365
+   Add 1.270312 * rhos(ib) to smrho 
+   Final charges: Qi = 167.787578  Sum QL = -167.787578  tot = 0.000000 
+</pre>
+
+This makes a rather rough guess for the self-consistent density, but it
+is an improvement over a superposition of atomic densities: errors are
+mostly restricted in the region of the defect.  Note the factor <FONT
+size="+1"><tt>1.270312</tt></FONT>.  If the true density really were a
+superposition of atomic densities this "patch" would be exact and the
+factor should be exactly 1.  It is not exactly true, but this
+construction is not such a bad guess for the true density with an
+antisite defect.  A choice of 1 would also be a reasonable way to
+"patch" the interstitial density, but the factor is determined from
+the constraint that the system be charge neutral.
+
+<P> We now have a reasonable starting density for an 32 atom cell with an As antisite at the origin.
+To distinguish different configuration we will use '<FONT size="+1"><tt>site.gas</tt></FONT>' to 
+define the supercell of the ideal GaAs lattice,  '<FONT size="+1"><tt>site2.gas</tt></FONT>' 
+the supercell of with an As antisite.  '<FONT size="+1"><tt>site2.gas</tt></FONT>' 
+and '<FONT size="+1"><tt>site.gas</tt></FONT>' differ only in that the label of the first site change
+from '<FONT size="+1"><tt>C1</tt></FONT>' to '<FONT size="+1"><tt>A1</tt></FONT>'.
+Here we just copy a file where the change was made (and simultaneously changes in the last column for 
+<A href="#AsAntisiteLatticeRelaxation">lattice relaxations</A>).
+<BR>
+Make a trial R.S. &Sigma; this way:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32As site2.gas
+  lmf -vfile=2 --rs=2 -vsig=11 --rsig:null ctrl.gas -vnkgw=1 `cat switches-for-lm` '--wsig~rs~edit~readx sigmrs~merge -sigbar 0~zero ib=1~zero -shorten r>10/10.66~q'
+  mv sigm2rs.gas sigmrs.gas
+</pre>
+It's done this way because we cannot directly use
+<FONT size="+1"><tt>sigmrs</tt></FONT> generated for the ideal cell. If we try the reader will detect a mismatch in the hamiltonian dimension and abort.
+<FONT size="+1"><tt>--rsig:null </tt></FONT> tells <b>lmf</b> to create a '<FONT size="+1"><tt>null</tt></FONT>' &Sigma; array, appropriately dimensioned but with nothing in it.
+
+<P> The &Sigma; editor enables us to accomplish what we need through the '<FONT size="+1"><tt>merge</tt></FONT>' feature.
+Breaking down the extra switches
+<pre>
+  -vfile=2             The input file reads site data from site2; see the <A href="#sitefile">snippet of ctrl.gas</A>
+  --rs=2               Read rst file from ascii rsta.<i>ext</i>
+  -vsig=11             skips symmetrization of &Sigma; file
+  --rsig:null          allocates a R.S. sigma file with no content.
+</pre>
+and the instruction to the &Sigma; editor:
+<pre>
+  --wsig~rs~edit       tells lmf to the enter the sigma editor and work with a R.S. sigma.
+  ~readx sigmrs        read file sigmrs into an auxilliary area, ready to merge with the main file
+  ~merge -sigbar 0     merge all the pairs in the auxilliary file it can match with the original file.  
+                       Also copy the average diagonal part for high-lying states.
+  ~zero ib=1           zero out &Sigma;<sub><b>R</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>(<b>k</b>) for any pair that connects to the first site.
+                       These matrix elements cannot be easily estimated.
+  ~zero -shorten r>10/10.66
+                       eliminate all &Sigma;<sub><b>R</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>(<b>k</b>) 
+                       for which |<b>R</b>&minus;<b>R</b>&prime;|>10. Distant neighbors have relatively minor effect.  
+                       In any case this is only a trial sigma QS<i>GW</i> will generate self-consistent results.
+  ~q                   Exit the editor and write a R.S. sigma.
+</pre>
+
+<h5><A name="AsAntisite32atomsscrho"></A>Self-consistent starting density</h5>
+
+For a <i>fixed</i> sigma, we can make the density self-consistent.  Since self-consistency in &Sigma; is more
+expensive than self-consistency in the density, this is generally advisable.
+Proceed as follows:
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK --rsig:rs --rhopos -vnit=1 -vbeta=1 -vfile=2 --rs=2 ctrl.gas `cat switches-for-lm` > out.32asga.0it
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK --rsig:rs --rhopos -vfile=2 ctrl.gas `cat switches-for-lm` >> out.32asga.0it
+</pre>
+You can skip the first invocation of <FONT size="+1"><tt>lmf-MPIK</tt></FONT> but it is better to 
+ make a single pass with mixing <FONT size="+1"><tt>beta</tt></FONT>=1, and remove the mixing file.
+This is because the density
+is rather strange, the nonspherical parts of the defect density violate symmetry, for example.
+Letting it go through a single pass cleans up the guess.
+
+<P> With this rude guess for Sigma, a gap of about 0.82 eV is predicted: try
+<pre>
+  grep gap out.32asga.0it
+</pre>
+The As forms a filled defect band at midgap.  Our starting guess for the QS<i>GW</i> predicts
+a gap of 0.82 eV, indicating that the top of this band is 0.82 eV below the conduction band minimum.
+
+
+<h5><A name="QSGWAsAntisite32atomsideal"></A>QS<i>GW</i> Self-consistency</h5>
+
+<P> At this point we have self-consistent density, <FONT size="+1"><tt>rst.gas</tt></FONT>, for a given trial <FONT size="+1"><tt>sigmrs.<i>gas</i></tt></FONT>.
+The next step is to do a QS<i>GW</i> calculation to make the &Sigma; properly self-consistent as well. 
+Before starting the QS<i>GW</i> cycle,
+convert the r.s. &nbsp;<FONT size="+1"><tt>sigmrs</tt></FONT> into the usual k-dependent &nbsp;<FONT size="+1"><tt>sigm</tt></FONT> form.
+<pre>
+  lmf -vfile=2 --rsig:rs ctrl.gas --wsig `cat switches-for-lm` 
+  cp sigm2.gas sigm
+</pre>
+Notice that the <i>k</i>-mesh (2&times;2&times;2 divisions, controlled through &nbsp;<FONT size="+1"><tt>-vnkgw=2</tt></FONT> in <FONT size="+1"><tt>switches-for-lm</tt></FONT>) is smaller than the mesh of the original 2-atom cell.
+
+<P>
+Do the QS<i>GW</i> calculation:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/GWinput .
+  lmgwsc --wt --openmp=12 --code2 --sym --metal --tol=2e-5 --getsigp -vfile=2 gas >> out.job
+</pre>
+
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> This is a time-consuming step.
+You do not need to do it to follow this tutorial.
+<P>
+To see the result, do the following:
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/* .
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/{switches-for-lm,sigm.gas,rst.gas} .
+  ln -s -f sigm sigm.gas
+</pre>
+Confirm that these files are (nearly) self-consistent and generate the proper bandgap:
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK -vnit=1 --rs=1,0 -vfile=2 ctrl.gas `cat switches-for-lm` > out.32.defect
+</pre>
+The As forms a filled defect band at midgap.  The QS<i>GW</i> calculation predicts
+a gap of 0.57 eV, indicating that the top of this band is 0.57 eV below the conduction band minimum.
+
+These results are used <A href="#AsAntisite128atoms">below</A>.
+
+<h4><A name="AsAntisiteLatticeRelaxation"></A>3.5 Lattice relaxation using the LDA </h4>
+
+In this section we show how to relax the atoms around the As antisite defect.  
+First repeat the steps of Section 3.3, but in an LDA context; we don't need to worry about &Sigma;.
+
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/* .
+  cp bas12.tpdc3.gwbas.float.sep12/rst.lda rst.gas
+
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32ideal site.gas 
+  lmf ctrl.gas `cat switches-for-lm` --iactiv '--rsedit~rs~scell site'
+  cp rst2.gas rst.gas 
+  cp switches-for-lm.32atom switches-for-lm
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32As site2.gas
+
+  lmf -vfile=t ctrl.gas `cat switches-for-lm` '--rsedit~rs~show~chsite 1,17~savea~a'
+
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK -vsig=0 --rhopos -vnit=1 -vbeta=1 -vfile=2 --rs=2 ctrl.gas `cat switches-for-lm` > out.lda.32asga.unrelaxed
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK -vsig=0 --rhopos -vfile=2 ctrl.gas `cat switches-for-lm` >> out.lda.32asga.unrelaxed
+</pre>
+
+Normally we relax the entire lattice, but because we will want to
+do a large cell later including an approximate QS<i>GW</i> self-energy, we will relax only the four neighbors nearest to the As antisite.
+Relaxing all the atoms complicates synchronization when we build a large supercell from a smaller one.
+It has <A href="http://link.aps.org/doi/10.1103/PhysRevB.31.1139">long been
+thought</A> that in zincblende semiconductors, the NN relaxation is
+the dominant one, and (while there can be exceptions) it is so in this case.
+
+
+To relax the atoms we use the molecular statics feature of <b>lmf</b>.  
+
+You can find which atoms are the four neighest neigbors using <b>lmchk</b>:
+<pre>
+  lmchk -vfile=2 ctrl.gas `cat switches-for-lm` --shell:tab 
+</pre>
+The table for the first site (As antisite) looks like:
+<pre>
+# neighbor list for site 1, class A1      
+    1   1   0.0000000   0.0000000   0.0000000     0.0000000  A1       A1      
+    1  31  -0.2500000  -0.2500000   0.2500000     0.4330127  A1       A12     
+    1  17   0.2500000   0.2500000   0.2500000     0.4330127  A1       A12     
+    1  62  -0.2500000   0.2500000   0.2500000     0.4330127  A1       EC1     
+    1  56   0.2500000   0.2500000  -0.2500000     0.4330127  A1       EC1     
+    1  32   0.2500000  -0.2500000  -0.2500000     0.4330127  A1       A12     
+    1  49  -0.2500000  -0.2500000  -0.2500000     0.4330127  A1       EC1     
+    1  64   0.2500000  -0.2500000   0.2500000     0.4330127  A1       EC1     
+    1  30  -0.2500000   0.2500000  -0.2500000     0.4330127  A1       A12     
+</pre>
+There are four actual nearest neighbors (sites 17,30,31,32) and four floating sites (which we ignore).
+You can find the same information looking at the forces in <FONT size="+1"><tt>out.lda.32asga.unrelaxed</tt></FONT>:
+at self-consistency they look like:
+<pre>
+ Forces, with eigenvalue correction
+  ib           estatic                  eigval                    total
+   1    0.00    0.00    0.00     0.00    0.00    0.00     0.00    0.00    0.00
+   2   11.50   -4.63   11.50   -10.25    2.49  -10.25     1.26   -2.14    1.26
+  ...
+  16  -11.52  -11.52   -4.65    10.26   10.26    2.50    -1.26   -1.26   -2.15
+  17   29.51   29.51   29.51    -3.02   -3.02   -3.02    26.49   26.49   26.49
+  18   -0.87  -18.03   -0.87     1.08   18.52    1.08     0.21    0.49    0.21
+  ...
+  29    0.87  -18.03    0.87    -1.08   18.52   -1.08    -0.21    0.49   -0.21
+  30  -29.51   29.51  -29.51     3.02   -3.02    3.02   -26.49   26.49  -26.49
+  31   29.51  -29.51  -29.51    -3.02    3.02    3.02    26.49  -26.49  -26.49
+  32  -29.51  -29.51   29.51     3.02    3.02   -3.02   -26.49  -26.49   26.49
+  ...
+</pre>
+Sites 17, 30, 31, 32 all have sizeable forces directed at the central atom; all the remaining forces are small.
+This fact confirms the "two-center" bond character of this material.
+
+<P> You can constrain the relaxation by adjusting the last column in file <FONT size="+1"><tt>site2</tt></FONT>.
+It is a compound of three digits (for <i>x</i>,<i>y</i>,<i>z</i>); set to 1 to relax (default), and 0
+to constrain.  File bas12.tpdc3.gwbas.float.sep12/32asga/site.32As already has set the parameters such that
+only sites 17, 30, 31, 32 will relax (see the three digits in the last column).  
+
+<P> <b>lmf</b> gets its inputs for relaxation from the tokens inside <FONT size="+1"><tt>DYN_MSTAT</tt></FONT>.
+In the present case it reads:
+<pre>
+DYN     MSTAT[MODE=6 HESS=t XTOL=.000 GTOL=0.005 STEP=.005 NKILL=0] NIT={relax}
+</pre>
+If <FONT size="+1"><tt>DYN_MSTAT_MODE</tt></FONT> is nonzero, <b>lmf</b> will try to relax the lattice.
+<FONT size="+1"><tt>MODE=6</tt></FONT> means relax using the Broyden method.
+(To find this out readily, run <FONT size="+1"><tt>lmf --input</tt></FONT> and look for <FONT size="+1"><tt>DYN_MSTAT_MODE</tt></FONT>.
+<FONT size="+1"><tt>ctrl.gas</tt></FONT> is configured DYN_NIT</tt></FONT> defaults to zero; we will set it differently using <FONT size="+1"><tt>-vrelax=#</tt></FONT>.
+It will give you a brief descriptions of all tokens in
+<FONT size="+1"><tt>DYN_MSTAT</tt></FONT>; look 
+<A href="tokens.html#DYNcat">here</A> for a fuller description.)
+
+<P> <b>lmf</b> relaxes lattices with a double loop: in the inner loop it makes the
+density self-consistent for a given set of coordinates, so that the forces converge.
+In the outer loop <b>lmf</b> relaxes the atoms <FONT size="+1"><tt>DYN_NIT</tt></FONT> iterations,
+or until convergence is reached.
+
+<P> Do the relaxation:
+<pre>
+  rm -f mixm.gas log.gas hssn.gas
+  mpix -np=4 lmf-MPIK -vsig=0 --rhopos -vrelax=10 -vfile=2 ctrl.gas `cat switches-for-lm` > out.lda.32asga.relax
+</pre>
+The meaning of the command-line switches are:
+<pre>
+  -vsig=0     assigns HAM_RDSIG={sig} to 0, (see <FONT size="+1"><tt>ctrl.gas</tt></FONT>) which supresses reading in a &\Sigma; file
+  -vrelax=10  assigns DYN_NIT={relax} to 10 : carries out a maximum of 10 relaxation steps using the Broyden method.
+  -vfile=2    reads structural and site data from file site2; see <A href="#sitefile">this snippet of ctrl.gas</A>
+  --rhopos    This switch adds positive numbers to the local true and smooth densities to eliminate points of negative density.
+              Not necessary for this case, but it can happen that the local density can be negative in spots.
+              It is an unfortunate byproduct of the unique augmentation procedure this method uses.
+</pre>
+
+You can see how the relaxation algorithm process with the following:
+<pre>
+  grep RELAX out.lda.32asga.relax 
+</pre>
+You should get something like this:
+<pre>
+ RELAX:  completed Broyden iter 1;  max shift=0.00500  |g|=0.0917
+ RELAX:  completed Broyden iter 2;  max shift=0.00500  |g|=0.0509
+ RELAX:  completed Broyden iter 3;  max shift=0.00178  |g|=0.0134
+ RELAX:  converged to tolerance;  max shift=1.22e-4  |g|=8.57e-4
+</pre>
+<FONT size="+1"><tt>|g|</tt></FONT> is an average of the forces on the atoms free; it has converged
+to a negligible value.  Look at the table under
+<pre>
+ Forces, with eigenvalue correction
+</pre>
+for this relaxed case and you should see that the forces on sites 17,30,31,32 are negligible,
+but there are forces of order 10 on the twelve 2<sup>nd</sup> neighbors.  If all the atoms
+were allowed to relax all the forces would vanish; alternatively you can relax all first and second
+neighbors only, and the residual forces would also be small.
+
+<P> For use in the next sections, the rst file was copied to <FONT size="+1"><tt>bas12.tpdc3.gwbas.float.sep12/32asga/rst.32atom.lda.relax</tt></FONT>
+
+<h4><A name="Relax32atoms"></A>3.6 QSGW calculation of As<sub>Ga</sub> in a 32 atom cell with LDA lattice relaxation </h4>
+
+We can proceed to a QSGW calculation of this cell with LDA-relaxed coordinates, using results of the previous section.
+You can pick up directly from the prior section.  Or start from a blank directory and do the following steps
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/switches-for-lm.32atom switches-for-lm
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32As site2.gas
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/rst.32atom.lda.relax rst.gas
+</pre>
+Confirm that the density is self-consistent and that the forces on sites 17,30,31,32 are negligible.
+<pre>
+mpix -np=4 lmf-MPIK -vsig=0 -vnit=1 --rs=1,0 -vfile=2 ctrl.gas `cat switches-for-lm` > out.lda.32asga.relaxed
+</pre>
+
+We need a trial &Sigma;.  The easiest choice is to start from the LDA
+as before, but as these calculations are expensive we will use the
+unrelaxed &Sigma;.  We must take care that the site positions
+synchronize, including shifts by lattice vectors that cause <A
+href="gw.html#wsig">phase shifts</A>.  To compare the internal site
+positions in the unrelaxed lattice to the relaxed one, do the
+following:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/rst.32atom.lda rst.gas
+  lmf -vnit=0 --rs=1,0 -vfile=2 --wpos=pos0 ctrl.gas `cat switches-for-lm` 
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/rst.32atom.lda.relax rst.gas
+  lmf -vnit=0 --rs=1,0 -vfile=2 --wpos=pos ctrl.gas `cat switches-for-lm` 
+  diff pos0.gas pos.gas 
+</pre>
+As we require, sites 17,30,31,32 have shifted but nothing else.
+There are no shifts by lattice translation vectors, so we may proceed without worrying about phase shifts.
+Use the unrelaxed &Sigma; : and make the density self-consistent:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/sigm.gas sigm
+  ln -s -f sigm sigm.gas
+  rm mixm.gas log.gas
+  mpix -np=4 lmf-MPIK -vnit=10 -vconvc=1e-6 -vfile=2 ctrl.gas `cat switches-for-lm` > out
+</pre>
+The conditions have been set up for a QS<i>GW</i> calculation.
+<BR><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> The calculation is
+expensive and we do not carry it out here, but  use the &Sigma;
+file it would generate.  See <FONT
+size="+1"><tt>bas12.tpdc3.gwbas.float.sep12/32asga/infile</tt></FONT>
+for the script that does the calculation.
+
+<h4><A name="Ideal128atoms"></A>3.8 Ideal 128 atom cell </h4>
+
+The "defect level" in the 32 atom cell is actually a band.  But a 128 atom cell is
+large enough to make the defect bandwidth small enough to determine position of the level.
+Before doing the defect, we show how to make <FONT size="+1"><tt>rst.gas</tt></FONT>
+and <FONT size="+1"><tt>sigmrs.gas</tt></FONT> for an ideal 128 atom cell.  In the
+<A href="#AsAntisiteLatticeRelaxation">next section</A> we will do the 128 atom antisite.
+
+<P> 1. Make a superlattice of the ideal 32 atom cell, essentially 
+<A href="#Ideal32atoms">repeating the procedure</A> but now restricting the range of &Sigma; to 16 a.u.:
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/* .
+  cp bas12.tpdc3.gwbas.float.sep12/rst.gas .
+  ln -s -f sigm sigm.gas
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32ideal site.gas 
+  lmf ctrl.gas `cat switches-for-lm` --iactiv '--rsedit~rs~scell site'
+  lmf ctrl.gas `cat switches-for-lm` '--wsig~edit~zero -shorten r=16~scell site'
+  cp rst2.gas rst.gas 
+  mv sigm2rs.gas sigmrs.gas 
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/switches-for-lm switches-for-lm 
+</pre>
+Confirm that the density is (approximately) self-consistent and that the bandgap is close to 1.75 eV:
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 -vfile=1 ctrl.gas `cat switches-for-lm` > out.32.short
+</pre>
+
+2. Make a superlattice of the ideal 128 atom cell.  This requires another site file:
+<pre>
+echo 0 2 2  2 0 2  2 2 0 | lmscell -vfile=1 --wsite~map~sitey ctrl.gas `cat switches-for-lm`
+</pre>
+we will see that 128 atom is a little light
+If you want to be still more ambitious you could make a 256 atom cell instead:
+<pre>
+echo m 2 0 0  0 2 0  0 0 2 | lmscell -vfile=1 --wsite~map~sitey ctrl.gas `cat switches-for-lm`
+</pre>
+
+We build on the 32 atom ideal cell to make a 128 atom superlattice of it.
+We will also need similar file the first site As substitute for Ga; this you must do by modifying
+the ideal 128 atom site file with a text editor.
+Since there is a profileration of site files, this table should help to keep them straight:
+<pre>
+  name     purpose
+  site     Ideal 32 atom cell
+  site2    32 atom cell with As antisite
+  sitey    Ideal 128 atom cell
+  sitez    128 atom cell with As antisite
+</pre>  
+Enlarge <FONT size="+1"><tt>rst.gas</tt></FONT> and <FONT size="+1"><tt>sigmrs.gas</tt></FONT> for a 128 atom unit cell:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/site.128ideal sitey.gas 
+  lmf -vfile=1 ctrl.gas `cat switches-for-lm` '--rsedit~rs~scell sitey'
+  lmf -vfile=1 ctrl.gas `cat switches-for-lm` --rsig:rs '--wsig~edit~zero -shorten r=16~scell sitey'
+  cp rst2.gas rst.gas 
+  mv sigm2rs.gas sigmrs.gas 
+</pre>
+<FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> It would seem that the
+128 atom supercell could be generated directly from the 2-atom cell.
+This is not done because we need to preserve synchronization between &Sigma;
+files in 32 atom and 128 atom cells.  So we perform the construction
+in two stages.
+
+<P> 3. Confirm that these files are (nearly) self-consistent and generate the proper bandgap:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/switches-for-lm switches-for-lm 
+  mpix -np=12 lmf-MPI --rsig:rs -vnit=1 --rs=1,0 -vfile=3 ctrl.gas `cat switches-for-lm` > out.128.ideal
+</pre>
+You can use either <b>lmf-MPI</b> or <b>lmf-MPIK</b> in this last step.
+
+<h4><A name="AsAntisite128atoms"></A></A>3.7 As Antisite Defect Level in a 128 atom cell </h4>
+
+<P> Were it feasible, we could perform a QS<i>GW</i> calculation
+in the 128 atom cell just as we did for the 32 atom case.  But 
+with the current QS<i>GW</i> implementation the
+computational time scales as <i>N</i><sup>4</sup> and memory as
+<i>N</i><sup>3</sup>, and such a calculation is too expensive.
+
+<P> As a compromise, we can embed parts of &Sigma;<sub><b>R+T</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub>.
+generated for a 32-atom cell in the 128 atom cell.
+Using the `near sightedness' principle we can
+extract &Sigma;<sub><b>R+T</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub> for
+<b>R+T</b>,<b>R&prime</b> pairs in the vicinity of the antisite, and
+retain
+&Sigma;<sub><b>R+T</b><i>L</i>,<b>R</b>&prime;<i>L</i>&prime;</sub> of
+the bulk for all other pairs.  The principle is exact in the limit of
+the `cutout' region being small.  We can test convergence by monitoring
+how the electronic structure changes with the size of the cutout region.
+
+<P> 1. Make a superlattice of the defect 32 atom cell, essentially doing the analog
+of the first step in the <A href="#Ideal128atoms">prior section</A>.
+
+For this we need the final step of <A ref="AsAntisite32atoms">the 32 atom defect calculation</A>.
+Repeat the setup of that calculation:
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/* .
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/{switches-for-lm,sigm.gas,rst.gas} .
+  ln -s -f sigm sigm.gas
+</pre>
+Next enlarge <FONT size="+1"><tt>rst.gas</tt></FONT> and <FONT size="+1"><tt>sigmrs.gas</tt></FONT> for a 128 atom unit cell (with 4 defects):
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/site.4As.128 sitey.gas
+  lmf -vfile=2 ctrl.gas `cat switches-for-lm` '--rsedit~rs~scell sitey'
+  lmf -vfile=2 ctrl.gas `cat switches-for-lm` '--wsig~edit~zero -shorten r=16~scell sitey'
+  cp rst2.gas rst.gas 
+  cp sigm2rs.gas sigmrs.gas 
+</pre>
+In this case <FONT size="+1"><tt>sitey.gas</tt></FONT> was generated in the same manner as the ideal cell:
+<pre>
+  echo 0 2 2  2 0 2  2 2 0 | lmscell -vfile=2 --wsite~map~sitey ctrl.gas `cat switches-for-lm`
+</pre>
+
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/switches-for-lm switches-for-lm 
+  mpix -np=12 lmf-MPI --rsig:rs -vnit=1 --rs=1,0 -vfile=3 ctrl.gas `cat switches-for-lm` > out.128.4defect
+</pre>
+
+<P> As the final step, we start from the ideal 128 atom cell and merge sections of &Sigma; from the 128 supercell of the defect.
+The &Sigma; file will be needed for importing, so rename it:
+<pre>
+  mv sigmrs.gas rssigm.gas
+</pre>
+
+1. Repeat steps 1 and 2 of the <A href=#Ideal128atoms>ideal 128 atom cell</A>.
+
+<P> 2. We need to do a similar kind of Kabuki dance to
+<A href=#AsAntisite32atoms>generate a trial restart file</A>, this time for the As antisite in a 128 atom supercell:
+<pre>
+  lmf -vfile=3 ctrl.gas `cat switches-for-lm` '--rsedit~rs~show~chsite 1,65~savea~a'
+  cp rst2.gas rst.gas
+</pre>
+Next we need to generate the &Sigma; file:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/site.1As.128 sitez.gas
+  lmf -vfile=4 --rs=2 -vsig=11 --rsig:null ctrl.gas -vnkgw=1 `cat switches-for-lm` '--wsig~rs~edit~zero -short r=16~readx sigmrs~merge -sigbar 0~readx rssigm~merge 1~q'
+</pre>
+As <A href=#AsAntisite32atoms>in the 32 atom antisite case</A>, we must start from a null template and then populate it.
+The meaning of the parts of <FONT size="+1"><tt>--wsig</tt></FONT> are as follows:
+<pre>
+  zero -short r=16     Adjust the starting template so that only neighbors within 16 a.u. are included
+  readx sigmrs         Load into auxillary storage the real space &Sigma; file of the ideal cell
+  merge -sigbar 0      merge all the pairs in the auxilliary file it can match with the original file.  Also copy the average diagonal part for high-lying states 
+  readx rssigm         Load into auxillary storage the real space &Sigma; file of the 128 superlattice of the 32 atom As antisite defect cell
+  merge 1              merge all the pairs in the auxilliary file connnected to site 1 into the main &Sigma; array
+  q                    exit, writing sigm2rs.gas
+</pre>
+We will take this &Sigma; (more precisely $\Sigma_{xc}-V_{xc}^{\rm LDA}$) as the proper one.
+<pre>
+  mv sigm2rs.gas sigmrs.gas
+  rm -f mixm.gas log.gas
+  mpix -np=12 lmf-MPI --rsig:rs --rhopos -vnit=1 -vbeta=1 -vfile=4 --rs=2 ctrl.gas `cat switches-for-lm` > out.128asga
+  rm -f mixm.gas log.gas
+  mpix -np=12 lmf-MPI --rsig:rs --rhopos -vfile=4 ctrl.gas `cat switches-for-lm` >> out.128asga
+</pre>
+
+<h4><A name="AsAntisite128LDA"></A>3.7 LDA calculation of As Antisite in a 128 atom cell with Lattice relaxation</h4>
+
+1. do the LDA analog of the QP calculation for <A href="Ideal128atoms"></A>ideal 128 atom cell</h4>.
+
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/* .
+  cp bas12.tpdc3.gwbas.float.sep12/rst.lda rst.gas
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32ideal site.gas 
+  lmf ctrl.gas `cat switches-for-lm` --iactiv '--rsedit~rs~scell site'
+  cp rst2.gas rst.gas 
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/switches-for-lm switches-for-lm 
+</pre>
+Confirm that the density is (approximately) self-consistent
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=4 lmf-MPIK -vsig=0 -vnit=1 --rs=1,0 -vfile=1 ctrl.gas `cat switches-for-lm` > out.32.ideal.lda
+</pre>
+Build the 128 atom cell:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/site.128ideal sitey.gas 
+  lmf -vfile=1 ctrl.gas `cat switches-for-lm` '--rsedit~rs~scell sitey'
+  cp rst2.gas rst.gas 
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/switches-for-lm switches-for-lm 
+  mpix -np=3 lmf-MPIK -vsig=0 -vnit=1 --rs=1,0 -vfile=3 ctrl.gas `cat switches-for-lm` > out.128.ideal.lda
+</pre>
+
+2. Replace the site at the origin with an As, make a trial density; then make it self-consistent:
+<pre>
+  lmf -vfile=3 ctrl.gas `cat switches-for-lm` '--rsedit~rs~show~chsite 1,65~savea~a'
+  cp bas12.tpdc3.gwbas.float.sep12/128asga/site.1As.128 sitez.gas
+  mpix -np=3 lmf-MPIK --rhopos -vsig=0 -vnit=1 -vbeta=1 -vfile=4 --rs=2 ctrl.gas `cat switches-for-lm` > out.128asga.lda
+  rm -f mixm.gas log.gas
+  mpix -np=3 lmf-MPIK --rhopos -vsig=0 -vfile=4 --rs=2 ctrl.gas `cat switches-for-lm` >> out.128asga.lda
+</pre>
+Make tab2
+<pre>
+lmchk ctrl.gas -vfile=2 `cat switches-for-lm` --shell~tab=2~disp=pos~sites~1~r=1~fn=tab2
+echo / | lmscell ctrl.gas -vfile=4 --disp:tab2:1 --wpos=pos2 `cat switches-for-lm`
+lmf -vsig=0 -vfile=4 -vnit=0 --rpos=pos2 --rs=11,2,1 ctrl.gas `cat switches-for-lm` 
+</pre>
+
+
+<h4><A name="AsAntisite128LDA"></A>3.8 QSGW calculation of As Antisite in a 128 atom cell with Lattice relaxation</h4>
+
+1. Set up starting conditions for 32 atom cell:
+<pre>
+  cp input/* .
+  cp bas12.tpdc3.gwbas.float.sep12/nk6-pbveryfast/switches-for-lm.32atom switches-for-lm
+  cp bas12.tpdc3.gwbas.float.sep12/32asga/site.32As sitex.gas
+  cp bas12.tpdc3.gwbas.float.sep12/32asga.relax/{sigm,rst.gas} .
+  ln -s -f sigm sigm.gas
+</pre>
+
+Confirm self-consistent:
+<pre>
+  rm mixm.gas log.gas
+  mpix -np=4 lmf-MPIK -vnit=1 --rs=1,0 -vconvc=1e-6 -vfile=2 ctrl.gas `cat switches-for-lm` > out
+</pre>
+
+2. Set up 128 atom supercell 4-defect supercell:
+<pre>
+lmf -vnit=0 --wpos=posx --rs=1,0 -vconvc=1e-6 -vfile=2 ctrl.gas `cat switches-for-lm`
+echo 0 2 2 2 0 2 2 2 0 | lmscell --no-shorten --rpos=posx -vfile=2 --wsite~map~sitey ctrl.gas `cat switches-for-lm`
+
+lmf -vfile=2 ctrl.gas `cat switches-for-lm` '--rsedit~rs~scell sitey'
+lmf --rs=11,0 -vfile=2 ctrl.gas `cat switches-for-lm` '--wsig~edit~zero -shorten r=16~scell sitey'
+cp rst2.gas rst.gas 
+cp sigm2rs.gas sigmrs.gas 
+cp bas12.tpdc3.gwbas.float.sep12/128asga/switches-for-lm switches-for-lm 
+cp sigmrs.gas rssigm.gas
+</pre>
+The last step preserves &Sigma; for step 3.
+
+Confirm self-consistent:
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=3 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 -vfile=3 ctrl.gas `cat switches-for-lm` > out.128.4defect
+</pre>
+
+3. Set up for unrelaxed antisite
+
+<pre>
+cp bas12.tpdc3.gwbas.float.sep12/128asga/site.1As.128 sitez.gas
+cp bas12.tpdc3.gwbas.float.sep12/128asga/{sigmrs,rst}.gas .
+</pre>
+Confirm self-consistent
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=3 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 -vfile=4 ctrl.gas `cat switches-for-lm` > out.128asga
+</pre>
+w
+Make R.S. &Sigma; file:
+<pre>
+  lmf -vfile=4 --rs=1 -vsig=11 --rsig:rs ctrl.gas -vnkgw=1 `cat switches-for-lm` '--wsig~rs~edit~zero -short r=16~readx rssigm~merge 1~q'
+  cp sigm2rs.gas sigmrs.gas 
+</pre>
+Shift sites in neighborhood of origin from shifts given by <FONT size="+1"><tt>tab2</tt></FONT> and adjust site positions in &Sigma;:
+<pre>
+  cp bas12.tpdc3.gwbas.float.sep12/32asga.relax/tab2.gas .
+  echo / | lmscell ctrl.gas -vfile=4 --disp:tab2:1 --wpos=pos2 `cat switches-for-lm` --wsite=sitet
+  lmf -vsig=0 -vfile=4 -vnit=0 --rpos=pos2 --rs=11,1,1 --shorten=no ctrl.gas `cat switches-for-lm` 
+  lmf -vfile=4 --rs=1 -vsig=11 --rsig:rs,0.05 ctrl.gas -vnkgw=1 `cat switches-for-lm` '--wsig~rs~edit~q'
+  cp sigm2rs.gas sigmrs.gas 
+</pre>
+Make self-consistent
+<pre>
+  rm -f mixm.gas log.gas
+  mpix -np=3 lmf-MPIK --rsig:rs -vnit=1 --rs=1,0 -vfile=4 ctrl.gas `cat switches-for-lm` > out.128asga
+</pre>
+
+
+<h2><A name="section2"></A>2. The dynamical &Sigma; editor</h2>
+
+To do ...
+
+<BR><BR><BR>
+
+<hr></hr>
+
+<pre>
+<P> Further working notes on anisotropy ... Not meant to be part of the tutorial.
+
+<P> Corresponding LDA:
+
+<pre>
+cp bas2.tppc3.tpd4.sep12/rst.lda rst.fe
+rm -f mixm.fe log.fe
+check
+mpix -np=12 lmf-MPIK -vsig=0 -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.lda.001
+mpix -np=12 lmf-MPIK -vsig=0 -vso=11 -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.so.zmsym.lda.001
+lmf -vrot=t -vnit=0 --rs=101 ctrl.fe `cat switches-for-lm`
+mpix -np=12 lmf-MPIK -vrot=t -vsig=0 -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.noso.lda.111
+
+mpix -np=12 lmf-MPIK -vrot=t -vso=11 -vsig=0 -vnit=1 --rs=1,0 ctrl.fe `cat switches-for-lm` > out.so.zmsym.lda.111
+</pre>
+
+dval e001=-0.001655874 e111=-0.001656072 x=e001-e111 x*13.6 
+
+Try better convergence
+mpix -np=12 lmf-MPIK -vsig=0 -vnit=50 -vnk=32 -vlmxa=6 ctrl.fe `cat switches-for-lm` > out
+
+Repeat:
+mpix -np=12 lmf-MPIK -vsig=0 -vnit=1 --rs=1,0 -vnk=32 -vlmxa=6 ctrl.fe `cat switches-for-lm` > out.noso.lda.001
+mpix -np=12 lmf-MPIK -vsig=0 -vso=11 -vnit=1 --rs=1,0 -vnk=32 -vlmxa=6 ctrl.fe `cat switches-for-lm` > out.so.zmsym.lda.001
+
+
+set i = out.so.zmsym.lda.001
+set i = out.so.zsym.lda.001
+grep contributions: $i | awk '{print $NF}'
+-0.001652506
+-0.001652506
+
+lmf -vrot=t -vnit=0 --rs=101 ctrl.fe -vnk=32 -vlmxa=6 `cat switches-for-lm`
+mpix -np=12 lmf-MPIK -vrot=t -vsig=0 -vso=11 -vnit=1 --rs=1,0 -vnk=32 -vlmxa=6 ctrl.fe `cat switches-for-lm` > out.so.zsym.lda.111
+or 
+mpix -np=12 lmf-MPIK -vrot=t -vsig=0 -vso=11 -vnit=1 --rs=1,0 -vnk=32 -vlmxa=6 ctrl.fe `cat switches-for-lm` > out.so.zmsym.lda.111
+-0.001652697
+
+LDA 24 divisions, lmxa=4
+dval e001=-0.001655874 e111=-0.001656072 x=e001-e111 x*13.6 
+2.6928e-6
+32 divisions, lmxa=6
+dval e001=-0.001652506 e111=-0.001652697 x=e001-e111 x*13.6 
+2.5976e-6
+
+
+</pre>
+
+<hr></hr>
+<sup id="fn1"><sup>&dagger;</sup></a>
+
+Files <FONT size="+1"><tt>sigm</tt></FONT> and <FONT size="+1"><tt>rst.fe</tt></FONT>
+are stored in binary form following IEEE conventions.  If your computer doesn't read binary files in this format, do the following additional steps:
+<pre>
+  cp bas2.tppc3.tpd4.sep12/rsta.fe.gz .
+  gunzip rsta.fe.gz 
+  gunzip sigma.fe.gz
+  lmf -vnit=0 --rs=2,1 ctrl.fe `cat switches-for-lm`
+  lmf ctrl.fe `cat switches-for-lm` --rsig:ascii --wsig
+  cp sigm2.fe sigm
+</pre>
+
+<pre>
+
+cp bas12.tpdc3.gwbas.float.sep12/128asga/site.4As.128 sitey.gas
+lmf -vfile=2 ctrl.gas `cat switches-for-lm` '--rsedit~rs~scell sitey'
+cp rst2.gas rst.gas
+mpix -np=12 lmf-MPI -vsig=0 -vnit=1 --rs=1,0 -vfile=3 ctrl.gas `cat switches-for-lm` | tee out
+
+          -1.3699  -1.3699  -0.5866   0.4307   0.4552   0.4552   0.4552   0.6402   0.6402

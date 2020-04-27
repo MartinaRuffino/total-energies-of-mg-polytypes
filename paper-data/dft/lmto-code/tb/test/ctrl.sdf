@@ -1,0 +1,176 @@
+HEADER  Fe TB and LMF, bcc, fcc (FM) or hcp (AFM)
+% const tb=1 fp=0 bcc=1 fcc=0 hcp=0 nbas=hcp?2:1 nspec=hcp?2:1 cp=0 c44=0
+% const PRBModel=0 can=0 c2e=0 cpl=1 xcf=4 gga=3
+% const sd=1 ovlp=sd?1:0 ul=1 u1=0 tbu=0 io=0 nitq=1000
+% const verb=31 so=0 nsp=2 tetra=1 metal=fp?5:1 width=0.002 N=1
+% const au=0.529177 eV=13.6 
+% const beta=0.5 nx=5 kmix=300 nav=0
+% const show=0 mpol=0
+% const dyn=0 relax=0 temp=300 taup=10 taub=100 time=100000 tstep=5
+% const fs=0.048377 K=1/0.6333328d-5
+VERS    TB=9 LM=7 FP=7
+IO      SHOW={show} HELP=F VERBOS={verb} WKP=F
+CONST   nit=100 beta=1 conv=1d-6 convc=1d-6 pair=F
+        V0at=79.76508 V0bcc=V0at*2 V0fcc=V0at*4
+        vfrac=1 Vbcc=vfrac*V0bcc Vfcc=vfrac*V0fcc
+        q=sqrt(8/3) ahcp=(Vfcc/(sqrt(3)*q))^(1/3)
+        a0bcc=V0bcc^(1/3) abcc=Vbcc^(1/3) afcc=Vfcc^(1/3)
+        nk=20 mull=-1 bzj=1 ewtol=1d-6 qtol=1d-6
+        cutmod={PRBModel?1:2} 
+% ifdef bcc
+        alat=abcc
+% elseifd fcc
+        alat=afcc
+% else
+        alat=ahcp
+% endif
+% include /u/tony/Fe/2012/CONST-fixed
+% ifdef tb
+        force=1 pv=1 mol=0 gamma=0
+% endif
+% ifdef fp
+        R=2.2 gmax=18
+% endif
+
+ITER    CONV=conv CONVC=qtol NIT={nitq} MIX=A{nx},b={beta}
+DYN
+% if dyn==1|dyn==2|dyn==3
+        MD[MODE={dyn} TSTEP={tstep/fs} TEMP={temp/K} TAUP={taup/fs}
+           TIME={time/fs} TAUB={taub/fs}]
+% elseif relax>0
+        MSTAT[MODE={relax} HESS={hess} XTOL={xtol} GTOL={gtol}
+              STEP={step} NKILL={nkill}] NIT={nitf}
+% endif        
+STRUC   NBAS={nbas} NSPEC={nspec} NL={fp?5:3}
+% ifdef bcc
+        ALAT=alat PLAT=-1/2 1/2 1/2   1/2 -1/2 1/2  1/2 1/2 -1/2
+% elseifd fcc
+        ALAT=alat PLAT=0 1/2 1/2   1/2 0 1/2   1/2 1/2 0
+% else
+        ALAT=alat PLAT= 0              -1          0
+                        sqrt(3)/2       0.5        0
+                        0               0          q
+% endif
+
+% ifdef cp
+        ALPHA=alpha STRAIN=-1/2 -1/2 1 0 0 0
+% endif
+% ifdef c44
+        ALPHA=alpha STRAIN=0 0 0 1/2 1/2 1/2
+% endif
+HAM     NSPIN={nsp} ELIND=-0.8 GMAX=gmax REL=T SO={so}
+        XCFUN={xcf} GGA={gga}
+        PWMODE=pwmode PWEMIN=1 PWEMAX=pwemax OVEPS=oveps
+SYMGRP  find
+BZ      NKABC=nk TETRA={tetra} METAL={metal}
+        EF0=0.01 DELEF=0.001 N={N} W={width}
+        NPTS=5001 BZJOB=bzj SAVDOS=T NOINV=F
+        INVIT=F MULL=mull DOS=-4.5 1 EFMAX=1
+SPEC    
+% ifdef hcp
+        ATOM=Fe1 Z=26 R=R I=stniFe ISOTOPE=26 A=0.025
+        IDU= 0 0 0 0 UH= 0 0 0 0  JH=stniFe stniFe stniFe stniFe 
+%  ifdef fp
+        LMX=2 LMXA=2 KMXA=4 LFOCA=1
+        RSMH=R/2 R/2 R/2 0 EH=-0.1 -0.1 -0.1 -0.1
+        RSMH2=R/2 R/2 R/2 EH2=-1.1 -1.1 -1.1
+        Q=2 0 6 MMOM=0 0 -2 PZ=0 {cpl?3.9:0}
+%  else
+%   ifdef sd
+        IDXDN=1 3 1 QPOL= spp ppd sdd pdp ddd pdf ddg 0 0 0
+%   else
+        IDXDN=3 3 1 QPOL= spp ppd sdd pdp ddd pdf ddg 0 0 0
+%   endif
+        ATOM=Fe2 Z=26 R/W=1 I=stniFe ISOTOPE=26 A=0.025
+        IDU= 0 0 0 0 UH= 0 0 0 0  JH=stniFe stniFe stniFe stniFe 
+%   ifdef sd
+        IDXDN=1 3 1 QPOL= spp ppd sdd pdp ddd pdf ddg 0 0 0
+%   else
+        IDXDN=3 3 1 QPOL= spp ppd sdd pdp ddd pdf ddg 0 0 0
+%   endif
+%  endif
+% else
+        ATOM=Fe Z=26 R=R I=stniFe ISOTOPE=26 A=0.025
+        IDU= 0 0 0 0 UH= 0 0 0 0  JH=stniFe stniFe stniFe stniFe 
+%  ifdef fp
+        LMX=2 LMXA=2 KMXA=4 LFOCA=1
+        RSMH=R/2 R/2 R/2 0 EH=-0.1 -0.1 -0.1 -0.1
+        RSMH2=R/2 R/2 R/2 EH2=-1.1 -1.1 -1.1
+        Q=2 0 6 MMOM=0 0 -2 PZ=0 {cpl?3.9:0}
+%  else
+%   ifdef sd
+        IDXDN=1 3 1 QPOL= spp ppd sdd pdp ddd pdf ddg 0 0 0
+%   else
+        IDXDN=3 3 1 QPOL= spp ppd sdd pdp ddd pdf ddg 0 0 0
+%   endif
+%  endif
+% endif
+SITE    
+% ifdef hcp
+        ATOM=Fe1 POS= 0              0     0
+        ATOM=Fe2 POS= 1/(2*sqrt(3)) -1/2  q/2
+% else
+        ATOM=Fe POS= 0 0 0
+% endif
+ME      
+% ifdef can
+        3
+% else
+        2
+% endif
+% ifdef hcp
+        1:2 1:2 PPMODE=10 POLY=5 CUTMOD=cutmod CUTPP=r1ppau rcppau
+% else
+        1 1 PPMODE=10 POLY=5 CUTMOD=cutmod CUTPP=r1ppau rcppau
+% endif
+% ifdef can
+            | tss 0 0 0 tsd 0 0 dds ddp ddd
+        DECAY=nss 0 0 0 nsd 0 0 nsig npi ndel
+        CUT=r1ssau rcssau 0 0 0 0 0 0 r1sdau rcsdau 0 0 0 0 
+            r1ddau rcddau r1ddau rcddau r1ddau rcddau
+            @ oss 0 0 0 osd 0 0 0 0 0
+        DECAY=nss 0 0 0 nsd 0 0 0 0 0
+        CUT=r1ssau rcssau 0 0 0 0 0 0 r1sdau rcsdau 0 0 0 0 
+            r1ddau rcddau r1ddau rcddau r1ddau rcddau
+% else
+            | fss fsp fpp -fpp/2 fsd fpd -fpd/sqrt(3) 
+                                                 fdds fddp fddd
+        DECAY=qss qsp qpp qpp    qsd qpd  qpd    qdds qddp qddd
+        CUT=r1ssau rcssau 0 0 0 0 0 0 r1sdau rcsdau 0 0 0 0 
+            r1ddau rcddau r1ddau rcddau r1ddau rcddau
+            @ oss osp opp -opp/2 osd opd -opd/sqrt(3) 
+                                                 odds oddp oddd
+        DECAY=qoss qsp qpp qpp    qosd qpd  qpd    qdds qddp qddd
+        CUT=r1ssau rcssau 0 0 0 0 0 0 r1sdau rcsdau 0 0 0 0 
+            r1ddau rcddau r1ddau rcddau r1ddau rcddau
+% endif
+            ! b0 m0 p0   b1 m1 p1  0 0 0
+TB      FORCES=force EVDISC=T RMAXH=rmaxhau TRH=T RHO=T 3PV=pv
+        MOL=mol GAMMA=gamma PAIR=pair SCALE=F
+        UL={ul} IODEL={io} OVLP={ovlp} TBU={tbu} NOUAVG={nav} U1={u1}
+EWALD   TOL=ewtol NKDMX=1999 NKRMX=1999
+START   CNTROL=T
+% ifdef hcp
+        ATOM=Fe1  P= 4 4 3 4 4 3
+                  Q= q0s/{nsp}            esFe   Us
+                     q0p/{nsp}            epFe   Up
+                     (q0dFe+momFe)/{nsp}  edFe  UdFe
+                     q0s/{nsp}            esFe   Us
+                     q0p/{nsp}            epFe   Up
+                     (q0dFe-momFe)/{nsp}  edFe  UdFe
+        ATOM=Fe2  P= 4 4 3 4 4 3
+                  Q= q0s/{nsp}            esFe   Us
+                     q0p/{nsp}            epFe   Up
+                     (q0dFe-momFe)/{nsp}  edFe  UdFe
+                     q0s/{nsp}            esFe   Us
+                     q0p/{nsp}            epFe   Up
+                     (q0dFe+momFe)/{nsp}  edFe  UdFe
+% else
+        ATOM=Fe   P= 4 4 3 4 4 3
+                  Q= q0s/{nsp}            esFe   Us
+                     q0p/{nsp}            epFe   Up
+                     (q0dFe+momFe)/{nsp}  edFe  UdFe
+                     q0s/{nsp}            esFe   Us
+                     q0p/{nsp}            epFe   Up
+                     (q0dFe-momFe)/{nsp}  edFe  UdFe
+% endif

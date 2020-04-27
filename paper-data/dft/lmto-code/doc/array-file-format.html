@@ -1,0 +1,91 @@
+<HTML><HEAD>
+<TITLE>Standard file format for 2D arrays</TITLE><STYLE><!--P{font-size : medium;} --></STYLE>
+<!--
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+<script type="text/javascript" src="/Users/markvanschilfgaarde/MathJax/MathJax.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+-->
+</HEAD>
+
+<H1><B><FONT size="+0">Standard format for files containing 2D arrays </FONT></B></H1>
+
+A number of files read data that has the structure of 2D arrays.  Examples are the 
+ <A href="positions.html#posfile">positions file</A>,  files
+containing Euler angles for spin rotations, and certain
+<i>k</i>-point lists (see <FONT size="+1"><tt>qp</tt></FONT> option of
+the  <A href="generating-energy-bands.html#switches"><FONT size="+1"><tt>--band</tt></FONT> switch)</A>.
+Plotting programs <FONT size="+1"><tt>fplot</tt></FONT>, <FONT size="+1"><tt>pldos</tt></FONT>,
+and <FONT size="+1"><tt>plbnds</tt></FONT> also make use of files in this form, as does the matrix calculator <FONT size="+1"><tt>mcx</tt></FONT>.
+
+<P>
+These files have a very flexible structure.  The same programming
+language used for input files is used here: thus variables can be
+declared, lines can be conditionally read or looped over, array
+elements can be algebraic expressions, and so on.
+
+The simplest form contains only the data: the number of rows and columns is determined
+by the file's layout.  Suppose in particular you have an <i>N</i>&times;3 array.
+The file should have the following structure
+<pre>
+   x11 x12 x13
+   x21 x22 x23
+   ...
+   xN1 xN2 xN3
+</pre>
+The fact that the file has <i>m</i>=3 columns tells the array reader that the array
+has <i>m</i> columns.  After determining the number of columns,
+as many elements as possible are read.  The number of rows is determined by 
+<pre> 
+  (number of elements read) / (number of columns)
+</pre>
+In this example, it will read 3&times;<i>N</i> elements (provided x11,
+x12,...xN3 are valid algebraic expressions); thus it return the contents of
+an <i>N</i>&times;3 array.
+
+<P>
+
+You can explicitly tell the reader how many rows or columns the file contains (or both).
+This information is supplied in a line beginning with `<FONT size="+1"><tt>%</tt></FONT>',
+e.g.
+<pre> 
+% rows=5 cols=3
+</pre> 
+Any line beginning `<FONT size="+1"><tt>%</tt></FONT>' is interpreted as an instruction to the parser, not as contents
+to be read, just as is the case for input files.  This line must precede all of the array elements.
+
+<P>
+
+If the parser finds tag <FONT size="+1"><tt>rows=<i>n</i></tt></FONT>, the number of rows is assigned to
+<FONT size="+1"><tt><i>n</i></tt></FONT> (similarly if <FONT size="+1"><tt>cols=<i>m</i></tt></FONT> is present, the array reader will assign the number of columns to be <FONT size="+1"><tt><i>m</i></tt></FONT>).  If either the number of rows or number of columns is specified, the pattern of the elements in the file is no longer used.
+Thus a file containing the following:
+<pre>
+% cols 2
+   #1 #2 #3 #4 #5 #6
+</pre>
+will be parsed as a 3&times;2 array, whereas
+<pre>
+% rows 2
+   #1 #2 #3 #4 #5 #6
+</pre>
+will be parsed as a 2&times;3 array.
+
+This line can contain other information as well.
+If the tag <FONT size="+1"><tt>complex</tt></FONT> is present, the array is assumed to be complex.
+Tags <FONT size="+1"><tt>symm</tt></FONT> and <FONT size="+1"><tt>herm</tt></FONT> indicate the array is symmetric or hermitian (in which case it should also be square).
+
+<P>
+
+Sometimes application-specific data is included on this line, e.g. <FONT size="+1"><tt>efermi=#</tt></FONT> or <FONT size="+1"><tt>nsp=2</tt></FONT>.
+
+

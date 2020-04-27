@@ -1,0 +1,50 @@
+CIF2CELL 1.1.0
+2014-02-05 18:57
+Output for Ba (Ti O3) (Barium titanate - nanocrystalline)
+CIF file exported from Inorganic Crystal Structure Database.
+Database reference code: 161341.
+
+ BIBLIOGRAPHIC INFORMATION
+Xiao, C.J. et al., Materials Chemistry and Physics 111, 209-212 
+(2008) 
+
+ INPUT CELL INFORMATION
+Symmetry information:
+Orthorhombic crystal system.
+Space group number     : 38
+Hall symbol            : A 2 -2
+Hermann-Mauguin symbol : Amm2
+
+Lattice parameters:
+          a           b           c 
+  4.0094000   5.6214000   5.6386000 
+      alpha        beta       gamma 
+ 90.0000000  90.0000000  90.0000000 
+Representative sites :
+Atom           a1          a2          a3 
+Ba      0.0000000   0.0000000   0.0000000
+Ti      0.5000000   0.0000000   0.5100000
+O       0.5000000   0.5000000   0.4900000
+O       0.5000000   0.7525000   0.7396000
+
+ OUTPUT CELL INFORMATION
+Symmetry information:
+Orthorhombic crystal system.
+Space group number     : 38
+Hall symbol            : A 2 -2
+Hermann-Mauguin symbol : Amm2
+
+Bravais lattice vectors :
+  1.0000000   0.0000000   0.0000000 
+  0.0000000   0.7010276  -0.7031725 
+  0.0000000   0.7010276   0.7031725 
+All sites, (lattice coordinates):
+Atom           a1          a2          a3 
+Ba      0.0000000   0.0000000   0.0000000
+Ti      0.5000000   0.4900000   0.5100000
+O       0.5000000   0.0100000   0.9900000
+O       0.5000000   0.0129000   0.4921000
+O       0.5000000   0.5079000   0.9871000
+
+Unit cell volume  :  63.5426272 A^3
+Unit cell density :   3.6698357 u/A^3 =   6.0939045 g/cm^3

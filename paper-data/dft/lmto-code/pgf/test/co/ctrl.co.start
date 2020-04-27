@@ -1,0 +1,56 @@
+%const  nit=30
+HEADER  Co, layered approach 
+VERS    LMASA-6
+IO      SHOW=f HELP=f VERBOS=31,20 WKP=F IACTIV=F
+STR     RMAXS=3.2 
+CONST   a=6.758 nk=16 
+STRUC   NBAS=4 NSPEC=2 NL=3 TET=1 ALAT=a 
+        PLAT=0.0 0.5 0.5 
+             0.0 0.5 -.5 
+             2.0 0.0 0.0 
+SYMGRP  r4x find
+%const  pgf=1 sparse=0
+%const  gfmod=0
+PGF     MODE={pgf} SPARSE={sparse} PLATL=1 0 0 PLATR=1 0 0
+        GFOPTS=p3 
+GF      MODE={gfmod} GFOPTS=p3
+SPEC    ATOM=Co Z=27 R=2.641002 IDXDN=1 1 1  
+        ATOM=Cob Z=27 R=2.641002 IDXDN=1 1 1 
+SPEC    ATOM=Co Z=27 R=2.641002 IDXDN=1 1 1 A=.01  
+        ATOM=Cob Z=27 R=2.641002 IDXDN=1 1 1 A=.01  
+SITE    ATOM=Co POS=0.0 0.0 0.0 PL=0 
+        ATOM=Cob POS=0.5 0.0 0.5 PL=0
+        ATOM=Co POS=1.0 0.0 0.0 PL=1
+        ATOM=Cob POS=1.5 0.0 0.5 PL=1
+OPTIONS NSPIN=2 REL=T HF=0 CCOR=F TWOC=T GAMMA=T 
+%const  ef=-0.0595884
+BZ      NKABC=nk nk 1 BZJOB=0 NPTS=1001 EFMAX=1 DOS=-1 0.6 
+        EF0=0 DELEF=.1 TETRA=1 METAL=1 INVIT=T NEVMX=0
+% if pgf==1
+        EMESH=20 10 -1.0 {ef} .5 .5
+% endif
+% if pgf==2
+        EMESH=20 10 -1.0 {ef} .5 .5
+% endif
+% if pgf==5
+        EMESH=400 1 -0.8 0.147 0.00001
+% endif
+EWALD   TOL=1d-12 NKDMX=2000
+MIX     MODE=A3,b=0.1
+START   NIT={nit} CNVG=1d-5 BEGMOM=T CNTROL=T
+        ATOM=Co	        P=  4.5000  4.5000  3.75000
+                            4.5000  4.5000  3.75000
+                        Q=  0.3750  0.0000  0.00000
+                            0.3750  0.0000  0.00000
+                            3.0000  0.0000  0.00000
+                            0.3750  0.0000  0.00000
+                            0.3750  0.0000  0.00000
+                            4.5000  0.0000  0.00000
+        ATOM=Cob        P=  4.5000  4.5000  3.75000
+                            4.5000  4.5000  3.75000
+                        Q=  0.3750  0.0000  0.00000
+                            0.3750  0.0000  0.00000
+                            3.0000  0.0000  0.00000
+                            0.3750  0.0000  0.00000
+                            0.3750  0.0000  0.00000
+                            4.5000  0.0000  0.00000

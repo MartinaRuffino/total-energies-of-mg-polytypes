@@ -1,0 +1,75 @@
+# Use rdfile on this file for symmetry lines as functions c/a
+# R.S. Lattice vectors are: (units of a)
+# -1/2  1/2  c/2/a
+#  1/2 -1/2  c/2/a
+#  1/2  1/2 -c/2/a
+# Recip Lattice vectors are:  (units of 2pi/a)
+#  0    1    a/c
+#  1    0    a/c
+#  1    1    0  
+
+# Shoenflies Gam_q^v
+# Bravais lattice for CuGaSe2
+# % const cbya=1.003500*2
+# Bravais lattice for CuGaSe2
+# % const cbya=0.982*2
+# Bravais lattice for KFeAs  : c/2a = 1.801036  for CaFeAs c/2a 1.512478
+% const cbya=1.512478*2
+% const cbya=1.801036*2
+% var q11=0 q21=1 q31=1/cbya  q12=1 q22=0 q32=1/cbya  q13=1 q23=1 q33=0
+
+Qlat:
+   {q11} {q21} {q31}
+   {q12} {q22} {q32}
+   {q13} {q23} {q33}
+
+# Cracknell p 105, c>a.  Note z2 is 1/2 of (-1/2,1/2,1/2) -> (100) in cartesian coordinates = Z
+% vec G[3]   0    0    0
+% vec X[3]   0    0    1/2
+% vec Z[3]   1/2  1/2 -1/2
+% vec P[3]   1/4  1/4  1/4
+% vec N[3]   0    1/2  0
+% vec z2[3] -1/4  1/4  1/4
+% vec GC[3]   {q11*G(1)+q12*G(2)+q13*G(3)} {q21*G(1)+q22*G(2)+q23*G(3)} {q31*G(1)+q32*G(2)+q33*G(3)}
+% vec XC[3]   {q11*X(1)+q12*X(2)+q13*X(3)} {q21*X(1)+q22*X(2)+q23*X(3)} {q31*X(1)+q32*X(2)+q33*X(3)}
+% vec NC[3]   {q11*N(1)+q12*N(2)+q13*N(3)} {q21*N(1)+q22*N(2)+q23*N(3)} {q31*N(1)+q32*N(2)+q33*N(3)}
+% vec PC[3]   {q11*P(1)+q12*P(2)+q13*P(3)} {q21*P(1)+q22*P(2)+q23*P(3)} {q31*P(1)+q32*P(2)+q33*P(3)}
+% vec ZC[3]   {q11*Z(1)+q12*Z(2)+q13*Z(3)} {q21*Z(1)+q22*Z(2)+q23*Z(3)} {q31*Z(1)+q32*Z(2)+q33*Z(3)}
+% vec mc[3]   {q11*Z(1)+q12*z2(2)+q13*z2(3)} {q21*z2(1)+q22*z2(2)+q23*z2(3)} {q31*z2(1)+q32*z2(2)+q33*z2(3)}
+
+Cracknell p 105, c>a
+31   {ZC} {GC}        Z Gamma   length {sqrt((GC(1)-ZC(1))^2+(GC(2)-ZC(2))^2+(GC(3)-ZC(3))^2)}
+21   {GC} {XC}        Gamma X   length {sqrt((XC(1)-GC(1))^2+(XC(2)-GC(2))^2+(XC(3)-GC(3))^2)}
+21   {XC} {PC}        X     P   length {sqrt((PC(1)-XC(1))^2+(PC(2)-XC(2))^2+(PC(3)-XC(3))^2)}
+21   {PC} {NC}        P     N   length {sqrt((NC(1)-PC(1))^2+(NC(2)-PC(2))^2+(NC(3)-PC(3))^2)}
+25   {NC} {GC}        N Gamma   length {sqrt((GC(1)-NC(1))^2+(GC(2)-NC(2))^2+(GC(3)-NC(3))^2)}
+25   {GC} {mc}        Gamma mc	length {sqrt((mc(1)-GC(1))^2+(mc(2)-GC(2))^2+(mc(3)-GC(3))^2)}
+0  0 0 0 0 0 0
+
+# Lambrecht, Phys. Rev. B 69, 035201 (2004).
+% vec G[3]   0    0    0
+% vec C[3]   1/2  0    0
+% vec T[3]   1/2  1/2 -1/2
+% vec X[3]   -1/2 1/2  1/2
+% vec N[3]   0    0    1/2
+
+% vec GC[3]   {q11*G(1)+q12*G(2)+q13*G(3)} {q21*G(1)+q22*G(2)+q23*G(3)} {q31*G(1)+q32*G(2)+q33*G(3)}
+% vec CC[3]   {q11*C(1)+q12*C(2)+q13*C(3)} {q21*C(1)+q22*C(2)+q23*C(3)} {q31*C(1)+q32*C(2)+q33*C(3)}
+% vec TC[3]   {q11*T(1)+q12*T(2)+q13*T(3)} {q21*T(1)+q22*T(2)+q23*T(3)} {q31*T(1)+q32*T(2)+q33*T(3)}
+% vec XC[3]   {q11*X(1)+q12*X(2)+q13*X(3)} {q21*X(1)+q22*X(2)+q23*X(3)} {q31*X(1)+q32*X(2)+q33*X(3)}
+% vec NC[3]   {q11*N(1)+q12*N(2)+q13*N(3)} {q21*N(1)+q22*N(2)+q23*N(3)} {q31*N(1)+q32*N(2)+q33*N(3)}
+
+# Gamma {GC}
+# C     {CC}
+# T     {TC}
+# X     {XC}
+# N     {NC}
+
+31   {XC} {GC}
+21   {GC} {TC}
+21   {TC} {CC}
+21   {CC} {GC}
+25   {GC} {NC}
+0  0 0 0 0 0 0
+
+

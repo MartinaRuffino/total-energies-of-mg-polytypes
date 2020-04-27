@@ -1,0 +1,37 @@
+CONST   z=1.09 lmxb=221 lmxl=4 lmxa=4 lxi=4332 nabc=24
+        nbz=15 alfsi=0.01 nalf=8 nit=20
+        dabc=0.3 nbz=60 alfsi=0.003 nalf=16 ndust=2 ncupl=8
+        smear=.005 conv=1d-6 convc=1d-5
+        eb1=-1 eb2=-2 eb3=-3
+Notes   w = sqrt(k/M) = sqrt(E''/(1830*14/2*m)) (N2)
+            sqrt(1Ry/m) = sqrt(2)Ry/hbar = 2.9233E16/sec
+        So w = 2.5828E+14*sqrt(E'')/sec = 1.3711E+03/cm, E'' in Ry/au^2
+        Derivative wrt z (not d): need extra factor 1/2
+        expt'l z=1.038, w=2360
+        Spin pol energy is 3.04eV/atom (Vosko), 3.507, w/ Grad corr
+% const rel=T nsp=2 xcf=2 gga=0 xcqs=1 frz=F 
+#% const mom=0 rel=T frz=F gga=3 tpan=0 smear=.005
+VERS    LMMC-2.0
+STR     NBISI=12 40 nbz NALF=nalf ADEC=1 NCUPL=ncupl NDUST=ndust
+        WZTCF=0
+IO      SHOW=f HELP=f VERBOS=30 WKP=f IACTIV=t
+HARRIS  RC=0 WIDTH=.4 ATOM=N RNCHAN=0 0
+OPTIONS REL={rel} NSPIN={nsp}
+        XCFUN={xcf} GGA={GGA} TCHK=f XCQS={xcqs}
+STRUC   NBAS=2 NSPEC=1 ALAT=1 PLAT=10 0 0 0 10 0 0 0 10 NL=4
+# N : -108.3613 (BH) -108.3365 (CA)
+# SPEC    ATOM=N Z=7 LMXB=lmxb LMXA=lmxa LMXL=lmxl LXI=lxi MMOM=0 3 0
+#         EXI=-3 -6 -9 -12 EREF=-108.3365
+#         R=1 RSMG=.55 RHAM=3 RINT=7 RCUT=1.8 IDMOD=0 0 0 0 0
+# O : -149.1822 (BH) -149.1664 (CA)
+SPEC    ATOM=N Z=8 LMXB=lmxb LMXA=lmxa LMXL=lmxl LXI=lxi MMOM=0 2 0
+        EXI=-3 -6 -9 -12 EREF=-149.1822 -149.1664
+        R=1.06 RSMG=.55 RHAM=3 RINT=7 RCUT=1.8 IDMOD=0 0 0 0 0
+SITE    ATOM=N  POS=0 0 -z
+        ATOM=N  POS=0 0  z
+MIX     MAXIT=nit BETASP=.3 BETAI=.3 ETOL=conv QRTOL=convc SMEAR=smear
+SYMGRP  mz  r4z
+HAM     FORCES=1 XCFUN={xcf} GGA={GGA} ALFSI=alfsi FRZWF={frz} 
+        EBAS=eb1 eb2 eb3 FTMESH=nabc DABC=dabc DQVAL=0
+LSWTCH  0 0 0 100 0 1 0
+START   NIT=nit CNVG=1d-5

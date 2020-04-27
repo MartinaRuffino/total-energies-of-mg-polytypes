@@ -1,0 +1,9 @@
+echo ' -------------- Sum of exponentials ---------------'
+echo 'fit second column to sum of two exponentials ... '
+prony 2 prony.dat
+echo ''
+echo ''
+echo ' -------------- Sum of cos,sin ---------------'
+echo 'fit (3rd column)*x to sum of two sine functions ...'
+prony -pr60 -w -map 9:1:-1             -p -ord 'x3*x1' 2 prony.dat
+prony -pr60 -w -map 9:1:-1 -t 0:1.2:.3 -p -ord 'x3*x1' 2 prony.dat

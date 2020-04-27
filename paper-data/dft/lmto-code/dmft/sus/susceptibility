@@ -1,0 +1,545 @@
+#!/usr/bin/env python
+from scipy import *
+from scipy import linalg,  integrate
+import sys
+import argparse
+import h5py
+import numpy as np
+from scipy import linalg,  integrate
+import mpi4py
+import os
+
+
+
+
+
+def quick_gather(comm,rank,size,T,T_chunk,info) :
+    comm.Gatherv(T_chunk,[T,info["split_size"],info["disp"],MPI.DOUBLE], root=0)
+    return T
+
+
+def quick_scatter(comm,rank,size,T=[],dim=[],dtype='float64') :
+    """
+This function take a tabular (or the dimension of a tabular if dim is specified
+Then scatter the tabular with the first dimension
+    """
+    if rank == 0 :
+        if  len(dim) == 0 and len(T) == 0 :
+            raise Exception('quick_scatter : need dim or T specified')
+        elif  len(dim) != 0 and len(T) != 0 :
+            raise Exception('quick_scatter : T and dim cannot be given in the same time')
+        elif len(dim) != 0 :
+            if rank == 0 :
+                T = np.zeros(dim,dtype=dtype)
+        dim = T.shape
+        T_split = np.array_split(T,size,axis=0)
+        info = {}
+        if dtype == complex  :
+            info["split_size"] = [2*len(a)*np.prod(dim[1:]) for a in T_split]
+        else :
+            info["split_size"] = [len(a)*np.prod(dim[1:]) for a in T_split]
+        info["disp"] = np.insert(np.cumsum(info["split_size"]),0,0)[0:-1]
+        info["shape_chunk"] = [np.shape(t) for t in T_split]
+        info["lst_ind"] = np.array_split(range(T.shape[0]),size,axis=0)
+    else :
+        T = None
+        T_split,info = None,None
+    info = comm.bcast(info, root=0)
+
+    T_chunk = np.zeros(info["shape_chunk"][rank],dtype=dtype)
+    comm.Scatterv([T,info["split_size"],info["disp"],MPI.DOUBLE],T_chunk,root=0)
+    return T,T_chunk,info
+
+def readinfoindmfl() :
+    """
+    read info in info_indmfl.h5 print by lmfmdft
+    """
+    try :
+        f = h5py.File('solver_input.h5', 'r')
+    except :
+        raise Exception('solver_input.h5 produced by lmfdmft not found')
+
+
+    info = {}
+
+    info['nsp'] = int(np.array(f['nsp'])[0])
+    if(info['nsp']>1) :
+        raise Exception('code is not ready for spin polzrized case')
+
+    # table of index in indmfl (orbital1,orbital2,icix,isp)
+    #if index ==0, the channel is not included in the impurity
+    info['sigind'] = np.array(f['sigind']).T # Transpose because print in fortran format
+    info['icix'] = abs(np.array(f['icix']))-1 # index start at 0 in python
+
+
+    # nb of cix block
+    info['ncix'] = int(np.array(f['ncix'])[0])
+    info['beta'] = float(np.array(f['beta'])[0])
+    #nb of indepent cix block
+    info['nicix'] = info['sigind'].shape[2]
+
+    # Momentum of the cix block, maximum nb of orbital for a cix block is nsp*(2*l+1)
+    info['l'] = np.array(f['l'])
+
+    info['norb'] = np.zeros(info['ncix'],dtype=int)
+    for cix in range(info['ncix']) :
+        icix = info['icix'][cix]
+        for sp in range(info['nsp']) :
+            for i in range((2*info['l'][icix]+1)) :
+                if info['sigind'][i,i,icix,sp] != 0 :
+                    info['norb'][cix] += 1
+        print('for cix nb {cix}, {norb} found'.format(cix=cix,norb=info['norb'][cix]))
+    return info
+
+
+def BSE(chi0q,GS,nomv2,indmfl_info) :
+    """
+chiS=[chi0^-1+GS]^-1
+    """
+    chiS = linalg.inv(np.identity(chi0q.shape[0])+chi0q.dot(GS)).dot(chi0q)
+    return chiS
+
+def sum_chi(chi,nomv2,indmfl_info,resolved=True) :
+    """
+    chi : matrix of size 2*nomv*norb*ncix
+    sum on fermionic frequencies
+    if resolved, convert chi_sum[i,j] in chi_sum[cix1,cix2,il1,il2]
+    """
+    norb = indmfl_info['norb'][0]
+    ncix = indmfl_info['ncix']
+    if resolved :
+        chi_sum = np.zeros((ncix,ncix,norb,norb),dtype=complex)
+    else :
+        chi_sum = np.zeros((int(chi.shape[0]/nomv2),int(chi.shape[0]/nomv2)),dtype=complex)
+    start1 = 0
+    for cix1 in range(ncix) :
+        icix1 = indmfl_info['icix'][cix1]
+        if indmfl_info['lst_vertex'][cix1] == 'pass' :
+            continue
+
+        for l1 in range(norb) :
+            start2 = 0
+            for cix2 in range(ncix) :
+                icix2 = indmfl_info['icix'][cix2]
+                if indmfl_info['lst_vertex'][cix2] == 'pass' :
+                    continue
+
+                for l2 in range(norb) :
+                    if resolved :
+                        chi_sum[cix1,cix2,l1,l2] = np.sum(chi[start1*nomv2:(start1+1)*nomv2,start2*nomv2:(start2+1)*nomv2],axis=None)
+                    else :
+                        chi_sum[start1,start2] = np.sum(chi[start1*nomv2:(start1+1)*nomv2,start2*nomv2:(start2+1)*nomv2],axis=None)
+                    start2 += 1
+            start1 += 1
+    return chi_sum
+
+def Ueff(chi,chi0,indmfl_info,nomv2) :
+
+    chi_sum = sum_chi(chi,nomv2,indmfl_info,resolved=False)
+    chi0_sum = sum_chi(chi0,nomv2,indmfl_info,resolved=False)
+
+    U = linalg.inv(chi_sum)-linalg.inv(chi0_sum)
+    #U = sum_chi(U,1,indmfl_info)
+    return U
+
+def BSEU(chi0,U,nomv2,indmfl_info) :
+    chi0_sum = sum_chi(chi0,nomv2,indmfl_info,resolved=False)
+    chi = linalg.inv(linalg.inv(chi0_sum)+U)
+    chi_sum = sum_chi(chi,1,indmfl_info)
+    return chi_sum
+
+
+def makechi0(chi0q,indmfl_info,dim,nomv2,nointersite) :
+    """
+    chi0q :   nomv isp il1 il2 cix1
+    """
+
+    chi0ext = np.zeros((dim,dim),dtype=complex)
+    ncix = int(indmfl_info['ncix'])
+    norb = indmfl_info['norb']
+    norb = [int(a) for a in norb]
+    start1 = 0
+    for cix1 in range(ncix) :
+        icix1 = indmfl_info['icix'][cix1]
+        L1 = 2*indmfl_info['l'][icix1]+1
+        if indmfl_info['lst_vertex'][cix1] == 'pass' :
+            continue
+
+        ind1_reduc = 0
+        for l1 in range(L1) :
+            if indmfl_info['sigind'][l1,l1,icix1,0] != 0 :
+                start2 = 0
+                for cix2 in range(ncix) :
+                    icix2 = indmfl_info['icix'][cix2]
+                    L2 = 2*indmfl_info['l'][icix2]+1
+
+                    if indmfl_info['lst_vertex'][cix2]=='pass' :
+                        continue
+
+                    ind2_reduc = 0
+                    for l2 in range(L2) :
+                        if indmfl_info['sigind'][l2,l2,icix2,0] != 0 :
+                            chi0ext[start1:start1+nomv2,start2:start2+nomv2] =- np.diag(chi0q[:,0,l1,l2,cix2*ncix+cix1])
+                            if nointersite :
+                                if cix1 != cix2 :
+                                    chi0ext[start1:start1+nomv2,start2:start2+nomv2] = 0
+                            ind2_reduc += 1
+                            start2 += nomv2
+                ind1_reduc += 1
+                start1 += nomv2
+    return chi0ext
+
+
+
+def read_info_vertex(indmfl_info,filename='vertex.info') :
+    ncix = indmfl_info['ncix']
+    lst_name = ['aaa' for i in range(ncix)]
+    import os.path
+    if os.path.isfile(filename) :
+    	f = f.read()
+    	f = f.split('\n')
+
+    	nb_icix = 0
+
+    	for l in f :
+    	    s = l.split()
+    	    if len(s) == 0 :
+    	        break
+    	    if l[0] != '#' :
+    	        name = s[1]
+    	        icix = int(s[0])
+
+    	        if name == 'pass' :
+    	            print('icix {icix} will not be take into account'.format(icix=icix))
+    	        else :
+    	            print('for icix {icix}, vertex will be read in file {f}'.format(icix=icix,f=name))
+    	            if not  os.path.isfile(name) :
+    	                raise Exception('File  {f} not found'.format(f=name))
+    	        if lst_name[icix] != 'aaa' :
+    	            raise Exception('twice the same icix in {f}'.format(f=name))
+
+    	        lst_name[icix] = name
+    	        nb_icix += 1
+    	if ncix != nb_icix :
+    	    raise Exception('Expected {ncix} icix in {f}'.format(f=filename,ncix=ncix))
+        #    print('{nb_icix} files found in {filename}'.format(nb_icix=nb_icix,filename=filename))
+    else :
+        lst_name = ['chiloc_'+str(i+1)+'.h5' for i in range(ncix)]
+
+
+    print('')
+    indmfl_info['lst_vertex'] = lst_name
+    nb_chan = 0
+    for icix in range(ncix) :
+        if indmfl_info['lst_vertex'][icix] != 'pass'  :
+            nb_chan += indmfl_info['norb'][icix]
+    indmfl_info["nb_chan"] = nb_chan
+
+
+
+
+
+def readvertex_h5(name) :
+    f = h5py.File(name, 'r')
+    dset = np.array(f['chis'])
+    beta = f['beta'][0]
+    chiS =  np.array(dset)
+
+    nomv = chiS.shape[0]
+    nOm = chiS.shape[4]
+    norb =  chiS.shape[2]
+    return chiS,nomv,nOm,norb,beta
+
+
+
+
+def vertex_onecix(iOm,nomv2,chiS,cix,chi0loc,indmfl_info,triq_vertexs=True) :
+    """
+    iOm : index of Bosonic grind
+    nomv : nb of fermionic frequencies
+    chiS : ChiS loc in tvertex.dat format : inomv1,inomv2,orb1,orb2,iOm
+    chi0loc : G[iomv]*G[inomv+iOm] format : nOm nomv isp il1 il2 cix1
+    """
+
+    norb = indmfl_info['norb'][cix]
+    nsp = indmfl_info['nsp']
+    dim = nomv2*norb
+    icix = indmfl_info['icix'][cix]
+    L = 2*indmfl_info['l'][icix]+1
+    ncix = indmfl_info['ncix']
+    chis = np.zeros((dim,dim),dtype=complex)
+    for i in range(norb):
+        for j in range(norb):
+            chis[nomv2*i:nomv2*(i+1),nomv2*j:nomv2*(j+1)] = chiS[:,:,i,j,iOm]
+
+
+    ind_red = 0
+
+    if not triqs_vertex :
+        for isp in range(nsp) :
+            for l in range(L) :
+                if indmfl_info['sigind'][l,l,icix,isp] != 0 :
+                    chis[ind_red*nomv2:(ind_red+1)*nomv2,ind_red*nomv2:(ind_red+1)*nomv2] += np.diag( -chi0loc[iOm,:,0,l,l,cix*ncix+cix])
+                    ind_red += 1
+
+
+
+
+    GS = linalg.inv(chis)
+
+    ind_red = 0
+    for isp in range(nsp) :
+        for l in range(L) :
+            if indmfl_info['sigind'][l,l,icix,isp] != 0 :
+                for im in range(nomv2) :
+                    GS[ind_red*nomv2+im,ind_red*nomv2+im] -= -1/chi0loc[iOm,im,0,l,l,cix*ncix+cix]
+                ind_red += 1
+
+    return  GS
+
+def vertex_ext(LGS,indmfl_info,dimext,nomv2) :
+    ncix = int(indmfl_info['ncix'])
+    norb = indmfl_info['norb']
+    norb = [int(a) for a in norb]
+    GSext = np.zeros((dimext,dimext),dtype=complex)
+    start1 = 0
+
+    for icix1 in range(ncix) :
+
+        if indmfl_info['lst_vertex'][icix1] == 'pass' :
+            continue
+
+
+        start2 = 0
+        for icix2 in range(ncix) :
+
+            if indmfl_info['lst_vertex'][icix2] == 'pass' :
+                continue
+            if icix1 == icix2 :
+                GSext[start1:start1+nomv2*norb[icix1],start2:start2+nomv2*norb[icix2]]=LGS[icix1]
+            start2 += nomv2*norb[icix2]
+        start1 += nomv2*norb[icix1]
+    return GSext
+
+
+def generate_vertex(chi0loc,indmfl_info,triqs_vertex=True) :
+    ncix = indmfl_info['ncix']
+    # Compute the total vertex :
+    dim = 0
+    betat,nomvt2,nOmt = [],[],[] # use to check if these paramaters are the same if all the files
+    LS = []
+    LC = []
+    for name in indmfl_info['lst_vertex'] :
+        if name == 'pass' :
+            LS.append('pass')
+            LC.append('pass')
+            continue
+        f = h5py.File(name, 'r')
+        chiS = np.array(f['chis'])
+        LS.append(chiS)
+
+        chiC = np.array(f['chic'])
+        LC.append(chiC)
+
+        betat.append(np.array(f['beta']))
+        nomvt2.append(chiS.shape[0])
+        nOmt.append(chiS.shape[4])
+        norb = chiS.shape[2]
+        dim += int(nomvt2[-1]*norb)
+
+    for  i in range(len(nOmt)) :
+        if (nOmt[i] != nOmt[0])  or (nomvt2[i] != nomvt2[0]) or (betat[i] != betat[0]) :
+            raise Exception('parameter in vertex files different')
+    nomv2 = int(nomvt2[0])
+    nOm = int(nOmt[0])
+
+    #compute the total vertex :
+    GS = np.zeros((nOm,dim,dim),dtype=complex)
+    GC = np.zeros((nOm,dim,dim),dtype=complex)
+
+    for iOm in range(nOm) :
+        LGS = []
+        LGC = []
+        for cix in range(ncix) :
+            if indmfl_info['lst_vertex'][cix] == 'pass' :
+                LGS.append('pass')
+                LGC.append('pass')
+                continue
+            #local inverse BSE to get the vertex
+            LGS.append(vertex_onecix(iOm,nomv2,LS[cix],cix,chi0loc,indmfl_info,triqs_vertex))
+            LGC.append(vertex_onecix(iOm,nomv2,LC[cix],cix,chi0loc,indmfl_info,triqs_vertex))
+        # construction of Gamma_ij=Gamma_loc_ii kronecker(i,j)
+        GS[iOm] = vertex_ext(LGS,indmfl_info,dim,nomv2)
+        GC[iOm] = vertex_ext(LGC,indmfl_info,dim,nomv2)
+
+
+    return np.array(GS), np.array(GC)
+
+
+
+
+if __name__ == '__main__':
+    from mpi4py import MPI
+    p = argparse.ArgumentParser(description='read tvertex and compute Sus')
+    p.add_argument('--nointersite',action='store_true')
+    p.add_argument('--nOm',nargs=1,type=int,default=[0])
+    p.add_argument('--kh',action='store_true')
+    args = p.parse_args()
+
+    nointersite=args.nointersite
+    nOm_max=args.nOm[0]
+
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
+    comm.Barrier()
+    if rank==0  :
+
+        triqs_vertex = (not args.kh)
+
+        print('read info_indmfl.h5')
+        indmfl_info = readinfoindmfl()
+
+        print('read vertex.info')
+        read_info_vertex(indmfl_info)
+
+
+        filename = 'chi0.h5'
+        print('read chi0.h5')
+        filename = 'chi0.h5'
+        f = h5py.File(filename, 'r')
+        chi0loc = (np.array(f['chi0loc-r'])+1j*np.array(f['chi0loc-i'])).T
+        #nOm nomv isp il1 il2 cix1
+        nomv2 = chi0loc.shape[1]
+        nOm_lmf = chi0loc.shape[0]
+
+        iqtab = np.array(f['iqtab'])
+        nq = iqtab.shape[0]
+
+        GS,GC = generate_vertex(chi0loc,indmfl_info,triqs_vertex)
+        norb = indmfl_info['norb'][0]
+        nOm = GS.shape[0]
+        if nOm_max > 0 :
+            nOm=nOm_max
+        if nOm > nOm_lmf :
+            raise Exception('number of bosonic frequencies given by lmfdmft lower than the one given in the chi_loc')
+
+        ncix = indmfl_info['ncix']
+
+
+
+
+    else :
+        nomv2,nq,nOm,norb,ncix = None,None,None,None,None
+        nOm_lmf = None
+        indmfl_info = None
+
+
+    nq = comm.bcast(nq, root=0)
+    nOm = comm.bcast(nOm, root=0)
+    nOm_lmf = comm.bcast(nOm_lmf, root=0)
+    norb = comm.bcast(norb, root=0)
+    ncix = comm.bcast(ncix, root=0)
+    nomv2 = comm.bcast(nomv2, root=0)
+    indmfl_info = comm.bcast(indmfl_info, root=0)
+
+    chiSQ_sum,chiSQ_sum_chunk,info_chiSQ_sum = quick_scatter(comm,rank,size,dim=(nq,nOm_lmf,ncix,ncix,norb,norb),dtype=complex)
+    chiCQ_sum,chiCQ_sum_chunk,info_chiCQ_sum = quick_scatter(comm,rank,size,dim=(nq,nOm_lmf,ncix,ncix,norb,norb),dtype=complex)
+    chi0Q_sum,chi0Q_sum_chunk,info_chi0Q_sum = quick_scatter(comm,rank,size,dim=(nq,nOm_lmf,ncix,ncix,norb,norb),dtype=complex)
+
+    UC_sum,UC_sum_chunk,info_UC_sum = quick_scatter(comm,rank,size,dim=(nq,nOm,indmfl_info["nb_chan"],indmfl_info["nb_chan"]),dtype=complex)
+    US_sum,US_sum_chunk,info_US_sum = quick_scatter(comm,rank,size,dim=(nq,nOm,indmfl_info["nb_chan"],indmfl_info["nb_chan"]),dtype=complex)
+
+    q_split = info_chiSQ_sum["lst_ind"]
+
+
+
+    for iOm in range(nOm) :
+
+        if rank ==  0 :
+            GS_iom = GS[iOm,:,:]
+            GC_iom = GC[iOm,:,:]
+        else :
+            GS_iom,GC_iom = None,None
+
+        if rank == 0 :
+            #necessary if h5py is installed with serial hdf5
+            # otherwise, would have been better if each process read the q point needed...
+            Nl = 2*indmfl_info['l'][0]+1
+            CQ = np.zeros((nq,nomv2,1,Nl,Nl,ncix**2),dtype=complex)
+            for iq in range(nq) :
+                f = h5py.File('chi0.h5', 'r')
+                chi0q = (np.array(f['chi0-r_'+str(iq+1)])+1j*np.array(f['chi0-i_'+str(iq+1)])).T
+                CQ[iq] = chi0q[iOm]
+                f.close()
+        else :
+            CQ = None
+
+        CQ,CQ_chunk,info_CQ = quick_scatter(comm,rank,size,T=CQ,dtype=complex)
+
+        GS_iom = comm.bcast(GS_iom, root=0)
+        GC_iom = comm.bcast(GC_iom, root=0)
+        if rank == 0 :
+            print('\n progression node 0 : \n ')
+        for iq,q in enumerate(q_split[rank]) :
+
+            if rank == 0 :
+                print('iom={iom}/{nOm}, q={iq}/{nq}'.format(nOm=nOm,iom=iOm,iq=iq,nq=len(q_split[rank])))
+
+            chi0Q = makechi0(CQ_chunk[iq],indmfl_info,GS_iom.shape[0],nomv2,nointersite=nointersite)
+
+
+
+            chi0 = sum_chi(chi0Q,nomv2,indmfl_info)
+
+            chis = BSE(chi0Q,GS_iom,nomv2,indmfl_info)
+            chic = BSE(chi0Q,GC_iom,nomv2,indmfl_info)
+            UC_sum_chunk[iq,iOm] = Ueff(chic,chi0Q,indmfl_info,nomv2)
+            US_sum_chunk[iq,iOm] = Ueff(chis,chi0Q,indmfl_info,nomv2)
+            chi0Q_sum_chunk[iq,iOm,:,:,:,:] = chi0[:,:,:,:]
+
+
+            chis = sum_chi(chis,nomv2,indmfl_info)
+            chiSQ_sum_chunk[iq,iOm,:,:,:,:] = chis[:,:,:,:]
+
+
+            chic = sum_chi(chic,nomv2,indmfl_info)
+            chiCQ_sum_chunk[iq,iOm,:,:,:,:] = chic[:,:,:,:]
+
+
+
+    chiCQ_sum = quick_gather(comm,rank,size,chiCQ_sum,chiCQ_sum_chunk,info_chiCQ_sum)
+    chiSQ_sum = quick_gather(comm,rank,size,chiSQ_sum,chiSQ_sum_chunk,info_chiSQ_sum)
+    chi0Q_sum = quick_gather(comm,rank,size,chi0Q_sum,chi0Q_sum_chunk,info_chi0Q_sum)
+    US_sum = quick_gather(comm,rank,size,US_sum,US_sum_chunk,info_US_sum)
+    UC_sum = quick_gather(comm,rank,size,UC_sum,UC_sum_chunk,info_UC_sum)
+
+    if rank == 0 :
+        if nOm_lmf > nOm :
+            for iOm in range(nOm,nOm_lmf) :
+                for iq in range(nq) :
+                    CQ = np.zeros((nomv2,1,Nl,Nl,ncix**2),dtype=complex)
+                    f = h5py.File('chi0.h5', 'r')
+                    chi0q = (np.array(f['chi0-r_'+str(iq+1)])+1j*np.array(f['chi0-i_'+str(iq+1)])).T
+                    chi0Q = makechi0(chi0q[iOm],indmfl_info,GS_iom.shape[0],nomv2,nointersite=nointersite)
+                    chiSQ_sum[iq,iOm] = BSEU(chi0Q,US_sum[iq,-1],nomv2,indmfl_info)
+                    chiCQ_sum[iq,iOm] = BSEU(chi0Q,UC_sum[iq,-1],nomv2,indmfl_info)
+
+
+
+
+    comm.Barrier()
+    if rank == 0 :
+        f = open('chi_spin.txt','w')
+        for iOm in range(nOm) :
+            for iq in range(nq) :
+                beta = indmfl_info['beta']
+                print("{}  {}  {} {}".format(iq,iOm,np.sum(chiSQ_sum[iq,iOm]).real/beta,np.sum(chiSQ_sum[iq,iOm]).imag/beta))
+                f.write("{}  {}  {} {} \n ".format(iq,iOm,np.sum(chiSQ_sum[iq,iOm]).real/beta,np.sum(chiSQ_sum[iq,iOm]).imag/beta))
+        f = h5py.File('chiSQ.h5', 'w')
+        f.create_dataset('chiSQ',data=chiSQ_sum)
+        f.create_dataset('chiCQ',data=chiCQ_sum)
+        f.create_dataset('chi0Q',data=chi0Q_sum)
+        f.create_dataset('iqtab',data=iqtab)
+        f.close()

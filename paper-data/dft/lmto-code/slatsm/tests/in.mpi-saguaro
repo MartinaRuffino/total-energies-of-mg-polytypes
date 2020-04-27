@@ -1,0 +1,21 @@
+#!/bin/bash
+# Submit this job to the batch system with the command:  qsub < in.mpi
+#PBS -l nodes=4
+#PBS -o out
+#PBS -j oe
+#  #PBS -q devel
+#PBS -l walltime=0:01:00
+
+#################################################
+
+LD_LIBRARY_PATH=/packages/intel-openmpi-1.2.7/lib:/packages/intel/cce/10.1.015/lib:/packages/intel/mkl/10.0.2.018/lib/em64t:/packages/intel/fce/10.1.015/lib:/packages/pgi/linux86-64/7.0-4/lib
+export LD_LIBRARY_PATH
+PATH=.:/home/markv/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/home/markv/mybin:/usr/bin:/usr/X11R6/bin:/packages/intel-openmpi-1.2.7/bin:/packages/intel/cce/10.1.015/bin:/packages/intel/fce/10.1.015/bin:/packages/intel/idbe/10.1.015/bin:/packages/pgi/linux86-64/7.0/bin
+# source /opt/usepackage/share/usepackage/use.bsh
+# use pgi-openmpi-1.2.3 pgi-6.2
+use intel-openmpi-1.2.7
+
+cd /home/markv/slatsm/tests
+
+mpiexec ./a.out first second third
+

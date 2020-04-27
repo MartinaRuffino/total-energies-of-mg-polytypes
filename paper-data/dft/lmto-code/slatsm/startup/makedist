@@ -1,0 +1,79 @@
+#!/bin/tcsh
+
+  if ( $?LIBSLA != 1) then
+    echo makedist: no environment variable LIBSLA defined ... aborting
+    exit -1
+  endif
+        
+  set nwd = $LIBSLA:h
+
+  if ( ! -d $nwd ) then
+    echo makedist: missing directory $nwd ... aborting
+    exit -1
+  endif
+
+  echo ------ update slatsm library in directory $nwd ... -----
+  pushd `echo $nwd` >&/dev/null
+
+  foreach i ( startup/* )
+     if (! -e slatsm/$i ) then
+       echo new file $i
+       cp $i slatsm/$i
+     else
+       set arg2 = `ls -t slatsm/$i $i`
+       if ($arg2[1] == $i ) then
+         echo update $i
+         cp $i slatsm/$i
+       endif
+     endif
+  end
+
+#    foreach i ( *.c *.f )
+#       if (! -e slatsm/$i ) then
+#         echo new file $i
+#         ccomp -uSGI-BUG -uSGI -uSGI-PARALLEL  $i snot.f; cpnone snot.f slatsm/$i
+#         echo checking compliance with ansi standard: do f77 -c -ansi snot.f
+#         cat slatsm/$i | sed 's/_//g' >snot.f; f77 -c -ansi snot.f; if ($status != 0) exit
+#         rm snot.f snot.o
+#       else
+#         set arg2 = `ls -t slatsm/$i $i`
+#         if ($arg2[1] == $i ) then
+#           diff -I'implicit none' $i slatsm/$i >/dev/null
+#           if ($status != 0) then
+
+#             set retval = 1
+#             if (-r startup/ccomp-dist) then
+#               grep  $i:t  startup/ccomp-dist > /dev/null
+#               set retval = $status
+#             endif
+
+#             echo update $i ... differences:
+
+#             if ($retval == 0) then
+#               set cccmd = `grep  $i:t  startup/ccomp-dist | head -1`
+#               ccomp $cccmd
+#               echo "cpnone $i~ slatsm/$i"
+#               cpnone $i~ slatsm/$i
+#             else
+#               diff -I'implicit none' slatsm/$i $i
+#               cpnone $i slatsm/$i
+#               echo "checking compliance with ansi standard (ftnchek)"
+#               \ftnchek -usage=033 -f77=all -nonovice -nosixchar -arguments=1 -truncation=no-type-demotion slatsm/$i
+#             endif
+#           endif
+#         endif
+#       endif
+#    end
+
+  rm -f snot.f snot.o
+
+  echo ------ copying files configure slatsm-to-* to slatsm ---
+  cp -p configure Special-Flags slatsm-to-* slatsm
+
+  echo ------ make SLATSM.tar.gz in directory $nwd -----
+  pushd `echo $nwd` >&/dev/null
+
+  (cd slatsm; rm -f snot.* *.o startup/*~ xx.f); rm SLATSM.tar.gz
+  tar cvf - slatsm | gzip >SLATSM.tar.gz
+# tar cvf - slatsm | compresss >SLATSM.tar.Z
+# #uuencode SLATSM.tar.Z SLATSM.tar.Z >tarfile.encode

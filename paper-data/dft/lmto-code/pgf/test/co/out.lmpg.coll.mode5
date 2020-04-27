@@ -1,0 +1,535 @@
+ ----------------------  START LMPG  ----------------------
+ HEADER fcc Co, conductance using layered GF
+
+ LMPG:     nbas = 4  nspec = 2  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gam-rep, two-c-H, Q2:Power-moments
+ bz:       metal, tetra, invit 
+ pgf:      transmittance  via LU decmpsn
+
+ PGFSET: 2 principal layers, 4+2+2 sites.  Normal: 1 0 0
+   PL |   0   1
+ size |   2   2
+  PLV |   0   0
+   PL  1  1  2  2
+ Site  1  2  3  4
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   2.000000   0.000000   0.000000 Plat(3) as input
+   1.000000   0.000000   0.000000 PlatL:  angle (deg) with Plat(3) = 0
+   1.000000   0.000000   0.000000 PlatR:  angle (deg) with Plat(3) = 0
+   6.000000   0.000000   0.000000 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.000000   0.500000  -0.500000        0.000000   1.000000  -1.000000
+   6.000000   0.000000   0.000000        0.166667   0.000000   0.000000
+   alat = 6.758  Cell vol = 925.925015
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   4.752  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-12   alat= 6.75800   awald= 0.205   lmax=6
+         r1=  4.752   nkd= 435      q1=  2.749   nkg= 241
+
+ SGROUP: 4 symmetry operations from 1 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: 1 generator(s) were added to complete the group:
+         r4x my
+         r4x my
+ MKSYM:  found 8 space group operations; adding inversion generated 16 ops
+
+ SPLCLS:  2 species split into 4 classes
+ Species  Class      Sites...
+ Co       1:Co       1
+          3:Co2      3
+ Cob      2:Cob      2
+          4:Cob2     4
+         4 classes for embedding region + 4 for padding layers
+  2D-reciprocal vectors:
+    0.000000    1.000000    1.000000
+    0.000000    1.000000   -1.000000
+ BZMESH: 45 irreducible QP from 256 ( 16 16 1 )  shift= F F F
+  
+ ZMESH: nz=201 (real axis: Im(z)=1e-5(*-1))  e1,e2=-0.8,0.147  wz=0.004735
+
+ GETZV:  72 valence electrons
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Co         0.000002   0.000000  -0.000005  -0.000004  -0.763676
+ Cob       -0.000001   0.000000  -0.000001  -0.000002  -0.763673
+ Co2        0.000000   0.000000   0.000001   0.000001  -0.763671
+ Cob2      -0.000001   0.000000   0.000006   0.000005  -0.763667
+ Co3        0.000000   0.000000  -0.000008  -0.000007  -0.763679
+ Cob3      -0.000001   0.000000  -0.000005  -0.000006  -0.763678
+ Co4        0.000003   0.000000   0.000006   0.000008  -0.763663
+ Cob4      -0.000001   0.000000   0.000009   0.000008  -0.763663
+ Co5        0.000000   0.000000  -0.000004  -0.000004  -0.000004
+ Cob5      -0.000001   0.000000  -0.000006  -0.000007  -0.000007
+ Co6        0.000003   0.000000   0.000004   0.000006   0.000006
+ Cob6      -0.000001   0.000000   0.000002   0.000001   0.000001
+ Sum Q=0.000001  Emad=0.000000(0.000000)  Vmtz=-0.509115 (up-dn=-0.012370)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Co3        0.000000   0.000000   0.000000   0.000000  -0.763671
+ Cob3      -0.000001   0.000000   0.000001   0.000000  -0.763671
+ Sum Q=-0.000001  Emad=0.000000(0.000000)  Vmtz=-0.763671 (up-dn=-0.018553)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Co4        0.000003   0.000000  -0.000002   0.000000  -0.763672
+ Cob4      -0.000001   0.000000   0.000000  -0.000001  -0.763672
+ Sum Q=0.000001  Emad=0.000000(0.000000)  Vmtz=-0.763672 (up-dn=-0.018554)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T    0.000000   -0.000007   -0.000007    0.000007
+  R      T    0.000000    0.000008    0.000009    0.000009
+
+ RMS pot difference in L PL = 0.000000  in R PL = 0.000000  total = 0.000000
+ vconst that minimizes potential mismatch to end layers = -0.000001
+ vconst is now (estimate to satisfy charge neutrality)  =  0.000000
+ difference                                             = -0.000001
+ cpudel    ...   Time this iter:  time(s):  0.135    total:  0.135s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 72 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 72 0 0 0
+
+ pglusu: band subdiagonal = 35
+
+ --- PGFASA ( gamma, bigemb, LU-decmpsn ) ---
+ make transmission  using P3
+   PL   0   1
+  1st   1   3
+ nbas   2   2
+ ndim  18  18
+ ldim  18  18
+  L+I  18  18
+  PLV   0   0
+ 
+ using ef=0.1470000  vconst=0.0000000 vconst(L)=0.0000000 vconst(R)=0.0000000
+ 
+ pgglst mode 11    4 PL   (-1:2)
+ SUPGBC: read lbc for  GF ...  missing -> generate for ipl=-1
+ SUPGBC: read rbc for  GF ...  missing -> generate for ipl=2
+ iz = 1 of 201  z = -0.800000 -1.0e-5  wz = 0.00236750 0.00000  isp=1  q= 0 0 0
+ zp: -0.8000 isp= 1  intjk=  4.8557E-17  Im j= -8.7445E-33
+ iz = 1 of 201  z = -0.800000 -1.0e-5  wz = 0.00236750 0.00000  isp=2  q= 0 0 0
+ zp: -0.8000 isp= 2  intjk=  1.8216E-16  Im j= -4.5383E-33
+ zp: -0.7953 isp= 1  intjk=  8.0417E-17  Im j= -3.8243E-33
+ zp: -0.7953 isp= 2  intjk=  3.1991E-16  Im j= -8.8660E-32
+ zp: -0.7905 isp= 1  intjk=  1.3600E-16  Im j=  4.5565E-32
+ zp: -0.7905 isp= 2  intjk=  5.7791E-16  Im j=  4.7638E-33
+ zp: -0.7858 isp= 1  intjk=  2.3544E-16  Im j=  1.3430E-31
+ zp: -0.7858 isp= 2  intjk=  1.0782E-15  Im j= -3.1716E-31
+ zp: -0.7811 isp= 1  intjk=  4.1840E-16  Im j=  4.4745E-32
+ zp: -0.7811 isp= 2  intjk=  2.0878E-15  Im j=  4.3321E-31
+ zp: -0.7763 isp= 1  intjk=  7.6599E-16  Im j= -2.2371E-31
+ zp: -0.7763 isp= 2  intjk=  4.2236E-15  Im j=  7.0169E-31
+ zp: -0.7716 isp= 1  intjk=  1.4510E-15  Im j=  1.6423E-31
+ zp: -0.7716 isp= 2  intjk=  9.0030E-15  Im j=  3.1021E-31
+ zp: -0.7669 isp= 1  intjk=  2.8601E-15  Im j=  3.9516E-32
+ zp: -0.7669 isp= 2  intjk=  2.0461E-14  Im j= -4.1086E-30
+ zp: -0.7621 isp= 1  intjk=  5.9087E-15  Im j=  5.9190E-31
+ zp: -0.7621 isp= 2  intjk=  5.0430E-14  Im j= -1.6458E-30
+ zp: -0.7574 isp= 1  intjk=  1.2920E-14  Im j=  1.0314E-30
+ zp: -0.7574 isp= 2  intjk=  1.3833E-13  Im j= -4.7516E-29
+ zp: -0.7527 isp= 1  intjk=  3.0310E-14  Im j= -3.0625E-30
+ zp: -0.7527 isp= 2  intjk=  4.4087E-13  Im j=  8.0226E-29
+ zp: -0.7479 isp= 1  intjk=  7.7854E-14  Im j= -4.0079E-30
+ zp: -0.7479 isp= 2  intjk=  1.7697E-12  Im j= -3.2005E-28
+ zp: -0.7432 isp= 1  intjk=  2.2602E-13  Im j= -1.6862E-29
+ zp: -0.7432 isp= 2  intjk=  1.0735E-11  Im j= -1.9002E-27
+ zp: -0.7384 isp= 1  intjk=  7.8385E-13  Im j=  7.4231E-29
+ zp: -0.7384 isp= 2  intjk=  1.7575E-10  Im j=  9.2114E-27
+ zp: -0.7337 isp= 1  intjk=  3.6298E-12  Im j= -1.0062E-27
+ zp: -0.7337 isp= 2  intjk=  3.8500E-03  Im j= -6.7425E-19
+ zp: -0.7290 isp= 1  intjk=  2.9771E-11  Im j=  1.2409E-26
+ zp: -0.7290 isp= 2  intjk=  3.8920E-03  Im j=  1.1498E-18
+ zp: -0.7242 isp= 1  intjk=  1.4492E-09  Im j= -8.7340E-26
+ zp: -0.7242 isp= 2  intjk=  1.9439E-02  Im j=  5.4992E-18
+ zp: -0.7195 isp= 1  intjk=  3.8855E-03  Im j= -1.2459E-19
+ zp: -0.7195 isp= 2  intjk=  1.9490E-02  Im j= -3.7518E-18
+ zp: -0.7148 isp= 1  intjk=  3.8961E-03  Im j=  8.6768E-19
+ zp: -0.7148 isp= 2  intjk=  3.5051E-02  Im j= -3.8778E-18
+ zp: -0.7100 isp= 1  intjk=  1.9461E-02  Im j=  7.7723E-19
+ zp: -0.7100 isp= 2  intjk=  3.5075E-02  Im j= -3.1125E-18
+ zp: -0.7053 isp= 1  intjk=  3.5011E-02  Im j= -2.3151E-18
+ zp: -0.7053 isp= 2  intjk=  3.5089E-02  Im j=  5.7051E-18
+ zp: -0.7006 isp= 1  intjk=  3.5064E-02  Im j=  1.1139E-17
+ zp: -0.7006 isp= 2  intjk=  5.0658E-02  Im j= -1.0875E-17
+ zp: -0.6958 isp= 1  intjk=  3.5081E-02  Im j=  3.8996E-18
+ zp: -0.6958 isp= 2  intjk=  8.1750E-02  Im j=  3.2894E-18
+ zp: -0.6911 isp= 1  intjk=  5.0612E-02  Im j=  6.4458E-18
+ zp: -0.6911 isp= 2  intjk=  8.1843E-02  Im j=  3.1566E-18
+ zp: -0.6864 isp= 1  intjk=  5.0671E-02  Im j= -5.8059E-19
+ zp: -0.6864 isp= 2  intjk=  8.1874E-02  Im j=  1.6085E-17
+ zp: -0.6816 isp= 1  intjk=  8.1805E-02  Im j= -2.0998E-17
+ zp: -0.6816 isp= 2  intjk=  8.1892E-02  Im j= -9.8050E-18
+ zp: -0.6769 isp= 1  intjk=  8.1859E-02  Im j= -1.9132E-17
+ zp: -0.6769 isp= 2  intjk=  9.7168E-02  Im j=  4.8014E-18
+ zp: -0.6722 isp= 1  intjk=  8.1883E-02  Im j= -1.3273E-17
+ zp: -0.6722 isp= 2  intjk=  9.7478E-02  Im j= -1.2876E-17
+ zp: -0.6674 isp= 1  intjk=  8.1898E-02  Im j= -4.1213E-18
+ zp: -0.6674 isp= 2  intjk=  1.1305E-01  Im j= -4.4745E-18
+ zp: -0.6627 isp= 1  intjk=  9.7432E-02  Im j= -9.9535E-18
+ zp: -0.6627 isp= 2  intjk=  1.4403E-01  Im j= -2.1729E-17
+ zp: -0.6580 isp= 1  intjk=  9.7490E-02  Im j= -5.9887E-18
+ zp: -0.6580 isp= 2  intjk=  1.4424E-01  Im j=  3.2048E-17
+ zp: -0.6532 isp= 1  intjk=  1.1307E-01  Im j= -2.8881E-18
+ zp: -0.6532 isp= 2  intjk=  1.4429E-01  Im j= -1.5672E-18
+ zp: -0.6485 isp= 1  intjk=  1.4416E-01  Im j=  2.0583E-17
+ zp: -0.6485 isp= 2  intjk=  1.4431E-01  Im j= -2.9654E-17
+ zp: -0.6437 isp= 1  intjk=  1.4426E-01  Im j=  2.1374E-17
+ zp: -0.6437 isp= 2  intjk=  1.4434E-01  Im j= -1.7998E-17
+ zp: -0.6390 isp= 1  intjk=  1.4430E-01  Im j=  3.7976E-18
+ zp: -0.6390 isp= 2  intjk=  1.7546E-01  Im j=  1.3517E-17
+ zp: -0.6343 isp= 1  intjk=  1.4432E-01  Im j= -8.8252E-18
+ zp: -0.6343 isp= 2  intjk=  1.7551E-01  Im j= -8.6971E-18
+ zp: -0.6295 isp= 1  intjk=  1.7527E-01  Im j= -4.7149E-18
+ zp: -0.6295 isp= 2  intjk=  1.7553E-01  Im j=  8.9433E-18
+ zp: -0.6248 isp= 1  intjk=  1.7548E-01  Im j=  1.1233E-17
+ zp: -0.6248 isp= 2  intjk=  1.7555E-01  Im j= -1.2867E-17
+ zp: -0.6201 isp= 1  intjk=  1.7552E-01  Im j=  2.6947E-17
+ zp: -0.6201 isp= 2  intjk=  1.9111E-01  Im j= -5.8546E-19
+ zp: -0.6153 isp= 1  intjk=  1.7554E-01  Im j=  1.9476E-17
+ zp: -0.6153 isp= 2  intjk=  2.2221E-01  Im j= -2.6091E-17
+ zp: -0.6106 isp= 1  intjk=  1.7556E-01  Im j=  9.2503E-18
+ zp: -0.6106 isp= 2  intjk=  2.3782E-01  Im j= -4.6520E-18
+ zp: -0.6059 isp= 1  intjk=  1.9113E-01  Im j=  9.1487E-18
+ zp: -0.6059 isp= 2  intjk=  2.3791E-01  Im j=  9.4277E-18
+ zp: -0.6011 isp= 1  intjk=  2.2223E-01  Im j= -1.9883E-17
+ zp: -0.6011 isp= 2  intjk=  2.3795E-01  Im j=  1.5884E-17
+ zp: -0.5964 isp= 1  intjk=  2.3783E-01  Im j=  2.7498E-17
+ zp: -0.5964 isp= 2  intjk=  2.6906E-01  Im j= -1.6036E-17
+ zp: -0.5917 isp= 1  intjk=  2.3792E-01  Im j=  1.2468E-17
+ zp: -0.5917 isp= 2  intjk=  2.6913E-01  Im j=  7.7584E-18
+ zp: -0.5869 isp= 1  intjk=  2.3796E-01  Im j=  8.4708E-18
+ zp: -0.5869 isp= 2  intjk=  2.6917E-01  Im j= -1.2071E-17
+ zp: -0.5822 isp= 1  intjk=  2.6906E-01  Im j= -1.4683E-17
+ zp: -0.5822 isp= 2  intjk=  2.6919E-01  Im j=  3.7758E-17
+ zp: -0.5775 isp= 1  intjk=  2.6914E-01  Im j= -1.1417E-17
+ zp: -0.5775 isp= 2  intjk=  2.6920E-01  Im j=  1.7577E-17
+ zp: -0.5727 isp= 1  intjk=  2.6918E-01  Im j= -3.1582E-17
+ zp: -0.5727 isp= 2  intjk=  2.6922E-01  Im j= -2.3734E-18
+ zp: -0.5680 isp= 1  intjk=  2.6920E-01  Im j=  6.7747E-18
+ zp: -0.5680 isp= 2  intjk=  3.1574E-01  Im j= -5.0239E-18
+ zp: -0.5633 isp= 1  intjk=  2.6922E-01  Im j= -1.0820E-17
+ zp: -0.5633 isp= 2  intjk=  3.1594E-01  Im j=  9.2020E-17
+ zp: -0.5585 isp= 1  intjk=  2.6923E-01  Im j= -1.5544E-17
+ zp: -0.5585 isp= 2  intjk=  3.4708E-01  Im j= -4.0302E-18
+ zp: -0.5538 isp= 1  intjk=  3.0016E-01  Im j= -4.3223E-17
+ zp: -0.5538 isp= 2  intjk=  3.4715E-01  Im j=  2.0690E-17
+ zp: -0.5490 isp= 1  intjk=  3.1593E-01  Im j=  5.5014E-17
+ zp: -0.5490 isp= 2  intjk=  3.4719E-01  Im j=  4.8317E-17
+ zp: -0.5443 isp= 1  intjk=  3.4705E-01  Im j=  2.6241E-17
+ zp: -0.5443 isp= 2  intjk=  3.7827E-01  Im j=  3.3045E-17
+ zp: -0.5396 isp= 1  intjk=  3.4716E-01  Im j=  1.4287E-17
+ zp: -0.5396 isp= 2  intjk=  3.7836E-01  Im j= -2.1023E-17
+ zp: -0.5348 isp= 1  intjk=  3.4721E-01  Im j=  8.5330E-18
+ zp: -0.5348 isp= 2  intjk=  3.9387E-01  Im j= -6.0348E-17
+ zp: -0.5301 isp= 1  intjk=  3.4724E-01  Im j=  4.3605E-17
+ zp: -0.5301 isp= 2  intjk=  3.9399E-01  Im j=  2.2098E-17
+ zp: -0.5254 isp= 1  intjk=  3.7836E-01  Im j=  3.0004E-17
+ zp: -0.5254 isp= 2  intjk=  3.9402E-01  Im j= -6.2897E-18
+ zp: -0.5206 isp= 1  intjk=  3.7842E-01  Im j=  3.0890E-17
+ zp: -0.5206 isp= 2  intjk=  4.2512E-01  Im j= -1.6089E-17
+ zp: -0.5159 isp= 1  intjk=  3.7845E-01  Im j= -2.3972E-17
+ zp: -0.5159 isp= 2  intjk=  4.2519E-01  Im j=  6.2282E-18
+ zp: -0.5112 isp= 1  intjk=  3.9403E-01  Im j=  5.0427E-17
+ zp: -0.5112 isp= 2  intjk=  4.2522E-01  Im j=  3.7808E-17
+ zp: -0.5064 isp= 1  intjk=  3.9407E-01  Im j=  1.4639E-17
+ zp: -0.5064 isp= 2  intjk=  4.4067E-01  Im j=  1.1791E-17
+ zp: -0.5017 isp= 1  intjk=  4.2507E-01  Im j= -3.2854E-17
+ zp: -0.5017 isp= 2  intjk=  4.7164E-01  Im j=  1.7735E-17
+ zp: -0.4970 isp= 1  intjk=  4.2523E-01  Im j= -1.6707E-17
+ zp: -0.4970 isp= 2  intjk=  5.0269E-01  Im j= -5.9031E-17
+ zp: -0.4922 isp= 1  intjk=  4.2528E-01  Im j= -6.5621E-19
+ zp: -0.4922 isp= 2  intjk=  5.0303E-01  Im j= -4.3618E-17
+ zp: -0.4875 isp= 1  intjk=  4.4071E-01  Im j= -4.6664E-17
+ zp: -0.4875 isp= 2  intjk=  5.3411E-01  Im j=  7.2357E-17
+ zp: -0.4828 isp= 1  intjk=  4.7097E-01  Im j= -5.7666E-17
+ zp: -0.4828 isp= 2  intjk=  5.3422E-01  Im j= -3.7939E-18
+ zp: -0.4780 isp= 1  intjk=  4.7199E-01  Im j=  8.8271E-18
+ zp: -0.4780 isp= 2  intjk=  5.3427E-01  Im j=  7.0056E-17
+ zp: -0.4733 isp= 1  intjk=  4.7205E-01  Im j= -8.9921E-18
+ zp: -0.4733 isp= 2  intjk=  5.6525E-01  Im j= -7.0496E-17
+ zp: -0.4686 isp= 1  intjk=  5.0307E-01  Im j=  4.2915E-17
+ zp: -0.4686 isp= 2  intjk=  5.8097E-01  Im j=  3.9794E-17
+ zp: -0.4638 isp= 1  intjk=  5.3432E-01  Im j=  5.2786E-17
+ zp: -0.4638 isp= 2  intjk=  5.8102E-01  Im j= -4.4281E-18
+ zp: -0.4591 isp= 1  intjk=  5.3442E-01  Im j=  4.9306E-17
+ zp: -0.4591 isp= 2  intjk=  6.4308E-01  Im j=  8.6871E-17
+ zp: -0.4543 isp= 1  intjk=  5.3446E-01  Im j= -1.5887E-17
+ zp: -0.4543 isp= 2  intjk=  7.2061E-01  Im j= -5.2691E-18
+ zp: -0.4496 isp= 1  intjk=  5.3449E-01  Im j=  1.1734E-17
+ zp: -0.4496 isp= 2  intjk=  8.5620E-01  Im j= -1.4536E-16
+ zp: -0.4449 isp= 1  intjk=  5.6548E-01  Im j= -5.9076E-18
+ zp: -0.4449 isp= 2  intjk=  8.7960E-01  Im j=  1.9033E-16
+ zp: -0.4401 isp= 1  intjk=  5.6565E-01  Im j=  5.0046E-17
+ zp: -0.4401 isp= 2  intjk=  9.4113E-01  Im j= -2.6379E-17
+ zp: -0.4354 isp= 1  intjk=  5.6569E-01  Im j=  7.1077E-18
+ zp: -0.4354 isp= 2  intjk=  9.1183E-01  Im j=  1.5201E-17
+ zp: -0.4307 isp= 1  intjk=  5.8126E-01  Im j=  5.4991E-17
+ zp: -0.4307 isp= 2  intjk=  1.0170E+00  Im j=  8.2634E-17
+ zp: -0.4259 isp= 1  intjk=  5.8130E-01  Im j=  6.8420E-17
+ zp: -0.4259 isp= 2  intjk=  1.0515E+00  Im j= -6.4619E-17
+ zp: -0.4212 isp= 1  intjk=  6.1225E-01  Im j=  4.7726E-17
+ zp: -0.4212 isp= 2  intjk=  1.0207E+00  Im j= -2.5683E-17
+ zp: -0.4165 isp= 1  intjk=  6.2793E-01  Im j=  3.3466E-17
+ zp: -0.4165 isp= 2  intjk=  1.0512E+00  Im j= -2.8497E-17
+ zp: -0.4117 isp= 1  intjk=  6.5896E-01  Im j= -3.0955E-17
+ zp: -0.4117 isp= 2  intjk=  1.0980E+00  Im j=  2.4363E-17
+ zp: -0.4070 isp= 1  intjk=  6.5906E-01  Im j= -4.5348E-17
+ zp: -0.4070 isp= 2  intjk=  1.1406E+00  Im j= -9.4904E-17
+ zp: -0.4023 isp= 1  intjk=  6.9001E-01  Im j= -5.1417E-17
+ zp: -0.4023 isp= 2  intjk=  1.1255E+00  Im j=  3.8435E-17
+ zp: -0.3975 isp= 1  intjk=  7.2127E-01  Im j=  2.9316E-17
+ zp: -0.3975 isp= 2  intjk=  1.2183E+00  Im j=  1.5916E-17
+ zp: -0.3928 isp= 1  intjk=  7.2140E-01  Im j= -4.3307E-17
+ zp: -0.3928 isp= 2  intjk=  1.2031E+00  Im j=  3.9319E-17
+ zp: -0.3881 isp= 1  intjk=  7.5233E-01  Im j=  2.1614E-17
+ zp: -0.3881 isp= 2  intjk=  1.2340E+00  Im j=  1.1391E-17
+ zp: -0.3833 isp= 1  intjk=  7.6799E-01  Im j= -3.9937E-18
+ zp: -0.3833 isp= 2  intjk=  1.2945E+00  Im j= -6.9347E-16
+ zp: -0.3786 isp= 1  intjk=  7.8370E-01  Im j= -2.7097E-18
+ zp: -0.3786 isp= 2  intjk=  1.2802E+00  Im j=  2.1345E-17
+ zp: -0.3739 isp= 1  intjk=  8.4581E-01  Im j=  1.1105E-16
+ zp: -0.3739 isp= 2  intjk=  1.3736E+00  Im j= -2.1251E-16
+ zp: -0.3691 isp= 1  intjk=  8.7781E-01  Im j=  1.1288E-16
+ zp: -0.3691 isp= 2  intjk=  1.3505E+00  Im j= -2.6238E-16
+ zp: -0.3644 isp= 1  intjk=  9.2753E-01  Im j= -7.3830E-17
+ zp: -0.3644 isp= 2  intjk=  1.3035E+00  Im j= -2.0851E-16
+ zp: -0.3596 isp= 1  intjk=  9.7372E-01  Im j= -1.1865E-16
+ zp: -0.3596 isp= 2  intjk=  1.3345E+00  Im j=  2.6456E-15
+ zp: -0.3549 isp= 1  intjk=  9.8610E-01  Im j=  3.5696E-17
+ zp: -0.3549 isp= 2  intjk=  1.2384E+00  Im j= -3.5781E-16
+ zp: -0.3502 isp= 1  intjk=  9.5878E-01  Im j=  5.1760E-17
+ zp: -0.3502 isp= 2  intjk=  9.9211E-01  Im j= -1.3374E-16
+ zp: -0.3454 isp= 1  intjk=  9.8838E-01  Im j=  1.0286E-15
+ zp: -0.3454 isp= 2  intjk=  9.3945E-01  Im j=  3.0431E-16
+ zp: -0.3407 isp= 1  intjk=  9.7405E-01  Im j=  3.0310E-18
+ zp: -0.3407 isp= 2  intjk=  1.1324E+00  Im j=  5.1359E-17
+ zp: -0.3360 isp= 1  intjk=  1.0053E+00  Im j=  8.1697E-17
+ zp: -0.3360 isp= 2  intjk=  1.1950E+00  Im j= -3.5979E-17
+ zp: -0.3312 isp= 1  intjk=  9.7456E-01  Im j= -1.3527E-17
+ zp: -0.3312 isp= 2  intjk=  1.3113E+00  Im j= -3.0400E-16
+ iz = 101 of 201  z = -0.326500 -1.0e-5  wz = 0.00473500 0.00000  isp=1  q= 0 0 0
+ zp: -0.3265 isp= 1  intjk=  1.0116E+00  Im j=  2.2822E-17
+ iz = 101 of 201  z = -0.326500 -1.0e-5  wz = 0.00473500 0.00000  isp=2  q= 0 0 0
+ zp: -0.3265 isp= 2  intjk=  1.2254E+00  Im j= -6.7158E-17
+ zp: -0.3218 isp= 1  intjk=  1.0054E+00  Im j=  7.5125E-17
+ zp: -0.3218 isp= 2  intjk=  1.2275E+00  Im j= -5.1189E-17
+ zp: -0.3170 isp= 1  intjk=  9.7073E-01  Im j=  1.1146E-17
+ zp: -0.3170 isp= 2  intjk=  1.2263E+00  Im j=  4.9963E-17
+ zp: -0.3123 isp= 1  intjk=  9.5872E-01  Im j=  7.6779E-17
+ zp: -0.3123 isp= 2  intjk=  1.1945E+00  Im j=  8.9696E-17
+ zp: -0.3076 isp= 1  intjk=  1.0163E+00  Im j= -1.1802E-16
+ zp: -0.3076 isp= 2  intjk=  1.3493E+00  Im j=  3.8506E-16
+ zp: -0.3028 isp= 1  intjk=  1.0007E+00  Im j= -4.5545E-16
+ zp: -0.3028 isp= 2  intjk=  1.5171E+00  Im j=  2.3486E-17
+ zp: -0.2981 isp= 1  intjk=  9.5439E-01  Im j=  5.8815E-17
+ zp: -0.2981 isp= 2  intjk=  1.5374E+00  Im j= -1.6423E-16
+ zp: -0.2934 isp= 1  intjk=  1.0914E+00  Im j= -2.2909E-16
+ zp: -0.2934 isp= 2  intjk=  1.5837E+00  Im j=  1.0721E-16
+ zp: -0.2886 isp= 1  intjk=  1.0164E+00  Im j=  1.4836E-17
+ zp: -0.2886 isp= 2  intjk=  1.6768E+00  Im j=  3.2740E-17
+ zp: -0.2839 isp= 1  intjk=  1.0929E+00  Im j= -1.4575E-17
+ zp: -0.2839 isp= 2  intjk=  1.6920E+00  Im j=  4.0925E-17
+ zp: -0.2792 isp= 1  intjk=  1.1855E+00  Im j= -1.0264E-16
+ zp: -0.2792 isp= 2  intjk=  1.6150E+00  Im j= -3.5238E-17
+ zp: -0.2744 isp= 1  intjk=  1.1467E+00  Im j=  4.3407E-17
+ zp: -0.2744 isp= 2  intjk=  1.6302E+00  Im j= -8.7575E-17
+ zp: -0.2697 isp= 1  intjk=  9.4489E-01  Im j= -2.2353E-16
+ zp: -0.2697 isp= 2  intjk=  1.7529E+00  Im j=  1.4763E-16
+ zp: -0.2649 isp= 1  intjk=  8.5190E-01  Im j=  2.1021E-17
+ zp: -0.2649 isp= 2  intjk=  1.6625E+00  Im j= -6.8186E-16
+ zp: -0.2602 isp= 1  intjk=  8.6684E-01  Im j=  1.3075E-16
+ zp: -0.2602 isp= 2  intjk=  1.8478E+00  Im j= -2.2710E-17
+ zp: -0.2555 isp= 1  intjk=  8.9639E-01  Im j= -2.7182E-17
+ zp: -0.2555 isp= 2  intjk=  1.8358E+00  Im j= -2.2506E-16
+ zp: -0.2507 isp= 1  intjk=  9.7671E-01  Im j=  1.2480E-16
+ zp: -0.2507 isp= 2  intjk=  1.8825E+00  Im j=  2.3022E-16
+ zp: -0.2460 isp= 1  intjk=  1.0398E+00  Im j= -1.4929E-16
+ zp: -0.2460 isp= 2  intjk=  1.9732E+00  Im j=  1.2391E-16
+ zp: -0.2413 isp= 1  intjk=  1.1324E+00  Im j= -2.4198E-17
+ zp: -0.2413 isp= 2  intjk=  2.0336E+00  Im j= -5.6343E-17
+ zp: -0.2365 isp= 1  intjk=  1.1636E+00  Im j= -9.0603E-17
+ zp: -0.2365 isp= 2  intjk=  1.7275E+00  Im j=  1.6151E-17
+ zp: -0.2318 isp= 1  intjk=  1.1581E+00  Im j= -6.3099E-17
+ zp: -0.2318 isp= 2  intjk=  1.9444E+00  Im j=  1.7915E-17
+ zp: -0.2271 isp= 1  intjk=  1.1480E+00  Im j=  3.6792E-17
+ zp: -0.2271 isp= 2  intjk=  1.9156E+00  Im j=  1.8956E-17
+ zp: -0.2223 isp= 1  intjk=  1.1326E+00  Im j= -5.4151E-17
+ zp: -0.2223 isp= 2  intjk=  1.9460E+00  Im j=  2.2213E-19
+ zp: -0.2176 isp= 1  intjk=  1.0395E+00  Im j= -1.6289E-17
+ zp: -0.2176 isp= 2  intjk=  1.8304E+00  Im j=  8.6315E-17
+ zp: -0.2129 isp= 1  intjk=  1.1934E+00  Im j= -9.4829E-17
+ zp: -0.2129 isp= 2  intjk=  1.8298E+00  Im j= -1.5760E-15
+ zp: -0.2081 isp= 1  intjk=  1.1795E+00  Im j= -1.4812E-17
+ zp: -0.2081 isp= 2  intjk=  1.9071E+00  Im j=  1.3380E-16
+ zp: -0.2034 isp= 1  intjk=  1.3349E+00  Im j= -1.6186E-17
+ zp: -0.2034 isp= 2  intjk=  1.8766E+00  Im j= -3.1398E-17
+ zp: -0.1987 isp= 1  intjk=  1.4598E+00  Im j= -4.1581E-17
+ zp: -0.1987 isp= 2  intjk=  1.9697E+00  Im j=  5.6889E-16
+ zp: -0.1939 isp= 1  intjk=  1.4587E+00  Im j=  1.2694E-16
+ zp: -0.1939 isp= 2  intjk=  2.0411E+00  Im j=  1.5276E-16
+ zp: -0.1892 isp= 1  intjk=  1.4872E+00  Im j= -2.0726E-16
+ zp: -0.1892 isp= 2  intjk=  2.2334E+00  Im j=  8.5258E-18
+ zp: -0.1845 isp= 1  intjk=  1.5369E+00  Im j= -9.9423E-17
+ zp: -0.1845 isp= 2  intjk=  2.1711E+00  Im j= -3.1962E-16
+ zp: -0.1797 isp= 1  intjk=  1.6283E+00  Im j=  9.2485E-17
+ zp: -0.1797 isp= 2  intjk=  2.1708E+00  Im j= -1.8037E-16
+ zp: -0.1750 isp= 1  intjk=  1.5989E+00  Im j= -8.3634E-17
+ zp: -0.1750 isp= 2  intjk=  2.0854E+00  Im j= -1.4673E-16
+ zp: -0.1702 isp= 1  intjk=  1.6289E+00  Im j=  1.2548E-17
+ zp: -0.1702 isp= 2  intjk=  2.0063E+00  Im j=  8.4456E-17
+ zp: -0.1655 isp= 1  intjk=  1.5658E+00  Im j= -5.2187E-17
+ zp: -0.1655 isp= 2  intjk=  1.9295E+00  Im j= -1.0225E-16
+ zp: -0.1608 isp= 1  intjk=  1.5817E+00  Im j= -2.7130E-17
+ zp: -0.1608 isp= 2  intjk=  1.9765E+00  Im j=  2.3657E-16
+ zp: -0.1560 isp= 1  intjk=  1.5473E+00  Im j=  1.3360E-16
+ zp: -0.1560 isp= 2  intjk=  2.0476E+00  Im j=  1.5737E-16
+ zp: -0.1513 isp= 1  intjk=  1.3813E+00  Im j=  1.0832E-16
+ zp: -0.1513 isp= 2  intjk=  1.9134E+00  Im j=  8.5751E-17
+ zp: -0.1466 isp= 1  intjk=  1.3656E+00  Im j=  4.4739E-17
+ zp: -0.1466 isp= 2  intjk=  1.8220E+00  Im j=  2.0628E-17
+ zp: -0.1418 isp= 1  intjk=  1.4605E+00  Im j=  2.1312E-16
+ zp: -0.1418 isp= 2  intjk=  1.9452E+00  Im j= -1.8763E-16
+ zp: -0.1371 isp= 1  intjk=  1.4474E+00  Im j= -2.2726E-17
+ zp: -0.1371 isp= 2  intjk=  2.2707E+00  Im j=  1.5101E-16
+ zp: -0.1324 isp= 1  intjk=  1.4627E+00  Im j=  1.3614E-16
+ zp: -0.1324 isp= 2  intjk=  2.1171E+00  Im j= -1.8983E-17
+ zp: -0.1276 isp= 1  intjk=  1.5848E+00  Im j=  1.7677E-16
+ zp: -0.1276 isp= 2  intjk=  2.1768E+00  Im j= -7.4144E-17
+ zp: -0.1229 isp= 1  intjk=  1.6177E+00  Im j=  9.9268E-17
+ zp: -0.1229 isp= 2  intjk=  2.1141E+00  Im j= -1.1567E-16
+ zp: -0.1182 isp= 1  intjk=  1.6188E+00  Im j=  4.5155E-17
+ zp: -0.1182 isp= 2  intjk=  2.0038E+00  Im j= -1.4386E-16
+ zp: -0.1134 isp= 1  intjk=  1.6473E+00  Im j=  5.0264E-17
+ zp: -0.1134 isp= 2  intjk=  1.4764E+00  Im j=  5.9895E-17
+ zp: -0.1087 isp= 1  intjk=  1.5715E+00  Im j= -2.5526E-17
+ zp: -0.1087 isp= 2  intjk=  1.1505E+00  Im j=  9.0774E-18
+ zp: -0.1040 isp= 1  intjk=  1.5034E+00  Im j=  7.8096E-17
+ zp: -0.1040 isp= 2  intjk=  1.0722E+00  Im j= -9.1503E-17
+ zp: -0.0992 isp= 1  intjk=  1.5498E+00  Im j=  5.0518E-17
+ zp: -0.0992 isp= 2  intjk=  6.7488E-01  Im j= -5.4319E-18
+ zp: -0.0945 isp= 1  intjk=  1.3634E+00  Im j=  5.9124E-17
+ zp: -0.0945 isp= 2  intjk=  6.9052E-01  Im j= -2.8888E-17
+ zp: -0.0897 isp= 1  intjk=  1.4248E+00  Im j= -2.2826E-16
+ zp: -0.0897 isp= 2  intjk=  6.9058E-01  Im j= -1.9353E-17
+ zp: -0.0850 isp= 1  intjk=  1.4873E+00  Im j=  9.2072E-16
+ zp: -0.0850 isp= 2  intjk=  7.0621E-01  Im j= -8.0607E-18
+ zp: -0.0803 isp= 1  intjk=  1.5812E+00  Im j=  1.3491E-16
+ zp: -0.0803 isp= 2  intjk=  7.6851E-01  Im j=  4.4365E-17
+ zp: -0.0755 isp= 1  intjk=  1.5336E+00  Im j=  5.5125E-17
+ zp: -0.0755 isp= 2  intjk=  7.6859E-01  Im j= -1.2363E-16
+ zp: -0.0708 isp= 1  intjk=  1.6746E+00  Im j=  8.2148E-17
+ zp: -0.0708 isp= 2  intjk=  7.6861E-01  Im j=  1.7930E-17
+ zp: -0.0661 isp= 1  intjk=  1.9420E+00  Im j= -1.8105E-17
+ zp: -0.0661 isp= 2  intjk=  7.6861E-01  Im j=  4.4781E-17
+ zp: -0.0613 isp= 1  intjk=  1.9188E+00  Im j=  1.6131E-16
+ zp: -0.0613 isp= 2  intjk=  7.6856E-01  Im j=  7.7329E-17
+ zp: -0.0566 isp= 1  intjk=  1.8994E+00  Im j= -7.5058E-17
+ zp: -0.0566 isp= 2  intjk=  8.2856E-01  Im j= -1.7101E-16
+ zp: -0.0519 isp= 1  intjk=  1.9064E+00  Im j=  8.5117E-16
+ zp: -0.0519 isp= 2  intjk=  7.5315E-01  Im j=  4.8608E-17
+ zp: -0.0471 isp= 1  intjk=  1.8618E+00  Im j=  7.9284E-16
+ zp: -0.0471 isp= 2  intjk=  7.8426E-01  Im j= -8.1510E-17
+ zp: -0.0424 isp= 1  intjk=  1.7742E+00  Im j= -7.3258E-15
+ zp: -0.0424 isp= 2  intjk=  8.1549E-01  Im j=  1.4311E-17
+ zp: -0.0377 isp= 1  intjk=  1.7448E+00  Im j=  4.9301E-17
+ zp: -0.0377 isp= 2  intjk=  8.1560E-01  Im j=  2.6453E-17
+ zp: -0.0329 isp= 1  intjk=  1.6810E+00  Im j= -2.0002E-16
+ zp: -0.0329 isp= 2  intjk=  8.7793E-01  Im j= -7.7617E-17
+ zp: -0.0282 isp= 1  intjk=  1.7753E+00  Im j= -3.2861E-16
+ zp: -0.0282 isp= 2  intjk=  8.7804E-01  Im j=  3.7583E-17
+ zp: -0.0235 isp= 1  intjk=  1.9124E+00  Im j= -2.5736E-17
+ zp: -0.0235 isp= 2  intjk=  8.7808E-01  Im j=  9.5297E-17
+ zp: -0.0187 isp= 1  intjk=  1.7132E+00  Im j=  4.5507E-17
+ zp: -0.0187 isp= 2  intjk=  8.7811E-01  Im j= -4.3362E-17
+ zp: -0.0140 isp= 1  intjk=  1.6826E+00  Im j=  6.2323E-17
+ zp: -0.0140 isp= 2  intjk=  9.0918E-01  Im j= -3.9501E-17
+ zp: -0.0093 isp= 1  intjk=  1.6983E+00  Im j=  7.8089E-17
+ zp: -0.0093 isp= 2  intjk=  9.0933E-01  Im j=  8.6245E-18
+ zp: -0.0045 isp= 1  intjk=  1.6832E+00  Im j= -6.6053E-17
+ zp: -0.0045 isp= 2  intjk=  9.0935E-01  Im j= -1.7890E-17
+ zp:  0.0002 isp= 1  intjk=  2.0078E+00  Im j=  1.6461E-16
+ zp:  0.0002 isp= 2  intjk=  9.0935E-01  Im j=  4.1770E-17
+ zp:  0.0050 isp= 1  intjk=  2.0403E+00  Im j= -2.0796E-16
+ zp:  0.0050 isp= 2  intjk=  9.0933E-01  Im j= -1.1201E-17
+ zp:  0.0097 isp= 1  intjk=  1.9786E+00  Im j=  2.3898E-17
+ zp:  0.0097 isp= 2  intjk=  9.0925E-01  Im j=  7.3423E-17
+ zp:  0.0144 isp= 1  intjk=  2.1952E+00  Im j= -3.3085E-16
+ zp:  0.0144 isp= 2  intjk=  8.9356E-01  Im j=  5.7108E-17
+ zp:  0.0192 isp= 1  intjk=  2.1605E+00  Im j= -5.2306E-17
+ zp:  0.0192 isp= 2  intjk=  8.6270E-01  Im j=  5.9190E-17
+ zp:  0.0239 isp= 1  intjk=  2.3357E+00  Im j=  2.5880E-17
+ zp:  0.0239 isp= 2  intjk=  8.9251E-01  Im j=  4.8300E-16
+ zp:  0.0286 isp= 1  intjk=  2.1957E+00  Im j= -2.2851E-16
+ zp:  0.0286 isp= 2  intjk=  8.9361E-01  Im j= -3.9543E-17
+ zp:  0.0334 isp= 1  intjk=  1.5092E+00  Im j= -1.9623E-17
+ zp:  0.0334 isp= 2  intjk=  9.0921E-01  Im j= -7.7916E-17
+ zp:  0.0381 isp= 1  intjk=  1.2330E+00  Im j= -9.4754E-18
+ zp:  0.0381 isp= 2  intjk=  9.0939E-01  Im j=  4.7997E-17
+ zp:  0.0428 isp= 1  intjk=  1.1100E+00  Im j=  4.3498E-17
+ zp:  0.0428 isp= 2  intjk=  9.0948E-01  Im j= -7.4581E-17
+ zp:  0.0476 isp= 1  intjk=  9.0799E-01  Im j=  8.4332E-17
+ zp:  0.0476 isp= 2  intjk=  9.0951E-01  Im j=  8.0098E-17
+ zp:  0.0523 isp= 1  intjk=  7.6850E-01  Im j= -3.2458E-17
+ zp:  0.0523 isp= 2  intjk=  9.4061E-01  Im j= -3.2334E-18
+ zp:  0.0570 isp= 1  intjk=  7.6853E-01  Im j= -5.1284E-17
+ zp:  0.0570 isp= 2  intjk=  9.4071E-01  Im j=  3.1155E-18
+ zp:  0.0618 isp= 1  intjk=  8.1496E-01  Im j=  3.1685E-17
+ zp:  0.0618 isp= 2  intjk=  9.4074E-01  Im j= -1.1327E-17
+ zp:  0.0665 isp= 1  intjk=  9.0832E-01  Im j=  2.7543E-17
+ zp:  0.0665 isp= 2  intjk=  9.4076E-01  Im j=  4.0755E-17
+ zp:  0.0712 isp= 1  intjk=  9.3970E-01  Im j= -5.6378E-17
+ zp:  0.0712 isp= 2  intjk=  9.7192E-01  Im j=  2.1715E-17
+ zp:  0.0760 isp= 1  intjk=  9.7061E-01  Im j= -6.8473E-18
+ zp:  0.0760 isp= 2  intjk=  9.7197E-01  Im j=  2.8670E-17
+ zp:  0.0807 isp= 1  intjk=  9.2458E-01  Im j= -9.1997E-17
+ zp:  0.0807 isp= 2  intjk=  9.7199E-01  Im j= -4.1918E-17
+ zp:  0.0854 isp= 1  intjk=  9.2473E-01  Im j= -9.8915E-17
+ zp:  0.0854 isp= 2  intjk=  1.0029E+00  Im j= -6.8291E-18
+ zp:  0.0902 isp= 1  intjk=  9.2480E-01  Im j= -7.2962E-18
+ zp:  0.0902 isp= 2  intjk=  1.0032E+00  Im j= -8.9537E-18
+ zp:  0.0949 isp= 1  intjk=  9.2484E-01  Im j=  3.2093E-17
+ zp:  0.0949 isp= 2  intjk=  1.0032E+00  Im j=  3.8047E-17
+ zp:  0.0997 isp= 1  intjk=  9.2488E-01  Im j= -6.7219E-18
+ zp:  0.0997 isp= 2  intjk=  1.0343E+00  Im j= -2.8358E-21
+ zp:  0.1044 isp= 1  intjk=  9.2490E-01  Im j= -3.9815E-17
+ zp:  0.1044 isp= 2  intjk=  1.0383E+00  Im j=  3.5364E-17
+ zp:  0.1091 isp= 1  intjk=  9.2492E-01  Im j=  1.2830E-16
+ zp:  0.1091 isp= 2  intjk=  1.0383E+00  Im j= -8.2586E-17
+ zp:  0.1139 isp= 1  intjk=  9.2493E-01  Im j=  5.2553E-17
+ zp:  0.1139 isp= 2  intjk=  1.0382E+00  Im j= -2.7953E-17
+ zp:  0.1186 isp= 1  intjk=  9.2884E-01  Im j=  5.4981E-17
+ zp:  0.1186 isp= 2  intjk=  1.0376E+00  Im j=  5.3699E-17
+ zp:  0.1233 isp= 1  intjk=  9.2886E-01  Im j= -1.3335E-18
+ zp:  0.1233 isp= 2  intjk=  9.9124E-01  Im j=  3.8538E-17
+ zp:  0.1281 isp= 1  intjk=  9.5482E-01  Im j=  5.6140E-16
+ zp:  0.1281 isp= 2  intjk=  9.6033E-01  Im j= -9.7909E-17
+ zp:  0.1328 isp= 1  intjk=  9.5982E-01  Im j=  4.0946E-17
+ zp:  0.1328 isp= 2  intjk=  9.4470E-01  Im j=  8.4383E-17
+ zp:  0.1375 isp= 1  intjk=  9.9102E-01  Im j=  5.2318E-17
+ zp:  0.1375 isp= 2  intjk=  9.7487E-01  Im j= -5.6014E-17
+ zp:  0.1423 isp= 1  intjk=  9.9073E-01  Im j=  8.7826E-17
+ zp:  0.1423 isp= 2  intjk=  9.1357E-01  Im j= -2.0724E-17
+ iz = 201 of 201  z = 0.147000 -1.0e-5  wz = 0.00236750 0.00000  isp=1  q= 0 0 0
+ zp:  0.1470 isp= 1  intjk=  9.4370E-01  Im j= -1.2093E-16
+ iz = 201 of 201  z = 0.147000 -1.0e-5  wz = 0.00236750 0.00000  isp=2  q= 0 0 0
+ zp:  0.1470 isp= 2  intjk=  9.1357E-01  Im j= -3.5848E-17
+
+ Total Current Density for Each Spin Channel
+ spin 1 curr dens  8.00562E-01 Im part -1.70032E-17
+ spin 2 curr dens  8.47549E-01 Im part  7.17110E-19
+ Exit 0 PGFASA: finished calculating transmittance 
+ CPU time:  46.337s   Wall clock 46.370s  at  10:01:35 23.06.2018  on  localhost.localdomai

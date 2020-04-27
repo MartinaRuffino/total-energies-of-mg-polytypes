@@ -1,0 +1,21 @@
+
+ plbnds creating setup for fplot w/ spin texture, 3 colors: (x,y,z)  extension=mapi
+ plbnds : bands file contains four sets of color weights
+ plbnds: 578 bands  fermi=-0.01529  scaled by 13.6  shifted to 0
+ panel 1  nq=11  ebot=-19.522936  etop=285.486984  delta q=0.395095
+ nq=11  npan=1  emin=-19.522936  ef=0  emax=285.486984  sum dq=0.395095
+ emin, emax, width(cm), height(cm) ?
+ write file bnd1.mapi, bands 33 - 56
+  ... to plot, invoke:
+  fplot -f plot.plbnds
+
+
+ plbnds creating setup for fplot w/ spin texture, 2 colors: (y,-y) (x,y,z)  extension=mapi2
+ plbnds : bands file contains four sets of color weights
+ plbnds: 578 bands  fermi=-0.01529  scaled by 13.6  shifted to 0
+ panel 1  nq=11  ebot=-19.522936  etop=285.486984  delta q=0.395095
+ nq=11  npan=1  emin=-19.522936  ef=0  emax=285.486984  sum dq=0.395095
+ emin, emax, width(cm), height(cm) ?
+ write file bnd1.mapi2, bands 33 - 56
+  ... to plot, invoke:
+  fplot -f plot.plbnds

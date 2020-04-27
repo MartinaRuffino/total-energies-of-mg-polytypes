@@ -1,0 +1,3154 @@
+#!/bin/tcsh -f
+
+# A shell script testing operation of fp and gw driver
+# set verbose
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias runrdcmd 'set retcall = \!\!:1; set rdcmdfmt = \!\!:2 ; set outfile = \!\!:3 ; set callarg = \!\!:4 ; goto runrdcmd'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias compare_res 'set retcall = \!\!:1; set testvar = \!\!:2 ; set refvar = \!\!:3 ; set keyword = \!\!:4  ; set arg_number = \!\!:5 ; set occur_number = \!\!:6 ; set sed_strn = \!\!:7 ; goto compare_res'
+alias cnvt_d_fmt  'set retcall = \!\!:1; set testvar = \!\!:2 ; set testval = \!\!:3 ; goto cnvt_d_fmt'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+alias zcmpmc 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 ; goto zcmpmc '
+alias zcmpmcx 'set retcall = \!\!:1; set keyword = \!\!:2 ; set toldif = \!\!:3 ; set ndiff = \!\!:4 ; set prec = \!\!:5 ; set passvar = \!\!:6 ;set srcfile = \!\!:7 ; set reffile = \!\!:8 ; goto zcmpmcx '
+alias zcmpmfiles_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 ; goto zcmpmfiles_res_0 '
+alias zcmpmfiles_res_tol 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 set nlines = \!\!:8; goto zcmpmfiles_res_tol '
+alias zcmpmfiles_res_mc 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7; set nlines = \!\!:8;; set count = \!\!:9; goto zcmpmfiles_res_mc'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set extract = $topdir/extract-lines
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+
+#alias mpix mpirun
+set gwcode2
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+set plot = `which fplot`
+if (-x "$plot") then
+  if `$plot -h | sed -n 1,1p | awk '{print ($2 == "fplot")}'` set have_fplot
+endif
+set mcx = `which mcx`
+if (-x "$mcx") then
+  if `$mcx --h |& sed -n 1,1p | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.072))}'` set have_mc
+endif
+set pldos = `which pldos`
+if (-x "$pldos") then
+  if `$pldos -h | sed -n 1,1p | awk '{print ($2 == "pldos")}'` set have_pldos
+endif
+set plbnds = `which plbnds`
+if (-x "$plbnds") then
+  if `$plbnds -h | sed -n 1,1p | awk '{print ($2 == "plbnds")}'` set have_plbnds
+endif
+# see if ghostscript is available
+set gs = `which gs`
+if (-x "$gs") then
+  if `$gs --help | sed -n 1,1p | awk '{print ($2 == "Ghostscript")}'` set have_ghostscript
+endif
+# see if gnu grep is available
+echo X | grep -A 1 X > & /dev/null
+set retval = $status
+if ($retval == 0) set gnu_grep
+
+unset mpi
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.gw: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+
+    case "--code2":
+      set gwcode2
+      breaksw
+
+    case "--code0":
+      set gwcode2; unset gwcode2
+      breaksw
+
+    case "--clean":
+      set clean
+      breaksw
+
+    case "--veryclean":
+      set clean
+      set veryclean
+      breaksw
+
+    case "--withlmfoptics":
+      set lmfoptics
+      breaksw
+
+    case "--noplot*":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+
+    case "--no-iact*":
+      unset slow
+      breaksw
+
+    case "--haveout":
+      set haveout
+      breaksw
+
+    case "--list":
+      goto showtests
+      breaksw
+
+    case "--whichexec"
+      set quiet; unset quiet
+      findcmd chk00 lmfgwd "$path" "$topdir"
+      chk00:
+      findcmd chk01 lmfgws "$path" "$topdir"
+      chk01:
+      exit 0
+      breaksw
+
+    case "--verb*":
+      set verb = 1
+      breaksw
+
+    case "--so2":
+      set so2
+      breaksw
+
+    case "--GWversion*":
+      set gwversion = `echo $arg1  | sed -e 's/--GWversion//'`
+      breaksw
+
+    case "--timereversaloff"
+      set timereversaloff
+      breaksw
+
+    case "--eibzmodeoff"
+      set eibzmodeoff
+      breaksw
+
+    case "--offbz"
+      set offbz
+      breaksw
+
+    case "--so3":
+      set so3
+      breaksw
+
+    case "--mpi=*":
+    case "--mpi":
+      set mpi = ($arg1)
+      breaksw
+
+    case "--openmp=*":
+    case "--openmp":
+      set mpi = ($arg1)
+      breaksw
+
+    case "--all":
+      set mater_lst = (si mno gas cu na)
+      set joblist
+      while (`echo $1 | sed -e 's/\([0-9][0-9]*\)/-/'`  ==  "-")
+        set joblist = ($joblist $1)
+        shift
+      end
+      set pass
+      set failed
+      foreach i ($mater_lst)
+        echo "$space ... invoking $testfile `echo $allargs | sed s/--all//g` $i $joblist"
+# echo            $testfile `echo $allargs `
+# echo            $testfile `echo $allargs | sed s/--all//g ` $i $joblist
+# echo            $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g' ` $i $joblist
+# echo            $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g'` $i $joblist
+# exit
+# echo         $testfile `echo $allargs | sed s/--all//g` $i $joblist
+        $testfile `echo $allargs | sed s/--all//g` $i $joblist
+#         $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g'` $i $joblist
+        set retval = $status
+        if ($retval != 0) then
+          unset pass
+          set failed = ($failed $i)
+#  	  echo " $testfile : failed test $i ... aborting"
+#            exit -1
+        endif
+      end
+      if ($?clean) then
+        exit
+      else if ($?pass) then
+        echo "$space $testfile : all tests PASSED ($mater_lst)"
+        exit
+      else
+        echo "$space $testfile : tests FAILED for the following materials:  $failed"
+        exit -1
+      endif
+
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+
+end
+
+echo ' '
+echo "         ---- test.gw: test FP gw driver ---"
+
+# --- use si as default in the absence of specific choice ---
+if ($#argv == 0) then
+  set ext = si
+  echo "$space .... no file extension specified; use input file ctrl.$ext"
+else
+  set ext = $argv[1]
+  shift
+endif
+
+if (! -e $testdir/$ext/ctrl.$ext) then
+   echo ' '
+   echo " test.gw aborting ... missing file $testdir/$ext/ctrl.$ext"
+   goto usage
+endif
+
+if ($ext == "mno") then
+  echo '         Case mno: a antiferromagnetic oxide with three classes and four atoms.'
+  echo '         Other checks:'
+  echo '         Checks special AFM symmetry operation'
+  echo ' '
+  set cplst = ($testdir/$ext/{ctrl.mno})
+  set drmsqtol1 = 1e-5
+else if ($ext == "si") then
+  echo '         Case si: a simple semiconductor'
+  echo '         Other checks:'
+  echo '         uses --oldvc switch'
+  set cplst = ($testdir/$ext/{ctrl.si,sigma.si})
+  set drmsqtol1 = 5e-6
+else if ($ext == "si2") then
+  set rmlst2 = ({evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,ctrl,rsta}.si2 emesh.hsfp0 lqpe lsc QPU SECU TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda emesh.hx0fp0 lx0 WV.d WVI WVR freq_r lsx SEXU lvcc VCCFP XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcoreU lvccC CPHI ECORE EFERMI eig0.chk EVU GEIG genallcf3.dump genallcft3.dump HVCCIN lbasC lchknw leftet LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NW PHIVC PPOVL VXCFP Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CphiGeig DATA4GW_V2 hbe.d llmf2gw llmfgw01 NQIBZ VXCFP.chk BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmfgw00 lqg4gw NLAindx Q0P QGcou QGpsi QIBZ SYMOPS GWinput QPU_life NBANDikp PPOVL0 vxc rhoMT.1 rhoMT.2)
+  set rmlst3 = ({log,moms,save,wkp,evec,gw1,gw2,gwb,normchk,vxc,gwa,ctrl.preprocessed,ctrl,rsta}.si2 ETOTeV.dat ETOTLDA llmf_elda RoVxcLDA lecor TEECORR DOSACC2.lda DOSACC.lda emesh.hx0fp0 lx0_cor WV.d WVI freq_r lvcc_cor VCCFP WVR BASFP01 BASFP02 lbas_cor lexxVV PHIV.chk PPBRD_V2_01 PPBRD_V2_02 TEEXXvv lvccVV lbasVV lexxCV TEEXXcv lvccCV lbasCV lexxCC TEEXXcc Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk EVU GEIG hbe.d HVCCIN leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL VXCFP VXCFP.chk BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmfgw00 lqg4gw NLAindx Q0P QGcou QGpsi QIBZ SYMOPS GWinput)
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,save,moms,sigii,wkp,atm,ctrl,rsta}.si2 dat emesh.hsfp0 evec_prev_iter lqpe lsc mixsigma mixsig0 QPU SEC2U SECU sigm sig0 sigma TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda lx0 WV.d WVI WVR freq_r lsx SEX2U SEXU lvcc VCCFP XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcore2U SEXcoreU lvccC Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk evec EVU GEIG genallcf3.dump genallcft3.dump hbe.d HVCCIN lbasC lchknw leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL v_xc VXCFP VXCFP.chk lqg4gw Q0P QGcou QGpsi BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmf llmfgw00 NLAindx QIBZ SYMOPS emesh.hx0fp0 GWinput GWinput QPU_life NBANDikp PPOVL0 vxc rhoMT.1 rhoMT.2 out.lmgwsc version 0run 1run 2run)
+  set cplst = ($testdir/$ext/{ctrl.si2,rsta.si2,GWinput})
+#   set gwscargs = "--bin=$HOME/nbin --insul=4 --tol=2e-5 --maxit=2"
+#   set gwscargs = "--big --insul=4 --tol=2e-5 --maxit=2"
+  set gwscargs = "--insul=4 --tol=2e-5 --maxit=2 --lmargs=--rs=2"
+else if ($ext == "lif") then
+  echo '         Case lif: illustration of optics with Bethe-Salpeter'
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,save,moms,sigii,wkp,atm,ctrl,rsta}.$ext dat emesh.hsfp0 evec_prev_iter lqpe lsc mixsigma QPU SEC2U SECU sigm sigma TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda lx0 WV.d freq_r lsx SEX2U SEXU lvcc XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcore2U SEXcoreU lvccC Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk evec GEIG genallcf3.dump genallcft3.dump hbe.d HVCCIN lbasC lchknw leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL v_xc VXCFP VXCFP.chk lqg4gw Q0P QGcou QGpsi BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmf llmfgw00 NLAindx QIBZ SYMOPS emesh.hx0fp0 GWinput GWinput QPU_life NBANDikp PPOVL0 rhoMT.1 rhoMT.2 out.lmgwsc version 0run 1run 2run)
+  set cplst = ($testdir/$ext/{GWinput,basp.$ext,ctrl.$ext,site.$ext})
+  set gwscargs
+else if ($ext == "six") then
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,save,moms,sigii,wkp,atm,ctrl,rsta}.six dat emesh.hsfp0 evec_prev_iter lqpe lsc mixsigma QPU SEC2U SECU sigm sigma TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda lx0 WV.d freq_r lsx SEX2U SEXU lvcc XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcore2U SEXcoreU lvccC Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk evec GEIG genallcf3.dump genallcft3.dump hbe.d HVCCIN lbasC lchknw leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL v_xc VXCFP VXCFP.chk lqg4gw Q0P QGcou QGpsi BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmf llmfgw00 NLAindx QIBZ SYMOPS emesh.hx0fp0 GWinput GWinput QPU_life NBANDikp PPOVL0 rhoMT.1 rhoMT.2 out.lmgwsc version 0run 1run 2run)
+  set cplst = ($testdir/$ext/{GWinput,basp.six,ctrl.six,site.six})
+  set gwscargs = "--insul=4 --tol=2e-5 --maxit=0 --rhoc"
+else if ($ext == "cr3si6") then
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,save,moms,sigii,wkp,atm,ctrl,rsta}.cr3si6 0run)
+  set cplst = ($testdir/$ext/{GWinput,basp.cr3si6,ctrl.cr3si6,site.cr3si6})
+  set gwscargs = "--maxit=0 --wt --tol=2e-5 -vnit=100 --sym"
+else if ($ext == "jell") then
+  touch WVR
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,save,moms,sigii,wkp,atm,ctrl,rsta}.jell dat emesh.hsfp0 evec_prev_iter lqpe lsc mixsigma QPU SEC2U SECU sigm sigma TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda lx0 WV.d freq_r lsx SEX2U SEXU lvcc XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcore2U SEXcoreU lvccC Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk evec GEIG genallcf3.dump genallcft3.dump hbe.d HVCCIN lbasC lchknw leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL v_xc VXCFP VXCFP.chk lqg4gw Q0P QGcou QGpsi BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmf llmfgw00 NLAindx QIBZ SYMOPS emesh.hx0fp0 GWinput GWinput QPU_life NBANDikp PPOVL0 rhoMT.1 rhoMT.2 out.lmgwsc version 0run 1run WVR* WVI* epsI* epsR*)
+  set cplst = ($testdir/$ext/{GWinput,basp.jell,ctrl.jell,site.jell,syml.jell})
+  set gwscargs = "--maxit=0 --sym --metal --band:fn=syml --tol=1e-5 --getsigp"
+else if ($ext == "gas") then
+  echo '         Case gas: illustration of local orbitals, floating orbitals and APWs:'
+  echo '           the Ga 3d state is included as extended local orbital;'
+  echo '           the As 5s state is included as a high-lying local orbital;'
+  echo '           floating orbitals are placed at interstitial sites;'
+  echo '           low-energy plane waves are also included.'
+  echo ' '
+  echo '           This check also uses a 7-point radial quadrature.'
+  set cplst = ($testdir/$ext/{ctrl.gas})
+else if ($ext == "cu") then
+  echo '         Case cu: illustration of :'
+  echo '           Local orbitals: the high-lying Cu 4d state is included as a local orbital.'
+  echo '           APWs included (mode 11)'
+  set cplst = ($testdir/$ext/{ctrl.cu})
+else if ($ext == "na") then
+  echo '         Case na: illustration of large l-cutoff in basis'
+  echo '         and a local orbital'
+  set cplst = ($testdir/$ext/{ctrl.na})
+else if ($ext == "fe") then
+  echo '         Case fe: illustration of spin-polarized metal, QSGW'
+  if ($?gwcode2) then
+  set gwscargs = "--iter=1 --maxit=1 --sym --metal --band:fn=syml --tol=1e-5 --getsigp --exonly=no --erange"
+  set cplst = ($testdir/$ext/{{ctrl,site,syml,syml2}.fe,switches-for-lm,atparms,GWinput} $testdir/fe.code2/{rst.fe,sigm.in})
+  else
+  set gwscargs = "--iter=1 --maxit=1 --sym --metal --band:fn=syml --tol=1e-5 --getsigp --exonly=no --erange --multitet"
+  set cplst = ($testdir/$ext/{{ctrl,site,syml,syml2}.fe,switches-for-lm,atparms,GWinput} $testdir/fe.code0/{rst.fe,sigm.in})
+  endif
+  set rmlst2 = ({evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,ctrl,rsta}.fe emesh.hsfp0 lqpe lsc QPU SECU TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda emesh.hx0fp0 lx0 WV.d WVI WVR freq_r lsx SEXU lvcc VCCFP XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcoreU lvccC CPHI ECORE EFERMI eig0.chk EVU GEIG genallcf3.dump genallcft3.dump HVCCIN lbasC lchknw leftet LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NW PHIVC PPOVL VXCFP Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CphiGeig DATA4GW_V2 hbe.d llmf2gw llmfgw01 NQIBZ VXCFP.chk BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmfgw00 lqg4gw NLAindx Q0P QGcou QGpsi QIBZ SYMOPS GWinput QPU_life NBANDikp PPOVL0 vxc rhoMT.1 rhoMT.2)
+  set rmlst3 = ({log,moms,save,wkp,evec,gw1,gw2,gwb,normchk,vxc,gwa,ctrl.preprocessed,ctrl,rsta}.fe ETOTeV.dat ETOTLDA llmf_elda RoVxcLDA lecor TEECORR DOSACC2.lda DOSACC.lda emesh.hx0fp0 lx0_cor WV.d WVI freq_r lvcc_cor VCCFP WVR BASFP01 BASFP02 lbas_cor lexxVV PHIV.chk PPBRD_V2_01 PPBRD_V2_02 TEEXXvv lvccVV lbasVV lexxCV TEEXXcv lvccCV lbasCV lexxCC TEEXXcc Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk EVU GEIG hbe.d HVCCIN leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL VXCFP VXCFP.chk BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmfgw00 lqg4gw NLAindx Q0P QGcou QGpsi QIBZ SYMOPS GWinput)
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,rsta,save,moms,sigii,wkp,atm,ctrl,rsta}.fe dat emesh.hsfp0 evec_prev_iter lqpe lsc mixsigma QPU SEC2U SECU sigm sigma TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda lx0 WV.d WVI WVR freq_r lsx SEX2U SEXU lvcc VCCFP XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcore2U SEXcoreU lvccC Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk evec EVU GEIG genallcf3.dump genallcft3.dump hbe.d HVCCIN lbasC lchknw leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL v_xc VXCFP VXCFP.chk lqg4gw Q0P QGcou QGpsi BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmf llmfgw00 NLAindx QIBZ SYMOPS emesh.hx0fp0 GWinput GWinput QPU_life NBANDikp PPOVL0 vxc rhoMT.1 rhoMT.2 out.lmgwsc version 0run 1run 2run)
+else if ($ext == "coo2") then
+  echo "         Case $ext : illustration of correlated system, QSGW 0th iteration"
+  echo "         Also tests GWinput tags 'KeepEigen  off' and 'KeepPPOVL  off'"
+  if ($?gwcode2) then
+  set gwscargs = "--maxit=0 --sym --metal --band:fn=syml --multitet=no --exonly=no --tol=2e-5 --getsigp"
+  set cplst = ($testdir/$ext/{{ctrl,atm,bnds,site,syml}.$ext,semi.mater,switches-for-lm,GWinput})
+  else
+    echo "coo2 test not set up for GW code 0, sorry"
+    exit -1
+  endif
+  set rmlst4 = ({sigm,evec,gw1,gw2,gwb,log,normchk,vxc,gwa,ctrl.preprocessed,mixm,rst,save,moms,sigii,wkp,atm,ctrl,rsta}.$ext dat emesh.hsfp0 evec_prev_iter lqpe lsc mixsigma QPU SEC2U SECU sigm sigma TOTE2.UP TOTE.UP DOSACC2.lda DOSACC.lda lx0 WV.d WVI WVR freq_r lsx SEX2U SEXU lvcc VCCFP XCU BASFP01 BASFP02 lbas lsxC PHIV.chk PPBRD_V2_01 PPBRD_V2_02 SEXcore2U SEXcoreU lvccC Core_ibas001_l0.chk Core_ibas001_l1.chk Core_ibas002_l0.chk Core_ibas002_l1.chk CPHI CphiGeig DATA4GW_V2 ECORE EFERMI eig0.chk evec EVU GEIG genallcf3.dump genallcft3.dump hbe.d HVCCIN lbasC lchknw leftet llmf2gw llmfgw01 LMTO lrdata4gw @MNLA_core @MNLA_CPHI normchk.dia normchk.off NQIBZ NW PHIVC PPOVL v_xc VXCFP VXCFP.chk lqg4gw Q0P QGcou QGpsi BZDATA CLASS KPTin1BZ.mkqg.chk LATTC ldima llmf llmfgw00 NLAindx QIBZ SYMOPS emesh.hx0fp0 GWinput GWinput QPU_life NBANDikp PPOVL0 vxc rhoMT.1 rhoMT.2 out.lmgwsc version 0run 1run 2run)
+else if ($ext == "zbmnas") then
+  set rmlst6 = ({GWinput,ctrl.zbmnas,rst.zbmnas,semi.mater,sigm,switches-for-lm,@MNLA_CPHI,@MNLA_core,BASFP01,BASFP02,BASFP03,BASFP04,BZDATA,CLASS,CPHI,ChiPM0001.nlfc.mat,ChiPM0002.nlfc.mat,ChiPM0003.nlfc.mat,ChiPM0004.nlfc.mat,ChiPM0005.nlfc.mat,ChiPM0006.nlfc.mat,ChiPM0007.nlfc.mat,ChiPM0008.nlfc.mat,ChiPM0009.nlfc.mat,ChiPM0010.nlfc.mat,ChiPM0011.nlfc.mat,ChiPM0012.nlfc.mat,ChiPM0013.nlfc.mat,ChiPM0014.nlfc.mat,ChiPM0015.nlfc.mat,ChiPM0016.nlfc.mat,Core_ibas001_l0.chk,Core_ibas001_l1.chk,Core_ibas002_l0.chk,Core_ibas002_l1.chk,Core_ibas002_l2.chk,CphiGeig,DATA4GW_V2,ECORE,EFERMI,EValue,GEIG,GWinput,HAMindex,HVCCIN,KPTin1BZ.mkqg.chk,LATTC,LMTO,Mix0vec,Mix0vec1,MixSpin.001,MixSpin.002,MixSpin.003,MixSpin.004,NBANDikp,NLAindx,NQIBZ,PHIV.chk,PHIVC,PPBRD_V2_01,PPBRD_V2_02,PPBRD_V2_03,PPBRD_V2_04,PPOVL,PPOVL0,Q0P,QBZ,QGcou,QGpsi,QIBZ,SYMOPS,VXCFP,VXCFP.chk,Vcoud.00023,Vcoud.00024,Vcoud.00025,Vcoud.00026,Vcoud.00027,Vcoud.00028,Vcoud.00029,Vcoud.00030,Vcoud.00031,Vcoud.00032,Vcoud.00033,Vcoud.00034,Vcoud.00035,Vcoud.00036,Vcoud.00037,Vcoud.00038,Vcoud.00039,Vcoud.00040,Vcoud.00041,Vcoud.00042,Vcoud.00043,Vcoud.00044,Vcoud.00117,Vcoud.00118,Vcoud.00119,Vcoud.00120,Vcoud.00121,Vcoud.00122,Vcoud.00123,Vcoud.00124,Vcoud.00125,Vcoud.00126,Vcoud.00127,Vcoud.00128,Vcoud.00129,Vcoud.00130,Vcoud.00131,Vcoud.00132,Vcoud.00133,Vcoud.00134,Vcoud.00135,Vcoud.00136,Vcoud.00137,Vcoud.00138,Vcoud.00139,Vcoud.00140,Vcoud.00141,Vcoud.00142,Vcoud.00143,Vcoud.00144,Vcoud.00145,Vcoud.00146,Vcoud.00147,Vcoud.00148,Vcoud.00149,Vcoud.00150,Vcoud.00151,Vcoud.00152,Vcoud.00153,Vcoud.00154,Vcoud.00155,Vcoud.00156,Vcoud.00157,Vcoud.00158,Vcoud.00159,Vcoud.00160,Vcoud.00161,Vcoud.00162,Vcoud.00163,Vcoud.00164,Vcoud.00165,Vcoud.00166,Vcoud.00167,Vcoud.00168,Vcoud.00169,Vcoud.00170,Vcoud.00171,Vcoud.00172,Vcoud.00173,Vcoud.00174,Vcoud.00175,Vcoud.00176,Vcoud.00177,Vcoud.00178,Vcoud.00179,Vcoud.00180,Vcoud.00181,Vcoud.00182,Vcoud.00183,Vcoud.00184,Vcoud.00185,Vcoud.00186,Vcoud.00187,Vcoud.00188,Vcoud.00189,Vcoud.00190,Vcoud.00191,Vcoud.00192,Vcoud.00193,Vcoud.00194,Vcoud.00195,Vcoud.00196,Vcoud.00197,Vcoud.00198,Vcoud.00199,Vcoud.00200,Vcoud.00201,Vcoud.00202,Vcoud.00203,Vcoud.00204,Vcoud.00205,Vcoud.00206,Vcoud.00207,Vcoud.00208,Vcoud.00209,Vcoud.00210,Vcoud.00211,Vcoud.00212,Vcoud.00213,Vcoud.00214,Vcoud.00215,Vcoud.00216,Vcoud.00217,Vcoud.00218,Vcoud.00219,Vcoud.00220,Vcoud.00221,Vcoud.00222,Vcoud.00223,Vcoud.00224,Vcoud.00225,Vcoud.00226,Vcoud.00227,Vcoud.00228,Vcoud.00229,Vcoud.00230,Vcoud.00231,Vcoud.00232,WV.d,ctrl.preprocessed.zbmnas,ctrl.zbmnas,dos.zbmnas,eig0.chk,emesh.hx0fp0,evec.zbmnas,freq_r,gw1.zbmnas,gw2.zbmnas,gwa.zbmnas,gwb.zbmnas,hbe.d,lbas,ldima,leftet,llmf2gw,llmfgw00,llmfgw01,log.zbmnas,lqg4gw02,lrdata4gw,lvcc,lx0,mixm.zbmnas,moms.zbmnas,mpiqlst,normchk.zbmnas,out.job,rhoMT.1,rhoMT.2,rhoMT.3,rhoMT.4,rst.zbmnas,semi.mater,sigii.zbmnas,sigm,sigm.zbmnas,switches-for-lm,vxc,vxc.zbmnas,wkp.zbmnas})
+  set cplst = ($testdir/$ext/{GWinput,ctrl.zbmnas,rst.zbmnas,semi.mater,sigm.in,switches-for-lm})
+else if ($ext == "nio") then
+  set rmlst6 = specialspecc
+  set gwscargs = "--no-scrho --maxit=1 --wt --sym"
+  set cplst = ($testdir/$ext/{ctrl.nio,basp.nio,rst.nio,semi.mater,sigm.in,site.nio,GWinput})
+  set chitol = 5e-5
+# set lmfoptics
+else if ($ext == "copt") then
+  set rmlst4 = "all"
+  if ($?gwcode2) then
+    set gwscargs = "--maxit=0 --wt --sym --metal --tol=1e-5 --getsigp"
+  endif
+  set cplst = ($testdir/$ext/{{ctrl,site,basp}.$ext,switches-for-lm,atparms,GWinput})
+else
+  echo test.gw: No test case for $ext
+  exit -1
+endif
+endif
+
+if ($?gwcode2) then
+  set extcode = $ext.code2
+else
+  set extcode = $ext.code0
+endif
+
+if ( $?joblist == 0 ) then
+set joblist = ($argv)
+if ( $#joblist == 0 ) set joblist = (1 2 3 4)
+endif
+
+echo $joblist | grep 1 >/dev/null
+if ($status) goto chk1e
+set jobid = 1
+cat <<EOF
+
+         --- Test 1.  Basic check of programs lmf,lmfgwd,lmf2gw ---
+         Checks that program lmfa produces a sensible atm file
+         and that program lmf iterates to the proper energy.
+
+EOF
+endif
+
+set refout=$testdir/$ext/out.lmf.$ext testout=out.lmf.$ext
+if (! -e $refout) then
+  echo "$space ... skipping test : missing reference file $refout"
+  goto chk1e
+endif
+set pass
+query chk11 chk1e 'run this test'
+chk11:
+# ... Look for executables
+findcmd chk11a rdcmd "$path" "optional"
+chk11a:
+findcmd chk11b lmf "$path" "$topdir"
+chk11b:
+findcmd chk11c lmfa "$path" "optional"
+chk11c:
+findcmd chk11d lmfgwd "$path" "optional"
+chk11d:
+if ($?gwcode2) then
+    findcmd chk11e lmf2gw_2 "$path" "optional"
+else
+    findcmd chk11e lmf2gw_0 "$path" "optional"
+endif
+chk11e:
+
+# goto chk111
+
+echo "$space rm -f {ctrl,wkp,mixm,rst,rsta,save,log,hssn,site,dos,erange,opt,opt1}.$ext bnds.$ext-pwmode11"
+             rm -f {ctrl,wkp,mixm,rst,rsta,save,log,hssn,site,dos,erange,opt,opt1}.$ext bnds.$ext-pwmode11
+
+if ($?clean) then
+  if (-e rhoMT.1) then
+    echo "$space rm -f rhoMT.[1-9] rhoMT.[1-9][0-9] rhoMT.[1-9][0-9][0-9]"
+                 rm -f rhoMT.[1-9] rhoMT.[1-9][0-9] rhoMT.[1-9][0-9][0-9]
+  endif
+  echo "$space rm -f {moms,save,atm,rst,rsta,sigm,sigm2,sigm3,evec,qpe,normchk,out.lmf,out.lmfgw,out.trans,gw1,gw2,gwa,gwb,ham,vxc}.$ext vxc DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS CphiGeig HAMindex ldima mpiqlst"
+               rm -f {moms,save,atm,rst,rsta,sigm,sigm2,sigm3,evec,qpe,normchk,out.lmf,out.lmfgw,out.trans,gw1,gw2,gwa,gwb,ham,vxc}.$ext vxc DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS CphiGeig HAMindex ldima mpiqlst
+#    echo "$space rm -f {*}.$ext"
+#                 rm -f {*}.$ext
+
+  goto chk1e
+endif
+
+echo "$space cp $cplst ."
+             cp $cplst .
+
+echo " "
+echo "$space ... run LDA job to create self-consistent LDA potential"
+if ($?mpi) then
+  runrdcmd chk12 %11f $testout "-cat:TSTMPIK --noerr ctrl.$ext"
+else
+  runrdcmd chk12 %11f $testout "-cat:TESTLMF --noerr ctrl.$ext"
+else
+endif
+chk12:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+# ... Extract total energies, forces, magnetic moments 1st and last iter
+compare_res chk12a efa erfa "etot=" 2 0 etot=
+chk12a:
+set ehf1  =  `cat $testout | grep ehar= | sed -n 1,1p | awk '{print $6}'`
+set eks1  =  `cat $testout | grep ehks= | sed -n 1,1p | awk '{sub(".*ehks=",""); print $0}'`
+set ehf1r =  `zcat $refout | grep ehar= | sed -n 1,1p | awk '{print $6}'`
+set eks1r =  `zcat $refout | grep ehks= | sed -n 1,1p | awk '{sub(".*ehks=",""); print $0}'`
+set ehfn  =  `cat $testout | grep ehar= | tail -1 | awk '{print $6}'`
+set eksn  =  `cat $testout | grep ehks= | tail -1 | awk '{sub(".*ehks=",""); print $0}'`
+set ehfnr =  `zcat $refout | grep ehar= | tail -1 | awk '{print $6}'`
+set eksnr =  `zcat $refout | grep ehks= | tail -1 | awk '{sub(".*ehks=",""); print $0}'`
+set dq1   =  `cat $testout | grep 'RMS DQ=' | sed -n 1,1p | awk '{sub(".*RMS DQ=","");sub("last it=.*",""); print $0}'`
+set dq1r   = `zcat $refout | grep 'RMS DQ=' | sed -n 1,1p | awk '{sub(".*RMS DQ=","");sub("last it=.*",""); print $0}'`
+set dqn   =  `cat $testout | grep 'RMS DQ=' | tail -1 | awk '{sub(".*RMS DQ=","");sub("last it=.*",""); print $0}'`
+set dqnr  =  `zcat $refout | grep 'RMS DQ=' | tail -1 | awk '{sub(".*RMS DQ=","");sub("last it=.*",""); print $0}'`
+
+#  grep 'Maximum Harris force' $testout >/dev/null
+#  if (! $status) then
+#    set fmax1  = `cat $testout | grep 'Maximum Harris force' | sed -n 1,1p | awk '{print $5}'`
+#    set fmax1r = `zcat $refout | grep 'Maximum Harris force' | sed -n 1,1p | awk '{print $5}'`
+#    set fmaxn  = `cat $testout | grep 'Maximum Harris force' | tail -1 | awk '{print $5}'`
+#    set fmaxnr = `zcat $refout | grep 'Maximum Harris force' | tail -1 | awk '{print $5}'`
+#  endif
+
+grep mmom= $testout >/dev/null
+if (! $status) then
+set mmom1  =  `cat $testout      | grep mmom= | sed -n 1,1p | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+set mmom1r =  `zcat $refout | grep mmom= | sed -n 1,1p | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+set mmomn  =  `cat $testout      | grep mmom= | tail -1 | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+set mmomnr =  `zcat $refout | grep mmom= | tail -1 | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+endif
+
+set ediff = `echo $efa $erfa  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+if (! $?quiet) then
+  echo " "
+  echo "$space Total energy last free atom      = $efa"
+  echo "$space Total energy of reference        = $erfa"
+  echo "$space                    difference    =  $ediff"
+  echo ' '
+
+  echo "$space first iteration Harris energy    = $ehf1"
+  echo "$space first iteration reference energy = $ehf1r"
+  set ediff = `echo $ehf1 $ehf1r  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $ediff"
+  echo "$space first iteration K-Sham energy    = $eks1"
+  echo "$space first iteration reference energy = $eks1r"
+  set ediff = `echo $eks1 $eks1r  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $ediff"
+  set ediff = `echo $ehf1 $eks1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space Harris - Kohn-sham difference    = $ediff"
+  if ($?fmax1) then
+  echo "$space first iteration maximum force    = $fmax1"
+  echo "$space first iteration reference force  = $fmax1r"
+  endif
+  if ($?mmom1) then
+    echo "$space first iteration magnetic moment  = $mmom1"
+    echo "$space first iteration reference moment = $mmom1r"
+    set mdiff = `echo $mmom1 $mmom1r  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+    echo "$space difference                       = $mdiff"
+  endif
+
+  echo " "
+  echo "$space last iteration Harris energy     = $ehfn"
+  echo "$space last iteration reference energy  = $ehfnr"
+  set ediff = `echo $ehfn $ehfnr  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $ediff"
+  echo "$space last iteration K-Sham energy     = $eksn"
+  echo "$space last iteration reference energy  = $eksnr"
+  set ediff = `echo $eksn $eksnr  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $ediff"
+  set ediff = `echo $ehfn $eksn  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space Harris - Kohn-sham difference    = $ediff"
+  if ($?fmaxn) then
+  echo "$space last iteration maximum force     = $fmaxn"
+  echo "$space last iteration reference force   = $fmaxnr"
+  endif
+  if ($?mmom1) then
+  echo "$space last iteration magnetic moment   = $mmomn"
+  echo "$space last iteration reference moment  = $mmomnr"
+  set mdiff = `echo $mmomn $mmomnr  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $mdiff"
+  endif
+  echo "$space last iter RMS input-output drho  = $dqn"
+  echo "$space last iter reference RMS drho     = $dqnr"
+  echo " "
+
+  call diffiles chk14 "$testout $refout"
+chk14:
+endif
+
+if ($?defatol1 == 0) set defatol1 = 2e-6
+if ($?dehf1tol1 == 0) set dehf1tol1 = 2e-6
+if ($?dehf1toln == 0) set dehf1toln = 2e-6
+if ($?dmom1tol1 == 0) set dmom1tol1 = 1e-4
+if ($?dmomntol1 == 0) set dmomntol1 = 1e-4
+if ($?dfmax1tol1 == 0) set dfmax1tol1 = .001
+if ($?dfmaxntol1 == 0) set dfmaxntol1 = .001
+if ($?drmsqtol1 == 0) set drmsqtol1 = 1e-4
+
+# ... Check that FA total energy is within tol of reference
+echo -n "$space FA etot (last species) gen by lmfa within tolerance ($defatol1) of reference? ... "
+if (`echo $efa $erfa $defatol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space 1st iter ehf within tolerance ($dehf1tol1) of reference? ... "
+if (`echo $ehf1 $ehf1r $dehf1tol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?fmax1) then
+echo -n "$space 1st iter max force within tolerance ($dfmax1tol1) of reference? ... "
+if (`echo $fmax1 $fmax1r $dfmax1tol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+endif
+
+if ($?mmom1) then
+echo -n "$space 1st iter mmom within tolerance ($dmom1tol1) of reference? ... "
+if (`echo $mmom1 $mmom1r $dmom1tol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+endif
+
+echo -n "$space last iter ehf within tolerance ($dehf1toln) of reference? ... "
+if (`echo $ehfn $ehfnr $dehf1toln | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?fmaxn) then
+echo -n "$space last iter max force within tolerance ($dfmaxntol1) of reference? ... "
+if (`echo $fmaxn $fmaxnr $dfmaxntol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+endif
+
+if ($?mmomn) then
+echo -n "$space last iter mmom within tolerance ($dmomntol1) of reference? ... "
+if (`echo $mmomn $mmomnr $dmomntol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+endif
+
+echo -n "$space last iter RMS dq within tolerance ($drmsqtol1) of reference? ... "
+if (`echo $dqn $dqnr $drmsqtol1 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?clean) then
+else if ($?pass) then
+else
+    echo "$space test 1 FAILED ($ext)"
+    set failed = ($failed 1)
+    goto chk1e
+endif
+
+
+echo " "
+set refout=$testdir/$ext/out.lmfgw.$ext testout=out.lmfgw.$ext
+if ($?gwcode2) set refout=$testdir/$ext/out.lmfgw.$ext.code2
+
+echo "$space ... run GW driver"
+
+if ($?mpi) then
+  runrdcmd chk18 %11f $testout "-cat:TSTMPID --noerr ctrl.$ext"
+else if ($?gwcode2) then
+  runrdcmd chk18 %11f $testout "-cat:TESTGW2 --noerr ctrl.$ext"
+else
+  runrdcmd chk18 %11f $testout "-cat:TESTGW --noerr ctrl.$ext"
+endif
+chk18:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+call diffiles chk19 "$testout $refout"
+chk19:
+if ($?add0) then
+  echo -n "         ..." ; $add0 QPNT
+endif
+
+xxxx:
+
+ foreach fn (CLASS NLAindx)
+  echo -n "$space file $fn identical with reference? ... "
+  diff -w $fn $testdir/$ext/$fn >/dev/null
+  set retval = $status
+  if ($retval == 0) then
+    echo yes
+  else
+    echo no
+    unset pass
+  endif
+end
+
+chk111:
+set fn = (GWinput QIBZ SYMOPS LATTC)
+if ($?gwcode2) set fn = (GWinput QIBZ LATTC)
+set ndig = 12
+chk1a:
+  echo -n "$space files $fn[1] and $testdir/$ext/$fn[1] compare to $ndig decimal places? ... "
+  call zcmpnfiles chk1b "$ndig $fn[1] $testdir/$ext/$fn[1]"
+  chk1b:
+  if ($retval == 0) then
+    echo yes
+  else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no
+    unset pass
+  endif
+  shift fn
+if ($#fn > 0) goto chk1a
+
+set fn = (VXCFP.chk normchk.$ext)
+set ndig = 5
+chk1c:
+  if ($?add0) then
+    echo -n "         ..." ; $add0 $fn[1]
+  else if ($?poszer) then
+    echo -n "         ..." ; $poszer $fn[1]
+  endif
+
+  if ($?gwcode2) then
+  echo -n "$space files $fn[1] and $testdir/$ext/$fn[1].code2 compare to $ndig decimal places? ... "
+  call zcmpnfiles chk1d "$ndig $fn[1] $testdir/$ext/$fn[1].code2"
+  else
+  echo -n "$space files $fn[1] and $testdir/$ext/$fn[1] compare to $ndig decimal places? ... "
+  call zcmpnfiles chk1d "$ndig $fn[1] $testdir/$ext/$fn[1]"
+  endif
+  chk1d:
+  if ($retval == 0) then
+    echo yes
+  else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no
+    unset pass
+  endif
+  shift fn
+if ($#fn > 0) goto chk1c
+
+
+echo " "
+
+if ($ext == "si") then
+  echo "$space ... lmf optics, mefac=1, reading QSGW sigma from file"
+  echo "$space lmf si -vnk=12 -vmetal=3 -voptmod=1 -vmefac=1 -vsig=12 --rsig:ascii --rs=1,0 -vnit=1 --iactiv=no --pr45,20,45 -vso=0 > out.lmf.si"
+               lmf si -vnk=12 -vmetal=3 -voptmod=1 -vmefac=1 -vsig=12 --rsig:ascii --rs=1,0 -vnit=1 --iactiv=no --pr45,20,45 -vso=0 > out.lmf.si
+  echo "$space cp opt.si opt1.si"
+               cp opt.si opt1.si
+  echo "$space ... lmf optics, mefac=2, reading QSGW sigma from file"
+  echo "$space lmf si -vnk=12 -vmetal=3 -voptmod=1 -vmefac=2 -vsig=12 --rsig:ascii --rs=1,0 -vnit=1 --iactiv=no --pr45,20,45 -vso=0 >> out.lmf.si"
+               lmf si -vnk=12 -vmetal=3 -voptmod=1 -vmefac=2 -vsig=12 --rsig:ascii --rs=1,0 -vnit=1 --iactiv=no --pr45,20,45 -vso=0 >> out.lmf.si
+xxxx2:
+  echo
+  echo "$space ... checking lmf optics against reference"
+  set fn = (opt.si opt1.si)
+  set nl = 500
+  set ndig = 5
+  if ! ($?dostol) set dostol = 1e-5
+  chk1co:
+    if ($?add0) then
+      echo -n "         ..." ; $add0 $fn[1]
+    else if ($?poszer) then
+      echo -n "         ..." ; $poszer $fn[1]
+    endif
+#     echo -n "$space files $fn[1] and $testdir/$ext/$fn[1] compare to $ndig decimal places? ... "
+#     call zcmpnfiles chk1do "$ndig $fn[1] $testdir/$ext/$fn[1]"
+    zcmpmfiles_res_tol chk1do "Max deviation in ($nl lines) $fn[1] from reference $testdir/$ext/$fn[1]" $dostol pass $ndig $fn[1] $testdir/$ext/$fn[1] $nl
+    chk1do:
+    shift fn
+  if ($#fn > 0) goto chk1co
+endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED ($ext)"
+else
+    echo "$space test 1 FAILED ($ext)"
+    set failed = ($failed 1)
+endif
+
+if ($?clean) then
+else if ($?pass) then
+if ($?quiet) then
+else if ($ext == "si") then
+cat <<EOF
+
+         You may wish to try adding self-energy sigma to the LDA
+         hamiltonian, and compare with output.  For you to do this, your
+         machine must be compatible with the supplied (binary) sigma file.
+         (Because the sigma file might not be compatible, this test is not
+         done automatically).  To make this test, do the following:
+
+            cp $testdir/si/sigma.si .
+	    rm -f mixm.si
+            lmf si -vsig=12 --rs=1,2 --rsig:ascii -vnit=5 --no-iactiv --pr45,20,45 > out
+            diff out $testdir/si/out.lmf-sig.si
+
+         After running the first check, you can also test rotation options of --wsig:
+	    echo first step symmetrizes sigma
+	    lmf si -vnk=4 -vsig=12 -vnit=1 --no-iactiv --rs=102,0 -vrot=0 --rsig:ascii --wsig ; cp sigm2.si sigm.si
+	    rm -f mixm.si
+	    echo ... one pass in unrotated coordinated system
+	    lmf si -vnk=5 -vsig=12 -vnit=1 --no-iactiv --rs=102,0 -vrot=0 --wpos=pos1 > old
+	    echo ... rotate sigma
+	    lmf si -vnk=5 -vsig=12 -vnit=1 --no-iactiv --rs=102,0 -vrot=0 --wsig^rot=z:.1,y:2,z:.3; cp sigm2.si sigm.si
+	    rm -f mixm.si
+	    echo ... one pass in rotated coordinated system
+	    lmf si -vnk=5 -vsig=12 -vnit=1 --no-iactiv --rs=102,0 -vrot=1 --wpos=pos2 > new
+	    diff old $testdir/si/out.lmf-sig-unrot
+	    diff new $testdir/si/out.lmf-sig-rot
+
+EOF
+endif
+
+
+#  If a check on transformations, do it
+grep TSIGT ctrl.$ext >/dev/null
+if ($status) goto chk1e
+if (! -e $testdir/si/out.trans.$ext) goto chk1e
+
+if (! $?quiet) then
+
+cat <<EOF
+         Test $ext illustrates the transformation of sigma to a new basis.
+         A band pass is made before and after the transformation to compare.
+         In the Si case, the basis is not changed, so the transformation should merely recover
+         the original self-energy.  There are small differences owing to numerical rounding.
+         You can run this test by invoking the following:
+           cp gwd/test/si/sigma.si .
+           $rdcmd '-f:#rdcmd:%2f' -cat:TSIGT --noerr ctrl.si  >& out.trans.si
+           diff out.trans.si gwd/test/si/out.trans.si
+
+         The following test shows how the sigma file can be generated and read in real space:
+           cp gwd/test/si/{sigma,syml}.si .
+           $rdcmd '-f:#rdcmd:%2f' -cat:TSTRS --noerr ctrl.si  >& out.sigrs.si
+           diff out.sigrs.si gwd/test/si/out.sigrs.si
+
+         The following test shows the approximation of sigma by a k-independent one:
+           cp gwd/test/si/{sigma,syml}.si .
+           $rdcmd '-f:#rdcmd:%2f' -cat:TSIG0 --noerr ctrl.si  >& out.sig0.si
+           zdiff out.sig0.si gwd/test/si/out.sig0.si
+           diff bnds.siq gwd/test/si
+           diff bnds.siq0 gwd/test/si
+
+         The following test illustrates the sigma editor
+           cp gwd/test/si/{sigma,syml}.si .
+           $rdcmd '-f:#rdcmd:%2f' -cat:TSIGS --noerr ctrl.si  >& out.sigs.si
+           diff out.sigs.si gwd/test/si/out.sigs.si
+
+           (invoking rdcmd with --n shows what commands would execute, without actually executing anything)
+EOF
+
+endif  # quiet
+endif  # pass
+
+chk1e:
+
+echo $joblist | grep 2 >/dev/null
+if ($status) goto chk2e
+set jobid = 2
+cat <<EOF
+
+         --- Test 2.  Check of GW suite ---
+         Check operation of the GW suite and drivers lmfgwd,lmf2gw.
+         Requires that shell script lmgw be in your path.
+
+EOF
+endif
+
+if ($ext == "si2") then
+cat <<EOF
+         Test case Si2 is a very simple case with a few k-points
+         for fast execution (but inaccurate result).
+
+EOF
+else if ($ext == "fe") then
+cat <<EOF
+         Test case Fe performs a one-shot GW calculation using a QSGW potential for H0.
+         You can verify by inspecting the QPU,QPD files that dSE is nearly zero.
+
+         There is also a check of the role of nonlocality in the self-energy.
+         You can do the check independently of this script with the following commands:
+            rm -f specialspec1 specialh
+            cp $testdir/fe/{{ctrl,site,syml,rst}.fe,atparms,switches-for-lm} . ; cp gwd/test/fe/sigm.in sigm; ln -s -f sigm sigm.fe
+            rdcmd '-f:#rdcmd:%2f' -cat:TSIG0 --noerr ctrl.fe  >& out.sig0.$ext
+         To check whether the calculation is successful, do:
+            zdiff out.sig0.$ext $testdir/fe/code2/out.sig0.$ext
+            diff bnds.feq $testdir/fe/code2
+            diff bnds.feq0 $testdir/fe/code2
+
+EOF
+endif
+
+# set verbose
+
+set pass
+set refQPU=$testdir/$extcode/QPU.std
+if (! -e $refQPU) then
+  echo "$space ... skipping test : missing reference file $refQPU"
+  goto chk2be
+endif
+# goto chk2baa
+query chk21 chk2e 'run this test'
+chk21:
+if ($?clean) then
+  if ($?rmlst2) then
+    echo "$space rm -f $rmlst2"
+                 rm -f $rmlst2
+    goto chk2e
+  endif
+endif
+# ... Look for executables
+findcmd chk21a lmgw "$path" "optional"
+chk21a:
+
+echo "$space rm -f {wkp,mixm,atm,rst,save,log,hssn}.$ext switches-for-lm QPU sigm mixsigma TOTE2.UP mpiqlst"
+             rm -f {wkp,mixm,atm,rst,save,log,hssn}.$ext switches-for-lm QPU sigm mixsigma TOTE2.UP mpiqlst
+echo "$space cp $cplst ."
+             cp $cplst .
+
+if ($?clean) then
+  echo "$space rm -f {moms,save,atm,rst,rsta,normchk,out.lmf,out.lmfgw,gw1,gw2,gwa,gwb,ham,vxc,evec}.$ext DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS HAMindex"
+               rm -f {moms,save,atm,rst,rsta,normchk,out.lmf,out.lmfgw,gw1,gw2,gwa,gwb,ham,vxc,evec}.$ext DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS HAMindex
+  goto chk2e
+endif
+
+echo " "
+query chk2b chk2be "run GW test, standard energy integration, one-shot?"
+chk2b:
+if (! -e $refQPU) then
+  echo "$space no file $refQPU ... skipping this step"
+  goto chk2be
+endif
+if ($?gwcode2) then
+  echo "$space this mode not yet supported in GW Sep12 version .. skipping this step"
+  goto chk2be
+endif
+
+#echo DEBUG;   goto chk2be
+
+set code2 = "--code0"; set lmgwargs
+if ($?gwcode2) set code2 = "--code2"
+
+if ($?mpi) then
+  set mpix = "$mpi"
+else
+  set mpix
+endif
+
+if ($ext == "fe") then
+  echo "$space rm -f specialspec1"
+               rm -f specialspec1
+  echo "$space mv sigm.in sigm"
+               mv sigm.in sigm
+  echo "$space ln -s sigm sigm.fe"
+               ln -s sigm sigm.fe
+  set lmgwargs = "--wt --vxcsig --metal"
+endif
+
+echo $lmgwargs; exit
+
+if ($?eibzmodeoff) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'EIBZmode off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+  set run = run-NoEIBZmode
+endif
+if ($?offbz) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'Chi_RegQbz off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+endif
+
+runjob chk2ba . "$lmgw $lmgwargs $code2 $mpix $ext"
+chk2ba:
+echo "$space $lmgw exited normally."
+chk2baa:
+
+set i = 5
+set QPUtol = 1e-2
+zcmpmfiles_res_0 chk2ck "Max deviation in QPU from reference $testdir/$extcode/QPU.std" $QPUtol pass $i QPU $testdir/$extcode/QPU.std
+chk2ck:
+# call zcmpnfiles chk2bb "$i QPU $testdir/$extcode/QPU.std"
+# chk2bb:
+# echo -n "$space files QPU and $testdir/$extcode/QPU.std equivalent to $i digits? ..."
+# if ($retval == 0) then
+#   echo yes
+# else
+#   echo no "($retval difference(s) of $ncharfile)"
+#   unset pass
+# endif
+set i = 6
+set TOTEtol = 2e-4
+zcmpmfiles_res_0 chk2ck2 "Max deviation in TOTE2.UP from reference $testdir/$extcode/QPU.std" $TOTEtol pass $i TOTE2.UP $testdir/$extcode/TOTE2.UP.std
+chk2ck2:
+# call zcmpnfiles chk2bc "$i TOTE2.UP $testdir/$extcode/TOTE2.UP.std"
+# chk2bc:
+# echo -n "$space files TOTE2.UP and $testdir/$extcode/TOTE2.UP.std equivalent to $i digits? ..."
+# if ($retval == 0) then
+#   echo yes
+# else
+#   echo no "($retval difference(s) of $ncharfile)"
+#   unset pass
+# endif
+chk2be:
+
+# --- 1-shot calculation with Sergey's Hilbert transformation
+set i = 6
+set TOTEtol = 2e-4
+set QPUtol = 1e-2
+echo " "
+query chk2c chk2ce "run GW test, Hilbert-Transform energy integration, one-shot?"
+chk2c:
+
+set fext = ht
+if ($?gwversion) then
+  set fext = $fext-GWversion{$gwversion}
+endif
+if ($?timereversaloff) set fext = $fext-NoTimeReversal
+if ($?eibzmodeoff) set fext = $fext-NoEIBZmode
+set refQPU=$testdir/$extcode/QPU.$fext refTOTE=$testdir/$extcode/TOTE2.UP.$fext
+if (! -e $refQPU) then
+  echo "$space no file $refQPU ... skipping this step"
+  goto chk2ce
+endif
+
+if ($?haveout) goto chk2ca:
+
+# ... Look for executables
+findcmd chk22a lmgw "$path" "optional"
+chk22a:
+findcmd chk22b lmfa "$path" "optional"
+chk22b:
+
+echo "$space rm -f {wkp,mixm,rst,save,log,hssn}.$ext switches-for-lm QPU sigm mixsigma TOTE2.UP specialspec1"
+             rm -f {wkp,mixm,rst,save,log,hssn}.$ext switches-for-lm QPU sigm mixsigma TOTE2.UP specialspec1
+
+echo "$space cp `echo $cplst | sed s/GWinput/GWinput.gw/` ."
+             cp `echo $cplst | sed s/GWinput/GWinput.gw/` .
+echo "$space mv GWinput.gw GWinput"
+             mv GWinput.gw GWinput
+
+set code2 = "--code0"; set lmgwargs
+if ($?gwcode2) set code2 = "--code2"
+
+if ($?timereversaloff) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'TimeReversal off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+  set run = run-NoTimeReversal
+endif
+if ($?eibzmodeoff) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'EIBZmode off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+endif
+if ($?offbz) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'Chi_RegQbz off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+  set run = run-offbz
+endif
+
+if ($?gwversion) then
+  cp GWinput GWinput~
+  awk -v "gwversion=$gwversion" '{if ($1 == "GWversion") {print "GWversion", gwversion} else {print}}' GWinput~ > GWinput
+  echo "         copied GWinput to GWinput and replaced GWversion in GWinput : "
+  echo '         diff GWinput GWinput~'
+                 diff GWinput GWinput~
+  set run = run-GWversion{$gwversion}
+else
+  set run = run
+endif
+if (! -e GWinput) then
+  echo " no file GWinput ... skip this job"
+  goto chk2ce
+endif
+
+if ($?mpi) then
+  set mpix = "$mpi"
+else
+  set mpix
+endif
+
+if ($ext == "fe") then
+  echo "$space mv sigm.in sigm"
+               mv sigm.in sigm
+  echo "$space ln -s sigm sigm.fe"
+               ln -s sigm sigm.fe
+  set lmgwargs = "--wt --vxcsig --metal"
+endif
+if ($ext == "copt") then
+runjob chk2c0 /dev/null "$lmfa `cat switches-for-lm` $ext"
+chk2c0:
+endif
+if ($ext == "si2") then
+  set lmgwargs = "--lmargs=--rs=2"
+endif
+
+runjob chk2ca . "$lmgw $lmgwargs $code2 $mpix --ht $ext"
+chk2ca:
+echo "$space $lmgw exited normally."
+
+set filedir=$testdir/$extcode
+echo "$space (checking against reference files in $filedir)"
+zcmpmfiles_res_0 chk2ck3 "Max deviation in QPU from reference $refQPU" $QPUtol pass $i QPU $refQPU
+chk2ck3:
+zcmpmfiles_res_0 chk2ck4 "Max deviation in TOTE2.UP from reference $refTOTE" $TOTEtol pass $i TOTE2.UP $refTOTE
+chk2ck4:
+# set i = 4
+# call zcmpnfiles chk2cb "$i QPU $testdir/$ext/QPU.ht"
+# chk2cb:
+# echo -n "$space files QPU and $testdir/$ext/QPU.ht equivalent to $i digits? ..."
+# if ($retval == 0) then
+#   echo yes
+# else
+#   echo no "($retval difference(s) of $ncharfile)"
+#   unset pass
+# endif
+# set i = 6
+# call zcmpnfiles chk2cc "$i TOTE2.UP $testdir/$ext/TOTE2.UP.ht"
+# chk2cc:
+# echo -n "$space files TOTE2.UP and $testdir/$ext/TOTE2.UP.ht equivalent to $i digits? ..."
+# if ($retval == 0) then
+#   echo yes
+# else
+#   echo no "($retval difference(s) of $ncharfile)"
+#   unset pass
+# endif
+chk2ce:
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 2 PASSED ($ext)"
+else
+    echo "$space test 2 FAILED ($ext)"
+    set failed = ($failed 2)
+endif
+
+chk2e:
+
+echo $joblist | grep 3 >/dev/null
+if ($status) goto chk3e
+set jobid = 3
+# For now
+goto chk3e
+
+cat <<EOF
+
+         --- Test 3.  Check of GW suite, LW total energies ---
+         Check operation of the GW suite total energy and drivers lmfgwd,lmf2gw.
+         Requires that shell script lmgw be in your path.
+
+EOF
+endif
+
+if ($ext == "si2") then
+cat <<EOF
+         Test case Si2 is a very simple case with a few k-points
+         for fast execution (but inaccurate result).
+
+EOF
+endif
+
+set refEtot=$testdir/$ext/ETOTeV.std
+if (! -e $refEtot) then
+  echo "$space ... skipping test : missing reference file $refEtot"
+  goto chk3e
+endif
+set pass
+query chk31 chk3e 'run this test'
+chk31:
+if ($?clean) then
+  if ($?rmlst3) then
+    echo "$space rm -f $rmlst3"
+                 rm -f $rmlst3
+    goto chk3e
+  endif
+endif
+# ... Look for executables
+findcmd chk31a lmgw "$path" "optional"
+chk31a:
+
+echo "$space cp $cplst ."
+             cp $cplst .
+echo "$space rm -f {wkp,mixm,rst,save,log,hssn}.$ext switches-for-lm QPU sigm mixsigma TOTE2.UP ETOTeV.dat ETOTLDA RoVxcLDA mpiqlst"
+             rm -f {wkp,mixm,rst,save,log,hssn}.$ext switches-for-lm QPU sigm mixsigma TOTE2.UP ETOTeV.dat ETOTLDA RoVxcLDA mpiqlst
+
+if ($?clean) then
+  echo "$space rm -f {moms,save,atm,rst,rsta,normchk,out.lmf,out.lmfgw,gw1,gw2,gwa,gwb,ham,vxc,evec}.$ext DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS ETOTeV.dat ETOTLDA RoVxcLDA"
+               rm -f {moms,save,atm,rst,rsta,normchk,out.lmf,out.lmfgw,gw1,gw2,gwa,gwb,ham,vxc,evec}.$ext DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS ETOTeV.dat ETOTLDA RoVxcLDA
+  goto chk3e
+endif
+
+echo " "
+query chk3b chk3be "run GW total energy test, standard energy integration?"
+chk3b:
+if (! -e $refEtot) then
+  echo "$space no file $refEtot ... skipping this step"
+  goto chk3be
+endif
+
+set code2 = "--code0"; set lmgwargs
+if ($?gwcode2) set code2 = "--code2"
+
+runjob chk3ba . "$lmgw $code2 --etot $ext"
+chk3ba:
+echo "$space $lmgw exited normally."
+
+set i = 6
+call zcmpnfiles chk3bb "$i ETOTeV.dat $refEtot"
+chk3bb:
+echo -n "$space files ETOTeV.dat and $refEtot equivalent to $i digits? ..."
+if ($retval == 0) then
+  echo yes
+else
+  echo no "($retval difference(s) of $ncharfile)"
+  unset pass
+endif
+
+chk3be:
+
+echo " "
+query chk3c chk3ce "run GW test, Hilbert-Transform energy integration, one-shot?"
+chk3c:
+set refEtot=$testdir/$ext/ETOTeV.ht
+if (! -e $refEtot) then
+  echo "$space no file $refEtot ... skipping this step"
+  goto chk3ce
+endif
+
+echo "$space rm -f QPU sigm mixsigma TOTE2.UP ETOTeV.dat ETOTLDA RoVxcLDA"
+             rm -f QPU sigm mixsigma TOTE2.UP ETOTeV.dat ETOTLDA RoVxcLDA
+
+runjob chk3ca . "$lmgw --code2 --ht --etot $ext"
+chk3ca:
+echo "$space $lmgw exited normally."
+
+set i = 6
+call zcmpnfiles chk3cb "$i ETOTeV.dat $refEtot"
+chk3cb:
+echo -n "$space files ETOTeV.dat and $refEtot equivalent to $i digits? ..."
+if ($retval == 0) then
+  echo yes
+else
+  echo no "($retval difference(s) of $ncharfile)"
+  unset pass
+endif
+chk3ce:
+
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 3 PASSED ($ext)"
+else
+    echo "$space test 3 FAILED ($ext)"
+    set failed = ($failed 3)
+endif
+
+chk3e:
+
+echo $joblist | grep 4 >/dev/null
+if ($status) goto chk4e
+set jobid = 4
+cat <<EOF
+
+         --- Test 4.  Check of GW suite, QSGW mode ---
+         Check operation of the GW suite, self-consistent mode.
+         Requires that shell scripts lmgwsc, lmgw and dependencies
+         of these scripts be in your path.
+
+EOF
+endif
+
+if ($ext == "si2") then
+cat <<EOF
+         Test case Si2 is a very simple case with a few k-points
+         for fast execution (but inaccurate result).
+
+EOF
+endif
+
+if ($ext == "fe") then
+cat <<EOF
+         Test case Fe tests QSGW for a variety of conditions:
+
+         1. a magnetic metal
+
+         2. Uses average self-energy for high-lying states in sigm file (modsgp=4)
+
+         3. multitet option (gwcode=0 only)
+
+         4. generates energy bands
+
+EOF
+endif
+
+if ($ext == "jell") then
+cat <<EOF
+         Test case jell tests the GW code's ability to add uniform charge (zbak)
+
+         Volume is that of Na, with background charge of 1.
+
+         Calculation is for 0th iteration only (LDA-based GW with unit Z factor).
+
+         The valence band narrows slightly relative to the LDA result
+
+         You can confirm that QSGW self-consistency further reduced the valence bandwidth,
+         to about 10% smaller than the LDA.
+         After execution completes, continue with
+
+         lmgwsc --wt --code2 --sym --metal --band:fn=syml --tol=2e-5 --getsigp --mpi=4,4 jell
+
+EOF
+endif
+
+set pass
+set refQPU=$testdir/$extcode/0run/QPU
+if ($ext == "fe" || $ext == "nio") set refQPU=$testdir/$extcode/1run/QPU
+if (! -e $refQPU) then
+  echo "$space no file $refQPU ... skipping this test"
+  goto chk4ce
+endif
+query chk41 chk4e 'run this test'
+chk41:
+if ($?clean) then
+  echo "$space lmgwclear $ext"
+               lmgwclear $ext
+  if ($?rmlst4) then
+    echo "$space rm -f -r $rmlst4"
+                 rm -f -r $rmlst4
+   goto chk4e
+  endif
+endif
+# ... Look for executables
+# echo PATCH FOR NOW
+# findcmd chk41a lmgwsc "/export/svan2/nbin $path" "optional"
+findcmd chk41a lmgwsc "$path" "optional"
+chk41a:
+findcmd chk41b lmf "$path" "optional"
+chk41b:
+
+# echo ' PATCH '; goto chk4ba
+set run = run
+if ($?haveout) goto chk4ba
+
+echo "$space rm -f {wkp,mixm,rst,save,log,hssn,sigm,erange}.$ext switches-for-lm QPU sigm mixsigma sig0 mixsig0 specialspec1 TOTE2.UP mpiqlst"
+             rm -f {wkp,mixm,rst,save,log,hssn,sigm,erange}.$ext switches-for-lm QPU sigm mixsigma sig0 mixsig0 specialspec1 TOTE2.UP mpiqlst
+if ($ext == "six") then
+  echo "$space rm -f rst.six atm.six"
+               rm -f rst.six atm.six
+endif
+if (-d 0run) then
+echo "$space rm -r *run"
+             rm -r *run
+endif
+if ($?clean) then
+  echo "$space rm -f {moms,save,atm,rst,rsta,normchk,out.lmf,out.lmfgw,gw1,gw2,gwa,gwb,ham,vxc,evec,sigm}.$ext DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS PPOVL0 rhoMT.1 rhoMT.2"
+               rm -f {moms,save,atm,rst,rsta,normchk,out.lmf,out.lmfgw,gw1,gw2,gwa,gwb,ham,vxc,evec,sigm}.$ext DATA4GW_V2 VXCFP.chk QGcou QGpsi KPTin1BZ SYMOPS GWIN0 GWinput GWIN_V2 QPNT QIBZ QPNT NLAindx Q0P QIBZ SYMOPS LATTC CLASS PPOVL0 rhoMT.1 rhoMT.2
+  goto chk4ce
+endif
+echo "$space cp `echo $cplst | sed s/GWinput/GWinput.gw/` ."
+             cp `echo $cplst | sed s/GWinput/GWinput.gw/` .
+echo "$space mv GWinput.gw GWinput"
+             mv GWinput.gw GWinput
+
+if (! -e GWinput) then
+  echo " no file GWinput ... skip this job"
+  goto chk4ce
+endif
+
+set run = run
+if ($?gwversion) then
+  cp GWinput GWinput~
+  awk -v "gwversion=$gwversion" '{if ($1 == "GWversion") {print "GWversion", gwversion} else {print}}' GWinput~ > GWinput
+  echo "         copied GWinput to GWinput and replaced GWversion in GWinput : "
+  echo '         diff GWinput GWinput~'
+                 diff GWinput GWinput~
+  set run = run-GWversion{$gwversion}
+endif
+if ($?timereversaloff) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'TimeReversal off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+  set run = run-NoTimeReversal
+endif
+if ($?eibzmodeoff) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'EIBZmode off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+  set run = run-NoEIBZmode
+  if ($?timereversaloff) set run = run-NoTimeReversal-NoEIBZmode
+endif
+if ($?offbz) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'Chi_RegQbz off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+  set run = run-offbz
+endif
+
+if ($ext == "fe" || $ext == "zbmnas" || $ext == "nio") then
+echo "$space mv sigm.in sigm"
+             mv sigm.in sigm
+echo "$space ln -s sigm sigm.$ext"
+             ln -s sigm sigm.$ext
+endif
+
+if ($ext == "fe") then
+
+if ($?so2) then
+  set run = run-so2
+  set sw = `cat switches-for-lm`
+  echo -vso=2 $sw > switches-for-lm
+  echo "$space modified switches-for-lm:"
+  echo -n "$space"; cat switches-for-lm
+endif
+if ($?so3) then
+  set run = run-so3
+  set sw = `cat switches-for-lm`
+  echo -vso=3 $sw > switches-for-lm
+  echo "$space modified switches-for-lm:"
+  echo -n "$space"; cat switches-for-lm
+endif
+endif
+
+if ($?mpi) then
+  set mpix = "$mpi"
+else
+  set mpix
+endif
+
+set code2 = "--code0"; set lmgwargs
+if ($?gwcode2) set code2 = "--code2"
+
+# if ($ext == "si2") then
+# echo "$space Convert ASCII restart file into binary ..."
+# echo "$space $lmf -vnit=0 --rs=2,1 $ext >/dev/null"
+#              $lmf -vnit=0 --rs=2,1 $ext >/dev/null
+# endif
+runjob chk4ba out.lmgwsc "$lmgwsc --wt $code2 $gwscargs $mpix $ext"
+chk4ba:
+echo "$space $lmgwsc exited normally."
+echo "$space ... grep more out.lmgwsc"
+             grep more out.lmgwsc
+
+# if (! -d 0$run && ! -d 1$run) then
+#   echo "$space oops! no directory 0run ... something is wrong ... no checks made"
+#   unset pass
+#   goto chk4ce
+# endif
+
+if (! $?so2 && ! $?so3 && -e $testdir/$ext/out.spinav.lmf ) then
+  echo
+  echo "$space Test spin average mode ... make spin averaged density and write to rsta file"
+  rm -f mixm.$ext
+  echo "$space $lmf `cat switches-for-lm` $ext '--rsedit~rs~set all 1 zers~savea~q' >out.spinav.lmf"
+               $lmf `cat switches-for-lm` $ext '--rsedit~rs~set all 1 zers~savea~q' >out.spinav.lmf
+  echo "$space Test spin average mode ... invoke lmf with averaged density and sigma"
+  echo "$space $lmf -vnit=1 --rs=2,0 --rsig:spinav `cat switches-for-lm` $ext >> out.spinav.lmf"
+               $lmf -vnit=1 --rs=2,0 --rsig:spinav `cat switches-for-lm` $ext >> out.spinav.lmf
+
+  call diffiles chk4bb "out.spinav.lmf $testdir/$ext/out.spinav.lmf"
+chk4bb:
+  set amom = `grep "Mag. moment:" out.spinav.lmf | tail -1 | awk '{print $NF}'`
+  if (! $?quiet)  echo "$space Magnetic moment   = $amom"
+endif
+
+set filedir=$testdir/$extcode
+echo
+call qprint chk4bc "$space ... automatic pass checks (checking against reference files in $filedir)"
+chk4bc:
+
+if (! $?so2 && ! $?so3 && -e $testdir/$ext/out.spinav.lmf ) then
+
+  echo -n "$space vanishing magnetic moment from spin-averaged calculation? ... "
+  if (`echo $amom 0 0 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+    echo yes
+  else
+    echo no
+    unset pass
+  endif
+endif
+
+# set verbose
+set k = 0
+# if ($ext == "fe") set k = 1
+if ($ext == "lif") set k = 4
+chk4bd:
+  set refQPU=$filedir/{$k}$run/QPU
+  if (! -e $refQPU) goto chk4be
+  set i = 6
+  set QPUtol = 1e-2
+  if ($?have_mc) set use_mc
+  zcmpmfiles_res_0 chk4ck1 "Max deviation in {$k}run/QPU from reference $refQPU" $QPUtol pass $i {$k}run/QPU $refQPU
+  chk4ck1:
+  set TOTEtol = 2e-4
+# if ($ext == "nio") set TOTEtol = 5e-3
+  zcmpmfiles_res_0 chk4ck2 "Max deviation in {$k}run/TOTE.UP from reference $filedir/{$k}$run/TOTE.UP" $TOTEtol pass $i {$k}run/TOTE.UP $filedir/{$k}$run/TOTE.UP
+  chk4ck2:
+  if (-e $filedir/{$k}$run/bnds.$ext) then
+    set Btol = 2e-4
+    zcmpmfiles_res_0 chk4ck3 "Max deviation in bnds.$ext from reference $filedir/{$k}$run/bnds.$ext" $Btol pass $i bnds.$ext $filedir/{$k}$run/bnds.$ext
+    chk4ck3:
+  endif
+chk4be:
+@ k = $k + 1
+if ("$k" < 5) goto chk4bd
+
+chk4ce:
+if ($?clean) goto chk4e
+if ($?pass) then
+    echo "$space test 4 PASSED ($ext)"
+else
+    echo "$space test 4 FAILED ($ext)"
+    set failed = ($failed 4)
+endif
+
+chk4e:
+
+echo $joblist | grep 5 >/dev/null
+if ($status) goto chk5e
+set jobid = 5
+cat <<EOF
+
+         --- Test 5.  Check of GW suite, spectral function ---
+         Check generation of the spectral function maker.
+         You must run the GW calculation of test 4 before doing this one.
+
+EOF
+endif
+
+if ($ext == "fe") then
+cat <<EOF
+         Test case Fe generates spectral DOS from Im G, compares it to DOS from Im G0
+         and to DOS generated by lmf.
+
+         To see how spectrum DOS and G0 DOS compare, do the following:
+           cat gwd/test/fe.code2/sdos.fe > sdos.fe
+           cat gwd/test/fe/dosp.fe > dosp.fe
+           fplot -f gwd/test/fe/plot.dos
+
+         This test also calculates spectral function A(k,omega) for k near the H point.
+         Contributions from band 2 is calculated for spin up and from bands 2,3 for spin down.
+
+         The following makes a picture comparing A (solid lines) and A0 (dashed lines),
+         majority spin (black) and minority spin (red)
+
+           fplot -x -9,5 -y 0,1 -colsy 6 -lt 1,col=0,0,0 seia.fe -colsy 7 -lt 2,col=0,0,0 seia.fe \
+           -colsy 2 -lt 1,col=1,0,0 seia2.fe -colsy 3 -lt 2,col=1,0,0 seia2.fe
+
+         You can see a weak plasmon peak near -8 eV.
+
+         This test also simulates an ARPES measurement for a point approximately midway
+         between Gamma and H, at q~0,0,0.45 near where bands cross Ef, using:
+
+            - the true spectral function, but without SO coupling
+
+            - The QP spectral function broadened by 0.01 eV, and including the SO coupling.
+
+         To generate a spectral function suitable for plotting, this job is run by the test
+           lmfgws fe \`cat switches-for-lm\` '--sfuned~units eV~readsek~evsync~se band:fn=syml2 ib=1:10 nw=10 getev=12 isp=1 range=-10,10'
+           plbnds -sp~atop=10~window=-4,4 spq.fe
+         Do the following to make a postscript file spf.ps of the interacting bands:
+           gnuplot gnu.plt
+
+         Other notes:
+           -  the output files seia.fe and seia2.fe have different formats because the spin 2 spectral
+              function is made for more than one band.
+
+           -  this test takes ~2 hours to execute
+
+EOF
+endif
+
+set pass
+if ($ext == "fe") set refSEC=$testdir/$extcode/SEComg.UP
+if ($ext == "fe") set GWIN=$testdir/$ext/GWinput.sdos
+if ($ext == "fe") set QIBZ=$testdir/$ext/QIBZ
+if (! $?refSEC) then
+  echo "$space no  $ext  test for job 5"
+  goto chk5ce
+endif
+if (! -e $refSEC) then
+  echo "$space no file $refSEC ... skipping this test"
+  goto chk5ce
+endif
+if (! -e $GWIN) then
+  echo "$space no file $GWIN ... skipping this test"
+  goto chk5ce
+endif
+query chk51 chk5e 'run this test'
+chk51:
+if ($?clean) then
+  if ($?rmlst5) then
+    echo "$space rm -f -r $rmlst5"
+                 rm -f -r $rmlst5
+   goto chk5e
+  endif
+endif
+
+# ... Look for executables: lmgw script which calls hsfp0
+findcmd chk51a lmgw "$path" "optional"
+chk51a:
+findcmd chk51c lmfgws "$path" "optional"
+chk51c:
+findcmd chk51d mcx "$path" "no"
+chk51d:
+findcmd chk51f lmf "$path" "optional"
+chk51f:
+
+if ($?haveout) goto chk5s4x
+if ($?haveout) goto chk5s4
+
+if ($?gwcode2) then
+findcmd chk51b hsfp0 "$lmgw:h/code2 $path" "optional"
+else
+findcmd chk51b hsfp0 "$lmgw:h/code0 $path" "optional"
+endif
+chk51b:
+
+#  echo ' PATCH' ; zcat ~/sendback/SEComg.UP > SEComg.UP ; zcat ~/sendback/SEComg.DN > SEComg.DN
+#  cp gwd/test/fe/ctrl.fe gwd/test/fe/rst.fe gwd/test/fe/site.fe gwd/test/fe/syml.fe gwd/test/fe/switches-for-lm gwd/test/fe/atparms gwd/test/fe/sigm.in gwd/test/fe/GWinput .
+#  echo ' PATCH' ; zcat tmp/fe.tar | tar xvf -
+# echo ' PATCH job 5 '; goto chkxxx
+
+echo "$space rm -f SEComg.{UP,DN} se se.$ext out.hsfp0 out.spectral out2.spectral out.lmfgws"
+             rm -f SEComg.{UP,DN} se se.$ext out.hsfp0 out.spectral out2.spectral out.lmfgws
+
+if ($?clean) then
+  goto chk5ce
+endif
+
+echo "$space cp $GWIN GWinput"
+             cp $GWIN GWinput
+echo "$space cp $QIBZ QIBZ"
+             cp $QIBZ QIBZ
+
+if ($?mpi) then
+  switch ($mpi)
+    case "--openmp":
+      if (! $?OMP_NUM_THREADS) then
+        setenv OMP_NUM_THREADS 2
+      else if ($?OMP_NUM_THREADS == 1) then
+        setenv OMP_NUM_THREADS 2
+      endif
+      breaksw
+
+    case "--openmp*":
+      set openmp = `echo $mpi | sed s/--openmp=//`
+#     check to ensure argument is a valid integer
+      @ openmp = $openmp
+      setenv OMP_NUM_THREADS $openmp
+      breaksw
+
+    case "--mpi*":
+     set narg = `echo $mpi | sed s/--mpi=// | awk '{print split($0, a, "," )}'`
+     if ($narg < 1 || $narg > 2) then
+       echo 'test.gwd (abort): bad argument list to mpi=..'
+       exit -1
+     endif
+#    extract openmp from argument
+     if ($narg > 1) then
+       set openmp = `echo $mpi | sed s/--mpi=// | awk '{split($0, a, "," ); print a[2]}'`
+#      check to ensure argument is a valid integer
+       @ openmp = $openmp
+       setenv OMP_NUM_THREADS $openmp
+       setenv MKL_NUM_THREADS $openmp
+       echo 'OMP_NUM_THREADS' $OMP_NUM_THREADS 'MKL_NUM_THREADS' $MKL_NUM_THREADS
+     endif
+     breaksw
+  endsw
+
+  echo "$space Running open-mp version, with OMP_NUM_THREADS = $OMP_NUM_THREADS"
+  if ($?gwcode2) then
+    findcmd chk51e hsfp0_om "$lmgw:h/code2 $path" "optional"
+  else
+    findcmd chk51e hsfp0_om "$lmgw:h/code0 $path" "optional"
+  endif
+  chk51e:
+endif
+
+echo "$space running the following command (requires ~2 hours)"
+    date +%s > datenow; set datenow = `cat datenow`
+if ($?mpi) then
+  echo -n "$space" "$hsfp0_om --job=4 > out.hsfp0"
+                    $hsfp0_om --job=4 > out.hsfp0
+else
+  echo -n "$space" "$hsfp0 --job=4 > out.hsfp0"
+                    $hsfp0 --job=4 > out.hsfp0
+endif
+set retval = $status
+date +%s > datenow
+echo `cat datenow` $datenow | awk '{printf(" ... time elapsed:  %.1fm (%.1fh)\n",($1-$2)/60.,($1-$2)/3600.)}'
+
+if (! -e SEComg.UP) then
+  echo "$space oops! no file SEComg.UP ... something is wrong ... no checks made"
+  unset pass
+  goto chk5ce
+endif
+
+chk5s4x:
+
+if ($ext == "fe") then
+echo "$space ... Generate spectral functions for q=0:"
+echo "$space spectral" --eps=.005 --domg=0.003 '--cnst:iq==1&eqp>-10&eqp<30 > out.spectral'
+             spectral --eps=.005 --domg=0.003 '--cnst:iq==1&eqp>-10&eqp<30' > out.spectral
+set retval = $status
+if ($retval != 0) goto cleanup
+echo -n "$space spectral exited normally ..."
+call diffiles chk5s1 "out.spectral $testdir/$extcode/out.spectral"
+chk5s1:
+echo "$space done"
+
+set i = 5
+call zcmpnfiles chk5s2 "$i sec_ib3_iq1.up $testdir/$extcode/sec_ib3_iq1.up"
+chk5s2:
+echo -n "$space files sec_ib3_iq1.up  and  $testdir/$extcode/sec_ib3_iq1.up equivalent to $i digits? ..."
+if ($retval == 0) then
+  echo yes
+else
+  if ($retval == 0) then
+    echo yes
+  else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (1000*ndiff/ntot<1.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) remaining of $ncharfile)"
+    unset pass
+  endif
+endif
+
+echo ' '
+echo "$space ... Generate input for lmfgws"
+echo "$space spectral --pr31 --ws:x --nw=1 > out2.spectral"
+             spectral --pr31 --ws:x --nw=1 > out2.spectral
+set retval = $status
+if ($retval != 0) goto cleanup
+echo -n "$space spectral exited normally ..."
+set reffile = $testdir/$extcode/out2.spectral
+call diffiles chk5s3 "out2.spectral $reffile"
+chk5s3:
+echo "$space done"
+echo "$space cp se se.$ext"
+             cp se se.$ext
+
+chkxxx:
+
+echo "$space rm -f sdos.$ext seia.$ext pes2.$ext pesqp.$ext spq.$ext spq-bnds.$ext seq.$ext jdos-lmf.$ext jdosni.$ext"
+             rm -f sdos.$ext seia.$ext pes2.$ext pesqp.$ext spq.$ext spq-bnds.$ext seq.$ext jdos-lmf.$ext jdosni.$ext
+
+echo ' '
+echo "$space ... Invoke lmfgws for spin up DOS  (output file sdos)"
+rm -f out.lmfgws eula.$ext
+echo "$space $lmfgws $ext `cat switches-for-lm` --chksig '--sfuned~units eV~readsek~eps .030~dos isp=1 range=-10,10 nq=32 nw=30~savesea~q' > out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` --chksig '--sfuned~units eV~readsek~eps .030~dos isp=1 range=-10,10 nq=32 nw=30~savesea~q' > out.lmfgws
+echo "$space ... Invoke lmfgws for A(k,omega), spin up, bands 2  (output file seia)"
+echo "$space $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~se q=1.05,2.91,1.01 ibx=2 nw=10 getev=12 isp=1~savesea~q' >> out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~se q=1.05,2.91,1.01 ibx=2 nw=10 getev=12 isp=1~savesea~q' >> out.lmfgws
+echo "$space ... Invoke lmfgws for A(k,omega), spin down, bands 2,3  (output file seia2)"
+echo "$space $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~se q=1.05,2.91,1.01 ib=2,3 nw=10 getev=12 isp=2~savesea~q' >> out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~se q=1.05,2.91,1.01 ib=2,3 nw=10 getev=12 isp=2~savesea~q' >> out.lmfgws
+echo "$space ... Invoke lmfgws for PES3d(k,omega), spin down, bands 3  (output file pes2-3d)"
+echo "$space $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~pe3d@iq=2@ib=3@nw=10@getev=32@delk=.1@radk=.1@ke0=139-5+14.8@isp=2~savesea~q' >> out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~pe3d@iq=2@ib=3@nw=10@getev=32@delk=.1@radk=.1@ke0=139-5+14.8@isp=2~savesea~q' >> out.lmfgws
+echo "$space     cp pes2.fe pes2-3d.fe"
+                 cp pes2.fe pes2-3d.fe
+echo "$space ... Invoke lmfgws for PES(k,omega), spin down, bands 2,3  (output file pes2)"
+echo "$space $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~pe q=0,0,0.450980392 ib=2,3 nw=10 getev nqf=220 ke0=139-5+14.8 isp=2~savesea~q' >> out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~eps .01~readsek~evsync~pe q=0,0,0.450980392 ib=2,3 nw=10 getev nqf=220 ke0=139-5+14.8 isp=2~savesea~q' >> out.lmfgws
+echo "$space ... Invoke lmfgws for QP PES(k,omega), SO coupling, projection to spin 1, bands 1:8  (output file pesqp)"
+echo "$space $lmfgws $ext -vso=1 `cat switches-for-lm` '--sfuned~units=eV~eps .01~qsgwh~evsync~peqp q=0,0,0.450980392 ib=1:8 nw=10 getev nqf=220 ke0=139-5+14.8 isp=1~savesea~q' >> out.lmfgws"
+             $lmfgws $ext -vso=1 `cat switches-for-lm` '--sfuned~units=eV~eps .01~qsgwh~evsync~peqp q=0,0,0.450980392 ib=1:8 nw=10 getev nqf=220 ke0=139-5+14.8 isp=1~savesea~q' >> out.lmfgws
+
+echo "$space ... Invoke lmf for joint noninteracting DOS (output file jdos-lmf)"
+echo "$space $lmf -vnk=32 fe `cat switches-for-lm` -vlteto=0 -voptmod=-1 --quit=rho >> out.lmfgws"
+             $lmf -vnk=32 fe `cat switches-for-lm` -vlteto=0 -voptmod=-1 --quit=rho >> out.lmfgws
+echo "$space     cp jdos.fe jdos-lmf.fe"
+                 cp jdos.fe jdos-lmf.fe
+echo "$space ... Invoke lmfgws for joint noninteracting DOS and joint interacting DOS (output files jdosni and jdos)"
+echo "$space $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~jdos range=-10,10 nq=32 a0 nw=5~savesea~q' >> out.lmfgws"
+             $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~jdos range=-10,10 nq=32 a0 nw=5~savesea~q' >> out.lmfgws
+echo "$space $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~jdos range=-10,10 nq=32    nw=5~savesea~q' >> out.lmfgws"
+             $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~jdos range=-10,10 nq=32    nw=5~savesea~q' >> out.lmfgws
+
+echo "$space ... Invoke lmf for Im eps (output file opt-lmf)"
+echo "$space $lmf -vnk=32 fe `cat switches-for-lm` -vmefac=0 -vlteto=0 -voptmod=1 --quit=rho >> out.lmfgws"
+             $lmf -vnk=32 fe `cat switches-for-lm` -vmefac=0 -vlteto=0 -voptmod=1 --quit=rho >> out.lmfgws
+echo "$space $lmf -vnk=32 fe `cat switches-for-lm` -vmefac=0 -vlteto=0 -voptmod=1 --opt:woptmc --quit=rho >> out.lmfgws"
+             $lmf -vnk=32 fe `cat switches-for-lm` -vmefac=0 -vlteto=0 -voptmod=1 --opt:woptmc --quit=rho >> out.lmfgws
+echo "$space cp opt.fe opt-lmf.fe"
+             cp opt.fe opt-lmf.fe
+echo "$space ... Invoke lmfgws for noninteracting Im eps and interacting Im eps (output files optni and opt)"
+echo "$space $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~imeps range=-10,10 nq=32 a0 nw=5~savesea~q' >> out.lmfgws"
+             $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~imeps range=-10,10 nq=32 a0 nw=5~savesea~q' >> out.lmfgws
+echo "$space $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~imeps range=-10,10 nq=32    nw=5~savesea~q' >> out.lmfgws"
+             $lmfgws fe `cat switches-for-lm` '--sfuned~units eV~readsek~eps .040~imeps range=-10,10 nq=32    nw=5~savesea~q' >> out.lmfgws
+
+if ($?have_plbnds) then
+echo "$space ... Invoke lmfgws for QP band structure along symmetry lines syml2 (output files spq-bnds,spf,gnu.plt,out.plbnds)"
+echo "$space $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~readsek~eps .01~evsync=6~se band:fn=syml2 ib=1:10 nw=10 getev=12 isp=1 range=-10,10' >> out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~readsek~eps .01~evsync=6~se band:fn=syml2 ib=1:10 nw=10 getev=12 isp=1 range=-10,10' >> out.lmfgws
+echo "$space cp spq.$ext spq-bnds.$ext"
+             cp spq.$ext spq-bnds.$ext
+echo "$space plbnds -sp~atop=10~window=-4,4 spq.$ext > out.plbnds"
+             plbnds -sp~atop=10~window=-4,4 spq.$ext > out.plbnds
+endif
+echo "$space ... Invoke lmfgws for all QP in BZ interpolate to 6x6x6 mesh spin up, bands 2:5  (output files spq, seq)"
+echo "$space $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~readsek~eps .01~evsync=6~se allq ib=2:5 isp=1 range=-10,10 getev=6 nw=2' >> out.lmfgws"
+             $lmfgws $ext `cat switches-for-lm` '--sfuned~units=eV~readsek~eps .01~evsync=6~se allq ib=2:5 isp=1 range=-10,10 getev=6 nw=2' >> out.lmfgws
+
+set retval = $status
+if ($retval != 0) goto cleanup
+echo -n "$space spectral exited normally ..."
+set reffile = $testdir/$extcode/out.lmfgws
+call diffiles chk5s4 "out.lmfgws $reffile"
+chk5s4:
+echo "$space done"
+# endif
+
+if ! ($?dostol) set dostol = 1e-3
+if ! ($?pestol) set pestol = 2e-3
+
+set nl = 500
+
+# if ($?mcx) then
+# zcmpmc chk5ckh "Max deviation in sdos.$ext from reference $testdir/$extcode/sdos.$ext" $dostol pass 4 sdos.$ext $testdir/$extcode/sdos.$ext
+# endif
+zcmpmfiles_res_tol chk5ckh "Max deviation in ($nl lines) sdos.$ext from reference $testdir/$extcode/sdos.$ext" $dostol pass 8 sdos.$ext $testdir/$extcode/sdos.$ext $nl
+chk5ckh:
+if (! $?gwcode2) then
+  echo "$space echo checks of seia,pes2,pesqp omitted for code0"
+  goto chk5ce
+endif
+# if ($?mcx) then
+# zcmpmc chk5cki "Max deviation in seia.$ext from reference $testdir/$extcode/seia.$ext"   $dostol pass 4 seia.$ext $testdir/$extcode/seia.$ext
+# endif
+zcmpmfiles_res_tol chk5cki "Max deviation in ($nl lines) seia.$ext from reference $testdir/$extcode/seia.$ext"   $dostol pass 8 seia.$ext $testdir/$extcode/seia.$ext $nl
+chk5cki:
+# if ($?mcx) then
+# zcmpmc chk5ckj "Max deviation in pesqp.$ext from reference $testdir/$extcode/pesqp.$ext" $pestol pass 4 pesqp.$ext $testdir/$extcode/pesqp.$ext
+# endif
+zcmpmfiles_res_tol chk5ckj "Max deviation in ($nl lines) pesqp.$ext from reference $testdir/$extcode/pesqp.$ext" $pestol pass 8 pesqp.$ext $testdir/$extcode/pesqp.$ext $nl
+chk5ckj:
+set pass2
+# if ($?mcx) then
+# zcmpmc chk5ckk "Max deviation in pes2.$ext from reference $testdir/$extcode/pes2.$ext"   $pestol pass2 4 pes2.$ext $testdir/$extcode/pes2.$ext
+# endif
+zcmpmfiles_res_tol chk5ckk "Max deviation in ($nl lines) pes2.$ext from reference $testdir/$extcode/pes2.$ext"   $pestol pass2 10 pes2.$ext $testdir/$extcode/pes2.$ext $nl
+chk5ckk:
+if (! $?pass2) then
+  echo -n "$space ... to 3 digits? ... "
+  call zcmpnfiles chk5ckl "3 pes2.$ext $testdir/$extcode/pes2.$ext"
+  chk5ckl:
+  if ($retval == 0) then
+    echo yes
+   else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (1000*ndiff/ntot<1.)}'` == 1) then
+     echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) of $ncharfile)"
+    unset pass
+  endif
+endif
+zcmpmfiles_res_tol chk5ckm "Max deviation in ($nl lines) pes2-3d.$ext from reference $testdir/$extcode/pes2-3d.$ext"   $dostol pass 4 pes2-3d.$ext $testdir/$extcode/pes2-3d.$ext $nl
+chk5ckm:
+zcmpmfiles_res_tol chk5ckn "Max deviation in ($nl lines) spq.$ext from reference $testdir/$extcode/spq.$ext"   $dostol pass 4 spq.$ext $testdir/$extcode/spq.$ext $nl
+chk5ckn:
+zcmpmfiles_res_tol chk5cko "Max deviation in ($nl lines) seq.$ext from reference $testdir/$extcode/seq.$ext"   $dostol pass 4 seq.$ext $testdir/$extcode/seq.$ext $nl
+chk5cko:
+zcmpmfiles_res_tol chk5ckp "Max deviation in ($nl lines) spq-bnds.$ext from reference $testdir/$extcode/spq-bnds.$ext"   $dostol pass 4 spq-bnds.$ext $testdir/$extcode/spq-bnds.$ext $nl
+chk5ckp:
+zcmpmfiles_res_tol chk5ckq "Max deviation in ($nl lines) jdosni.$ext from reference $testdir/$extcode/jdosni.$ext"   $dostol pass 4 jdosni.$ext $testdir/$extcode/jdosni.$ext $nl
+chk5ckq:
+zcmpmfiles_res_tol chk5ckr "Max deviation in ($nl lines) jdos.$ext from reference $testdir/$extcode/jdos.$ext"   $dostol pass 4 jdos.$ext $testdir/$extcode/jdos.$ext $nl
+chk5ckr:
+zcmpmfiles_res_tol chk5cks "Max deviation in ($nl lines) optni.$ext from reference $testdir/$extcode/optni.$ext"   $dostol pass 4 optni.$ext $testdir/$extcode/optni.$ext $nl
+chk5cks:
+zcmpmfiles_res_tol chk5ckt "Max deviation in ($nl lines) opt.$ext from reference $testdir/$extcode/opt.$ext"   $dostol pass 4 opt.$ext $testdir/$extcode/opt.$ext $nl
+chk5ckt:
+zcmpmfiles_res_tol chk5cku "Max deviation in ($nl lines) opt-lmf.$ext from reference $testdir/$extcode/opt-lmf.$ext"   $dostol pass 4 opt-lmf.$ext $testdir/$extcode/opt-lmf.$ext $nl
+chk5cku:
+
+
+chk5ce:
+if ($?clean) goto chk5e
+if ($?pass) then
+    echo "$space test 5 PASSED ($ext)"
+else
+    echo "$space test 5 FAILED ($ext)"
+    set failed = ($failed 5)
+endif
+
+chk5e:
+
+echo $joblist | grep 6 >/dev/null
+if ($status) goto chk6e
+set jobid = 6
+cat <<EOF
+
+         --- Test 6.  Check of GW suite, response functions ---
+         This test requires that shell script lmgw and dependencies be in your path.
+
+EOF
+
+if ($ext == "lif") then
+  cat <<EOF
+         Test case lif starts from an already self-consistent QSGW potential
+         and calculates the macroscopic dielectric function with ladder diagrams.
+         Precede this test by running job 4 first.
+
+EOF
+  set lmgwargs6 = "--wt --code2 --chixNLF --ht -vnkgw=6"
+endif
+
+if ($ext == "zbmnas") then
+  cat <<EOF
+         Test case zbmnas tests transverse magnetic susceptibility for MnAs in the ZB structure.
+
+EOF
+  set lmgwargs6 = "--wt --code2 --chixNLF --ht -vnkgw=6"
+endif
+
+if ($ext == "nio") then
+  cat <<EOF
+         Test case nio tests calculation of dielectric function for NiO.
+         Also tests GWinput tags 'KeepEigen  off' and 'KeepPPOVL  off'
+
+EOF
+if (! $?quiet) then
+  cat <<EOF
+
+         This test separately calculates EPS w/out local fields, generating file EPS0001.nlfc.dat.
+         EPS0001.nlfc.dat is also generated as a secondary byproduct of the full susceptibility;
+         it is nearly identical to that calculated only without local fields.
+         Neglect of local fields runs much faster.
+
+         To test a staggered k-mesh invoke test.gwd with --offbz
+
+         To compare to lmf optics invoke test.gwd with --withlmfoptics
+
+EOF
+endif
+  set lmgwargs6 = "--wt --eps --ht"
+  set lmgwargs6l = "--wt --start=setup --epsNLF --ht"
+  set refchi = $testdir/$ext/EPS0001.dat
+endif
+
+set pass; set refchi
+set fext = .dat
+if ($?timereversaloff) set fext = .NoTimeReversal$fext
+if ($?offbz) set fext = .offbz$fext
+if ($?eibzmodeoff) set fext = .NoEIBZmode$fext
+if ($ext == "zbmnas") then
+  set refchi=$testdir/$ext/ChiPM0001.nlfc.mat
+  if ($?offbz) set refchi=$testdir/$ext/ChiPM0001.nlfc.offbz.mat
+else if ($ext == "nio") then
+  if (! $?haveout) then
+    rm -f EPS0001.dat EPS0001.nlfc.dat
+  endif
+  set refchi=$testdir/$ext/EPS0001$fext
+  set refchiNLF=$testdir/$ext/EPS0001$fext:r.nlfc.dat
+else if ($ext == "lif") then
+  set lmgwargs6
+  set refchi=$testdir/$ext/eps_BSE.out
+# lmgw cannot be run in mpi mode for now ... lmf optics cannot read MPI evecs.  openmp ok, though.
+  if ($?mpi) then
+    switch ($mpi)
+      case "--openmp":
+        set openmp = 2
+        breaksw
+
+      case "--openmp*":
+        set openmp = `echo $mpi | sed s/--openmp=//`
+  #     check to ensure argument is a valid integer
+        @ openmp = $openmp
+        breaksw
+
+      case "--mpi*":
+       set narg = `echo $mpi | sed s/--mpi=// | awk '{print split($0, a, "," )}'`
+       if ($narg < 1 || $narg > 2) then
+         echo 'test.gwd (abort): bad argument list to mpi=..'
+         exit -1
+       endif
+  #    extract openmp from argument
+       if ($narg > 1) then
+         set openmp = `echo $mpi | sed s/--mpi=// | awk '{split($0, a, "," ); print a[2]}'`
+  #      check to ensure argument is a valid integer
+         @ openmp = $openmp
+       endif
+       breaksw
+    endsw
+    set openmp = --openmp=$openmp
+  else
+    set openmp
+  endif
+endif
+# goto chk6bbx
+if (! $?lmgwargs6) echo "$space no test set up for job $ext ... skipping this test"
+if (! -e $refchi) then
+  echo "$space no file $refchi ... skipping this test"
+  goto chk6ce
+endif
+query chk61 chk6e 'run this test'
+chk61:
+if ($?clean) then
+  if ($?rmlst6) then
+    echo "$space rm -f -r $rmlst6"
+                 rm -f -r $rmlst6
+   goto chk6e
+  endif
+endif
+# ... Look for executables
+findcmd chk61a lmgwsc "$path" "optional"
+chk61a:
+findcmd chk61b lmgw "$path" "optional"
+chk61b:
+
+if ($ext == "lif") goto chk61b0
+
+# echo ' PATCH '; goto chk6ba
+if ($?haveout) goto chk6bbx
+
+echo "$space rm -f {ctrl,wkp,mixm,rst,save,log,hssn,sigm,erange,site}.$ext switches-for-lm QPU sigm mixsigma specialspec1 specialspecc TOTE2.UP mpiqlst"
+             rm -f {ctrl,wkp,mixm,rst,save,log,hssn,sigm,erange,site}.$ext switches-for-lm QPU sigm mixsigma specialspec1 specialspecc TOTE2.UP mpiqlst
+
+if (-d 0run) then
+echo "$space rm -r *run"
+             rm -r *run
+endif
+echo "$space cp `echo $cplst | sed s/GWinput/GWinput.chi/` ."
+             cp `echo $cplst | sed s/GWinput/GWinput.chi/` .
+echo "$space mv GWinput.chi GWinput"
+             mv GWinput.chi GWinput
+if ($ext == "fe" || $ext == "zbmnas" || $ext == "nio") then
+echo "$space mv sigm.in sigm"
+             mv sigm.in sigm
+echo "$space ln -s sigm sigm.$ext"
+             ln -s sigm sigm.$ext
+endif
+
+chk61b0:
+
+
+if ($?eibzmodeoff) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'EIBZmode off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+endif
+if ($?offbz) then
+  echo -n "         Insert line in GWinput : "
+  cp GWinput GWinput~
+  echo 'Chi_RegQbz off' > GWinput
+  cat GWinput
+  cat GWinput~ >> GWinput
+endif
+
+if ($?mpi) then
+  set mpix = "$mpi"
+else
+  set mpix
+endif
+
+set code2 = "--code0"; set lmgwargs
+if ($?gwcode2) set code2 = "--code2"
+
+if ($ext == "lif") then
+if (! $?haveout) then
+  echo "$space invoking" $lmgw $openmp --start=bse --wt --bse="-vmet=3 -vloptic=1 -vmefac=2" lif '> out.lmgw'
+  $lmgw $openmp --start=bse --wt --bse="-vmet=3 -vloptic=1 -vmefac=2" lif > out.lmgw
+  set retval = $status
+  if ($retval != 0) then
+    echo "$space $lmgw exited with code"  $retval "... aborting"
+    unset pass
+    goto chk6ce
+  endif
+  echo "$space $lmgw exited normally."
+endif
+
+if (! -e $refchi) then
+  echo "$space oops! no file $refchi ... something is wrong ... no checks made"
+  unset pass
+  goto chk6ce
+endif
+
+set opttol = 1e-5
+# zcmpmc chk5cki "Max deviation in $refchi:t from reference $refchi"   $opttol pass 4 $refchi:t $refchi 
+zcmpmcx chk6b1 "" 1e-4 20 $opttol pass $refchi:t $refchi 
+chk6b1:
+goto chk6ce
+
+endif # lif
+
+runjob chk6ba out.lmgw "$lmgw $lmgwargs6 $code2 $mpix $ext"
+chk6ba:
+echo "$space $lmgw exited normally."
+
+if (! -e $refchi) then
+  echo "$space oops! no file $refchi ... something is wrong ... no checks made"
+  unset pass
+  goto chk6ce
+endif
+
+if ($?refchiNLF) then
+echo "$space Repeat calculation without local fields ..."
+runjob chk6bb1 '>>'out.lmgw "$lmgw $lmgwargs6l $code2 $mpix $ext"
+chk6bb1:
+echo "$space $lmgw exited normally."
+endif
+
+if ($?lmfoptics) then
+echo "$space Optics calculation with lmf, mefac=2..."
+runjob chk6bb2 '>>'out.lmf "lmf -vloptic=1 -vmefac=2 -vmetal=3 --no-iactiv `cat switches-for-lm` nio --quit=band"
+chk6bb2:
+echo "$space lmf exited normally"
+echo "$space cp opt.$ext opt.mefac2.$ext"
+             cp opt.$ext opt.mefac2.$ext
+runjob chk6bb3 '>>'out.lmf "lmf -vloptic=1 -vmefac=1 -vmetal=3 --no-iactiv `cat switches-for-lm` nio --quit=band"
+chk6bb3:
+echo "$space lmf exited normally"
+endif
+
+chk6bbx:
+# set run = run
+echo "$space ... checking against reference files in $testdir/$ext"
+
+set reffiles =  `echo $refchi | sed s/0001/\*/`
+if ($ext == "nio") then
+  if (EPS0001.dat !~ EPS0001$fext) then
+  echo "$space mv EPS0001.dat EPS0001$fext"
+               mv EPS0001.dat EPS0001$fext
+  echo "$space mv EPS0001.nlfc.dat EPS0001$fext:r.nlfc.dat"
+               mv EPS0001.nlfc.dat EPS0001$fext:r.nlfc.dat
+  endif
+  set reffiles =  ($refchi $refchiNLF)
+  if ($?lmfoptics) set reffiles =  ($refchi $refchiNLF $testdir/$ext/opt.$ext)
+  if ($?lmfoptics && -e opt.mefac2.$ext ) set reffiles =  ($refchi $refchiNLF $testdir/$ext/opt.mefac2.$ext $testdir/$ext/opt.$ext)
+
+endif
+echo "$space checking $#reffiles files related to $refchi"
+
+# if ($ext == "fe") set k = 1
+chk6bb:
+  set refchi = $reffiles[1]; shift reffiles
+  if (! -e $refchi:t) then
+    echo "$space no file $refchi:t ... skipping"
+    goto chk6ck1
+  endif
+  set i = 7
+  if (! $?chitol) set chitol = 1e-6
+  zcmpmfiles_res_0 chk6ck1 "Max deviation in $refchi:t from reference $refchi" $chitol pass $i $refchi:t $refchi
+  chk6ck1:
+if ($#reffiles > 0) goto chk6bb
+
+chk6ce:
+if ($?clean) goto chk6e
+if ($?pass) then
+    echo "$space test 6 PASSED ($ext)"
+else
+    echo "$space test 6 FAILED ($ext)"
+    set failed = ($failed 6)
+endif
+
+chk6e:
+
+echo $joblist | grep 7 >/dev/null
+if ($status) goto chk7e
+set jobid = 7
+cat <<EOF
+
+         --- Test 7.  Miscellaneous check of the GW suite ---
+
+EOF
+
+if ($ext == "coo2") then
+cat <<EOF
+         Test case coo2 tests the radial product basis maker 
+         and computes matrix elements of the Hartree potential.
+         It should be run after coo2 test 4.
+
+EOF
+  set lmgwargs7 = '--pr55,30 -vsig=0 --job=1'
+  set rmlst7 = (out.tprodbas2 out.tprodbas4)
+  set ext = coo2
+endif
+if ($ext == "cr3si6") then
+cat <<EOF
+         Test case cr3si6 tests the full product basis maker .
+
+EOF
+  set lmgwargs7 = '--job=1 --gwcode=2 --no-iactive -vnit=100'
+  set ext = cr3si6
+  set rmlst7 = ({ctrl,rst,mixm,sigm,basp,site}.$ext out.lmgwsc GWinput GWinput.gw out.tprodbas4)
+  set cplst7 = ($cplst)
+endif
+
+set pass
+if (! $?lmgwargs7) echo "$space no test set up for job $ext ... skipping this test"
+
+if ($?clean) then
+  if ($?rmlst7) then
+    echo "$space rm -f -r $rmlst7"
+                 rm -f -r $rmlst7
+   goto chk7e
+  endif
+endif
+
+if ($?cplst7) then
+  if ($?rmlst7) then
+    echo "$space rm -f -r $rmlst7"
+                 rm -f -r $rmlst7
+  endif
+  echo "$space cp `echo $cplst | sed s/GWinput/GWinput.gw/` ."
+               cp `echo $cplst | sed s/GWinput/GWinput.gw/` .
+  echo "$space mv GWinput.gw GWinput"
+               mv GWinput.gw GWinput
+endif
+
+if (! -e ctrl.$ext) then
+  echo "$space no file ctrl.$ext ... skipping this test"
+  goto chk7ce
+endif
+query chk71 chk7e 'run this test'
+chk71:
+
+# ... Look for executables
+findcmd chk71a lmfgwd "$path" "optional"
+chk71a:
+
+if ($ext == "coo2") then
+  if ($?haveout) goto chk71c
+  runjob chk71b out.testprod4 "$lmfgwd --tprodbas:wvcoud:mode=34 $lmgwargs7 `cat switches-for-lm` $ext"
+  chk71b:
+  echo "$space $lmfgwd exited normally."
+  set i = 6  tol = 1e-6 exclude = 'CPU|written|LMFGWD'
+# call zcmpnfiles chk71ba "$i out.testprod4 $testdir/$extcode/out.testprod4"
+# zcmpmfiles_res_mc chk71ba "Max deviation in out.testprod4 from ref $testdir/$extcode/out.testprod4" $tol pass $i out.testprod4 $testdir/$extcode/out.testprod4 0 1
+  zcmpmfiles_res_mc chk71ba "Max deviation in out.testprod4 from ref $testdir/$extcode/out.testprod4" $tol pass $i out.testprod4 $testdir/$extcode/out.testprod4 0 0
+  chk71ba:
+  unset exclude
+
+  runjob chk71c out.testprod2 "$lmfgwd --tprodbas:mode=32 $lmgwargs7 `cat switches-for-lm` $ext"
+  chk71c:
+  echo "$space $lmfgwd exited normally."
+  set i = 6  tol = 1e-6 exclude = 'CPU|written|LMFGWD'
+# zcmpmfiles_res_mc chk71ca "Max deviation in out.testprod2 from ref $testdir/$extcode/out.testprod2" $tol pass $i out.testprod2 $testdir/$extcode/out.testprod2 0 1
+  zcmpmfiles_res_mc chk71ca "Max deviation in out.testprod2 from ref $testdir/$extcode/out.testprod2" $tol pass $i out.testprod2 $testdir/$extcode/out.testprod2 0 0
+  chk71ca:
+  unset exclude
+  goto chk7ce
+endif
+
+if ($ext == "cr3si6") then
+  if (! $?mpi) set mpi
+  rm -f switches-for-lm; touch switches-for-lm
+  if ($?haveout) goto chk72b
+  runjob chk72b0 out.lmgwsc "lmgwsc $mpi --stop=setup --wt --code2 --maxit=0 --wt --tol=2e-5 -vnit=100 --sym $ext"
+  chk72b0:  
+  runjob chk72b out.testprod4 "$lmfgwd --tprodbas:wvcoud:mode=134 --checkrpb $lmgwargs7 `cat switches-for-lm` $ext"
+  chk72b:
+  echo "$space $lmfgwd exited normally."
+  set i = 6  tol = 1e-6 exclude = 'CPU|written|LMFGWD'
+  zcmpmfiles_res_mc chk72ba "Max deviation in out.testprod4 from ref $testdir/$extcode/out.testprod4" $tol pass $i out.testprod4 $testdir/$extcode/out.testprod4 0 0
+  chk72ba:
+  unset exclude
+
+  goto chk7ce
+endif
+
+chk7ce:
+if ($?clean) goto chk7e
+if ($?pass) then
+    echo "$space test 7 PASSED ($ext)"
+else
+    echo "$space test 7 FAILED ($ext)"
+    set failed = ($failed 7)
+endif
+
+chk7e:
+
+# --- Summary ---
+echo ' '
+if ($?clean) exit 0
+if ($#failed <= 1) then
+    echo "$space all tests PASSED ($ext)"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED ($ext):" $failed
+    echo " "
+    exit -1
+endif
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+    if ($retval != 0) goto cleanup
+    goto $quitjob
+  endif
+
+  if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+    set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+    echo "$space $callarg  >> $appfile"
+    $callarg >> $appfile
+    set retval = $status
+  else
+    echo "$space $callarg  > $outfile"
+    $callarg > $outfile
+    set retval = $status
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- compare_res --------------
+# Extracts one element of a line containing a keyword
+# usage: compare_res retcall testvar refvar keyword arg_number occur_number sed_strn
+#   Variables testout and refout referring to file names must be set ($refout is gzipped file)
+#   keyword      : string line must contain
+#   testvar      : put result from file $testout into this variable
+#   refvar       : put result from file $refout (compressed) into this variable
+#   arg_number   : extracts $arg_number'th entry in line, as defined by awk
+#   occur_number : argument from $occur_number'th line; if zero, use last line
+#   sed_strn     : delete this string with from result before assigning
+# Example : compare_res chk12 efa erfa "etot=" 2 0 etot=
+exit
+compare_res:
+  set quitjob=$retcall
+#  echo $retcall $testvar $refvar $keyword $arg_number $occur_number $sed_strn
+  set $testvar = `grep "$keyword" $testout | awk -v ncnt=0 -v num=$arg_number -v count=$occur_number '{ncnt+=1; if (ncnt==count || count == 0) {print $num}}' | sed "s/$sed_strn//" | tail -1`
+  set $refvar = `zcat $refout | grep "$keyword" | awk -v ncnt=0 -v num=$arg_number -v count=$occur_number '{ncnt+=1; if (ncnt==count || count == 0) {print $num}}' | sed "s/$sed_strn//" | tail -1`
+  goto $quitjob
+
+# ---------------- runrdcmd --------------
+exit
+runrdcmd:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    $rdcmd -f:$rdcmdfmt $callarg
+    set retval = $status
+    echo ' '
+    if ($retval == 0) then
+      echo "$space Job(s) completed successfully"
+      goto $quitjob
+    endif
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      exit
+#      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space ... the following job(s) will be executed by invoking "\""rdcmd $callarg"\" "(> $outfile)"
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      echo "$space ... starting invocation of rdcmd:"
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg  >& $outfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >& $outfile
+      set retval = $status
+    endif
+  endif
+
+  if ($retval == 0) then
+    echo "$space Job(s) completed successfully; output in $outfile"
+    if ($?poszer) then
+      echo -n "         ..." ; $poszer $outfile
+    else if ($?add0) then
+      echo -n "         ..." ; $add0 $outfile
+    endif
+    goto $quitjob
+  else
+    echo "$space ...oops... the following command returned with nonzero exit status:"
+    echo -n "$space   "
+    grep $rdcmd:t{:} $outfile | tail -1 | sed 's/rdcmd:  //'
+    goto cleanup
+  endif
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space job returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting, test $ext job $jobid FAILED ($ext)"
+  exit $retval
+
+# ---------------- diffiles --------------
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = "$callarg"
+  query diff11 $quitjob "compare $files"
+diff11:
+  diff $files | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- zdiffiles --------------
+# File differences, with additional check for numerical differences
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+# Example: call zdiffiles chk69 "CPU 3 $testout $refout"
+exit
+zdiffiles:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffiles2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiff1 $quitjob "compare $files[1] $files[2]"
+zdiff1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffiles2:
+  if (! $?mcx) goto $quitjob
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+#  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiff2  $quitjob "show comparison"
+zdiff2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zdiffilesx --------------
+# Identical to zdiffiles, but gmaxdif is accumulated
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+exit
+zdiffilesx:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffilesx2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiffx1 $quitjob "compare $files[1] $files[2]"
+zdiffx1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffilesx2:
+  if (! $?mcx) goto $quitjob
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+  if (! $?gmaxdif) set gmaxdif = 0
+  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiffx2  $quitjob "show comparison"
+zdiffx2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zcmpmc --------------
+# Compares two files readable with numerical data only by mcx (see also zcmpmfiles_res_mc)
+# Checks for max absolute difference and unsets $passvar if difference<$tol
+# usage: zcmpmc retcall keyword testvar tol passvar ndig srcfile reffile
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if |testvar|<tol
+#   ndig         : number of digits numbers in file are stripped to (not used now)
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+# variable $mcx must point to the mcx calculator
+# Example:
+# zcmpmc chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext.gz
+exit
+zcmpmc:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile
+
+  unset retval
+  cmp $srcfile $reffile > /dev/null
+  set retval = $status
+
+# Could set px:ndig here ...
+  if ($retval != "0") then
+   if (`$mcx $srcfile $reffile -- -px:12 -abs -max:g | wc | awk '{print $1}'` == 3) set retval = 0
+  endif
+  if ($retval != "0") then
+    set retval = `$mcx $srcfile $reffile -- -px:12 -abs -max:g | tail -1 | awk '{print $3}' | $mcx -f1pg12.3 . | tail -1`
+  endif
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpmcx --------------
+# Compares numerical elements in two files read by mcx -cmpf
+# Checks for max absolute difference and unsets $passvar if
+# (1) difference>$toldif
+# (2) fewer ndiff differences encountered
+# usage: zcmpmcx retcall keyword testvar toldif ndiff prec passvar srcfile reffile
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout).
+#   toldif       : tolerance in maximum allowed deviation.  toldif<0 not used
+#   ndiff        : number of differences allowed.  ndiff<0 not used
+#   prec         : precision with with numbers are compared
+#   passvar      : if $passvar is null, check prints out keyword
+#                : otherwise, check prints out keyword only, if it is not blank
+#                : and varable $passvar is unset if criteria (1) and (2) are not met
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+# variable $mcx must point to the mcx calculator
+# Returns maxdif = max abs diff  and ndif = number of differences > prec
+# Returns retval = 0 if both criteria satisfied, retval > 0 if one is not satisfied
+#
+# Case passvar is "null", what is printed out:
+# If keyword is empty zcmpmcx is silent.  Example:
+#   zcmpmcx chk266 "" -1e-1 20 1e-4 null dos-mull.$ext $testdir/dos-mull.$ext
+# If keyword is not empty and passvar is null, zcmpmcx prints out keyword only.
+#   zcmpmcx chk266 "" -1e-1 20 1e-4 null dos-mull.$ext $testdir/dos-mull.$ext
+#
+# Case passvar is not null, $passvar may be unset.  zcmpmcx prints out an internal string
+# If keyword is empty it zcmpmcx makes its own header, "check $srcfile".  Example
+#   zcmpmcx chk266a "" -1 40 1e-4 pass dos-mull.$ext $testdir/dos-mull.$ext
+# Prints out something like:
+#   check dos-mull.gdn : ndiff (33) within tol (40)? ... yes
+# Otherwise zcmpmcx uses keyword for the header.  Example:
+#   zcmpmcx chk266a "... checking" -1 40 1e-4 pass dos-mull.$ext $testdir/dos-mull.$ext
+#   prints out something like
+#   ... checking ndiff (33) within tol (40)? ... yes
+exit
+zcmpmcx:
+  set quitjobl=$retcall
+# echo $retcall $keyword $toldif $ndiff $prec $passvar $srcfile $reffile
+
+  if (! $?mcx) then
+    echo "no mcx in path ... no check made"
+    goto $retcall
+  endif
+
+  set retval = 0
+
+  set mcxarg = "-cmpf~fn1=$srcfile~fn2=$reffile"
+  if (! $?mcincl) set mcincl
+  if (! $?mcexcl) set mcexcl
+  if (! $?mcterm) set mcterm
+  set mcxarg = "$mcxarg$mcexcl$mcincl$mcterm"
+  if ($?prec) then
+    set mcxarg = "$mcxarg~tol=$prec"
+  endif
+
+  # echo trying "$mcx $mcxarg~max"
+
+  set maxdif = `$mcx $mcxarg~max`
+  set ndif   = `$mcx $mcxarg~ndiff`
+
+  if ("$keyword" != "") then
+    echo -n "$space $keyword"
+  endif
+
+  set res = "yes"
+  if ($ndiff > 0 && `echo $toldif | awk '{print  ($1 > 0)}'`) then
+     if (`echo $maxdif $toldif | awk '{print  ($1 <= $2)}'` == 0) set res = "no"
+     if ($res == "no") set retval = 1
+     if ($passvar != "null") then
+       if ("$keyword" == "") then
+         echo -n "$space check $srcfile : "
+       endif
+       echo -n " max deviation ($maxdif) within tol ($toldif)? ..." $res";"
+     endif
+     set res = "yes"
+     if ($ndif >= $ndiff) set res = "no"
+     if ($passvar != "null") then
+       echo "  ndiff ($ndif) exceeding $prec fewer than ($ndiff)? ..." $res
+     endif
+     if ($res == "no") set retval = 1
+  else if (`echo $toldif | awk '{print  ($1 > 0)}'`) then
+     if (`echo $maxdif $toldif | awk '{print  ($1 <= $2)}'` == 0) set res = "no"
+     if ($passvar != "null") then
+       if ("$keyword" == "") then
+         echo -n "$space check $srcfile : "
+       endif
+       echo " max deviation ($maxdif) within tol ($toldif)? ..." $res
+     endif
+     if ($res == "no") set retval = 1
+  else if ($ndiff > 0) then
+     if ($ndif >= $ndiff) set res = "no"
+     if ($res == "no") set retval = 1
+     if ($passvar != "null") then
+       if ("$keyword" == "") then
+         echo -n "$space check $srcfile : "
+       endif
+       if ($?prec) then
+         echo " ($ndif) differences with ref exceed $prec ... fewer than $ndiff ? ..." $res
+       else
+         echo " ndiff ($ndif) within tol ($ndiff)? ..." $res
+       endif
+     endif
+#  else  No checks made
+
+  endif
+
+  if ($passvar != "null") then
+    if ($retval > 0) unset $passvar
+  endif
+  goto $retcall
+
+# ---------------- zcmpmfiles_res_0 --------------
+# Compares two files, stripping all but numerical fields.
+# Checks for max absolute difference and unsets $passvar if difference<$tol
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# usage: zcmpmfiles_res_0 retcall keyword testvar tol passvar ndig srcfile reffile
+# See also zcmpmfiles_res_tol, which accomplished the same thing but with extra argument nlines
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if |testvar|<tol
+#   ndig         : number of digits numbers in file are stripped to
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+# Note:
+# If use_mc is set, this script uses mcx -cmpf~max to evaluate the max difference
+# Example:
+# zcmpmfiles_res_0 chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext.gz
+exit
+zcmpmfiles_res_0:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile
+
+  unset retval
+
+  if ($?use_mc) then
+    # set retval = `$mcx -cmpf~fn1=$srcfile~fn2=$reffile~tol=1d-$ndig~max`
+    set retval = `$mcx -cmpf~fn1=$srcfile~fn2=$reffile~tol=1d-15~max`
+    goto zcmpmfilesx
+  endif
+
+  call zcmpmfiles zcmpmfilesx "$ndig $srcfile $reffile"
+zcmpmfilesx:
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpmfiles_res_mc --------------
+# Compares numerical arguments in two files, using mcx -cmpf
+# If mcx is not installed, calls zcmpnfiles_res_tol with the same arguments but the last
+# usage: zcmpnfiles_res_mc retcall keyword tol passvar ndig srcfile reffile nlines count
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if numerical value of word > tol, count occurences
+#   ndig         : number of digits numbers in file are stripped to
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+#   nlines       : number of lines to compare. Use 0 to include all lines.
+#   count        : maximum number of deviations to permit before unsetting passvar.
+#
+# Checks for max absolute difference and unsets $passvar if difference<$tol fewer than count times
+# If variable exclude is set, it is used as a regular expression to exclude lines containing it
+# Example:
+# zcmpmfiles_res_mc chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext.gz 0 1
+exit
+zcmpmfiles_res_mc:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile $nlines $count
+
+  if (! $?mcx) then
+    echo "$space OOPS! missing mcx calculator ... skipping test $keyword"
+    goto $quitjobl
+  endif
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+
+  if ($?exclude) then
+    cat   $srcfile | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" > $fn1
+    cat   $reffile | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" > $fn2
+  else
+    cat   $srcfile | sed 's:\([1-9]\)-:\1 -:g' > $fn1
+    cat   $reffile | sed 's:\([1-9]\)-:\1 -:g' > $fn2
+  endif
+
+  set nl
+  if ($nlines != 0) set nl = "~ln=$nlines"
+# echo $mcx -cmpf$nl~fn1=$fn1~fn2=$fn2~tol=1d-$ndig~max~verb
+  set retval = `$mcx -cmpf$nl~fn1=$fn1~fn2=$fn2~tol=1d-15~max`
+# echo retval $retval
+  set ndiff = `$mcx -cmpf$nl~fn1=$fn1~fn2=$fn2~tol=1d-$ndig~ndiff`
+# echo ndiff $ndiff
+# echo $count
+
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{print ($1 <= tol)}'`) then
+    echo yes
+  else if ($count > 0) then
+    echo -n "no ... fewer than $count occurences? ..."
+    if (`echo $ndiff 0 | awk -v count=$count '{print ($1 <= count)}'`) then
+      echo yes
+    else
+      echo no
+      unset $passvar
+    endif
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpmfiles_res_tol --------------
+# Compares two files, stripping all but numerical fields.
+# Note: zcmpmfiles_res_mc is more effective if you have mcx installed
+# Checks for max absolute difference and unsets $passvar if difference<$tol
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# usage: zcmpnfiles_res_tol retcall keyword testvar tol passvar ndig srcfile reffile nlines
+# See also zcmpmfiles_res_0, which accomplished the same thing but without nlines
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if |testvar|<tol
+#   nlines=#     : (optional)
+#   ndig         : number of digits numbers in file are stripped to
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+#   nlines       : number of lines to compare. Use 0 for all lines.  Inoperative if either file is a zipped file.
+# Example:
+# zcmpmfiles_res_tol chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext.gz 0
+exit
+zcmpmfiles_res_tol:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile $nlines
+
+  unset retval
+  if ($nlines == 0) then
+    call zcmpmfiles zcmpmfilesx "$ndig $srcfile $reffile"
+  else
+    call zcmpmfiles zcmpmfilesx "nlines=$nlines $ndig $srcfile $reffile"
+  endif
+zcmpmfilesx:
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: n test-file reference-file
+# |n| = number of digits which numbers are truncated to.
+# If n<0, sort files before comparing them
+# Alternatively call arguments can contain 4 strings : nlines=# n test-file reference-file
+# nlines=# specifies that the check is made on the first # lines only
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# (nlines doesn't work with gzipped files; sorry)
+# Returns with retval = number of differences in reduced files.
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+
+  set nlines ; unset nlines
+  switch ($zcmpnargs[1])
+    case "nlines=*":
+      set nlines = `echo $zcmpnargs[1] | sed s/nlines=//`
+      @ nlines = $nlines  # Checks to make sure this is an integer
+      shift zcmpnargs
+
+    default:
+  endsw
+
+  set lsort; unset lsort
+  @ digits = $zcmpnargs[1]
+  if ($digits < 0) then
+    @ digits = - $digits
+    set lsort
+  endif
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+# set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; print "" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+    if ($?nlines) then
+      set cat1 = "head -$nlines"
+    endif
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+    if ($?nlines) then
+      set cat2 = "head -$nlines"
+    endif
+  endif
+
+  # if (! $?quiet) then
+  #   if ($?lsort) then
+  #   if ($?exclude) then
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn2
+  #   else
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn2
+  #   endif
+  #   else
+  #   if ($?exclude) then
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn2
+  #   else
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn2
+  #   endif
+  #   endif
+  # endif
+
+  if ($?lsort) then
+
+    if ($?exclude) then
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+    else
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+    endif
+  else
+
+    if ($?exclude) then
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+    else
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+    endif
+  endif
+
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  set nwordfile = `wc $fn1 | awk '{print $2}'`
+  set nlinefile = `wc $fn1 | awk '{print $1}'`
+
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) then
+    rm -f $fn1 $fn2
+    goto $quitjob
+  endif
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- zcmpmfiles --------------
+# Compares two files, treating each field as a number.
+# Call arguments should contain 3 strings: no-digits test-file reference-file
+# Alternatively call arguments can contain 4 strings : nlines=# n test-file reference-file
+# nlines=# specifies that the check is made on the first # lines only
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = max numerical difference
+# Example :  call zcmpmfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpmfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+
+  set nlines ; unset nlines
+  switch ($zcmpnargs[1])
+    case "nlines=*":
+      set nlines = `echo $zcmpnargs[1] | sed s/nlines=//`
+      @ nlines = $nlines  # Checks to make sure this is an integer
+      shift zcmpnargs
+
+    default:
+  endsw
+
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+    if ($?nlines) then
+      set cat1 = "head -$nlines"
+    endif
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+    if ($?nlines) then
+      set cat2 = "head -$nlines"
+    endif
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+
+# wc $fn1 $fn2
+
+  set retval = `diff -y --width=300 $fn1 $fn2 | grep '|' | awk -v top=0 '{n=split($0,a,"|"); n1=split(a[1],b1); n2=split(a[2],b2); { j=0; while (j++ < n1) if (j <= n1 && j<=n2) {x = (b1[j]-b2[j])>0?(b1[j]-b2[j]):(b2[j]-b1[j]); top = (top-x)>0?top:x; }}} END {printf "%12.4e\n", top}'`
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg to line(s) in file $refout":
+  grep "$callarg" $testout
+  if (`cat $testout | grep "$callarg" | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep "$callarg"
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+
+# echo make_path $make_path
+
+if ($found == 'no' && $make_path != "optional") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    if ("$retcall" == "$retcall2") then
+    echo "$space"'*'"hit <return> to $callarg"
+    else
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    endif
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+# ---------------- List tests --------------
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] name [job]
+
+   name    tests
+    ... the following apply to job 1: mainly they test the GW driver lmfgwd
+    si        tests lmf and driver lmfgwd for a simple case
+              Also runs optics using lmf (no local fields)
+              On completion, the script suggests tests illustrating other features
+    mno       tests lmfgwd for MnO, an antiferromagnetic insulator
+    gas       tests lmfgwd for GaAs, with low-lying local orbitals
+    cu        tests lmfgwd for Cu, a metal, including the Cu 4d state as a local orbital
+
+    na        another test with local orbitals
+
+    ... The following apply to jobs 2,3,4.  These tests require that the GW package be installed
+    si2       tests operation of GW code for an insulator, (jobs 2 and 4)
+    fe        tests 1-shot and 1 iteration of QSGW for a metal (jobs 2, 4, 5)
+    coo2      0th iteration of QSGW for a difficult material (jobs 2, 4, 7 --code2 only)
+              Job 7 tests matrix elements of Hartree potential
+    six       tests operation of GW code for an insulator with floating orbitals
+    jell      tests operation of GW code for jellium at Na lattice constant with 1 electron
+    cr3si6    0th iteration of QSGW for a material with many equivalent atoms (jobs 4,7 --code2 only)
+              Job 7 tests product basis maker
+    lif       Job 4 makes QSGW calculation for LiF
+
+
+    ... The following applies to job6.  Requires that the GW package be installed
+    nio       dielectric function.  Also can compare to epsilon(omega) to lmf optics calculation (--withlmfoptics)
+    zbmnas    transverse spin susceptibility (no local fields)
+    lif       dielectric function with BSE.  Run after job 4 completes without modifying directory.
+
+  jobs:  1: tests driver lmfgwd (main function of this script)
+         2: one-shot calculations
+         3: RPA total energy (not working)
+         4: QSGW calculation
+         5: tests generation of the energy-dependent self-energy
+            Job 4 must be completed before running this test
+         6: tests susceptibility
+         7: Miscellaneous checks of the GW suite, e.g. tests product basis maker (coo2)
+EOF
+exit
+
+# ---------------- usage: --------------
+usage:
+cat <<EOF
+ usage: test.gwd [switches] [file-extension|--all] [testcase-list]
+        e.g., "test.gwd mno 1"
+        If file-extension is missing, test.gwd uses si
+        Switches:
+        --list       lists the tests you can run
+        --quiet      runs tests with minimal output and without prompting user
+        --no-iactive runs tests without prompting user
+        --code2      Test GW driver, Sep12 version (gwcode=2)
+        --all        run through a default list of test cases
+        --noplot     skip any steps that generate a plot'
+        --clean      clean up files generated by this script
+        --GWversion# Set GWversion to # in GWinput
+        --timereversaloff  Turn off time reversal symmetry
+        --eibzmodeoff      Turn off symmetrization in the inner k loop
+        --so2|so3    Add SO coupling, LzSz or LzSz + L+S- perturbatively (Fe only)
+        --add0       add suppressed or leading zeros in output for real numbers \`.nnn'
+        --poszer     strips (-) sign from numbers represented as 0
+	--openmp=#   Run open-MP versions of certain executables
+        --whichexec  prints out which lmfgwd executable it finds in path and exits
+	--mpi=#1,#2  Run MPIK for lmf,lmfgwd #1 processors, open-MP for certain executables with #2 processors
+	--withlmfoptics Compares optics to lmf optics (Only for NiO so far)
+
+
+EOF
+exit -1

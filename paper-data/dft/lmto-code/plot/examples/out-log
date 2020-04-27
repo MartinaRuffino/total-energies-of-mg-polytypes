@@ -1,0 +1,14 @@
+ fplot: ------ starting new frame ------
+ pltsts:  set  logx=F  logy=F
+ pltstp:  frame corners (GU): lb = (0 0)  rt = (1 1)
+ expand:  8 points generated
+ fplot file "-tp"  pass 1
+ mapdat: 4 points
+ fplot: set line type 2
+ expand:  8 points generated
+ fplot file "-tp"  pass 2
+ mapdat: 4 points
+ FRME : axes at x=-5.1e-6 -9e-7  y=-1.15e-6 5.15e-6  bold=3  fill cs=103 col=1,1,1
+ xt1=-5e-6 tsx=5e-7 mtx=2 h=(.025,.015)  yt1=-1e-6 tsy=5e-7 mty=2 h=(.025,.015)
+ plcrv: new curve, 4 pts lt 2 bold 3 len=(14.4 3.6)
+ plsym: square  4 pts  gs=.3  attr= 1  x,y(1)=-1e-6 5e-7

@@ -1,0 +1,43 @@
+%const  nit=30 begmom=nit<=0
+HEADER  Fe 
+VERS    LMF-6.10 LMASA-6.10 LM:7 ASA:7
+IO      SHOW=F HELP=F VERBOS=31 WKP=F
+GF      MODE=1 GFOPTS=emom;p2;padtol=3e-6;shftef
+%const rel=1 gamma=t so=t twoc=t
+CONST   gmax=13 nmix=3 beta=0.5 conv=1d-4 convc=1d-4
+        a=2.87/0.529177 nk=16 Rf=0.99 R=Rf*sqrt(3)*a/4
+STRUC   NBAS=1 NSPEC=1 NL=5
+        ALAT=a PLAT= .5 .5 .5  .5 -.5 .5  .5 .5 -.5
+HAM     XCFUN=2 NSPIN=2 REL={rel} NONCOL=F SO={so} QASA=0
+% const sharm=1
+OPTIONS NSPIN=2 REL={rel} XCFUN=2 SO={so} SHARM=T NONCOL=F
+        ASA[ GAMMA={gamma} CCOR=f TWOC={twoc} ]
+	SHARM={sharm} 
+%ifdef sym
+SYMGRP  I R4Z # MX
+%endif
+SYMGRP  E
+SYMGRP  find
+BZ      NKABC=nk TETRA=1 METAL=1 EF0=0 DELEF=0.1 N=1 W=0.02
+        NPTS=1001 BZJOB=0 DOS=-1.2 0.5 SAVDOS=1 EFMAX=5 NEVMX=34
+% const ef=-0.1004143 idmod=0
+        EMESH=12 10 {ef-1.0} {ef} 0.5 0.0
+SPEC    SCLWSR=1 
+        ATOM=A Z=26 R=R IDMOD={idmod} {idmod} {idmod} 1 LMX=3 LMXA=3 # A=0.01
+        RSMH=R/2 R/2 R/2 R/2 EH=-0.1 -0.1 -0.1 -0.1
+        RSMH2=R/2 R/2 R/2 EH2=-1.1 -1.1 -1.1
+        Q=2 0 6 MMOM=0 0 2.2
+SITE    ATOM=A POS= 0 0 0
+EWALD   TOL=1D-8 NKDMX=1999 NKRMX=1999
+ITER    MIX=B3,k=8 NIT={abs(nit)} CONVC=3D-6 CONV=0
+START   CNTROL={nit<=0} BEGMOM={begmom}
+        ATOM=A        P=  4.6587823  4.3958692  3.8620460  4.1500000
+                          4.6657599  4.4180392  3.6635637  4.1500000
+                      Q=  0.3273289  0.0000000  0.0049938
+                          0.3657010  0.0000000  0.0047006
+                          4.3771267  0.0000000  0.0424420
+                          0.0482635 -0.0235307  0.0118327
+                          0.3366341  0.0000000  0.0046459
+                          0.4156554  0.0000000  0.0054235
+                          2.0977163  0.0000000  0.0091717
+                          0.0315747 -0.0137658  0.0061165

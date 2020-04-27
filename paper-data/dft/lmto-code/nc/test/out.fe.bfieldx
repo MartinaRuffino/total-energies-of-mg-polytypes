@@ -1,0 +1,112 @@
+         lm fe --no-iactiv -vfile=2 -vnk=8 -vnl=3 -vnc=1 -vbf=1 --quit=band
+ -----------------------  START LM -----------------------
+ HEADER Study of iron
+
+ LM:       nbas = 2  nspec = 1  vn 7.11.d  verb 31,20
+ special
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll, B-field
+ bz:       metal, tetra 
+ IOEULA:   reading l-independent Euler angles (file 15)
+
+ IOEXTF: reading euler file (16)
+
+ Automatic symmetry finder turned off.  Use: I*I
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 5.42  Cell vol = 159.220088
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42000   awald= 0.369
+         r1=  3.015   nkd= 123      q1=  3.598   nkg= 179
+
+ Generator 1 already in group as element 1
+ SGROUP: 1 symmetry operations from 1 generators
+ MKSYM:  found 1 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  1 species split into 2 classes
+ Species  Class      Sites...
+ FE       1:FE       1
+          2:FE2      2
+ BZMESH:  512 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 3072 inequivalent ones found
+
+ GETZV:  16 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ FE         0.000000   0.000000   0.000000   0.000000  -0.764631
+ FE2        0.000000   0.000000   0.000000   0.000000  -0.764631
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764631 (up-dn=0.017068)
+ cpudel    ...   Time this iter:  time(s):  0.0928   total:  0.0928s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+          Euler angles:
+   ib   alpha      beta     gamma     class           z axis rotated to:
+    1  0.000000  0.000000  0.000000   FE         0.000000  0.000000  1.000000
+    2  0.000000  0.000000  0.000000   FE2        0.000000  0.000000  1.000000
+
+                 (global)         Applied B-field           (local)
+   ib    bx        by        bz                    bx        by        bz
+    1 -0.000500  0.000000  0.000000             -0.000500  0.000000  0.000000
+    2  0.000000  0.000000  0.000000              0.000000  0.000000  0.000000
+
+ --- BNDASA : iteration 1 (KKR-qout, noncol) ---
+
+ AMAGNC: magnetic moments from Euler angles and sphere charges:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.000000  0.000000  2.280545    0.000000  0.000000  2.280545  2.280545
+    2   *  0.000000  0.000000  2.280545    0.000000  0.000000  2.280545  2.280545
+ <Mx>=0.000000  <My>=0.000000  <Mz>=2.280545  <M>=2.280545  <|M|>=2.280545
+
+ BDOTSR: magnetic moments from sphere charges: <B.sig.rho>=   0.0000000
+ BSRHOS: <Bxc.sigma.rho>=  -0.4145938  <Bext.sigma.rho>=   0.0000000
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 512, k=  0.00000  0.00000  0.00000
+ -0.6967 -0.6686 -0.4037 -0.4037 -0.2908 -0.2908 -0.2218 -0.2218 -0.2218
+ SECMAT:  kpt 101 of 512, k=  0.50000  0.50000  0.12500
+ -0.4007 -0.4007 -0.3019 -0.3019 -0.3008 -0.3008 -0.1625 -0.1625 -0.1340
+ SECMAT:  kpt 201 of 512, k=  0.00000  0.12500  0.37500
+ -0.4939 -0.4581 -0.3603 -0.3109 -0.2752 -0.2369 -0.2327 -0.1876 -0.1855
+ SECMAT:  kpt 301 of 512, k=  0.50000  0.62500  0.50000
+ -0.3139 -0.3139 -0.3058 -0.3058 -0.2628 -0.2628 -0.1997 -0.1997 -0.1792
+ SECMAT:  kpt 401 of 512, k=  0.00000  0.25000  0.75000
+ -0.5304 -0.4964 -0.3590 -0.3201 -0.2612 -0.2461 -0.2302 -0.2101 -0.1929
+ SECMAT:  kpt 501 of 512, k=  0.50000  0.75000  0.87500
+ -0.3851 -0.3851 -0.3101 -0.3101 -0.2783 -0.2783 -0.2401 -0.2401 -0.1485
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.054164;  16.000000 electrons;  D(Ef):   23.126
+         Sum occ. bands:   -3.4723945  incl. Bloechl correction:   -0.002243
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+
+ IORBTM:  orbital moments :
+ class spec        spin   Moment decomposed by l ...
+    1    FE           1    0.000000    0.000008    0.102270
+    1    FE           2    0.000000   -0.000025   -0.268549
+    1  L+ - L-  -0.166297
+    2    FE           1    0.000000   -0.000007    0.105074
+    2    FE           2    0.000000    0.000025   -0.273197
+    2  L+ - L-  -0.168105
+
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.014866  0.000000  2.291589    0.014866  0.000000  2.291589  2.291637
+    2   * -0.001014  0.000000  2.289671   -0.001014  0.000000  2.289671  2.289671
+ <Mx>=0.006926  <My>=0.000000  <Mz>=2.290630  <M>=2.290641  <|M|>=2.290654
+
+ BDOTSR: magnetic moments from density matrix: <B.sig.rho>=  -0.0000074
+ BSRHOS: <Bxc.sigma.rho>=  -0.4174621  <Bext.sigma.rho>=  -0.0000074
+
+ LM: ehf=-0.9269297  ehk=-0.9269379  sumev=-3.4723945  delsev=-0.0000953
+h file=2 nk=8 nl=3 nc=1 bf=1 mmom=4.5812813 ehf=-.9269297 ehk=-.9269379
+ Exit 0 LM      : quit after bands 
+ CPU time:    0.511s   Wall clock    0.557s   12:01:25 12.05.2015        on phpdl1.ph.kcl.ac.uk

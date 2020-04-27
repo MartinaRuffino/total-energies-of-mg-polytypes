@@ -1,0 +1,25 @@
+#!/bin/csh
+
+echo makedist.special : remove duplicated files:
+
+echo 'rm -f dist/nc/lmasa.f'
+echo 'rm -f dist/optics/lmasa.f'
+echo 'rm -f dist/sx/lmasa.f'
+echo 'rm -f dist/gf/lmasa-gf.f'
+echo 'rm -f dist/pgf/lmasa-gf.f'
+echo 'rm -f dist/fp/{rdctrl,rdccat}.f'
+echo 'rm -f dist/nc/{bndasa.f,secmat.f,secm2c.f}'
+echo 'rm -f dist/optics/bndasa.f'
+echo 'rm -f dist/sx/asabnd.f'
+echo 'rm -f dist/mol/{rdctrl,rdccat}.f'
+
+rm -f dist/nc/lmasa.f
+rm -f dist/optics/lmasa.f
+rm -f dist/sx/lmasa.f
+rm -f dist/gf/lmasa-gf.f
+rm -f dist/pgf/lmasa-gf.f
+rm -f dist/fp/{rdctrl,rdccat}.f
+rm -f dist/nc/{bndasa.f,secmat.f,secm2c.f}
+rm -f dist/optics/bndasa.f
+rm -f dist/sx/asabnd.f
+rm -f dist/mol/{rdctrl,rdccat}.f

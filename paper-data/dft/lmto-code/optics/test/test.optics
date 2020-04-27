@@ -1,0 +1,2258 @@
+#!/bin/tcsh -f
+
+# This file is a shell script testing operation of optics code
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias runrdcmd 'set retcall = \!\!:1; set rdcmdfmt = \!\!:2 ; set outfile = \!\!:3 ; set callarg = \!\!:4 ; goto runrdcmd'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias zcmpmfiles_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 ; goto zcmpmfiles_res_0 '
+alias zcmpmcx 'set retcall = \!\!:1; set keyword = \!\!:2 ; set toldif = \!\!:3 ; set ndiff = \!\!:4 ; set prec = \!\!:5 ; set passvar = \!\!:6 ;set srcfile = \!\!:7 ; set reffile = \!\!:8 ; goto zcmpmcx '
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+
+#alias mpix mpirun
+set failed = 0
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+# see if calculator mcx is in path
+set mcx = `which mcx`
+if (-x "$mcx") then
+  if `$mcx --h |& sed -n 1,1p | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.04))}'` set have_mc
+endif
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.optics: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--haveout":
+      set haveout
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--noplot*":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+    case "--verb*":
+      set verb = 1
+      breaksw
+    case "--all":
+      set mater_lst = (ogan fe si mngas sic)
+      set joblist
+      while (`echo $1 | sed -e 's/\([0-9][0-9]*\)/-/'`  ==  "-")
+        set joblist = ($joblist $1)
+        shift
+      end
+      set pass
+      set failed
+      foreach i ($mater_lst)
+        $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g' | sed -e 's/-add/-add0/g'` $i $joblist
+        set retval = $status
+        if ($retval != 0) then
+          unset pass
+          set failed = ($failed $i)
+#         echo " $testfile : failed test $i ... aborting"
+#            exit -1
+        endif
+      end
+      if ($?clean) then
+        exit
+      else if ($?pass) then
+        echo "$space $testfile : all tests PASSED ($mater_lst)"
+        exit
+      else
+        echo "$space $testfile : checks FAILED for the following materials:  $failed"
+        exit -1
+      endif
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+
+end
+
+
+set ext = ogan
+set opttetlast = 1.957736 optsamplast = 1.94990
+if ("$1" == "ogan") then
+  set ext = ogan; shift
+  set opttetlast = 1.957736
+else if ("$1" == "mngas") then
+  set ext = mngas; shift
+  set opttetlast = 3.361470 optsamplast = 2.938530
+else if ("$1" == "sic") then
+  set ext = sic; shift
+else if ("$1" == "fe") then
+  set ext = fe; shift
+  set opttetlast = 0.176428 
+else if ("$1" == "si") then
+  set ext = si; shift
+endif
+
+if ( $?joblist == 0 ) then
+set joblist = ($argv)
+if ( $#joblist == 0 ) set joblist = (1 2 3 4 5 6 7 8 9 10)
+endif
+
+echo $joblist | egrep '\b1\b' >/dev/null
+if ($status) goto chk1e
+
+cat <<EOF
+
+         --- Test case 1 ($testdir/ctrl.$ext).  Linear optics, tetrahedron ---
+EOF
+if ($?quiet) then
+else if ($ext == "mngas") then
+cat <<EOF
+
+         The mngas case illustrates optics in Mn-doped GaAs (16 atom cell).
+         Calculation is spin polarized: opt file contains both majority and minority spin
+         Switches  --opt:write  and  --opt:read  are used in this test.
+
+EOF
+else if ($ext == "ogan") then
+cat <<EOF
+
+         The ogan test case illustrates optics in cubic GaN, resolved into (ib,jb) pairs (LTET=3).
+         This example includes 4 occupied and 7 unoccupied states for a total of 28 pairs.
+         There are also 3 polarizations, so the partial contributions number 84 in all.
+         Partial (occ,unocc) DOS pairs are saved in file popt in the following order:
+                   contributions              pol     file columns
+            occ=nfilo:nfiup, unocc=nemlo      pol=1     2:5
+            occ=nfilo:nfiup, unocc=nemlo+2    pol=1     6:9
+            ...
+            occ=nfilo:nfiup, unocc=nemup      pol=1    26:29
+
+            occ=nfilo:nfiup, unocc=nemlo      pol=2    30:33
+            occ=nfilo:nfiup, unocc=nemlo+2    pol=2    34:37
+            ...
+            occ=nfilo:nfiup, unocc=nemup      pol=2    54:57
+
+            occ=nfilo:nfiup, unocc=nemlo      pol=3    58:61
+            occ=nfilo:nfiup, unocc=nemlo+2    pol=3    62:65
+            ...
+            occ=nfilo:nfiup, unocc=nemup      pol=3    82:85
+
+
+        To confirm that the partial contributions of the each polarization sum to the
+        total Im(eps) for that polarization, do:
+          mcx -vnp=28 popt.ogan -split a 1,nr+1 1,2,2+np,2+np+np,2+np+np+np a11 a12 -csum a13 -csum a14 -csum -ccat -ccat -ccat opt.ogan  --
+
+        This test also shows that Im eps remains the same when spherical harmonics (m ordered either l:-l or -l:l) are used.
+
+EOF
+endif
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk1e
+endif
+grep TESTTET $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TESTTET in file $testdir/ctrl.$ext ... skipping test"
+goto chk1e
+endif
+query chk11 chk1e 'run this test'
+chk11:
+# ... Look for executables
+findcmd chk11a rdcmd "$path" "$topdir"
+chk11a:
+findcmd chk11b lm "$path" "$topdir"
+chk11b:
+findcmd chk11c lmstr "$path" "$topdir"
+chk11c:
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext opt.$ext-sh1 opt.$ext-sh2"
+             rm -f *.$ext opt.$ext-sh1 opt.$ext-sh2
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk1e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f opt.$ext"
+             rm -f opt.$ext
+echo "$space rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext"
+             rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext
+
+
+runrdcmd chk12 %11f $testout "-cat:TESTTET --noerr ctrl.$ext"
+chk12:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+set testout=opt.$ext refout=$testdir/opt-tet.$ext
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+if ($?quiet) goto chk1p
+call diffiles chk14 "$testout $refout"
+chk14:
+
+chk1p:
+echo ' '
+call qprint chk1pa "$space ... automatic pass checks :"
+chk1pa:
+
+awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+if (! $status) then
+  echo "$space x-, y- and z- values all equal? ..." yes
+else
+  echo "$space x-, y- and z- values all equal? ..." no
+  unset pass
+endif
+
+if ("$ext" == "ogan") then
+zcmpmfiles_res_0 chk15b "Max deviation in opt.ogan-sh1 from $testout" 0.00001 pass 6 opt.ogan-sh1 $testout
+chk15b:
+zcmpmfiles_res_0 chk15c "Max deviation in opt.ogan-sh2 from $testout" 0.00001 pass 6 opt.ogan-sh2 $testout
+chk15c:
+endif
+
+zcmpmfiles_res_0 chk15 "Max deviation in $testout from reference $refout" 0.2 pass 4 $testout $refout
+chk15:
+if (! -e $testdir/popt-tet.$ext) goto chk15a
+zcmpmfiles_res_0 chk15a "Max deviation in popt.$ext from reference $testdir/popt-tet.$ext" 0.1 pass 4 popt.$ext $testdir/popt-tet.$ext
+chk15a:
+
+set diffe = `awk -v last=$opttetlast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+  echo "$space last point in opt.$ext within .003 of reference $opttetlast ? ... yes"
+else
+  echo "$space last point in opt.$ext within .003 of reference $opttetlast ? ... no"
+  unset pass
+endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED"
+else
+    echo "$space test 1 FAILED"
+    set failed = ($failed 1)
+endif
+
+chk1e:
+
+echo $joblist | grep 2 >/dev/null
+if ($status) goto chk2e
+
+cat <<EOF
+
+         --- Test case 2 ($testdir/ctrl.$ext). Linear optics, sampling ---
+EOF
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk2e
+endif
+grep TESTSAM $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TESTSAM in file $testdir/ctrl.$ext ... skipping test"
+goto chk2e
+endif
+query chk21 chk2e 'run this test'
+chk21:
+# ... Look for executables
+findcmd chk21a rdcmd "$path" "$topdir"
+chk21a:
+findcmd chk21b lm "$path" "$topdir"
+chk21b:
+findcmd chk21c lmstr "$path" "$topdir"
+chk21c:
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk2e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f opt.$ext"
+             rm -f opt.$ext
+echo "$space rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext"
+             rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext
+
+runrdcmd chk22 %11f $testout "-cat:TESTSAM --noerr ctrl.$ext"
+chk22:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+set testout=opt.$ext refout=$testdir/opt-samp.$ext
+if ($?quiet) goto chk2p
+call diffiles chk24 "$testout $refout"
+chk24:
+
+chk2p:
+echo ' '
+call qprint chk2pa "$space ... automatic pass checks :"
+chk2pa:
+
+awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+if (! $status) then
+  echo "$space x-, y- and z- values all equal? ..." yes
+else
+  echo "$space x-, y- and z- values all equal? ..." no
+  unset pass
+endif
+
+zcmpmfiles_res_0 chk25 "Max deviation in $testout from reference $refout" 0.03 pass 4 $testout $refout
+chk25:
+
+set diffe = `awk -vlast=$optsamplast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+  echo "$space last point in opt.$ext within .003 of reference $optsamplast ? ... yes"
+else
+  echo "$space last point in opt.$ext within .003 of reference $optsamplast ? ... no"
+  unset pass
+endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 2 PASSED"
+else
+    echo "$space test 2 FAILED"
+    set failed = ($failed 2)
+endif
+
+chk2e:
+
+echo $joblist | grep 3 >/dev/null
+if ($status) goto chk3e
+
+cat <<EOF
+
+         --- Test case 3 ($testdir/ctrl.$ext).  Linear optics, standard tetrahedron ---
+EOF
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk3e
+endif
+grep TESTNWT $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TESTNWT in file $testdir/ctrl.$ext ... skipping test"
+goto chk3e
+endif
+query chk31 chk3e 'run this test'
+chk31:
+# ... Look for executables
+findcmd chk31a rdcmd "$path" "$topdir"
+chk31a:
+findcmd chk31b lm "$path" "$topdir"
+chk31b:
+findcmd chk31c lmstr "$path" "$topdir"
+chk31c:
+
+if ("$ext" == "ogan") then
+  set opttetlast = 2.050870
+else if ("$ext" == "mngas") then
+# set opttetlast = 3.368650
+else if ("$ext" == "sic") then
+endif
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk3e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f opt.$ext"
+             rm -f opt.$ext
+echo "$space rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext"
+             rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext
+
+runrdcmd chk32 %11f $testout "-cat:TESTNWT --noerr ctrl.$ext"
+chk32:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+set testout=opt.$ext refout=$testdir/opt-nwtet.$ext
+if ($?quiet) goto chk3p
+call diffiles chk34 "$testout $refout"
+chk34:
+
+chk3p:
+echo ' '
+call qprint chk3pa "$space ... automatic pass checks :"
+chk3pa:
+
+awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+if (! $status) then
+  echo "$space x-, y- and z- values all equal? ..." yes
+else
+  echo "$space x-, y- and z- values all equal? ..." no
+  unset pass
+endif
+
+zcmpmfiles_res_0 chk35 "Max deviation in $testout from reference $refout" 0.03 pass 4 $testout $refout
+chk35:
+
+set diffe = `awk -v last=$opttetlast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+  echo "$space last point in opt.$ext within .003 of reference $opttetlast ? ... yes"
+else
+  echo "$space last point in opt.$ext within .003 of reference $opttetlast ? ... no"
+  unset pass
+endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 3 PASSED"
+else
+    echo "$space test 3 FAILED"
+    set failed = ($failed 3)
+endif
+
+chk3e:
+
+echo $joblist | grep 4 >/dev/null
+if ($status) goto chk4e
+
+cat <<EOF
+
+         --- Test case 4 ($testdir/ctrl.$ext).  Linear optics, joint DOS ---
+EOF
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk4e
+endif
+grep TSTJDOS $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TSTJDOS in file $testdir/ctrl.$ext ... skipping test"
+goto chk4e
+endif
+query chk41 chk4e 'run this test'
+chk41:
+# ... Look for executables
+findcmd chk41a rdcmd "$path" "$topdir"
+chk41a:
+findcmd chk41b lm "$path" "$topdir"
+chk41b:
+findcmd chk41c lmstr "$path" "$topdir"
+chk41c:
+
+if ("$ext" == "ogan") then
+  set opttetlast = 69.43274
+else if ("$ext" == "mngas") then
+# set opttetlast = 3.368650
+else if ("$ext" == "sic") then
+endif
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk4e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f jdos.$ext"
+             rm -f jdos.$ext
+echo "$space rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext"
+             rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext
+
+runrdcmd chk42 %11f $testout "-cat:TSTJDOS --noerr ctrl.$ext"
+chk42:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+set testout=jdos.$ext refout=$testdir/jdos-tet.$ext
+if ($?quiet) goto chk4p
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+call diffiles1 chk44 "$testout $refout"
+chk44:
+
+chk4p:
+echo ' '
+call qprint chk4pa "$space ... automatic pass checks :"
+chk4pa:
+
+#  awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+#  if (! $status) then
+#    echo "$space x-, y- and z- values all equal? ..." yes
+#  else
+#    echo "$space x-, y- and z- values all equal? ..." no
+#    unset pass
+#  endif
+
+zcmpmfiles_res_0 chk45 "Max deviation in $testout from reference $refout" 0.0001 pass 4 $testout $refout
+chk45:
+
+if (! -e $testdir/pjdos-tet.$ext) goto chk45a
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+zcmpmfiles_res_0 chk45a "Max deviation in popt.$ext from reference $testdir/pjdos-tet.$ext" 0.001 pass 4 popt.$ext $testdir/pjdos-tet.$ext
+chk45a:
+
+
+#  set diffe = `awk -v last=$opttetlast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+#  if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... yes"
+#  else
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... no"
+#    unset pass
+#  endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 4 PASSED"
+else
+    echo "$space test 4 FAILED"
+    set failed = ($failed 4)
+endif
+
+chk4e:
+
+echo $joblist | grep 5 >/dev/null
+if ($status) goto chk5e
+
+cat <<EOF
+
+         --- Test case 5 ($testdir/ctrl.$ext).  Linear optics, band-resolved joint DOS, new tetrahedron ---
+EOF
+if ($?quiet) then
+else if ($ext == "ogan") then
+cat <<EOF
+
+         The ogan test case illustrates joint DOS in cubic GaN, resolved into (ib,jb) pairs
+         This example includes 4 occupied and 7 unoccupied states for a total of 28 pairs.
+
+         You can verify that the resolved DOS sum to the total dos, e.g.
+           mcx popt.ogan -split a 1,nr+1 1,2,nc+1 a11 a12 -csum -ccat jdos.ogan --
+
+         Partial (occ,unocc) DOS pairs are saved in file popt in the following order:
+            occ=nfilo,nfilo+1,..., unocc=nemlo
+            occ=nfilo,nfilo+1,..., unocc=nemlo+1
+            ...
+         The first occupied included here is state 6 (FILBND=6,9).  It is very deep (near -1 Ry).
+         So in the (0,1) Ry energy window it contibutes nothing to the joint DOS.  To confirm this, try
+           mcx popt.ogan -coll 2:28:4 -px
+
+         After the test passes, try plotting the 28 (occ,unocc)-resolved contributions to the JDOS with:
+           fplot -disp -frme 0,1,0,.7 -y 0,9 -lt 1 -colsy 2:nc popt.ogan
+         Or, just plot the contribution from the 4 valence bands to the first conduction band (first
+         band gives zero):
+           fplot -disp -frme 0,1,0,.7 -y 0,9 -lt 1 -colsy 2:5 popt.ogan
+
+         To compare the similarity of this branch to the ltet=1 branch, to
+           zcat optics/test/pjdos-tet.ogan >popt.ogan~
+           fplot -disp -lt 2,col=0,1,0 -colsy 2:5 popt.ogan~ -lt 3,col=0,0,0 -colsy 2:5 popt.ogan
+
+EOF
+else if ($ext == "fe") then
+cat <<EOF
+
+         The Fe case generates the joint DOS for the second spin.
+         To compare against the JDOS done by usual tetrahedron package, do:
+            fplot -disp jdos.fe -lt 2 -colsy 3 optics/test/jdos-tet.fe
+
+         Additionally this test projects the joint DOS onto the Fe four following combinations:
+               occ        unocc
+             L=5,6,8     L=5,6,8
+             L=5,6,8     L=1:4,7,9
+             L=1:4,7,9   L=5,6,8
+             L=1:4,7,9   L=1:4,7,9
+         The code permits only two projections at at time, so:
+         (2),(3) are made in pass one and the results copied to jdos23.fe (args --jdosw~5,6,8~1:4,7,9 --jdosw2~1:4,7,9~5,6,8)
+         (1),(4) are made in pass two with the results in jdos.fe         (args --jdosw~5,6,8~5,6,8 --jdosw2~1:4,7,9~1:4,7,9)
+
+         To confirm that the four projections of DOS sum to the total DOS, do
+            mcx jdos.fe jdos23.fe -coll 3,4 -ccat -e1  x2-x3-x4-x5-x6 -abs -max:g
+
+         This test also generates partial (occ,unocc) DOS pairs, stored in file popt.fe
+         Columns correspond to the following order
+           occ=1,2,...,9   unocc=1
+           occ=1,2,...,9   unocc=2
+           ...
+
+         To confirm that the resolved JDOS sum to the total JDOS, do
+           mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a12 -csum -ccat jdos.fe -coll 1,2 -- -abs -max:g
+         To confirm that the (5,6,8~5,6,8) projections of the resolved JDOS sum to the total (5,6,8~5,6,8) projections do:
+           mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a13 -csum -ccat jdos.fe -coll 1,3 -- -abs -max:g
+         To confirm that the (1:4,7,9~1:4,7,9) projections of the resolved JDOS sum to the total (1:4,7,9~1:4,7,9) projections do:
+           mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a14 -csum -ccat jdos.fe -coll 1,4 -- -abs -max:g
+         (These checks will be run automatically if you have the mcx calculator in your path)
+
+         To plot the 81 different (occ,unocc) pairs, do:
+           fplot -disp -frme 0,1,0,.7  -y 0,4 -lt 1 -colsy 2:nc -qr popt.fe
+         The following displays the contributions from the three (occ=3,4,5; unocc=5) pairs:
+           fplot -disp -frme 0,1,0,.7  -y 0,4 -lt 1 -colsy '2+(3-1)+(5-1)*9:2+(5-1)+(5-1)*9' -qr popt.fe
+
+EOF
+endif
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk5e
+endif
+grep TSTJDS3 $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TSTJDS3 in file $testdir/ctrl.$ext ... skipping test"
+goto chk5e
+endif
+query chk51 chk5e 'run this test'
+chk51:
+# ... Look for executables
+findcmd chk51a rdcmd "$path" "$topdir"
+chk51a:
+findcmd chk51b lm "$path" "$topdir"
+chk51b:
+findcmd chk51c lmstr "$path" "$topdir"
+chk51c:
+
+if ("$ext" == "ogan") then
+  set opttetlast = 69.43274
+else if ("$ext" == "mngas") then
+# set opttetlast = 3.368650
+else if ("$ext" == "sic") then
+endif
+
+# echo DEBUG; goto chk52
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk5e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f jdos.$ext"
+             rm -f jdos.$ext
+echo "$space rm -f jdos-tet3.$ext"
+             rm -f jdos-tet3.$ext
+
+runrdcmd chk52 %11f $testout "-cat:TSTJDS3 --noerr ctrl.$ext"
+chk52:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+set testout=jdos.$ext refout=$testdir/jdos-tet3.$ext
+if ("$ext" == "fe") then
+  set testout=jdos.$ext refout=$testdir/jdos-tet3ij.$ext
+endif
+if ($?quiet) goto chk5p
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+call diffiles1 chk54 "$testout $refout"
+chk54:
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+call diffiles chk54b "popt.$ext $testdir/pjdos-tet3.$ext"
+chk54b:
+
+chk5p:
+echo ' '
+call qprint chk5pa "$space ... automatic pass checks :"
+chk5pa:
+
+#  awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+#  if (! $status) then
+#    echo "$space x-, y- and z- values all equal? ..." yes
+#  else
+#    echo "$space x-, y- and z- values all equal? ..." no
+#    unset pass
+#  endif
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+
+zcmpmfiles_res_0 chk55 "Max deviation in $testout from reference $refout" 0.0001 pass 4 $testout $refout
+chk55:
+if (! -e $testdir/pjdos-tet3.$ext) goto chk55f
+set passx
+zcmpmfiles_res_0 chk55a "Max deviation in popt.$ext from reference $testdir/pjdos-tet3.$ext" 0.0001 passx 4 popt.$ext $testdir/pjdos-tet3.$ext
+chk55a:
+
+if ($?have_mc) then
+  if (! $?passx) then
+    echo "$space ... (warning) deviation excessive; check using mcx"
+    zcat $testdir/pjdos-tet3.$ext > pjdos-tet3.ref
+    mcx -qr popt.fe -qr pjdos-tet3.ref -- > /dev/null
+    if ($status) goto chk55aa
+    set sumib_diff = `mcx -qr popt.fe -qr pjdos-tet3.ref -- -abs -max:g | tail -1 | awk '{print $3}'`
+    set passx
+    compare_res_0 chk55aa "Difference evaluated mcx" $sumib_diff .03 passx
+    chk55aa:
+    rm pjdos-tet3.ref
+  endif
+  if (! $?passx) then
+    echo "$space ... (warning) deviation excessive; compare sum of partial contributions to total"
+    set passx
+    set sumib_diff = `mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a12 -csum -ccat jdos.fe -coll 1,2 --  -abs -max:g | tail -1 | awk '{print $NF}'`
+    compare_res_0 chk55b "Difference sum resolved JDOS and total JDOS" $sumib_diff .00001 passx
+    chk55b:
+    set sumib_diff = `mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a13 -csum -ccat jdos.fe -coll 1,3 --  -abs -max:g | tail -1 | awk '{print $NF}'`
+    compare_res_0 chk55c "Difference sum 1st Mull resolved JDOS and total JDOS" $sumib_diff .00001 pass
+    chk55c:
+    set sumib_diff = `mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a14 -csum -ccat jdos.fe -coll 1,4 --  -abs -max:g | tail -1 | awk '{print $NF}'`
+    compare_res_0 chk55d "Difference sum 2nd Mull resolved JDOS and total JDOS" $sumib_diff .00001 pass
+    chk55d:
+    if ($?passx) then
+      echo "$space test passes, but note warnings"
+    else
+      unset pass
+    endif
+  endif
+else if (! $?passx) then
+  echo "$space ... (WARNING) deviation excessive, though error may be acceptable (check manually)"
+# unset pass
+endif
+chk55f:
+
+
+#  set diffe = `awk -v last=$opttetlast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+#  if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... yes"
+#  else
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... no"
+#    unset pass
+#  endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 5 PASSED"
+else
+    echo "$space test 5 FAILED"
+    set failed = ($failed 5)
+endif
+
+chk5e:
+
+echo $joblist | grep 6 >/dev/null
+if ($status) goto chk6e
+
+cat <<EOF
+
+         --- Test case 6 ($testdir/ctrl.$ext).  Linear optics, k-resolved joint DOS ---
+EOF
+set pass
+
+if ($?quiet) then
+else if ($ext == "si") then
+cat <<EOF
+
+         The Si test case illustrates k-resolved joint DOS in Si, where unoccupied states
+         are shifted by q=0,0,0.875.  (See OPTICS_IQ in ctrl.si).
+
+         Thus the lowest energy transitions are those connecting the VBM the CBM near X (q=0,0,9.875)
+         which is close to the calculated bandgap (0.572 eV).
+         To confirm that the joint DOS starts there, plot the JDOS with
+            fplot -disp -frme 0,1,0,.7 -x .4,.8 -y 0,.2  -ab 'x1*13.6' -ord 'sqrt(abs(y))' -lt 1 -colsy 2:nc jdos.si
+         Try repeating the calculation with q=0.  You should see that the JDOS begins at
+         the Gamma_15-Gamma_15 transition E0, calculated here as 2.71 eV.
+
+         This example has 145 irreducible k-points.
+         To confirm that the k-resolved DOS sum to the total DOS, do
+           mcx -qr popt.si -split a 1,nr+1 1,2,nc+1 a11 a12 -csum -ccat jdos.si --
+         After the test passes, you can plot each of the 145 contributions to the JDOS with:
+           fplot -disp -y 0,1 -lt 1 -colsy 2:nc -qr popt.si
+         Or, plot the partial DOS just from the Gamma-point:
+           fplot -disp -y 0,.1 -lt 1 -colsy 2:2 -qr popt.si
+
+EOF
+else if ($ext == "ogan") then
+cat <<EOF
+
+         The ogan test case illustrates k-resolved joint DOS in cubic GaN.
+         This example has 216 irreducible k-points.
+
+         To confirm that the k-resolved DOS sum to the total DOS, do
+           mcx -qr popt.ogan -split a 1,nr+1 1,2,nc+1 a11 a12 -csum -ccat jdos.ogan --
+
+         To plot each of the 216 contributions to the JDOS do:
+           fplot -disp -y 0,1 -lt 1 -colsy 2:nc popt.ogan
+         Or, plot the partial DOS just from the Gamma-point:
+           fplot -disp -y 0,.1 -lt 1 -colsy 2:2 popt.ogan
+
+EOF
+else if ($ext == "fe") then
+cat <<EOF
+
+         The fe test case illustrates k-resolved joint DOS in Fe.
+         This example has 72 irreducible k-points.
+         After the test passes, you can plot each contribution to the JDOS with:
+
+         To confirm that the k-resolved DOS sum to the total DOS, do
+           mcx -qr popt.fe -split a 1,nr+1 1,2,nc+1 a11 a12 -csum -ccat jdos.fe -- -abs -max:g
+
+         After the test passes, you can plot each contribution to the JDOS with:
+           fplot -disp -y 0,1 -lt 1 -colsy 2:nc popt.fe
+
+EOF
+endif
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk6e
+endif
+grep TSTJDSK $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TSTJDSK in file $testdir/ctrl.$ext ... skipping test"
+goto chk6e
+endif
+query chk61 chk6e 'run this test'
+chk61:
+# ... Look for executables
+findcmd chk61a rdcmd "$path" "$topdir"
+chk61a:
+findcmd chk61b lm "$path" "$topdir"
+chk61b:
+findcmd chk61c lmstr "$path" "$topdir"
+chk61c:
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk6e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f jdos-tet3.$ext"
+             rm -f jdos-tet3.$ext
+
+runrdcmd chk62 %11f $testout "-cat:TSTJDSK --noerr ctrl.$ext"
+chk62:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+set testout=jdos.$ext refout=$testdir/jdos-tet3.$ext
+if ($?quiet) goto chk6p
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+call diffiles1 chk64 "$testout $refout"
+chk64:
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+call diffiles chk64b "popt.$ext $testdir/pjdos-tetk.$ext"
+chk64b:
+
+
+chk6p:
+echo ' '
+call qprint chk6pa "$space ... automatic pass checks :"
+chk6pa:
+
+#  awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+#  if (! $status) then
+#    echo "$space x-, y- and z- values all equal? ..." yes
+#  else
+#    echo "$space x-, y- and z- values all equal? ..." no
+#    unset pass
+#  endif
+
+zcmpmfiles_res_0 chk65 "Max deviation in $testout from reference $refout" 0.0001 pass 4 $testout $refout
+chk65:
+if (! -e $testdir/pjdos-tetk.$ext) goto chk65a
+zcmpmfiles_res_0 chk65a "Max deviation in popt.$ext from reference $testdir/pjdos-tetk.$ext" 0.0001 pass 4 popt.$ext $testdir/pjdos-tetk.$ext
+chk65a:
+
+
+#  set diffe = `awk -v last=$opttetlast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+#  if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... yes"
+#  else
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... no"
+#    unset pass
+#  endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 6 PASSED"
+else
+    echo "$space test 6 FAILED"
+    set failed = ($failed 6)
+endif
+
+chk6e:
+
+echo $joblist | grep 7 >/dev/null
+if ($status) goto chk7e
+
+cat <<EOF
+
+         --- Test case 7 ($testdir/ctrl.$ext).  Linear optics, k-resolved single DOS ---
+EOF
+set pass
+
+if ($?quiet) then
+else if ($ext == "ogan") then
+else if ($ext == "fe") then
+cat <<EOF
+
+         The fe test case generates k-resolved single DOS in Fe, using the joint DOS code optinq.f.
+         Also generated is the DOS using the standard SAVDOS=T, for comparison.
+         optinq can only generate one spin at a time, so the code is run twice, once for each spin.
+
+         This example has 145 irreducible k-points.
+
+         This test also projects the DOS onto the Fe t2g and eg orbitals (through switches --jdosw=5,6,8 --jdosw2=7,9).
+         Thus:
+         * jdos.fe contains both the total DOS (col 2) and the t2g projection (col 3)
+         * popt.fe contains k-resolved DOS (cols 2:146), the t2g and projections of it (cols 147:291 and 292:436)
+
+         To compare the optinq-generated DOS to the standard SAVDOS=T do:
+           echo 100 40 -10 10 |  pldos -escl=13.6 -fplot -lst='1' -lst2 dos.fe
+         For spin 1:
+           fplot -disp -frme 0,1,0,.7 -y 0,30 -p0 -ab 'x1*13.6' jdos-spin1.fe -ab 'x1*13.6' \
+             -colsy 3 -lt 2,col=0,1,0 jdos-spin1.fe -ab 'x1*13.6' -colsy 4 -lt 2,col=0,0,1 jdos-spin1.fe \
+             -lt 2,col=1,0,0 dosp.dat -lt 2 -tp 2~-0.692784,0,-0.692784,30
+         For spin 2:
+           fplot -disp -frme 0,1,0,.7 -y 0,30 -p0 -ab 'x1*13.6' jdos.fe -ab 'x1*13.6' \
+             -colsy 3 -lt 2,col=0,1,0 jdos.fe -ab 'x1*13.6' -colsy 4 -lt 2,col=0,0,1 jdos.fe \
+             -ord -x2 -lt 2,col=1,0,0 dosp2.dat -lt 2 -tp 2~-0.692784,0,-0.692784,30
+
+         For either spin, the DOS includes only the second and higher bands (FILBND=2).
+         The dos (red) file data and jdos data (black) are nearly identical for E>-4 eV.
+         Differences appear for E<-4 eV because contributions from band 1 are missing.
+         In the above figures, the green and bue lines show the t2g and eg projections of the DOS data.
+         This plot compares the t2g+eg contributions to the total dos:
+           fplot -disp -frme 0,1,0,.7 -y 0,30 -p0 -ab 'x1*13.6' jdos.fe -ab 'x1*13.6' -ord x3+x4 -lt 2,col=0,1,0 jdos.fe
+
+         To confirm that the k-resolved DOS (2nd spin) sum to the total DOS, do
+           mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a12 -csum -ccat jdos.fe -coll 1,2 -- -abs -max:g
+         To confirm that the k-resolved t2j projection of the DOS (2nd spin) sum to the total t2g projection, do
+           mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a13 -csum -ccat jdos.fe -coll 1,3 -- -abs -max:g
+         To confirm that the k-resolved eg projection of the DOS (2nd spin) sum to the total eg projection, do
+           mcx -qr popt.fe -split a 1,nr+1 1,2,'(nc-1)/3'+2,'(nc-1)/3*2'+2,'(nc-1)/3*3'+2 a11 a14 -csum -ccat jdos.fe -coll 1,4 -- -abs -max:g
+
+         To plot each of the 145 k contributions to the DOS do:
+           fplot -disp -frme 0,1,0,.7 -y 0,1 -lt 1 -colsy 2:146 -qr popt.fe
+         To plot the gamma-point contribution to the total and the corresponding t2g-projections do:
+           fplot -disp -frme 0,1,0,.7 -x -.3,.0 -y 0,.1 -lt 1 -colsy 2 -qr popt.fe -lt 2,col=0,1,0 -colsy 2+145 -qr popt.fe
+
+         After the calculation completes, the optics editor is run.
+
+EOF
+endif
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk7e
+endif
+grep TSTDOSK $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TSTDOSK in file $testdir/ctrl.$ext ... skipping test"
+goto chk7e
+endif
+query chk71 chk7e 'run this test'
+chk71:
+# ... Look for executables
+findcmd chk71a rdcmd "$path" "$topdir"
+chk71a:
+findcmd chk71b lm "$path" "$topdir"
+chk71b:
+findcmd chk71c lmstr "$path" "$topdir"
+chk71c:
+
+#  echo DEBUG ; goto chk74b
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk7e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f jdos-tet3.$ext"
+             rm -f jdos-tet3.$ext
+
+runrdcmd chk72 %11f $testout "-cat:TSTDOSK --noerr ctrl.$ext"
+chk72:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+if ($ext == "fe") then
+  echo ' '
+  echo "$space Invoke the popt file editor ..."
+  echo \
+ "$space lm fe -vnk=16 --no-iactiv -vlteto=3 -voptmod=-6 -vlpart=2 --quit=band '--popted:readq:npol 3:kshowe -0.01 1 sort ds,q3:kmape -0.01 1:saveka:q' > out.popted.fe"
+         lm fe -vnk=16 --no-iactiv -vlteto=3 -voptmod=-6 -vlpart=2 --quit=band '--popted:readq:npol 3:kshowe -0.01 1 sort ds,q3:kmape -0.01 1:saveka:q' > out.popted.fe
+endif
+
+set testout=jdos.$ext refout=$testdir/dos-tet3.$ext
+if ($?quiet) goto chk7p
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+call diffiles1 chk74 "$testout $refout"
+chk74:
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+call diffiles chk74b "popt.$ext $testdir/pdos-tetk.$ext"
+chk74b:
+
+if ($ext == "fe") then
+  echo ' '
+  if ($?have_mc) then
+    echo ' '
+    echo "$space ... compare DOS at E=-.01 to sum of k-resolved DOS, to sum of k-resolved DOS in FBZ:"
+    echo  \
+   'mcx -f6f12.6 jdos.fe -rowl 661 -coll 1,2 -qr popt.fe -rowl 661 -coll 2:146 -csum pka.fe -csum -rsum -s1/16^3 -ccat -ccat -ccat -e6 x1 x2 x3 x4 x3-x2 x4-x3| grep -v rows'
+    echo '       E          DOS        sum(k)     sum(FBZ)  sum(k)-DOS  sum(FBZ)-sum(k)'
+    mcx -f6f12.6 jdos.fe -rowl 661 -coll 1,2 -qr popt.fe -rowl 661 -coll 2:146 -csum pka.fe -csum -rsum -s1/16^3 -ccat -ccat -ccat -e6 x1 x2 x3 x4 x3-x2 x4-x3| grep -v rows
+    set sumk_diff   = `mcx -f6f12.6 jdos.fe -rowl 661 -coll 1,2 -qr popt.fe -rowl 661 -coll 2:146 -csum pka.fe -csum -rsum -s1/16^3 -ccat -ccat -ccat -e6 x1 x2 x3 x4 x3-x2 x4-x3 | tail -1 | awk '{print $5}'`
+    set sumfbz_diff = `mcx -f6f12.6 jdos.fe -rowl 661 -coll 1,2 -qr popt.fe -rowl 661 -coll 2:146 -csum pka.fe -csum -rsum -s1/16^3 -ccat -ccat -ccat -e6 x1 x2 x3 x4 x3-x2 x4-x3 | tail -1 | awk '{print $6}'`
+  endif
+
+  if ($?add0) then
+    echo -n "         ..." ; $add0 out.popted.fe
+  else if ($?poszer) then
+    echo -n "         ..." ; $poszer out.popted.fe
+  endif
+  call diffiles chk74c "out.popted.fe $testdir/out.popted.fe"
+chk74c:
+endif
+
+chk7p:
+echo ' '
+echo "$space ... automatic pass checks  (reference directory = $testdir)"
+chk7pa:
+
+#  awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+#  if (! $status) then
+#    echo "$space x-, y- and z- values all equal? ..." yes
+#  else
+#    echo "$space x-, y- and z- values all equal? ..." no
+#    unset pass
+#  endif
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 jdos.$ext
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer jdos.$ext
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+
+set passx
+if ($?have_mc) then
+zcmpmcx chk75jc "compare $testout to reference : " .05 -1 1e-3 passx  $testout $refout
+# zcmpmcx chk75jc "... checking" .05 -1 1e-3 passx  $testout $refout
+endif
+zcmpmfiles_res_0 chk75j "Max deviation in $testout from reference $refout" 0.03 passx -1 $testout $refout
+chk75j:
+chk75jc:
+if (! $?passx) then
+set passx
+echo "$space ... (warning) test failed; retry with looser tolerance ..."
+zcmpmfiles_res_0 chk75a0 "Max deviation in $testout from reference $refout" 0.09 passx -1 $testout $refout
+chk75a0:
+if (! $?passx) then
+  unset pass
+else
+  echo "$space test passes, but note warning"
+endif
+endif # passx
+
+if (! -e $testdir/pdos-tetk.$ext) goto chk75a
+set passx
+if ($?have_mc) then
+zcmpmcx chk75j1c "compare popt.$ext to reference : " .05 -1 1e-3 passx popt.$ext $testdir/pdos-tetk.$ext
+endif
+zcmpmfiles_res_0 chk75j1 "Max deviation in popt.$ext from reference $testdir/pdos-tetk.$ext" 0.03 passx -1 popt.$ext $testdir/pdos-tetk.$ext
+chk75j1:
+chk75j1c:
+if (! $?passx) then
+set passx
+echo "$space ... (warning) test failed; retry with looser tolerance ..."
+zcmpmfiles_res_0 chk75a2 "Max deviation in popt.$ext from reference $testdir/pdos-tetk.$ext" 0.09 passx -1 popt.$ext $testdir/pdos-tetk.$ext
+chk75a2:
+if (! $?passx) then
+  unset pass
+else
+  echo "$space test passes, but note warning"
+endif
+endif
+chk75a:
+
+if ($ext == "fe") then
+if ($?have_mc) then
+zcmpmcx chk75b "compare pka.$ext to reference : " .03 -1 1e-3 pass pka.$ext $testdir/pka.$ext
+endif
+zcmpmfiles_res_0 chk75b "Max deviation in pka.$ext from reference $testdir/pka.$ext" 0.03 pass 4 pka.$ext $testdir/pka.$ext
+chk75b:
+if ($?sumk_diff) then
+compare_res_0 chk75c "Difference sum(k)-total DOS" $sumk_diff .0001 pass
+chk75c:
+endif
+if ($?sumfbz_diff) then
+compare_res_0 chk75d "Difference FBZ IBZ DOS" $sumfbz_diff .00001 pass
+chk75d:
+endif
+
+#  set diffe = `awk -v last=$opttetlast '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+#  if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... yes"
+#  else
+#    echo "$space last point in jdos.$ext within .003 of reference $opttetlast ? ... no"
+#    unset pass
+#  endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 7 PASSED"
+else
+    echo "$space test 7 FAILED"
+    set failed = ($failed 7)
+endif
+
+chk7e:
+
+echo $joblist | grep 8 >/dev/null
+if ($status) goto chk8e
+
+cat <<EOF
+
+         --- Test case 8 ($testdir/ctrl.$ext).  Linear optics, pair-resolved and/or k-resolved Im eps ---
+EOF
+set pass
+
+if ($?quiet) then
+else if ($ext == "ogan") then
+cat <<EOF
+
+        The ogan test case illustrates k-resolved Im eps in cubic GaN.
+        This example has 256 irreducible k-points.
+
+        To confirm that this branch generates the same Im eps as the ltet=1, do:
+          fplot -disp -lt 1,col=1,0,0 optics/test/opt-tet.ogan -lt 3,col=0,0,0 opt.ogan
+
+        To confirm that the partial contributions sum to the sum of polarizations do:
+          mcx -qr popt.ogan -split a 1,nr+1 1,2,nc+1 a11 a12 -csum -ccat opt.ogan -e2 x1 x2+x3+x4 --
+
+         After the test passes, you can plot each of the 256 contributions to the x component of Im eps with:
+           fplot -disp -frme 0,1,0,.7 -y 0,.5 -lt 1 -colsy 3:nc:3 -qr popt.ogan
+         Or, plot the the Gamma-contribution
+           fplot -disp -frme 0,1,0,.7 -y 0,.5 -lt 1 -colsy 3 -qr popt.ogan
+
+         To plot (ib,jb) resolved contributions, do
+           fplot -disp -frme 0,1,0,.7 -y 0,6 -lt 1 -colsy 3:nc:3 -qr popt-tet3.ogan
+
+EOF
+endif
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk8e
+endif
+grep TSTOPT3 $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TSTOPT3 in file $testdir/ctrl.$ext ... skipping test"
+goto chk8e
+endif
+query chk81 chk8e 'run this test'
+chk81:
+# ... Look for executables
+findcmd chk81a rdcmd "$path" "$topdir"
+chk81a:
+findcmd chk81b lm "$path" "$topdir"
+chk81b:
+findcmd chk81c lmstr "$path" "$topdir"
+chk81c:
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk8e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f jdos-tet3.$ext"
+             rm -f jdos-tet3.$ext
+
+runrdcmd chk82 %11f $testout "-cat:TSTOPT3 --noerr ctrl.$ext"
+chk82:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+set testout=opt.$ext refout=$testdir/opt-tet3.$ext
+if ($?quiet) goto chk8p
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+call diffiles1 chk84 "$testout $refout"
+chk84:
+if (! -e $testdir/popt-tet3.$ext) goto chk84a
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt-tet3.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt-tet3.$ext
+endif
+call diffiles chk84a "popt-tet3.$ext $testdir/popt-tet3.$ext"
+chk84a:
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt.$ext
+endif
+call diffiles chk84b "popt.$ext $testdir/popt-tetk.$ext"
+chk84b:
+
+chk8p:
+echo ' '
+call qprint chk8pa "$space ... automatic pass checks :"
+chk8pa:
+
+#  awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+#  if (! $status) then
+#    echo "$space x-, y- and z- values all equal? ..." yes
+#  else
+#    echo "$space x-, y- and z- values all equal? ..." no
+#    unset pass
+#  endif
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 popt-tet3.$ext
+  echo -n "         ..." ; $add0 popt-tetk.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer popt-tet3.$ext
+  echo -n "         ..." ; $poszer popt-tetk.$ext
+endif
+
+zcmpmfiles_res_0 chk85 "Max deviation in $testout from reference $refout" 0.04 pass 4 $testout $refout
+chk85:
+if (! -e $testdir/popt-tet3.$ext) goto chk85a
+zcmpmfiles_res_0 chk85a "Max deviation in popt-tet3.$ext from reference $testdir/popt-tet3.$ext" 0.04 pass 4 popt-tet3.$ext $testdir/popt-tet3.$ext
+chk85a:
+if (! -e $testdir/popt-tetk.$ext) goto chk85b
+zcmpmfiles_res_0 chk85b "Max deviation in popt.$ext from reference $testdir/popt-tetk.$ext" 0.04 pass 4 popt.$ext $testdir/popt-tetk.$ext
+chk85b:
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 8 PASSED"
+else
+    echo "$space test 8 FAILED"
+    set failed = ($failed 8)
+endif
+
+chk8e:
+
+echo $joblist | grep 9 >/dev/null
+if ($status) goto chk9e
+
+cat <<EOF
+
+         --- Test case 9 ($testdir/ctrl.$ext).  Nonlinear optics ---
+EOF
+if ($?quiet) then
+else if ($ext == "sic") then
+cat <<EOF
+         The SiC test calculates chi2(1,2,3)
+
+EOF
+endif
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chk9e
+endif
+grep TESTNLO $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TESTNLO in file $testdir/ctrl.$ext ... skipping test"
+goto chk9e
+endif
+query chk91 chk9e 'run this test'
+chk91:
+# ... Look for executables
+findcmd chk91a rdcmd "$path" "$topdir"
+chk91a:
+findcmd chk91b lm "$path" "$topdir"
+chk91b:
+findcmd chk91c lmstr "$path" "$topdir"
+chk91c:
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk9e
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+runrdcmd chk92 %11f $testout "-cat:TESTNLO --noerr ctrl.$ext"
+chk92:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+if ($?quiet) goto chk94
+call diffiles chk94 "$testout $refout"
+chk94:
+
+# ... Check that FA total energy is within tol of reference
+set shgee   =  `cat $testout | grep shg_stat_ee= | sed -n 1,1p | awk '{print $10}'`
+set shgeer  =  `cat $refout | grep shg_stat_ee= | sed -n 1,1p | awk '{print $10}'`
+set shgei2  =  `cat $testout | grep shg_stat_ei2= | sed -n 1,1p | awk '{print $10}'`
+set shgei2r =  `cat $refout | grep shg_stat_ei2= | sed -n 1,1p | awk '{print $10}'`
+set shgei3  =  `cat $testout | grep shg_stat_ei3= | sed -n 1,1p | awk '{print $10}'`
+set shgei3r =  `cat $refout | grep shg_stat_ei3= | sed -n 1,1p | awk '{print $10}'`
+set shg     =  `cat $testout | grep shg_stat= | sed -n 1,1p | awk '{print $10}'`
+set shgr    =  `cat $refout | grep shg_stat= | sed -n 1,1p | awk '{print $10}'`
+
+echo ' '
+call qprint chk9pa "$space ... automatic pass checks :"
+chk9pa:
+
+set tol = .005
+
+compare_res chk9ca "shg (ee)" $shgee $shgeer $tol  pass
+chk9ca:
+compare_res chk9cb "shg (ei2)" $shgei2 $shgei2r $tol  pass
+chk9cb:
+compare_res chk9cc "shg (ei3)" $shgei3 $shgei3r $tol  pass
+chk9cc:
+compare_res chk9cd "shg (tot)" $shg $shgr $tol  pass
+chk9cd:
+
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 9 PASSED"
+else
+    echo "$space test 9 FAILED"
+    set failed = ($failed 9)
+endif
+
+chk9e:
+
+echo $joblist | grep 10 >/dev/null
+if ($status) goto chkae
+
+cat <<EOF
+
+         --- Test case 10 ($testdir/ctrl.$ext). Nonequilibrium optics ---
+EOF
+if ($?quiet) then
+else if ($ext == "ogan") then
+cat <<EOF
+
+         This nonequilibrium test employs distinct hole and electron quasi-Fermi levels (imref):
+         just below the valence band and above the conduction band, respectively.
+         For absorption   (OPTICS_MODE=8) opt-abs.ogan looks similar to opt-samp.ogan (except the k-mesh is finer)
+         For luminescence (OPTICS_MODE=9) opt-lum.ogan has a sharp peak near the fundamental gap.
+
+EOF
+endif
+
+set pass
+set refout=$testdir/out.abs.$ext testout=out.$ext
+if (! -e $testdir/ctrl.$ext) then
+echo "$space no file $testdir/ctrl.$ext ... skipping test"
+goto chkae
+endif
+grep TESTABS $testdir/ctrl.$ext >/dev/null
+if ($status) then
+echo "$space no TESTABS in file $testdir/ctrl.$ext ... skipping test"
+goto chkae
+endif
+query chka1 chkae 'run this test'
+chka1:
+# ... Look for executables
+findcmd chka1a rdcmd "$path" "$topdir"
+chka1a:
+findcmd chka1b lm "$path" "$topdir"
+chka1b:
+findcmd chka1c lmstr "$path" "$topdir"
+chka1c:
+
+if ($?haveout) goto chka2
+
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext"
+             rm -f *.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chkae
+endif
+echo "$space cp $testdir/{*.$ext} ."
+             cp $testdir/{*.$ext} .
+echo "$space rm -f opt.$ext"
+             rm -f opt.$ext
+echo "$space rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext"
+             rm -f jdos-tet.$ext opt-tet.$ext opt-nwtet.$ext opt-samp.$ext
+
+runrdcmd chka2 %11f $testout "-cat:TESTABS --noerr ctrl.$ext"
+chka2:
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+set testout=opt-abs.$ext refout=$testdir/opt-abs.$ext
+if ($?quiet) goto chkap
+call diffiles chka4 "$testout $refout"
+chka4:
+
+chkap:
+echo ' '
+call qprint chkapa "$space ... automatic pass checks :"
+chkapa:
+
+awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+if (! $status) then
+  echo "$space x-, y- and z- values all equal? ..." yes
+else
+  echo "$space x-, y- and z- values all equal? ..." no
+  unset pass
+endif
+
+zcmpmfiles_res_0 chka5 "Max deviation in $testout from reference $refout" 0.002 pass 4 $testout $refout
+chka5:
+
+set optsamplast = `cat $refout| tail -1 | sed -n 1,1p`
+
+set diffe = `awk -vlast=$optsamplast[2] '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+  echo "$space last point in opt.$ext within .003 of reference $optsamplast[2] ? ... yes"
+else
+  echo "$space last point in opt.$ext within .003 of reference $optsamplast[2] ? ... no"
+  unset pass
+endif
+
+set testout=opt-lum.$ext refout=$testdir/opt-lum.$ext
+if ($?quiet) goto chkap2
+echo 
+call diffiles chka42 "$testout $refout"
+chka42:
+
+chkap2:
+echo ' '
+call qprint chkapa2 "$space ... automatic pass checks :"
+chkapa2:
+
+awk '{if ($1 != "%" && ($2 != $3 || $2 != $4)) {exit -1}}' $testout
+if (! $status) then
+  echo "$space x-, y- and z- values all equal? ..." yes
+else
+  echo "$space x-, y- and z- values all equal? ..." no
+  unset pass
+endif
+
+zcmpmfiles_res_0 chka52 "Max deviation in $testout from reference $refout" 0.002 pass 4 $testout $refout
+chka52:
+
+# set optsamplast = `cat $refout| tail -1 | sed -n 1,1p`
+# set diffe = `awk -vlast=$optsamplast[2] '{print ($2-last); if ($2 == "exit") exit}' $testout | tail -1 | sed -n 1,1p`
+# if (`echo $diffe | awk '{{k=($1)>0?($1):(-$1);} print (k<.003)}'`) then
+#   echo "$space last point in opt.$ext within .003 of reference $optsamplast[2] ? ... yes"
+# else
+#   echo "$space last point in opt.$ext within .003 of reference $optsamplast[2] ? ... no"
+#   unset pass
+# endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 10 PASSED"
+else
+    echo "$space test 10 FAILED"
+    set failed = ($failed 10)
+endif
+
+chkae:
+
+echo ' '
+if ($?clean) then
+    exit 0
+else if ($#failed <= 1) then
+    echo "$space all tests PASSED"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit -1
+endif
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+    if ($retval != 0) goto cleanup
+    goto $quitjob
+  endif
+
+  if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+    set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+    echo "$space $callarg  >> $appfile"
+    $callarg >> $appfile
+    set retval = $status
+  else
+    echo "$space $callarg  > $outfile"
+    $callarg > $outfile
+    set retval = $status
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- runrdcmd --------------
+exit
+runrdcmd:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space Invoking rdcmd will execute the following job(s):"
+    $rdcmd -f:$rdcmdfmt --n $callarg
+    echo "$space $rdcmd '-f:rdcmd:%2f' $callarg"
+                 $rdcmd '-f:rdcmd:%2f' $callarg
+    set retval = $status
+  else
+    echo "$space Invoking  rdcmd $callarg  will execute the following job(s): (written to $outfile)"
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg >>& $appfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >>& $appfile
+      set retval = $status
+    else
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg  >& $outfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >& $outfile
+      set retval = $status
+    endif
+  endif
+
+  if ($retval == 0) then
+    echo "$space Job(s) completed successfully; output in $outfile"
+    if ($?poszer) then
+      echo -n "         ..." ; $poszer $outfile
+    else if ($?add0) then
+      echo -n "         ..." ; $add0 $outfile
+    endif
+    goto $quitjob
+  else
+    echo "$space ...oops... the following command returned with nonzero exit status:"
+    echo -n "$space   "
+    grep $rdcmd:t{:} $outfile | tail -1 | sed 's/rdcmd:  //'
+    goto cleanup
+  endif
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... executable $prog_cmd not found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space job returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting"
+  exit $retval
+
+# ---------------- diffiles --------------
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = "$callarg"
+  query diff11 $quitjob "compare $files"
+diff11:
+  if ($?have_mc) then
+  set fn = ($files)
+    echo "$space mcx -f10f12.6 $fn[1] -p -p $fn[2] -- -tog -de -coll 2,3,4 -ccat -inc 'i>nr-20'  | grep -v rows"
+    echo "     energy       epsx        epsy        epsz        diffx      diffy       diffz"
+                 mcx -f10f12.6 $fn[1] -p -p $fn[2] -- -tog -de -coll 2,3,4 -ccat -inc 'i>nr-20'  | grep -v rows
+  else
+    echo "$space diff $files | sed -n 1,50p"
+          diff $files | sed -n 1,50p
+  endif
+  goto $quitjob
+
+# ---------------- diffiles1 --------------
+exit
+diffiles1:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = "$callarg"
+  query diff12 $quitjob "compare $files"
+diff12:
+  echo "$space diff $files | sed -n 1,50p"
+               diff $files | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- zdiffiles --------------
+# File differences, with additional check for numerical differences
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+# Example: call zdiffiles chk69 "CPU 3 $testout $refout"
+exit
+zdiffiles:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffiles2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiff1 $quitjob "compare $files[1] $files[2]"
+zdiff1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffiles2:
+  if (! $?mcx) goto $quitjob   
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+#  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo 
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiff2  $quitjob "show comparison"
+zdiff2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zdiffilesx --------------
+# Identical to zdiffiles, but gmaxdif is accumulated
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+exit
+zdiffilesx:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffilesx2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiffx1 $quitjob "compare $files[1] $files[2]"
+zdiffx1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffilesx2:
+  if (! $?mcx) goto $quitjob   
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+  if (! $?gmaxdif) set gmaxdif = 0
+  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo 
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiffx2  $quitjob "show comparison"
+zdiffx2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zcmpmcx --------------
+# Compares numerical elements in two files read by mcx -cmpf
+# Checks for max absolute difference and unsets $passvar if
+# (1) difference>$toldif
+# (2) fewer ndiff differences encountered
+# usage: zcmpmcx retcall keyword testvar toldif ndiff prec passvar srcfile reffile
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout).
+#   toldif       : tolerance in maximum allowed deviation.  toldif<0 not used
+#   ndiff        : number of differences allowed.  ndiff<0 not used
+#   prec         : precision with with numbers are compared
+#   passvar      : if $passvar is null, check prints out keyword
+#                : otherwise, check prints out keyword only, if it is not blank
+#                : and varable $passvar is unset if criteria (1) and (2) are not met
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+# variable $mcx must point to the mcx calculator
+# Returns maxdif = max abs diff  and ndif = number of differences > prec
+# Returns retval = 0 if both criteria satisfied, retval > 0 if one is not satisfied
+#
+# Case passvar is "null", what is printed out:
+# If keyword is empty zcmpmcx is silent.  Example:
+#   zcmpmcx chk266 "" -1e-1 20 1e-4 null dos-mull.$ext $testdir/dos-mull.$ext
+# If keyword is not empty and passvar is null, zcmpmcx prints out keyword only.
+#   zcmpmcx chk266 "" -1e-1 20 1e-4 null dos-mull.$ext $testdir/dos-mull.$ext
+#
+# Case passvar is not null, $passvar may be unset.  zcmpmcx prints out an internal string
+# If keyword is empty it zcmpmcx makes its own header, "check $srcfile".  Example
+#   zcmpmcx chk266a "" -1 40 1e-4 pass dos-mull.$ext $testdir/dos-mull.$ext
+# Prints out something like:
+#   check dos-mull.gdn : ndiff (33) within tol (40)? ... yes
+# Otherwise zcmpmcx uses keyword for the header.  Example:
+#   zcmpmcx chk266a "... checking" -1 40 1e-4 pass dos-mull.$ext $testdir/dos-mull.$ext
+#   prints out something like
+#   ... checking ndiff (33) within tol (40)? ... yes
+exit
+zcmpmcx:
+  set quitjobl=$retcall
+# echo $retcall $keyword $toldif $ndiff $prec $passvar $srcfile $reffile
+
+  if (! $?mcx) then
+    echo "no mcx in path ... no check made"
+    goto $retcall
+  endif
+
+  set retval = 0
+
+  set mcxarg = "-cmpf~fn1=$srcfile~fn2=$reffile"
+  if (! $?mcincl) set mcincl
+  if (! $?mcexcl) set mcexcl
+  if (! $?mcterm) set mcterm
+  set mcxarg = "$mcxarg$mcexcl$mcincl$mcterm"
+  if ($?prec) then
+    set mcxarg = "$mcxarg~tol=$prec"
+  endif
+  set maxdif = `$mcx $mcxarg~max`
+  set ndif   = `$mcx $mcxarg~ndiff`
+
+  if ("$keyword" != "") then
+    echo -n "$space $keyword"
+  endif
+
+  set res = "yes"
+  if ($ndiff > 0 && `echo $toldif | awk '{print  ($1 > 0)}'`) then
+     if (`echo $maxdif $toldif | awk '{print  ($1 <= $2)}'` == 0) set res = "no"
+     if ($res == "no") set retval = 1
+     if ($passvar != "null") then
+       if ("$keyword" == "") then
+         echo -n "$space check $srcfile : "
+       endif
+       echo -n " max deviation ($maxdif) within tol ($toldif)? ..." $res";"
+     endif
+     set res = "yes"
+     if ($ndif >= $ndiff) set res = "no"
+     if ($passvar != "null") then
+       echo "  ndiff ($ndif) within tol ($ndiff)? ..." $res
+     endif
+     if ($res == "no") set retval = 1
+  else if (`echo $toldif | awk '{print  ($1 > 0)}'`) then
+     if (`echo $maxdif $toldif | awk '{print  ($1 <= $2)}'` == 0) set res = "no"
+     if ($passvar != "null") then
+       if ("$keyword" == "") then
+         echo -n "$space check $srcfile : "
+       endif
+       echo " max deviation ($maxdif) within tol ($toldif)? ..." $res
+     endif
+     if ($res == "no") set retval = 1
+  else if ($ndiff > 0) then
+     if ($ndif >= $ndiff) set res = "no"
+     if ($res == "no") set retval = 1
+     if ($passvar != "null") then
+       if ("$keyword" == "") then
+         echo -n "$space check $srcfile : "
+       endif
+       echo " ndiff ($ndif) within tol ($ndiff)? ..." $res
+     endif
+#  else  No checks made
+
+  endif
+
+  if ($passvar != "null") then
+    if ($retval > 0) unset $passvar
+  endif
+  goto $retcall
+
+# ---------------- compare_res --------------
+# Compares two numbers $testvar-$refvar and unsets $passvar if |testvar-refvar|<tol
+# usage: compares_res retcall keyword testvar refvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   refvar       : second number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar-refvar|<tol
+exit
+compare_res:
+  set quitjob=$retcall
+# echo $retcall $keyword $testvar $refvar $tol $passvar
+  echo -n "$space $keyword ($testvar) within tol ($tol) of reference ($refvar)? ... "
+  if (`echo $testvar $refvar | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- compare_res_0 --------------
+# Compares a number $testvar and unsets $passvar if |testvar|<tol
+# usage: compares_res_0 retcall keyword testvar tol passvar
+# Example:
+# compare_res_0 chk274a "Max deviation in pdos from reference" $retval $pdostol pass
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar|<tol
+exit
+compare_res_0:
+  set quitjob=$retcall
+#  echo $retcall $keyword $testvar $tol $passvar
+ echo -n "$space $keyword ($testvar) smaller than tol ($tol)? ... "
+  if (`echo $testvar 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg to line(s) in file $refout":
+  grep $callarg $testout
+  if (`cat $testout | grep $callarg | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep $callarg
+  goto $quitjob
+
+# ---------------- zcmpmfiles_res_0 --------------
+# Compares two files, stripping all but numerical fields.
+# Checks for max absolute difference and unsets $passvar if difference<$tol
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# usage: zcmpmfiles_res_0 retcall keyword testvar tol passvar ndig srcfile reffile
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if |testvar|<tol
+#   ndig         : number of digits numbers in file are stripped to
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+# Example:
+# zcmpmfiles_res_0 chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext.gz
+exit
+zcmpmfiles_res_0:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile
+
+  unset retval
+  call zcmpmfiles zcmpmfilesx "$ndig $srcfile $reffile"
+zcmpmfilesx:
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: n test-file reference-file
+# |n| = number of digits which numbers are truncated to.
+# If n<0, sort files before comparing them
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = number of differences in reduced files
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+  if ($digits < 0) then
+    @ digits = - $digits
+    set lsort
+  endif
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+# set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; print "" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  if ($?lsort) then
+    $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+    $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+  else
+    $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+    $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+  endif
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) rm -f $fn1 $fn2
+  if ($retval == 0) goto $quitjob
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- zcmpmfiles --------------
+# Compares two files, treating each field as a number.
+# Call arguments should contain 3 strings: no-digits test-file reference-file
+# files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = max numerical difference
+# Example :  call zcmpmfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpmfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+
+  set retval = `diff -y --width=300 $fn1 $fn2 | grep '|' | awk -v top=0 '{n=split($0,a,"|"); n1=split(a[1],b1); n2=split(a[2],b2); { j=0; while (j++ < n1) if (j <= n1 && j<=n2) {x = (b1[j]-b2[j])>0?(b1[j]-b2[j]):(b2[j]-b1[j]); top = (top-x)>0?top:x; }}} END {printf "%12.4e\n", top}'`
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] job-list
+
+   Job:    tests
+     1     (GaN,MnGaAs)  optics, using old tetrahedron integration,
+                         contribution to Im eps resolved into band pairs
+     2     (GaN,MnGaAs)  optics, sampling
+     3     (GaN)         standard tetrahedron integration
+     4     (GaN,Fe)      joint DOS
+     5     (GaN,Fe)      orbital-resolved joint DOS
+     6     (GaN,Fe,Si)   k-resolved joint DOS
+     7     (GaN,Fe)      k-resolved single DOS. 
+                         The Fe test illustrates popt, the k-resolved optics editor
+     8     (GaN)         pair-resolved and/or k-resolved Im eps
+     9     (SiC)         nonlinear optics
+    10     (GaN)         Absorption, emission with nonequilibrium Fermi levels
+
+EOF
+exit
+
+# ---------------- usage: --------------
+usage:
+cat <<EOF
+ usage: test.optics [switches] [file-extension] [testcase-list | --all]
+        e.g., "test.optics fe 5"
+        If file-extension is missing, test.optics uses ogan
+        Switches:
+        --list       lists the tests you can run
+        --quiet      runs tests with minimal output and without prompting user
+        --no-iactive runs tests without prompting user
+        --all        run through a default list of test cases
+        --noplot     skip any steps that generate a plot'
+        --clean      clean up files generated by this script
+        --add0       add suppressed or leading zeros in output for real numbers \`.nnn'
+        --poszer     strips (-) sign from numbers represented as 0
+EOF
+exit -1

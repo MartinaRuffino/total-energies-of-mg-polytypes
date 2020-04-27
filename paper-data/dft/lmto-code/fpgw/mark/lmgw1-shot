@@ -1,0 +1,475 @@
+#!/bin/tcsh -f
+
+#  Updates
+#     1 Jun 10  Added --vxcsig
+#    30 Jun 05  Added --version switch and changes for compatibility with ocotillo
+#    23 Aug 04  Altered --job switch to work like lmgwsc --save
+
+alias findcmd  'set retcall = \!\!:1 ; set prognam = \!\!:2 ; set prog_cmd = \!\!:3 ; set path_name = \!\!:4 ; set make_path = \!\!:5 ; goto findcmd'
+alias infgwx 'infgw | awk '"'"/eQP/, /parameters/"'" '| grep -v parameters'
+alias walltime  'set retcall = \!\!:1; set time_var = \!\!:2 ; set time_start = \!\!:3; goto walltime'
+
+##ifdef# OCOTILLO
+# set thisfile = $HOME/nbin/lmgw1-shot
+##else
+set thisfile = $0
+##endif
+set thisjob = ($thisfile $*)
+set thisdir = $thisfile:h
+if ($thisdir == $thisfile) set thisdir = "./"
+set vsn
+set thishost = `echo $HOST | awk -F . '{print $1}'`
+set lmgw = $thisdir/lmgw
+
+set outlist = (GWIN0 GWIN_V2 TOTE.UP TOTE2.UP TOTE.DN TOTE2.DN QPU QPD)
+if (-e GWinput) set outlist = (GWinput TOTE.UP TOTE2.UP TOTE.DN TOTE2.DN QPU QPD)
+
+if ($#argv > 1) goto defaults
+message:
+  echo  'usage: lmgw-1shot [-switches] extension'
+
+  echo  '       Shell script for for one-shot GW calculations.'
+  echo  '       Invokes  lmgw  for computation itself;'
+  echo  '       lmgw1-shot additionally saves and retrieves minimum data in subdirectories.'
+  echo  ' '
+  echo  '       ... the following switches are used by lmgw1-shot'
+  echo  '       -job=DIR'
+  echo  '         After execution, save minimum output into directory DIR.'
+  echo  '         The files saved contain sufficient information to repeat this calculation;'
+  echo  '         in particular the current comment is stored in file DIR/job.'
+  echo  '         The copying is carried out by invoking this script:'
+  echo  '             savegwfiles --job=(current job) --mkdir extension dir'
+  echo  '          Invoke "savegwfiles" without arguments to see options and which files are saved.'
+  echo  ' '
+  echo  '       --jobg=DIR'
+  echo  '         Same as -job=DIR, but in addition,'
+  echo  '         before executing gw script, copy the contents of directory DIR into the c.w.d.'
+  echo  ' '
+  echo  '       --noexec'
+  echo  '         show what lmgw1-shot and lmgw would execute without executing them'
+  echo  ' '
+  echo  '       --infgw'
+  echo  '         invoke infgw to display input parameters and results from QPU file'
+  echo  ' '
+  echo  '       --infgwx'
+  echo  '         invoke infgwx to save QPU results in file "dat"'
+  echo  ' '
+  echo  '       --infgwe'
+  echo  '         invoke "infgw --efile" to save QPU results in file "dat"'
+  echo  ' '
+  echo  '       --xqp:args'
+  echo  '         summarize results of QPU file (writes to file dat)'
+  echo  '         Example:'
+  echo  '         "--xqp:xqp -lda -lst=1,2,3,5,6 -qp=0.00,0.00,0.00 -qp=0.50,0.50,0.50 -qp=0.00,0.00,1.00 ."'
+  echo  ' '
+  echo  '       --autoht'
+  echo  '         decide whether --ht switch should be used based on 3rd line of GWIN_V2 file'
+  echo  ' '
+  echo  '       --spinp'
+  echo  '         calculation is spin-polarized (affects generation of dat and dat2 files)'
+  echo
+  echo  '       ... the following switches are passed to lmgw'
+  echo  '       --openmp'
+  echo  '       --vxcsig'
+  echo  '       --metal'
+  echo  '       --insul=*'
+  echo  '       --noexec'
+  echo  '       --ht'
+  echo  '       --ht=no'
+  echo  '       --big'
+  echo  '       --no-scrho'
+  echo  '       --scrho'
+  echo  '       --sc'
+  echo  '       --bin=* | -bin=*'
+  echo  '       --start=* | -start=*'
+  echo  '       --stop=*'
+  echo  '       --lmbin=* | -lmbin=*'
+  echo  '       --lmgw1in=* | -lmgw1in=*'
+  echo  '       --maxit=* |  -maxit=*'
+  echo  '       --hsfp0*'
+  echo  '       --tol=* | -tol=*'
+  echo  '       --code2'
+  echo  '       --spex | --spexi | --spexf | --spexfi'
+  echo  '       --iter=* | -iter=*'
+  echo  '       -v*=*'
+  echo  '       --multitet'
+  echo  '       --wt'
+  exit -1
+
+# ---------------- walltime --------------
+exit
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label program-name executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prognam = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+# if (! $?quiet) then
+#   if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+#   if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+# endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir $maindir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+exit
+# Returns wall-clock time.
+# Usage: walltime return_label time_var time_start
+walltime:
+echo `date +%s` > datenow~; set datenow = `cat datenow~`
+@ $time_var = ( $datenow - $time_start )
+goto $retcall
+
+# --- Defaults ---
+defaults:
+set xargs
+
+#  set verbose
+
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+# echo parsing $1
+  set arg1 = "$1"; shift
+  switch ("$arg1")
+
+# these are switches to pass on to lmgw
+    case "--metal":
+    case "--wt":
+    case "--insul=*":
+    case "--hsfp0*":
+    case "--noexec":
+    case "--vxcsig":
+    case "--ht":
+    case "--big":
+    case "--no-scrho":
+    case "--scrho":
+    case "--sc":
+    case "--bin=*":
+    case "-bin=*":
+    case "--lmbin=*":
+    case "-lmbin=*":
+    case "--start=*":
+    case "--code2":
+    case "--spexfi":
+    case "--spexf":
+    case "--spexi":
+    case "--spex":
+    case "-start=*":
+    case "--stop=*":
+    case "--lmgw1in=*":
+    case "-lmgw1in=*":
+    case "--maxit=*":
+    case "-maxit=*":
+    case "--tol=*":
+    case "-tol=*":
+    case "--iter=*":
+    case "-iter=*":
+    case "--multitet":
+    case "--nbando":
+    case "--lmv6":
+    case "--mpi=*":
+    case "--openmp=*":
+    case "--openmp":
+    case "-v*=*":
+      set xargs=($xargs $arg1)
+      if ("$arg1" == "--noexec") set noexec
+      breaksw
+
+    case "--autoht":
+      set autoht
+      breaksw
+
+    case "--ht=no":
+       set noht
+       breaksw
+
+    case "--spinp":
+      set spinp
+      breaksw
+
+    case "--jobg=":
+    case "-jobg=":
+      set getdir; set savedir = "$1"; shift
+      breaksw
+
+    case "--jobg=*":
+      set getdir; set savedir = `echo $arg1 | sed s/--job=//`
+      breaksw
+
+    case "-jobg=*":
+      set getdir; set savedir = `echo $arg1 | sed s/-job=//`
+      breaksw
+
+    case "--job=":
+    case "-job=":
+      set savedir = "$1"; shift
+      breaksw
+
+    case "--job=*":
+      set savedir = `echo $arg1 | sed s/--job=//`
+      breaksw
+
+    case "-job=*":
+      set savedir = `echo $arg1 | sed s/-job=//`
+      breaksw
+
+    case "--infgwe":
+      set infgwe
+      breaksw
+
+    case "--infgwx":
+      set infgwx
+      breaksw
+
+    case "--infgw":
+      set infgw
+      breaksw
+
+    case "--xqp:*":
+#        set verbose
+      set xqp = "`echo $arg1 | sed 's/:/ /' | sed 's/--//'`"
+      breaksw
+
+    case "--help":
+    case "--h":
+      goto message
+
+    case "--version":
+      set vsn
+      breaksw
+
+    default:
+      echo "lmgw1-shot: unrecognized switch $arg1"
+      goto message
+  endsw
+end
+if ($#argv < 1) goto message
+if ($#argv > 1) then
+  echo "lmgw1-shot (warning) : extra arguments ignored $2 ..."
+endif
+
+if ($?savedir) then
+if (! -d $savedir) then
+  echo "lmgw1-shot (warning): no directory $savedir ... creating it "
+  mkdir -p -v $savedir
+endif
+if ($?getdir) then
+  if (`ls $savedir | wc -w` > 0) then
+    echo "  lmgw1-shot : copy files from directory $savedir :" `ls $savedir`
+    if (! $?noexec)  then
+      cp -p $savedir/* .
+    endif
+  else
+    echo "  lmgw1-shot : no files in directory $savedir ... nothing to copy"
+  endif
+endif
+endif
+
+# --- Error if certain files missing ---
+set lst = (ctrl.$1 rst.$1 GWinput)
+foreach i ($lst)
+if (! -r $i) then
+  echo "lmgw1-shot (abort): missing or unreadable file $i"
+  exit -1
+endif
+end
+
+
+
+# --- Decide if --ht switch used, whether GWIN_V2 has a nonzero omegac ---
+if ($?autoht) then
+  if (-e GWinput) then
+    set omegac
+    if (`grep -E ^omg_c GWinput | awk '{print $1}'` == "omg_c") set omegac = `grep -E ^omg_c GWinput | awk '{print $2}'`
+  else
+    echo "lmgw1-shot: --autoht specified but no GWinput"
+    exit -1
+  endif
+  if (`echo $omegac 0 0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k>0)}'` == 1) set xargs=($xargs --ht)
+endif
+
+# --- Decide whether to add --ht switch, and whether --ht is allowed ---
+if (`echo $xargs | awk '{print match($0,"--ht")}'` > 0 || $?noht == 1) then
+else
+  set xargs = (--ht $xargs)
+endif
+
+if (`echo $xargs | awk '{print match($0,"--spex")}'` == 0) then
+if (`echo $xargs | awk '{print match($0,"--ht")}'` > 0) then
+  if (-e GWinput) then
+    set omegac
+    if (`grep -E ^omg_c GWinput | awk '{print $1}'` == "omg_c") set omegac = `grep -E ^omg_c GWinput | awk '{print $2}'`
+    if (`echo $omegac 0 0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k>0)}'` == 0) then
+      echo "lmgw1-shot (abort): --ht switch not compatible with GWinput file"
+      exit
+    endif
+#   else
+#     set omegac = `head -3 GWIN_V2 | awk '{getline; getline; print $2}'`
+#     if (`echo $omegac 0 0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k>0)}'` == 0) then
+#       echo "lmgw1-shot (abort): --ht switch not compatible with GWIN_V2 file"
+#       exit
+#     endif
+  endif
+endif
+endif
+
+# --- Handle --version switch ---
+if ($?vsn && `echo $xargs | awk '{print match($0,"--spex")}'` == 0 && ! $?noexec) then
+  $lmgw $xargs --version >version
+  echo "  lmgw1-shot: wrote to file version: `cat version`"
+else if ($?vsn && `echo $xargs | awk '{print match($0,"--spex")}'` > 0 && ! $?noexec) then
+  $lmgw $xargs --version >version
+  echo "  lmgw1-shot: wrote to file version: `cat version`"
+endif
+
+
+walltime w00x tstart 0
+w00x:
+
+# --- exec gw shell script ---
+if (! -e $lmgw) then
+  echo "lmgw1-shot : no script $lmgw ... aborting"
+  exit -1
+endif
+echo "  lmgw1-shot: invoking $lmgw $xargs $1"
+$lmgw $xargs $1
+if ($status != 0) then
+  echo "  lmgw1-shot: $lmgw returned with nonzero exit status ... aborting"
+  exit
+endif
+if (`echo $xargs | awk '{print match($0,"--stop=setup")}'` > 0) then
+  echo 'lmgw1-shot quitting (stop=setup)'
+  exit
+endif
+
+# Wall clock time elapsed since beginning of execution
+walltime w00y tnow $tstart
+w00y:
+if ($tnow == 0) then
+  set tnow
+else
+  set tnow = "elapsed wall time {$tnow}m"
+endif
+
+# --- Postprocessing, spex calculation ---
+if (`echo $xargs | awk '{print match($0,"--spex")}'` > 0) then
+
+if (! $?noexec) then
+set have_extract_time = `which gw-extract-prodbas-and-time-from-output`
+if (-x "$have_extract_time") then
+  echo "  lmgw1-shot: " `$have_extract_time -spex`
+endif
+endif
+
+echo "  lmgw1-shot: invoking gw-extract-qp-from-spex-output"
+if (! $?noexec) then
+if (`echo $xargs | awk '{print match($0,"--insul=[0-9]+")}'` > 0) then
+  set nvbm = `echo $xargs | awk '{match($0,"--insul=([0-9]+)",a); {print a[1]}}'`
+  echo "              gw-extract-qp-from-spex-output -vbm=$nvbm lspex >dat"
+  gw-extract-qp-from-spex-output -vbm=$nvbm lspex >dat
+else
+  echo "                gw-extract-qp-from-spex-output lspex >dat"
+  gw-extract-qp-from-spex-output lspex >dat
+endif
+endif
+
+if ($?noexec) then
+  exit
+endif
+
+# ... copy output files back to savedir
+if ($?savedir) then
+  echo "    savegwfiles" -spex --job=\"$thisjob\" --mkdir $1 $savedir
+# echo "    cp $savedir/job ."
+  if (! $?noexec) then
+    savegwfiles -spex --job="$thisjob"   --mkdir $1 $savedir
+#   cp $savedir/job .
+    if (-x "$have_extract_time") then
+      $have_extract_time -spex > $savedir/timings
+    endif
+  endif
+endif
+
+# .. Invoke xqp
+if ($?xqp) then
+  $xqp
+endif
+
+# --- Postprocessing, fpgw calculation ---
+else
+set have_extract_time = `which gw-extract-prodbas-and-time-from-output`
+if (-x "$have_extract_time") then
+  echo "  lmgw1-shot:  `$have_extract_time` `date` $tnow $thishost"
+endif
+
+# --- Invoke infgw ---
+if ($?infgw) infgw
+
+# --- Invoke infgw ---
+if ($?infgwx || $?infgwe || $?xqp) then
+  set infgwarg = --qpu
+  if ($?infgwe) set infgwarg = --efile
+  if ($?spinp) then
+    echo "      cp QPU QP"
+    if (! $?noexec)    cp QPU QP
+    echo "    infgw $infgwarg >dat"
+    if (! $?noexec) then
+              infgw $infgwarg >dat
+    endif
+           echo "      cp QPD QP"
+    if (! $?noexec)    cp QPD QP
+    echo "    infgw $infgwarg >dat2"
+    if (! $?noexec) then
+              infgw $infgwarg >dat2
+    endif
+    set outlist = ($outlist dat dat2)
+  else
+    echo "    infgw $infgwarg >dat"
+    if (! $?noexec) then
+              infgw $infgwarg >dat
+    endif
+    set outlist = ($outlist dat)
+  endif
+endif
+
+# ... copy output files back to savedir
+if ($?savedir) then
+  echo "    savegwfiles" --w0byv0 --job=\"$thisjob\" --mkdir $1 $savedir
+# echo "    cp $savedir/job ."
+  if (! $?noexec) then
+    savegwfiles --w0byv0 --job="$thisjob" --mkdir $1 $savedir
+#   cp $savedir/job .
+    if (-x "$have_extract_time") then
+       $have_extract_time > $savedir/timings
+     endif
+  endif
+endif
+
+# .. Invoke xqp
+if ($?xqp) then
+  $xqp
+endif
+
+endif
+
+

@@ -1,0 +1,15 @@
+-uF90 ztoy.f ztoy.f~
+-uF90 ztoyy.f ztoyy.f~
+-uF90 zgeevs.f zgeevs.f~
+-uF90 dqinvb.f dqinvb.f~
+-uF90 dqinv.f dqinv.f~
+-uF90 yysbnv.f yysbnv.f~
+-uRIEEE -dIEEE d1mach.f d1mach.f~
+-uRIEEE -dIEEE r1mach.f r1mach.f~
+-uRIEEE -dIEEE i1mach.f i1mach.f~
+-uF90 yysbnv.f yysbnv.f~
+-uF90 yyqinv.f yyqinv.f~
+-uF90 -uLAPACK zhev.f zhev.f~
+-dPOINTER symvec.f symvec.f~
+
+

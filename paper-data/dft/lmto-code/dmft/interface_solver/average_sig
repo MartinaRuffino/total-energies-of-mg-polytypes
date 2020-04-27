@@ -1,0 +1,53 @@
+#!/bin/env python
+import numpy as np
+import sys
+
+
+def average(lst_file) :
+    """
+    all files must have the same structure :
+    w data1 data2 data3 ....
+    """
+    lst_sig = []
+    for f in  lst_file :
+        lst_sig.append(np.loadtxt(f).T)
+
+    lst_sig=np.array(lst_sig).T
+    W=lst_sig[:,0,0]
+    nb=len(lst_sig[0,:,0])
+
+    Sav=np.zeros(lst_sig[:,:,0].shape)
+    Serr=np.zeros(lst_sig[:,:,0].shape)
+    Sav[:,0]=W
+    Serr[:,0]=W
+
+    for i in range(len(lst_file)) :
+        if( not np.array_equal(W,lst_sig[:,0,1])) :
+            raise Exception('mesh not equal!!!')
+
+    for iw,w in enumerate(W) :
+        for i in range(1,nb) :
+            Sav[iw,i]=np.mean(lst_sig[iw,i,:])
+            Serr[iw,i]=np.std(lst_sig[iw,i,:])
+    return Sav,Serr
+
+if __name__ == '__main__':
+    import argparse
+    p = argparse.ArgumentParser(description='')
+    p.add_argument('lstfile',nargs='+')
+    p.add_argument('--plot',nargs='+',type=int)
+    args = p.parse_args()
+
+    lst_sig=[]
+    Nfile=len(args.lstfile)
+    header_average="average.py "
+    Sav,Serr=average(args.lstfile)
+
+
+    np.savetxt('average.txt',Sav,fmt='%1.8f')
+    np.savetxt('err.txt',Serr,fmt='%1.8f')
+    if (args.plot) :
+        import matplotlib.pyplot as plt
+        for i in args.plot :
+            plt.errorbar(Sav[:,0],Sav[:,i],yerr=Serr[:,i])
+            plt.show()

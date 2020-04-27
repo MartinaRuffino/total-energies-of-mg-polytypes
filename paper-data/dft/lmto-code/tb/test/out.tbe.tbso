@@ -1,0 +1,432 @@
+rdcmd:  tbe --nochkme tbso
+ -----------------------  START TBE (80000K)  -----------------------
+ WKINIT:  size= 80000K
+  
+ HEADER One sheet of "graphite." Tests spin-orbit, overlap, and crystal field.
+
+ TBE:      nbas = 2  nspec = 1  vn 7.11(TBE 9.13)  verb 40
+ special:  sharm
+ noncoll:  Non-coll, L.S coupling
+ TB:       rmaxh = 1.1, s-c multipoles: MRS theory, n-orthog TB, m-stat: F-P rl
+ bz:       metal, invit, mull=20 
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: R2Z I
+
+                Plat                                  Qlat
+   0.500000   0.866025   0.000000        1.000000   0.577350   0.000000
+  -0.500000   0.866025   0.000000       -1.000000   0.577350   0.000000
+   0.000000   0.000000   2.000000        0.000000   0.000000   0.500000
+   alat = 5.1  Cell vol = 229.758272
+
+ LATTC:  as= 2.000   tol=1.00E-16   alat= 5.10000   awald= 0.327
+         r1=  4.644   nkd= 245      q1=  3.918   nkg= 411
+
+ SGROUP: 4 symmetry operations from 2 generators
+ MKSYM:  found 4 space group operations
+         no attempt to add inversion symmetry
+ BZMESH:  8 irreducible QP from 32 ( 4 4 2 )  shift= T T T
+
+ TBZINT: use spherical dipole correction
+
+ TBZINT: zval=16 electrons from START category      
+
+ RLXSTP: Molecular statics (Fletcher-Powell) ..
+         relaxing 3 variables, 2 iterations
+         x-tol=0, g-tol=0, step=0.001 (pdim=30)
+
+ RDTBH: found global matrix elements with mode 3: Power decay
+
+ SHOTBM: 1 rules for pair potential
+ C,C:
+   type 20 (Quadratic), V0(d) = a1 eps + a2 eps^2, eps = d/d0 - 1
+   coeffs: a1= -1.7272 a2= 3.9211 d0= 2.9445
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for Hamiltonian
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:  -2.64   2.84   4.44  -1.26  -2.14   3.78   1.96  -5.50  -3.38   2.42
+      --:  -2.30   2.06   5.66  -0.84  -2.46   2.36   1.56  -4.58  -2.90   3.74
+      +-:  -3.08   3.96   4.90  -1.56  -3.52   2.90   1.74  -5.34  -3.84   3.34
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for Hamiltonian crystal field
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:  -2.20   2.62   3.96  -1.30  -2.52   2.38   2.14  -4.58  -2.72   3.20
+      --:  -2.10   3.42   4.36  -1.52  -2.90   2.46   2.04  -4.24  -3.30   2.96
+      +-:  -2.58   3.52   3.78  -1.94  -2.98   3.92   2.30  -4.50  -2.76   2.56
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for overlap
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:   0.38   0.22   0.46   0.16   0.28   0.34   0.26   0.42   0.30   0.10
+      --:   0.46   0.30   0.38   0.22   0.24   0.24   0.22   0.34   0.30   0.22
+      +-:   0.28   0.22   0.26   0.30   0.18   0.18   0.38   0.24   0.26   0.16
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for overlap crystal field
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:   0.24   0.30   0.38   0.12   0.32   0.24   0.32   0.34   0.22   0.16
+      --:   0.40   0.22   0.24   0.26   0.38   0.28   0.30   0.22   0.26   0.18
+      +-:   0.32   0.30   0.34   0.38   0.24   0.14   0.32   0.18   0.38   0.22
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ pairc, ib=  1:  10 neighbors in range  1.100
+ pairc, ib=  2:  10 neighbors in range  1.100
+ pairc:  20 pairs total  10 is max cluster size
+
+ (warning) forces do not include crystal field terms in off-diagonal MEs
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 16 0 2 0
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   -      16     0     2    16    18       0
+
+ BNDTB: Mulliken pop. analysis:  Bond charge, resolved by {class, l} pairs   
+        Number of Mulliken DOS channels =   20
+
+ SECMTB:  kpt 1 of 8, k=  0.00000  0.14434  0.12500
+ -4.9654 -4.9266 -2.8790 -2.8263 -2.6911 -1.9725 -1.8078 -1.4830 -1.3360
+ -1.1470 -1.0948 -0.9836 -0.9378 -0.9064 -0.8303 -0.6985 -0.6599 -0.5795
+ -0.4854 -0.4323 -0.3513 -0.2714 -0.2193 -0.1214 -0.0197  0.0165  0.1049
+  0.1843  0.4681  0.9558  1.5150  1.6170
+ nev, nevmx, nevec, ldim=  32  24  24  32  efmax= 10
+ 
+  BNDTB: Putting DOS weights onto disc ...
+
+ SECMTB:  kpt 2 of 8, k=  0.25000  0.28868  0.12500
+ -4.5752 -4.4103 -3.0880 -2.8574 -2.5897 -2.2023 -1.9239 -1.6336 -1.3376
+ -1.1946 -1.1052 -1.0426 -0.9707 -0.8954 -0.8584 -0.7907 -0.7033 -0.6409
+
+ SECMTB:  kpt 3 of 8, k=  0.50000  0.43301  0.12500
+ -4.2859 -3.8974 -3.2088 -2.8937 -2.7556 -2.4382 -2.1126 -1.5172 -1.3646
+ -1.2308 -1.1480 -1.0442 -1.0101 -0.9309 -0.8780 -0.8078 -0.7576 -0.6771
+
+ SECMTB:  kpt 4 of 8, k=  0.75000  0.57735  0.12500
+ -4.8318 -4.7707 -3.0177 -2.8033 -2.6112 -1.9470 -1.7868 -1.6057 -1.3027
+ -1.2231 -1.1432 -1.0476 -0.9602 -0.9434 -0.7698 -0.7337 -0.6823 -0.6305
+
+ SECMTB:  kpt 5 of 8, k=  -0.25000  0.28868  0.12500
+ -4.5956 -4.4169 -3.0605 -2.8408 -2.5771 -2.2849 -1.9244 -1.5273 -1.3270
+ -1.2513 -1.1017 -1.0507 -0.9606 -0.9040 -0.8771 -0.7739 -0.7204 -0.6357
+
+ SECMTB:  kpt 6 of 8, k=  0.00000  0.43301  0.12500
+ -4.5969 -4.1416 -3.0615 -2.7577 -2.6873 -2.5070 -1.9723 -1.5036 -1.3835
+ -1.2636 -1.1298 -1.0719 -1.0150 -0.8908 -0.8318 -0.7129 -0.6943 -0.6248
+
+ SECMTB:  kpt 7 of 8, k=  0.25000  0.57735  0.12500
+ -3.9287 -3.7951 -3.3126 -3.1135 -2.7457 -2.4278 -2.2930 -1.5139 -1.3948
+ -1.2819 -1.1284 -0.9954 -0.9766 -0.9048 -0.8090 -0.7601 -0.7161 -0.6456
+
+ SECMTB:  kpt 8 of 8, k=  0.50000  0.72169  0.12500
+ -4.3313 -3.9145 -3.1581 -2.8815 -2.7546 -2.4423 -2.1024 -1.5205 -1.3661
+ -1.2419 -1.1499 -1.0473 -1.0135 -0.9286 -0.8779 -0.8097 -0.7587 -0.6784
+
+ BZWTS : --- Brillouin Zone sampling; N=0, W=.005 ---
+ N=0, W=0.005, E_F=-0.727073, sumev=-31.501272, entropy term: 0.000061, 16 electrons
+
+ Forces on atom    1    Species: C   
+  Coordinates:    0.50250000    0.29117513    0.00000000
+  From bands :    0.12072726    0.01189123    0.00000000
+  From pairs :   -0.02752567   -0.02697726    0.00000000
+  Total      :    0.09320159   -0.01508604    0.00000000
+
+ Forces on atom    2    Species: C   
+  Coordinates:    0.49750000   -0.29117513    0.00000000
+  From bands :   -0.12072726   -0.01189123    0.00000000
+  From pairs :    0.02752567    0.02697726    0.00000000
+  Total      :   -0.09320159    0.01508604    0.00000000
+
+ Maximum force= 0.094415 on atom 1 (C)
+  
+ tbtote: sum of all forces =   0.000       0.000       0.000    
+
+ Atom    1   Species C   
+  Charges: NL=3:    0.000000   2.573748   5.426252 (Total:   8.000000)
+         Moment:    0.000000  -0.343846  -0.476313
+  POS=  0.502500  0.291175  0.000000  Dq/e= -2.000000
+
+ Atom    2   Species C   
+  Charges: NL=3:    0.000000   2.573748   5.426252 (Total:   8.000000)
+         Moment:    0.000000  -0.343846  -0.476313
+  POS=  0.497500 -0.291175  0.000000  Dq/e= -2.000000
+ 
+ Tr[rho]         total   :       16.00000000
+                moment   :       -1.64031926
+ Tr[rho][H_0]       up   :      -12.30240378
+                  down   :      -15.27640607
+                 total   :      -27.57880985
+ band structure energy   :      -31.50127174
+ pair potential energy   :        5.02221125
+ reference energy        :      -12.63723349
+ total energy            :      -13.84182700
+ free energy             :      -13.84188772
+ 3PV              pair   :      -36.53253686
+                 bands   :      -21.38182481
+                 charges :        0.00000000
+                 total   :      -57.91436167
+ 
+#rdm: binary read failed...
+ RELAX: (warning) failed to read Hessian; set to unity
+ gradzr: begin  gtol=|1e-8|  gtll=0.25  dxmx=1e-3  F.P.  isw=141
+ gradzr new line 1:  g.h=-0.009142  g.(h-g)=0  max g=-0.0932  |grad|=0.0956  
+  p= 0.50250000 0.29117513 -0.2911751
+  g= -0.0932016 0.01508604 -0.0150860
+  h= 0.09320159 -0.0150860 0.01508604
+  rfalsi: new start  (c) ftol=9.14e-4  dxmn=0  dxmx=0.0107
+  rfalsi ir=-1: seek xn=0.010729430
+ RELAX line 1:  new line minimization;  max shift=1.00e-3  |g|=0.0956
+        Gradients:
+  -0.093   0.015  -0.015
+
+ Updated atom positions:
+  Site   Class                      Position(relaxed)
+   1      C          0.50350000(T)    0.29101327(T)    0.00000000(F)
+   2      C          0.49750000(F)   -0.29101327(T)    0.00000000(F)
+ 
+t mmom=-1.640319 sev=-27.57881 erep=5.022211 etot=-13.841827 emad=0 3pv=-57.914362 TS=.000061
+
+ pairc, ib=  1:  10 neighbors in range  1.100
+ pairc, ib=  2:  10 neighbors in range  1.100
+ pairc:  20 pairs total  10 is max cluster size
+
+ (warning) forces do not include crystal field terms in off-diagonal MEs
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 16 0 2 0
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   -      16     0     2    16    18       0
+
+ BNDTB: Mulliken pop. analysis:  Bond charge, resolved by {class, l} pairs   
+        Number of Mulliken DOS channels =   20
+
+ SECMTB:  kpt 1 of 8, k=  0.00000  0.14434  0.12500
+ -4.9654 -4.9268 -2.8793 -2.8264 -2.6912 -1.9727 -1.8074 -1.4823 -1.3364
+ -1.1461 -1.0951 -0.9839 -0.9381 -0.9066 -0.8302 -0.6985 -0.6600 -0.5795
+ -0.4854 -0.4319 -0.3510 -0.2726 -0.2193 -0.1213 -0.0194  0.0165  0.1051
+  0.1843  0.4681  0.9564  1.5125  1.6187
+ nev, nevmx, nevec, ldim=  32  24  24  32  efmax= 10
+ 
+  BNDTB: Putting DOS weights onto disc ...
+
+ SECMTB:  kpt 2 of 8, k=  0.25000  0.28868  0.12500
+ -4.5736 -4.4094 -3.0905 -2.8590 -2.5912 -2.1968 -1.9255 -1.6334 -1.3371
+ -1.1944 -1.1052 -1.0420 -0.9707 -0.8954 -0.8585 -0.7907 -0.7030 -0.6404
+
+ SECMTB:  kpt 3 of 8, k=  0.50000  0.43301  0.12500
+ -4.2828 -3.8960 -3.2134 -2.8946 -2.7552 -2.4383 -2.1132 -1.5171 -1.3645
+ -1.2300 -1.1479 -1.0440 -1.0097 -0.9312 -0.8781 -0.8076 -0.7575 -0.6770
+
+ SECMTB:  kpt 4 of 8, k=  0.75000  0.57735  0.12500
+ -4.8319 -4.7711 -3.0171 -2.8032 -2.6110 -1.9475 -1.7874 -1.6059 -1.3028
+ -1.2234 -1.1434 -1.0474 -0.9603 -0.9435 -0.7699 -0.7337 -0.6822 -0.6304
+
+ SECMTB:  kpt 5 of 8, k=  -0.25000  0.28868  0.12500
+ -4.5984 -4.4172 -3.0581 -2.8386 -2.5761 -2.2892 -1.9234 -1.5278 -1.3272
+ -1.2516 -1.1021 -1.0508 -0.9607 -0.9041 -0.8774 -0.7739 -0.7207 -0.6365
+
+ SECMTB:  kpt 6 of 8, k=  0.00000  0.43301  0.12500
+ -4.5957 -4.1416 -3.0626 -2.7592 -2.6869 -2.5062 -1.9726 -1.5034 -1.3832
+ -1.2633 -1.1294 -1.0719 -1.0151 -0.8907 -0.8318 -0.7128 -0.6942 -0.6247
+
+ SECMTB:  kpt 7 of 8, k=  0.25000  0.57735  0.12500
+ -3.9290 -3.7927 -3.3148 -3.1138 -2.7447 -2.4296 -2.2922 -1.5140 -1.3945
+ -1.2819 -1.1285 -0.9954 -0.9766 -0.9048 -0.8088 -0.7601 -0.7162 -0.6455
+
+ SECMTB:  kpt 8 of 8, k=  0.50000  0.72169  0.12500
+ -4.3371 -3.9165 -3.1526 -2.8803 -2.7538 -2.4430 -2.1011 -1.5210 -1.3663
+ -1.2434 -1.1502 -1.0477 -1.0138 -0.9284 -0.8780 -0.8099 -0.7588 -0.6785
+
+ BZWTS : --- Brillouin Zone sampling; N=0, W=.005 ---
+ N=0, W=0.005, E_F=-0.727245, sumev=-31.501931, entropy term: 0.000066, 16 electrons
+
+ Forces on atom    1    Species: C   
+  Coordinates:    0.50350000    0.29101327    0.00000000
+  From bands :    0.14548857    0.00574590    0.00000000
+  From pairs :   -0.03298803   -0.02538548    0.00000000
+  Total      :    0.11250054   -0.01963958    0.00000000
+
+ Forces on atom    2    Species: C   
+  Coordinates:    0.49750000   -0.29101327    0.00000000
+  From bands :   -0.14548857   -0.00574590    0.00000000
+  From pairs :    0.03298803    0.02538548    0.00000000
+  Total      :   -0.11250054    0.01963958    0.00000000
+
+ Maximum force= 0.114202 on atom 1 (C)
+  
+ tbtote: sum of all forces =   0.000       0.000       0.000    
+
+ Atom    1   Species C   
+  Charges: NL=3:    0.000000   2.573753   5.426247 (Total:   8.000000)
+         Moment:    0.000000  -0.343992  -0.476502
+  POS=  0.503500  0.291013  0.000000  Dq/e= -2.000000
+
+ Atom    2   Species C   
+  Charges: NL=3:    0.000000   2.573753   5.426247 (Total:   8.000000)
+         Moment:    0.000000  -0.343992  -0.476502
+  POS=  0.497500 -0.291013  0.000000  Dq/e= -2.000000
+ 
+ Tr[rho]         total   :       16.00000000
+                moment   :       -1.64098690
+ Tr[rho][H_0]       up   :      -12.30228722
+                  down   :      -15.27682734
+                 total   :      -27.57911456
+ band structure energy   :      -31.50193081
+ pair potential energy   :        5.02232234
+ reference energy        :      -12.63723349
+ total energy            :      -13.84237498
+ free energy             :      -13.84244105
+ 3PV              pair   :      -36.53292560
+                 bands   :      -21.38212018
+                 charges :        0.00000000
+                 total   :      -57.91504578
+ 
+  rfalsi ir=-5 x1=0.01073 f1=-0.01108 x2=0 f2=-0.009142: seek x=0.0214588602
+ RELAX line 1:  extrapolated along this line;  max shift=0.00200  |g|=0.116
+        Gradients:
+  -0.113   0.020  -0.020
+      Diagonal inverse Hessian:
+   1.000   1.000   1.000
+
+ Updated atom positions:
+  Site   Class                      Position(relaxed)
+   1      C          0.50450000(T)    0.29085141(T)    0.00000000(F)
+   2      C          0.49750000(F)   -0.29085141(T)    0.00000000(F)
+ 
+t mmom=-1.640987 sev=-27.579115 erep=5.022322 etot=-13.842375 emad=0 3pv=-57.915046 TS=.000066
+ Exit 0 TBE 
+ CPU time:    0.148s   Wall clock    0.193s   12:31:29 28.03.2014        on phpdl1.ph.kcl.ac.uk
+ wkinfo:  used   823 K  workspace of 80000 K   in   1 K calls
+rdcmd:  tbe tbso --nochkme -vmstat=0 --band~fn=syml
+ -----------------------  START TBE (80000K)  -----------------------
+ WKINIT:  size= 80000K
+  
+ HEADER One sheet of "graphite." Tests spin-orbit, overlap, and crystal field.
+
+ TBE:      nbas = 2  nspec = 1  vn 7.11(TBE 9.13)  verb 40
+ special:  sharm
+ noncoll:  Non-coll, L.S coupling
+ TB:       rmaxh = 1.1, s-c multipoles: MRS theory, n-orthog TB, trh, rho, spin
+ bz:       metal, invit, mull=20 
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: R2Z I
+
+                Plat                                  Qlat
+   0.500000   0.866025   0.000000        1.000000   0.577350   0.000000
+  -0.500000   0.866025   0.000000       -1.000000   0.577350   0.000000
+   0.000000   0.000000   2.000000        0.000000   0.000000   0.500000
+   alat = 5.1  Cell vol = 229.758272
+
+ LATTC:  as= 2.000   tol=1.00E-16   alat= 5.10000   awald= 0.327
+         r1=  4.644   nkd= 245      q1=  3.918   nkg= 411
+
+ SGROUP: 4 symmetry operations from 2 generators
+ MKSYM:  found 4 space group operations
+         no attempt to add inversion symmetry
+ BZMESH:  8 irreducible QP from 32 ( 4 4 2 )  shift= T T T
+
+ TBZINT: use spherical dipole correction
+
+ TBZINT: zval=16 electrons from START category      
+
+ RDTBH: found global matrix elements with mode 3: Power decay
+
+ SHOTBM: 1 rules for pair potential
+ C,C:
+   type 20 (Quadratic), V0(d) = a1 eps + a2 eps^2, eps = d/d0 - 1
+   coeffs: a1= -1.7272 a2= 3.9211 d0= 2.9445
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for Hamiltonian
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:  -2.64   2.84   4.44  -1.26  -2.14   3.78   1.96  -5.50  -3.38   2.42
+      --:  -2.30   2.06   5.66  -0.84  -2.46   2.36   1.56  -4.58  -2.90   3.74
+      +-:  -3.08   3.96   4.90  -1.56  -3.52   2.90   1.74  -5.34  -3.84   3.34
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for Hamiltonian crystal field
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:  -2.20   2.62   3.96  -1.30  -2.52   2.38   2.14  -4.58  -2.72   3.20
+      --:  -2.10   3.42   4.36  -1.52  -2.90   2.46   2.04  -4.24  -3.30   2.96
+      +-:  -2.58   3.52   3.78  -1.94  -2.98   3.92   2.30  -4.50  -2.76   2.56
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for overlap
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:   0.38   0.22   0.46   0.16   0.28   0.34   0.26   0.42   0.30   0.10
+      --:   0.46   0.30   0.38   0.22   0.24   0.24   0.22   0.34   0.30   0.22
+      +-:   0.28   0.22   0.26   0.30   0.18   0.18   0.38   0.24   0.26   0.16
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ SHOTBM: 1 rules for overlap crystal field
+ C,C:
+   type 3 (Power law decay), V(d) = a d^-b
+             sss    sps    pps    ppp    sds    pds    pdp    dds    ddp    ddd
+   coeff:   0.24   0.30   0.38   0.12   0.32   0.24   0.32   0.34   0.22   0.16
+      --:   0.40   0.22   0.24   0.26   0.38   0.28   0.30   0.22   0.26   0.18
+      +-:   0.32   0.30   0.34   0.38   0.24   0.14   0.32   0.18   0.38   0.22
+   decay:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      --:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+      +-:   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00   2.00
+   cutoff type 0 (no cutoff)
+
+ pairc, ib=  1:  10 neighbors in range  1.100
+ pairc, ib=  2:  10 neighbors in range  1.100
+ pairc:  20 pairs total  10 is max cluster size
+
+ (warning) forces do not include crystal field terms in off-diagonal MEs
+
+ Found fermi energy : -0.727245
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 16 0 2 0
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   -      16     0     2    16    18       0
+
+ Found fermi energy : -0.727245
+ suqlst: read qp for bands, mode 1
+
+ suqlst:  nq= 21   q1= 0.0000 0.5774 0.0000   q2= 0.0000 0.0000 0.0000
+
+ suqlst:  nq= 21   q1= 0.0000 0.0000 0.0000   q2= 0.3333 0.5774 0.0000
+
+ suqlst:  nq= 21   q1= 0.3333 0.5774 0.0000   q2= 0.0000 0.5774 0.0000
+ Exit 0 TBZINT: finished bands. 
+ CPU time:    0.108s   Wall clock    0.159s   12:31:29 28.03.2014        on phpdl1.ph.kcl.ac.uk
+ wkinfo:  used   823 K  workspace of 80000 K   in   1 K calls

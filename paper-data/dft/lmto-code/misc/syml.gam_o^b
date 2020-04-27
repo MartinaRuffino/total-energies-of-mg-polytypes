@@ -1,0 +1,53 @@
+# Use rdfile on this file for symmetry lines as functions a,b,c
+# R.S. Lattice vectors are: (units of a)
+#  1/2 -b/2a 0                P1
+#  1/2  b/2a 0                P2
+#  0    0    c/a              P3
+# Recip Lattice vectors are:  (units of 2pi/a)
+#  1   -a/b  0                Q1
+#  1    a/b  0                Q2
+#  0    0    1/c              Q3
+
+# Bravais lattice for Uranium
+% const a=5.401 b=a*2.056 c=a*1.734
+% var q11=1 q21=-a/b q31=0  q12=1 q22=a/b q32=0  q13=0 q23=0 q33=a/c
+
+Plat (units of a)
+1/2 {-b/2/a} 0
+1/2  {b/2/a} 0
+0     0      {c/a}
+  
+Qlat (units of 2pi/a)
+1   {-a/b}   0
+1    {a/b}   0
+0     0      {a/c}
+
+
+% vec G[3]   0    0    0
+% vec Y[3]   1/2  1/2  0
+% vec R[3]   0    1/2  1/2
+% vec S[3]   0    1/2  0
+% vec tt[3]  1/2  1/2  1/2
+% vec Z[3]   0    0    1/2
+% vec GC[3]   {q11*G(1)+q12*G(2)+q13*G(3)} {q21*G(1)+q22*G(2)+q23*G(3)} {q31*G(1)+q32*G(2)+q33*G(3)}
+% vec RC[3]   {q11*R(1)+q12*R(2)+q13*R(3)} {q21*R(1)+q22*R(2)+q23*R(3)} {q31*R(1)+q32*R(2)+q33*R(3)}
+% vec SC[3]   {q11*S(1)+q12*S(2)+q13*S(3)} {q21*S(1)+q22*S(2)+q23*S(3)} {q31*S(1)+q32*S(2)+q33*S(3)}
+% vec TC[3]   {q11*tt(1)+q12*tt(2)+q13*tt(3)} {q21*tt(1)+q22*tt(2)+q23*tt(3)} {q31*tt(1)+q32*tt(2)+q33*tt(3)}
+% vec YC[3]   {q11*Y(1)+q12*Y(2)+q13*Y(3)} {q21*Y(1)+q22*Y(2)+q23*Y(3)} {q31*Y(1)+q32*Y(2)+q33*Y(3)}
+% vec ZC[3]   {q11*Z(1)+q12*Z(2)+q13*Z(3)} {q21*Z(1)+q22*Z(2)+q23*Z(3)} {q31*Z(1)+q32*Z(2)+q33*Z(3)}
+
+# {GC}
+# {RC}
+# {SC}
+# {TC}
+# {YC}
+# {ZC}
+
+21 {RC}  {SC}      R to S
+31 {SC}  {GC}      S to G
+41 {GC}  {TC}      G to T
+31 {TC}  {ZC}      T to Z
+21 {ZC}  {GC}      Z to G
+31 {GC}  {YC}      G to Y
+
+0  0 0 0   0 0 0

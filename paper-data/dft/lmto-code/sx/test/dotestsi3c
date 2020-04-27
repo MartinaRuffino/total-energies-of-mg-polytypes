@@ -1,0 +1,25 @@
+echo "... dotestsi3c: make sigma(k) from 2C H as in 2C case (/dev/null)"
+rm *.si; cp sx/test/ctrl.si .; lmstr si >/dev/null
+lm -vnk=4 -vnit=0 si  >/dev/null
+rm -f out.3c ; touch out.3c
+echo '... 2C H to generate sigma(k) (file out.3c)'
+echo ' --------------------- 2C H to generate sigma(k) ------------------------ ' >>out.3c
+lm -vnk=4 -vnit=1 -vtim=f si -pr41,30 >>out.3c
+cp sigm.si sigm.2c
+echo '... 3C sigma(k), using 2C sigma(k)'
+echo ' --------------------- 3C sigma(k), using 2C sigma(k) ------------------------ ' >>out.3c
+lm -vnk=4 -vnit=1 -vtim=f -vtwoc=f si -pr41,30 >>out.3c
+echo '... 3C sigma(k), using 3C sigma(k), iter 2'
+echo ' --------------------- 3C sigma(k), using 3C sigma(k), iter 2 ------------------------ ' >>out.3c
+lm -vnk=4 -vnit=1 -vtim=f -vtwoc=f si -pr41,30 >>out.3c
+cp sigm.2c sigm.si
+echo '... 3C sigma(r), using 2C sigma(k)'
+echo ' --------------------- 3C sigma(r), using 2C sigma(k), iter 2 ------------------------ ' >>out.3c
+lm -vnk=4 -vnit=1 -vtim=f -vtwoc=f -csxopts=rssig si -pr41,30 >>out.3c
+echo '... 3C sigma(r), using 3C sigma(r)'
+echo ' --------------------- 3C sigma(r), using 3C sigma(r), iter 2 ------------------------ ' >>out.3c
+lm -vnk=4 -vnit=1 -vtim=f -vtwoc=f -csxopts=rssig si -pr41,30 >>out.3c
+
+echo ' '
+echo ' --------------------- compare out.3c with sx/test/out.3c ------------------------'
+diff out.3c sx/test/out.3c

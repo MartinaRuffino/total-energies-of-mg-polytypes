@@ -1,0 +1,978 @@
+<HTML><HEAD><TITLE>Command-line options </TITLE><STYLE><!--P{font-size : medium;} --></STYLE></HEAD><BODY bgcolor="#cccccc">
+<H1><B><FONT size="+2">Program executables and features activated by command-line options (v7.3)</FONT></B></H1>
+
+<H2><A name="section1"><FONT size="+2"> </FONT></A></H2>
+
+All of the programs have special branches that may be (and
+sometimes must be) set from command-line switches.
+<BR>
+Here is an example:
+<pre>  lmf cafeas -vns=4 -vnm=5 --rpos=pos </pre>
+
+Following unix style, switches always begin with `-'.  There are many
+command-line switches that are specific to a particular main program,
+while a number of others are common to several or all programs.
+
+<BR> Some switches have a single `-' ; some have two (`--').  Those
+with two tend to control program flow (e.g. <FONT
+size="+1"><tt>--show</tt></FONT>), while those with a single `-' tend
+to have an `assignment' function, such as a variables declaration (e.g.
+<FONT size="+1"><tt>-vx=3</tt></FONT>).  Sometimes there is not a clear distinction between the two, e.g.
+the printout verbosity <FONT size="+1"><tt>--pr</tt></FONT> (see below) accepts
+either `-' or `--' .
+
+In the example above, "<FONT size="+1"><tt>-vns=4 -vnm=5</tt></FONT>"
+assigns variables ns and nm to 4 and 5, respectively, while "<FONT
+size="+1"><tt>--rpos=pos</tt></FONT>" tells <b>lmf</b> to read site
+positions from file <FONT size="+1"><tt>pos.cafeas</tt></FONT>.
+
+<BR><BR> You can also put these switches in the CMD category in the
+input file.  The function is similar to a command-line argument, but
+not identical since the preprocessor has already read the input file
+before the `CMD' switches are read.  Thus the <FONT
+size="+1"><tt>-v</tt></FONT>" and "<FONT size="+1"><tt>-c</tt></FONT>"
+variable declarations may behave somewhat differently.
+
+<BR><BR>
+<STRONG>Switches common to most or all programs:</STRONG>
+<PRE>
+  --h              lists command-line switches for that program
+                   and quits.
+
+  --input          Equivalent to settting IO_HELP=T in category IO; see
+                   IO_HELP= <B><A href="tokens.html#IOcat">here</A></B>.
+
+  --show           Equivalent to setting IO_SHOW=T in category IO; see
+                   IO_SHOW= <B><A href="tokens.html#IOcat">here</A></B>.
+
+  --showp          prints out input file after having been processed by
+                   the preprocessor, and exits.  This enables you to
+                   see what input file the program is actually reading.
+
+                   Useful tip: input files can be quite complicated, as
+                   they can act both as a database and input file.
+                   When trying to parse a complicated input file, users
+                   often run it through the preprocessor, and use the
+                   output of the preprocessor as the input file.
+
+  --pr#1[,#2][,#3] sets print verbosities, overriding any
+   -pr#1[,#2][,#3] specification in the <B><A href="tokens.html#IOcat">IO_VERB</A></B> token.
+                   #2 is verbosity for the potential generation
+                   segment of code and assumes the value of #1
+                   unless specified.  See <A href="input-file-style.html">input-file-style.html</A> for
+                   a description of the verbosity.
+
+  --time=#1[,#2]   prints out a summary of timings in various
+                   branches of the code at the close of program
+                   execution.  Timings are kept to a nesting level
+                   of #1.  If #2 is nonzero, timings are printed
+                   `on the fly'
+
+  --iactive        turns on `interactive' mode. This overrides
+                   specification of interactive mode this in the
+                   ctrl file `IO IACTIV=' See <A href="input-file-style.html">input-file-style.html</A>
+                   for a description of the interactive mode.
+
+  --iactive=no     turns off `interactive' mode, overriding
+  --no-iactive     specification in the ctrl file.
+
+  -cname=strn      declares a character variable and assigns to
+                   value `strn' .
+
+  -vname=expr      declares a numeric variable and assigns to the
+                   value of expression `expr'. Be advised that
+                   only the first declaration of a variable is
+                   used.  Later declarations have no effect.  In
+                   addition to the declaration `name=...'  there
+                   are assignment operators
+                   `*=','/=','+=','-=','^=' modify existing
+                   variables, following C syntax, as described in the <A href=file-preprocessor.html>preprocessor documentation</A>.
+
+</pre>
+<STRONG>Switches common to programs using site information:</STRONG>
+<A name="section1pos">
+
+<P>
+
+By default lattice and site data are read from the <FONT size="+1"><tt>ctrl</tt></FONT> file.
+But this data <A href="positions.html">may be read in other ways</A>.
+
+
+<pre>
+  --rpos=fnam     tells the program to read site positions from
+                  file `fnam' after the input file has been read.  Data
+                  is read following <A href="array-file-format.html">a standard format for 2D arrays</A>.
+                  <A href="positions.html">This page</A> more fully describes how site data are read.
+
+  --fixpos[:tol=#]
+  --fixpos[:#]   tells the symmetry finder to adjust positions
+                 to sites that are `slightly displaced', that is that
+                 if they were displaced a small amount, would make the
+                 basis conform to a group operation.  Optional tolerance
+                 specifies the maximum amount of adjustment allowed.
+                 Example: lmchk --fixpos:tol=.001
+
+  --sfill=class-list tells the program to adjust the sphere sizes
+                 to space filling.
+                *By default, `class-list' is a list of integers.
+                 These enumerate class indices for which spheres
+                 you wish to resize, eg 1,5,9 or 2:11.
+                 For `class-list' syntax see <A href="Integer-list-syntax.html">here</A>.
+
+                *A second alternative specification a class-list uses
+                 the following:  `-sfill~style=2~expression'
+                 The expression can involve the class index ic and atomic number z.
+                 Any class satisfying expression is included in the list.
+                 Example: `-sfill~style=2~ic<6&z==14'
+
+                *A third alternative specification of a class-list is
+                 specifically for unix systems.  The syntax is
+                 `-sfill~style=3~fnam'.  Here "fnam" is a filename
+                 with the usual unix wildcards.  For each class,
+                 the program makes a system call `ls fnam | grep
+                 class' and any class which grep finds is
+                 included in the list.  Example:
+                 `-sfill~style=3~a[1-6]'
+
+</pre>
+
+<H2><A name="section1blm"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>blm</tt></FONT>' and its command-line arguments</STRONG>
+
+
+<P> <b>blm</b> creates input (<FONT size="+1"><tt>ctrl</tt></FONT>) files from
+<A href="Building_FP_input_file.html">structural information</A>.  
+It accepts the following command-line switches:
+<pre>
+  --asa       	  : Tailor the input file for an ASA calculation.
+                  : (By default the input file is designed for <b>lmf</b>.)
+                  : See <A href="Demo_ASA_copt.html">Demo_ASA_copt.html</A> for a demonstration.
+
+  --gw        	  : Tailor the input file for a <A href="Building_FP_input_file.html#gw"><i>GW</i> calculation</A>.
+                  : See <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> for a demonstration.
+
+  --gf        	  : Tailor the input file for the <b>lmgf</b> Green's function code (useful with --asa switch only)
+                  : See <A href="Demo_ASA_copt.html">Demo_ASA_copt.html</A> for a demonstration.
+
+  --mag           : Tailor the input file for a magnetic calculation. 
+                  : In practice blm merely sets `%const nsp=2'
+                  : You must also supply an initial spin splitting.
+                  : See <A href="Demo_ASA_copt.html">Demo_ASA_copt.html</A> for a demonstration.
+
+  --nk=#[,#,#]    : supplies information for the BZ_NKABC token.
+                  : See <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> for a demonstration.
+
+  --nkgw=#[,#,#]  : supplies information for the GW_NKABC token.
+                  : Not used unless --gw is also set
+                  : See <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> for a demonstration.
+
+  --gmax=#        : supplies information for the HAM_GMAX token.
+                  : See <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> for a demonstration.
+
+  --noshorten 	  : Use the basis vectors as given; do not shorten them.
+
+  --xpos          : By default <b>blm</b> writes site data in Cartesian coordinates.
+                  : Use this switch if you prefer it to write it in units of the lattice vectors.
+
+  --wpos=<i>fnam</i> 	  : Write basis vectors to file <i>fnam</i>.
+
+  --wsite     	  : Write a site file
+
+  --wsitex    	  : Write a site file, with basis vectors expresses as multiples
+                    of the lattice vectors instead of in Cartesian coordintes.
+</pre>
+
+
+<H2><A name="section1lm"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>lm</tt></FONT>' and its command-line arguments</STRONG>
+<br><br>
+
+<B>lm</B> is an LDA program, within in the ASA, described <A href="lmto.html#section2">here</A>.
+<br>
+Command-line switches special to <B>lm</B> are:
+
+
+<pre>
+ --rs=#1,#2       causes <B>lm</B> to read from a rst file.  By default the ASA
+
+                  writes potential information, e.g. <i>P</i>,<i>Q</i> for
+                  each class to a separate file.  If <FONT
+                  size="+1"><tt>#1</tt></FONT> is nonzero, data is read
+                  from file <FONT size="+1"><tt>rsta.ext</tt></FONT>,
+                  superseding information in class files.  If <FONT
+                  size="+1"><tt>#2</tt></FONT> is nonzero, lm will write to
+                  that file.
+
+ --band[~option~option...] tells lm to generate energy bands instead
+                  of making a self-consistent calculation.  The energy
+                  bands can be generated in one of several formats.
+                  See <B><A href="generating-energy-bands.html">generating-energy-bands.html</A></B>
+                  for a detailed description of the available options.
+
+ --pdos[:options] tells <B>lm</B> to generate weights for density-of-states resolved into partial waves,
+                  described in <A href="generating-density-of-states.html#pdos">this document</A>.
+
+ --mull[:options] tells <B>lm</B> to generate weights for Mulliken analysis, described in <A href="generating-density-of-states.html#pdos">this document</A>.
+
+ --mix=#          start the density mixing at rule `#'
+                  (See ITER_MIX in <A href="tokens.html#ITERcat">tokens.html</A>
+                  for a description of mixing rules).
+
+ --onesp          in the spin-polarized collinear case, tells the program that
+                  the spin-up and spin-down hamiltonians are equivalent
+                  (special antiferromagnetic case)
+
+ -sh=cmd          invoke the shell `cmd' after every iteration
+
+</pre>
+
+<H2><A name="section1lmf"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>lmf</tt></FONT>' and its command-line arguments</STRONG>
+<br><br>
+
+<B>lmf</B> is the main full-potential program of this package.
+Command-line switches special to <B>lmf</B> are:
+
+<pre>
+  --rs=#1,#2,#3,#4,#5  tells <B>lmf</B> what parts to read from the rst file.
+                   #1=0: do not read the restart file, but overlap
+                         free-atom densities
+                      1: read restart data from binary rst.ext
+                      2: read restart data from ascii rsta.ext
+                      3: same as 0, but also tells <B>lmf</B> to overlap
+                         free-atom densities after a molecular statics
+                         or molecular dynamics step.
+                     11 or 12: same as 1, or 2 but additionally adjust
+                         the mesh density for shifts in site positions
+                         relative to those used in the generation of the
+                         restart file.  Note: see --rs switch #3 below
+                         for which site positions the program uses.  The
+                         same principle for adjusting the density is used
+                         as in computing corrections to the Helman-Feynman
+                         forces; see token FORCES= in <A href="tokens.html#HAMcat">HAM</A>.
+
+                      Additionally, if you read from rst or rsta
+                      you can add 10 to #1
+
+                   #2=0: exactly as #1, but except switches apply to
+                         writing. Value zero suppresses writing.
+                      1: write binary restart file rst (default)
+                      2: write ascii restart file rsta
+                      3: write binary file to rst.#, where # = iteration number
+
+                   #3=0: read site positions from restart file,
+                         overwriting positions from input file
+                         (this is the default)
+                      1: ignore positions in restart file
+
+                   #4=0: read guess for Fermi level and window from
+                         restart file, overwriting data from input
+                         file.  This data is needed when the BZ
+                         integration is performed by sampling.
+                        (this is the default)
+                      1: ignore data in restart file
+
+                   #5=0: read linearization pnu from restart file,
+                         overwriting data from input file
+                        (this is the default)
+                      1: ignore pnu in restart file
+
+                   Default switches:
+                   If not specified, <B>lmf</B> defaults to --rs=1,1,0,0,0
+
+                   Look at <B>lmf</B>'s standard output around lines
+                      iors  : read restart file (binary, mesh density)
+                   It tells you what bits are read and what is ignored.
+
+
+  --rdbasp[:fn]    tells the program to read basis parameters (input using
+                   tokens RSMH=,EH=,RSMH2=,EH2=,PZ= for each atom in the
+                   ctrl file) from file `basp' (or optionally file `fn').
+                   Parameters input in this mode supersedes parameters
+                   read from the ctrl file.  You can specify none, or any
+                   set of the sets (RSMH=,EH= ; RSMH2=,EH2=; PZ=)
+                   for each species.  Parameters not specified here
+                   default to what was specified in the ctrl file.
+
+                   This switch (and --optbas described below) is a useful
+                   way to get started when you don't know what to choose
+                   for parameters in the basis set.
+
+  --optbas[:sort][:spec=name[,rs][,e][,l=###]...]
+                   operates the program in a special mode to optimize
+                   the total energy wrt the basis set. <STRONG>lmf</STRONG> makes
+                   several band passes (not generating the output density
+                   or adding to the save file), varying selected
+                   parameters belonging to tokens RSMH= and EH= to
+                   miniminize the total energy wrt these parameters.
+                   Either the smoothing radius [,rs] or the energy [,e]
+                   must be selected for optimization (you can select
+                   both).  Select which <I>l</I> quantum numbers whose parameters
+                   you want to optimize using `,l=##..', e.g. l=02 .  The
+                   optimization routine is rather primitive, but it seems
+                   to work reasonably well. See the <A href="FPoptbas.html">basis optimization tutorial</A>
+                   for a more complete description and an example.
+
+  --rpos=filename  tells the program to read site positions from file
+                   `filename' after the CTRL file has been read
+
+  --wpos=filename  tells the program to write site positions to file
+                   `filename' after a relaxation step.
+
+  --band[~option~option...] tells <b>lmf</b> to generate energy bands instead
+                   of making a self-consistent calculation.  The energy
+                   bands can be generated in one of several formats.
+                   See <B><A href="generating-energy-bands.html">generating-energy-bands.html</A></B>
+                   for a detailed description of the available options.
+
+  --pdos[:options] tells <B>lmf</B> to generate weights for density-of-states resolved into partial waves,
+                   described in <A href="generating-density-of-states.html#pdos">this document</A>.
+
+  --mull[:options] tells <B>lmf</B> to generate weights for Mulliken analysis, described in <A href="generating-density-of-states.html#pdos">this document</A>.
+
+  --cls[options]   tells <B>lmf</B> to generate weights to compute matrix
+                   elements and weights for core-level-spectroscopy.  See
+                   <A href="../subs/suclst.f">subs/suclst.f</A> for a description of options.
+
+  --wden[~option~option...] tells <b>lmf</b> to write the charge density to disk, on a
+                   uniform of mesh of points.  
+                   Options syntax:
+                     [~fn=filenam][core=#][spin][3d][ro=#1,#2,#3][o=#1,#2,#3][q=#1,#2,#3][lst=band-list][l1=#1,#2,#3,[#4]][l2=#1,#2,#3,[#4]]
+                   
+		   Information for the plane is specified by three
+                   groups of numbers: the origin (i.e. a point through
+                   which the plane must pass), a first direction
+                   vector with its number of points, and a second
+                   direction vector with its number of points.
+                   Default values will be taken for any of the three
+                   sets you do not specify.  The density generated is
+                   the smooth density, augmented by the local
+                   densities in a polynomial approximation (see option
+                   core= below)
+
+                   The options are specifications (see below) and
+                  different options are separated by delimiters
+                  (chosen to be `~' in this text; the delimiter
+                  actually taken is the first character after `wden')
+
+                   At present, there is no capability to interpolate
+                  the smoothed density to an arbitrary plane, so you
+                  are restricted to choosing a plane that has points
+                  on the mesh.  
+
+                  To comply with this restriction, all three groups of
+                  numbers may be given sets of integers.  Supposing
+                  your lattice vectors are p1, p2 and p3, which the
+                  smooth mesh having (n1,n2,n3) divisions.  Then the
+                  point (#1,#2,#3) corresponds to the Cartesian
+                  coordinate
+                     #1/n1 p1 + #2/n2 p2 + #3/n3 p3
+                  Specify the origin (a point through which the plane
+                  must pass) by
+                     ~o=i1,i2,i3
+                  Default value~ o=0,0,0.
+
+		  Alternatively you can specify a point in Cartesian
+		  coordinates by:
+                     ~ro=x1,x2,x3
+		  x1..x3 is a vector, Cartesian coordinates, units of alat.
+                  x1..x3 are converted into the nearest integers i1..i3.
+                  The actual origin may not exactly coincide with x1..x3.
+                  
+                  Specify the direction vectors by
+                     ~l1=#1,#2,#3[,#4]
+                     ~l2=#1,#2,#3[,#4]
+                  l1 and l2 specify the first and second direction
+                   vectors, respectively.  The first three numbers
+                   specify the orientation and the fourth specifies the
+                   `length'.  #1,#2,#3 select the increments in mesh
+                   points along each of the three lattice vectors that
+                   define the direction vector.  Thus a direction
+                   vector in Cartesian coordinates is
+                     #1/n1 p1 + #2/n2 p2 + #3/n3 p3
+                  The last number (#4) specifies how many points to take
+                  in that direction and therefore corresponds to a length.
+                  Default values~
+                     l1=1,0,0,n1+1
+                     l2=0,1,0,n2+1
+
+                  Other options~
+
+                   core=#   specifies how local densities is to be included.
+                            Any local density added is expanded as
+                            polynomial * gaussian, and added to the
+                            smoothed mesh density.
+                           #=0 includes core densities + nuclear contributions
+                           #=1 includes core densities, no nuclear contributions
+                           #=2 exclude core densities
+                           #=-1 no local densities to be included (only interstitial)
+                           #=-2 local density, with no smoothed part
+                           #=-3 interstitial and local smoothed densities
+
+                            Default~ core=2
+
+                   fn=name  specifies the file name for file I/O
+                            The default name is `smrho'.
+
+                   3d       causes a 3D mesh density to be saved in XCRYSDEN format
+
+		   q=q1,q2,q3
+                   and
+                   lst=list-of-band-indices
+
+                           These switches should be taken together.
+                           They generate the density from 1 k-point only (at q)
+                           and for a particular set of bands (given by lst=)
+
+                  Example: use `~' as the delimiter, and suppose
+                           n1=n2=48 and n3=120.  Then
+                              --wden~fn=myrho~o=0,0,60~l1=1,1,0,49~l2=0,0,1,121
+                           writes 'myrho.ext' a mesh (49,121) points.
+                           The origin (first point) lies at (p3/2).
+                           The first vector points along (p1+p2), and
+                           has that length; the second vector points
+                           along p3, and has that length.
+
+                  Example: suppose the lattice is fcc with n1=n2=n3=40.  Then
+			     --wden~q=0,0,0.001~core=-1~ro=0,0,.25~lst=7~l1=-1,1,1,41~l2=1,-1,1,41
+                           generates the smoothed part of the density from the 7th band at Gamma,
+                           in a plane normal to the z axis, passing through (0,0,1/4).
+
+  --window=#1,#2   accumulates the density in an energy window
+                   specified by the limits #1,#2.  (This option is
+                   intended to be used in conjunction with --wden).  If
+                   invoked, <B>lmf</B> exits after a single band pass.
+
+  --oldvc          chooses nfp-style energy zero, which sets the cell
+                   average of the potential to zero.  Normally the
+                   average estat potential at the RMT boundary is
+                   chosen to be the zero.  That puts the Fermi level
+                   near zero, like in the ASA.
+</pre>
+
+The following switches affect how <b>lmf</b> reads, writes, or modifies the self-energy generated by the <i>GW</i> package.
+
+<pre>
+  --mixsig=#1[,#2] <B>lmf</B> takes a linear combination of the self-energy
+                   read from one or two files.  See <B><A href="gw.html#lcsigma">here</A></B> in the <i>GW</i> documentation.
+
+  --rsig[~options] Tells <b>lmf</b> about the form of the input self-energy file. See <B><A href="gw.html#section3.6">here</A></B> in the <i>GW</i> documentation.
+                   ~ascii   read sigm in ascii format (file name is 
+                   ~rs      read sigm in real space
+                            If either of the preceding two switches is used, the file name changes;
+                                        k-space  real-space
+                              binary     sigm      sigmrs
+                              ascii      sigma     sigmars
+                   ~null    generate a null sigma consistent with the hamiltonian dimensions
+                            Useful in combination with the sigma editor.
+                   ~fbz     sigma is stored for k in the full Brillouin zone
+
+  --wsig[options]  <b>lmf</b> writes a possibly modified self-energy to file <I>sigm2.ext</I> and exits.
+                   See the <B><A href="gw.html#section3.7">here</A></B> in the <i>GW</i> documentation.
+
+  --etot           is a special mode designed to be used in conjuction
+                   with the GW suite.  It generates parameters for the
+                   LDA total energy without disturbing the rst or mixing
+                   files, or logging the energy in the save file.
+
+
+</pre>
+
+
+<H2><A name="section1lmchk"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>lmchk</tt></FONT>' and its command-line arguments</STRONG>
+<UL>
+
+
+<b>lmchk</b> has two main functions: to
+check augmentation sphere overlaps (or to determine augmentation
+sphere radii with overlaps as constraints; see <FONT
+size="+1"><tt>--getwsr</tt></FONT> below), and to generate neighbor
+tables in various contexts; see &nbsp;<FONT size="+1"><tt>--shell</tt></FONT>&nbsp; and <FONT size="+1"><tt>&nbsp;--angles&nbsp;</tt></FONT> below.
+
+Option &nbsp;<FONT size="+1"><tt>--findes</tt></FONT>&nbsp; locates interstitial
+sites where empty spheres or floating orbitals may be placed ---
+important for ASA and some <i>GW</i> calculations.
+
+<pre>
+  --getwsr         tells <b>lmchk</b> to use an <A href="lmto.html#section8.2">algorithm</A> to find reasonable
+                   initial sphere radii automatically.
+
+  --findes         tells <b>lmchk</b> to locate empty spheres to fill space.
+                   It works by adding adding empty spheres (largest possible first)
+                   until space is filled with sum-of-sphere volumes = cell volume.
+
+                   Inputs affecting this switch are:
+
+                   OPTIONS RMAXES=  : maximum allowed radius of ES to use when
+                                      when adding new spheres
+                           RMINES=  : minimum allowed radius of ES to use
+
+                   SPEC  SCLWSR= OMAX1=  OMAX2=  WSRMAX=
+
+                   --findes uses these parameters to constrain size of spheres as
+                   new ones are added; see category <A href="tokens.html#SPECcat">SPEC</A>.
+
+  --mino~site-list tells <b>lmchk</b> to shuffle atom positions in site-list to minimize some
+                   simple function of the overlap. (For now, the function has been set
+                   arbitrarily to the sixth power of the overlap).
+                  *By default, site-list' is a list of integers.  These enumerate
+                   site indices for which positions you wish to move, eg 1,5,9
+                   or 2:11.  See <A href="Integer-list-syntax.html">here</A> for the complete syntax of a list of this type.
+                  *Alternatively, you can enumerate a `class-list'.  <b>lmchk</b> will expand
+                   the class-list into a site-list.  For this alternative, use
+                   `--mino~style=1~class-list', e.g.  `--mino~style=1~1,6'
+                  *Another alternative, or "style" to specifying a class-list uses
+                   the following:  `--mino~style=2~expression'
+                   It is just like `-sfill~style=2 ... above, but now the class
+                   list is expanded into a site-list.
+                  *Similarly, you can specify a class-list is with style=3 like
+                   the -sfill~style=3, above.
+                  *As a special case, you can invoke --mino:z, which specifies in
+                   the list all sites with atomic number Z=0 (empty spheres).
+
+  --wpos=filnam    writes the site positions to file `filnam'.
+
+  --shell[:opts]   print out a neighbor table, in one of two styles.
+
+                   Standard style: a table of neighbors is printed, grouped in
+                   shells of neighbors centered the site in question.  By
+                   default a table is printed for one site of each inequivalent
+                   class.
+                   Options for this style:
+
+                   :r=# Specifies range of neighbors for this table. Default
+                        value is 5.
+
+                   :v   prints electrostatic potential for each pair
+
+                   :e   prints inner product between euler angles
+                        (noncollinear magnetism)
+
+                   :sites=site-list restricts neighbors in shell to list.
+                        NB this option must be the last one.
+
+
+                   Tab style: a table of neighbors is printed in a table format
+                   suitable for subsequent processing; see in particular the
+                   --disp switch in <b>lmscell</b>.  To invoke tab style, use
+                   --shell:tab[...].  Options for tab style:
+
+                   :tab[=#] Invokes in a table format, positions of neighbors
+                            relative to site specified in site-list above
+                            Tab style has several formats, specifed by #, described below
+
+                            In the modes (#) below:
+                              ib is the site around which the table is made;
+                              jb is the site index of a particular neighbor;
+                              dpos(1..3,jb) is the connecting vector (relative position) between
+                              sites ib and jb
+                            #  format
+
+                            1  (default)
+                                ib jb dpos(1..3,jb)
+
+                            2  (just the positions)
+                               dpos(1..3,jb)
+
+                            2  (in conjunction with :disp=fnam)
+                               dpos0(1..3,jb) dpos(1..3,jb)
+
+                               dpos= displacements relative to dpos0, calculated from the
+                                     differences in positions read from file 'fnam' (see disp:fnam below)
+                                     Relative to dpos0.
+
+                               In this mode, only neighbors for which there
+                               is some nonzero displacement are written.
+
+                               This mode is useful in conjuction with <b>lmscell</b>.
+
+                            3 (sparse matrix format)
+                                 1 jb dpos(1,jb)
+                                 2 jb dpos(2,jb)
+                                 3 jb dpos(3,jb)
+
+                   :disp=fnam
+                            read a second (displaced) set of positions from a positions
+                            file `fnam'.  Its format is the same as files read with switch <A href="#section1pos">--rpos</A>.
+                            In this mode, a neighbor table for both original and displaced
+                            positions is written (See tab=2 above).
+
+                   :fn=fnam write neighbor table to file fnam
+
+                   :r=#     Specifies range of neighbors for this table. Default
+                            value is 5.
+
+                   :nn      only print first (closest neighbor) entry for a
+                            given pair of indices (ib,jb)
+
+  --angles[opts]   similar to --shell, but prints angles between triples of
+                   sites.  opts are as follows (you may substitute another
+                   character for `:' below)
+                   :r=# Specifies range for this table. Default value is 2.5.
+                   :sites=site-list  loops over only sites in site-list
+                   :bonds=site-list prints out table only for triples
+                   :                   whose neighbors are in site-list
+                   Example : --angles/r=3/sites/style=3/Si/bonds/style=3/Cr
+
+
+  --terse          print out minimum information about overlaps
+
+</pre>
+
+<H2><A name="section1lmdos"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>lmdos</tt></FONT>' and its command-line arguments</STRONG>
+<UL>
+
+<B>lmdos</B> requires as input a moments file, and uses it to generate
+partial densities-of-states as described in
+<A href="generating-density-of-states.html#pdos">this document</A>.
+It reads the moments file <FONT size="+1"><tt>moms.<i>ext</i></tt></FONT>, and
+uses either a tetrahedron integration or sampling method to generate a
+partial contributions to the total DOS.
+
+Note: <B>lmdos</B> doesn't need to know what the origin of the channels is; it
+simply reads the number of channels from the the weights file.  However,
+to assist you in making an identification of the channels with
+(atom-centered) functions, <B>lmdos</B> will print out what it thinks
+the connection is.  If you use the generating program inconsistently
+with <B>lmdos</B>, it may print out an erroneous table.
+
+When &nbsp;<FONT size="+1"><tt>--pdos</tt></FONT>&nbsp; is specified, it
+assumes the DOS are ordered as specified by the switch.  Otherwise it
+assumes the weights are generated and stored by class (the default
+mode of <B>lm</B> and <b>tbe</b>)
+
+<B>lmdos</B> has a variety of options; for example it can generate the ballistic
+conductivity as matrix elements of the velocity operator.
+
+<P>
+
+One of these switches must be run by a generating program first.
+They are described in <A href="generating-density-of-states.html#pdosswitches">this document</A>.
+
+</UL>
+
+<pre>
+   --pdos[~mode=#][~sites=site-list][~group=lst1;lst2;...][~nl=#][~lcut=<i>l</i><sub>1</sub>,<i>l</i><sub>2</sub>,...]
+   --mull[~mode=#][~sites=site-list][~group=lst1;lst2;...][~nl=#][~lcut=<i>l</i><sub>1</sub>,<i>l</i><sub>2</sub>,...]
+</pre>
+
+<UL>
+
+Once the generating program completes, run <b>lmdos</b> with the same switches.
+
+<P>
+
+<B>lmdos</B> -specific switches are:
+
+</UL>
+
+<pre>
+   --cls                tells <b>lmdos</b> that the moments file holds data for
+                        core-level (EELS) spectrosopy generated by <b>lmf</b>.
+
+   --dos:option1:option2...  various options that affect action of <B>lmdos</B>.
+      Options are:
+        wtfn=<i>filename</i>   <i>filename</i> is file containing bands and DOS
+                        weights.  By default, <B>lmdos</B> uses file `moms'.
+
+        cls             equivalent to wtfn=cls.
+
+        tbdos           sets defaults for to generate dos from
+                        the tbe program, which uses slightly
+                        different conventions for the moments file,
+                        e.g. the moments file is named 'BAND'.
+
+        idos            generate energy-integrated DOS.
+
+        npts=#          number of energy points.  If not specified with
+                        command-line --dos, user is prompted for input.
+
+        window=#,#      energy window over which data is to be computed.
+                        #,# are minimum, maximum energies.  If not
+                        specified using command-line argument --dos,
+                        the user is prompted for input.
+
+        mode=#          This mode lets you compute quantities other than
+                        the DOS.  depending on mode, lmdos computes one of the following:
+                        mode  lmdos calculates
+                        0     Standard DOS, i.e. &int; <i>d</i><sup>3</sup><b>k</b> &delta;</i>(<i>E(<b>k</b>)-E</i>)
+
+                        1     Ballistic conductance, Landauer formula, i.e.
+                              &int; <i>d</i><sup>3</sup><b>k</b> &delta;</i>(<i>E</i>(<b>k</b>)-<i>E</i>) &nabla;<i>E</i>(<b>k</b>)
+                              In this mode, you must supply vector `vec' to
+                              indicate which direction the gradient is to be projected.
+
+                        2     `diffusive conductivity' in the relaxation
+                              time approximation apart from scattering time)
+                              &int; <i>d</i><sup>3</sup><b>k</b> &delta;</i>(<i>E</i>(<b>k</b>)-<i>E</i>) &nabla;_1<i>E</i>(<b>k</b>)<sup>.</sup> &nabla;_2<i>E</i>(<b>k</b>)
+                              In this mode you must supply both 'vec' and 'vec2'.
+
+        vec=#,#,#       direction vector 1 for conductance; see mode=#
+
+        vec2=#,#,#      direction vector 2 for `diffusive'
+                        conductance; see mode= above
+
+        totdos          compute total DOS by combining weights from all partial DOS
+                        Note: if input moments file has no special channels, this is the default
+
+        rdm             write DOS in rdm-compatible format (table of rows and columns)
+
+        ldig            read/write DOS with extra digits
+
+        bands=<i>list</i>      compute contribution to dos from a prescribed
+                        list of bands
+
+        classes=<i>list</i>    generate dos for a specified list of classes.
+                        list syntax follows standard class-list syntax;
+                        see description of --sfill, above.
+                        Caution: this option is only compatible
+                        with default moments files generated by the
+                        ASA, which stores dos weights by class,
+                        for all classes; it is incompatible
+                        with, e.g., the --pdos switch which stores
+                        weights by site.
+</pre>
+<I>Example</I>: compute the ballistic conductance in the z direction
+over an energy range (-0.8,0.5)Ry:
+<pre>
+         --dos:mode=1:npts=501:window=-.8,.5:vec=0,0,1
+</pre>
+
+<H2><A name="section1lmscell"></H2></A>
+<STRONG>Program `lmscell' and its command-line arguments:</STRONG>
+<UL>
+
+<B>lmscell</B> is a supercell generator.  User must supply a set of
+   new (supercell) lattice vectors.  You can do so using token SLAT=
+   in category STRUC; if you do not, you will be prompted to input 9
+   numbers from the terminal.  <B>lmscell</B> works by generating a
+   list of lattice vectors from the primitive lattice vectors, and
+   adding these lattice vectors to the basis vectors.  Basis vectors
+   which differ by a lattice vector in the supercell are discarded An
+   expanded list of basis vectors is thus generated.  Warning:
+   <B>lmscell</B> may fail if you choose a supercell significantly
+   elongated from the original, because the list of lattice vectors
+   may not encompass all the translations needed to create the new
+   basis.
+
+<BR><BR>
+Command-line arguments special to <B>lmscell</B>:
+
+<pre>
+  --wsite=fnam   writes a site-file to disk, file fnam.<i>ext</i>,
+                 which can be used to read structural and site data.
+
+  --wsite:map:fnam
+                 equivalent to --wsite=fnam, but a table mapping sites in the
+                 original cell to the supercell is appended to this site file.
+
+
+  --shorten      shorten basis vectors
+
+  --sort:'<i>expr</i> [<i>expr2</i> ...]'
+                 sort basis vectors, ordering positions by increasing
+                 value of `expr'.  Allowed values in expr are x-, y-, and z-
+                 coordinates of basis.  Optional `expr2' sorts subsets of
+                 sites with equivalent values of `expr1'
+
+
+  --pl:<i>expr</i>      Used in conjunction with the layer codes (lmpg).
+                 Assign principal-layer index according to <i>expr</i>.
+                 Sites with equivalent values of <i>expr</i> are
+                 assigned the same index.
+
+  --sites:<i>site-list</i>
+                 Generate supercell only for sites in <i>site-list</i>. For
+                 the site-list syntax, see <A href="Integer-list-syntax.html">here</A>.
+
+  --wrsj[:fn=<i>name</i>][:scl=#]
+                 Used in writing the pairwise exchange parameters of the
+                 supercell generated, e.g., from a Green's function code.
+                 Input file 'rsj' must be present.
+
+                 fn=name writes to file <i>name</i>  (default name is rsj2)
+                 scl=#   scales the parameters by #
+
+  --first        Not documented
+
+  --disp:fnam:<i>site-list</i>
+                This switch is intended to displace sites within a certain
+                range of a specified site (or list of sites), according to
+                displacements read from file fnam.
+                (NB: you can use this switch in conjunction with <b>lmchk</b>, using
+                switch --shell:tab:disp=fnam).
+
+                In this mode, a displacements file is read, which contains a
+                neighbor table for both undisplaced relative positions and
+                displaced positions around a particular site.
+
+                The undisplaced (relative) positions identify particular sites
+                in the neighborhood of the site in site-list.  Each sites
+                corresponding to the undiplaced relative position in the
+                neighbor table is identified, and is position is displaced by
+                the same amount as the displacements in the neighbor table.
+
+  Example:
+    lmscell --wsite=site --sort:'x3 x2'
+  will order the sites by increasing z; those with (nearly) identical
+  z will be ordered by increasing  y.
+
+  For an illustration of <b>lmchk</b> and <b>lmscell</b> used to generate a displaced
+  positions table, invoke testing/test.lmscell 2.
+
+</pre>
+
+</UL>
+
+
+</pre>
+
+<H2><A name="section1lmctl"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>lmctl</tt></FONT>' and its command-line arguments</STRONG>
+<br><br>
+
+<b>lmctl</b> is an adjunct to the ASA, that
+read sphere moments from class files and writes the data in a form
+suitable for the input file.  It is an easy way to collect the results
+of a self-consistent calculation into a single file (the input file).
+
+<br> Command-line switches special to <B>lmctl</B> are:
+
+
+<pre>
+  -spin1           add spin-polarized moments into a non-polarized set
+
+  -spinf           exchange up- and down- moments
+
+  -mad             also write out the ves at RMAX.
+
+</pre>
+
+
+<H2><A name="section1lmxbs"></H2></A>
+<STRONG>Program `<FONT size="+1"><tt>lmxbs</tt></FONT>' and its command-line arguments</STRONG>
+<UL>
+
+<b>lmxbs</b> generates input for the graphics program xbs, a program
+written by M. Methfessel, which draws cartoons of crystals.  See <FONT
+size="+1"><tt>http://www.ihp-ffo.de/~msm/</tt></FONT>.
+
+<br> Command-line switches special to <B>lmxbs</B> are:
+
+<pre>
+  -bs=expr    factor that scales the default ball (sphere) size.
+              This factor scales the RMAX in the CLASS category.
+              By default, the scaling is 0.5 * sphere radius
+
+  -ss=expr    controls the criterion for what length defines a
+              connected bond.  This switch scales the default
+              factor scaling a 'bond' which must be less close
+              than RMAX_i+RMAX_j (RMAX defined in <A href="tokens.html#STRcat">STR</A>).
+              The default scaling is 1.
+
+  -scale=val  sets the xbs variable `scale'
+
+  -sp:rule1[:rule2][...]  modifies the species rmax and colors.
+              `rule' has the syntax
+              [expr],[rmax],[red],[green],[blue] `expr' is a
+              logical expression involving the class index ic and
+              atomic number z.  Optional rmax, red, green, blue
+              are the ball size, and intensity of those colors
+              for the ball.  Default values are taken for those
+              numbers omitted.  For the colors, the defaults are
+              random numbers between 0 and 1.
+
+  -dup=n1,n2,n3[,expr] makes replicas of the unit cell by adding
+              all combinations (0..n1,0..n2,0..n3) of the lattice
+              translation vectors (p1,p3,p3) to every site in the
+              cell.  The optional `expr' is a constraint that can
+              be used to exclude sites that don't satisfy it.
+              Variables that may be used in `expr' are:
+                x1,x2,x3 are (dimensionless) site positions
+                p1,p2,p3 are the same positions, as projections onto plat
+                ic,z are class index, basis index and atomic number
+              Example: select sites in a (dimensionless) cube of
+                       size 1 and exclude empty spheres:
+              lmxbs "-dup=4,4,4,0<=x1&x1<1.01&0<=x2&x2<1.01&0<=x3&x3<1.01&z>0"
+
+  -sfill=class-list tells the program to adjust the sphere sizes to space filling.
+
+</UL>
+
+
+</pre>
+<H2><A name="section1lmimp"></H2></A>
+<STRONG>Program `lmimp' and its command-line arguments:</STRONG>
+<UL>
+
+<B>lmimp</B> is a kind of 'restart file' editor, to import data either
+from restart files, or from older versions (or Stuttgart versions) of
+the lmto-ASA packages.  Importation is done in in one of two flavors:
+either you import parts of restart files, or you read atom files
+from earlier (or Stuttgart) versions of the code.
+
+<DL>
+<DD>
+  <I>Restart files</I> (invoked by -rs command-line argument):
+  <BR>
+  In this most you invoke a ``restart file'' editor.
+  Use this editor to read site potential data from
+  one or more restart files and poke the information into site
+  data for the current lattice.  After entering the name of a restart
+  file, the program will the number of sites in that file and
+  prompt you for a list of sites from which to import site-potential data
+  (P,Q for the ASA).
+  <BR>  <BR>
+  You can enter a single site or a <A href="Integer-list-syntax.html">list of sites</A>.
+  If you enter only one site, it can be distributed to whatever sites you choose for the
+  destination sites.  If you enter a list of more than one site,
+  the list of destination sites must be the same number as the list
+  of importing sites.
+
+  <BR> <BR>
+  <I>Translate atom files</I> (invoked by one of the command-line arguments
+  -4 -5 or -3s -4s -47u -5s for Stuttgart formats):
+  <BR>
+  In this mode, <B>lmimp</B> will attempt to read files following older formats
+  (or Stuttgart formats).  Data is read by class.  NB: Stuttgart atom
+  files have no extension and the names are in capital letters.
+  <B>lmimp</B> will list the classes and data for which the conversion was successful.
+
+</DD>
+</DL>
+</UL>
+
+</pre>
+
+<H2><A name="section1lmplan"></H2></A>
+<STRONG>Program `lmplan' and its command-line arguments:</STRONG>
+<UL>
+
+<B>lmplan</B> is a special-purpose code originally designed for
+analysis of layered systems, and for changing relative positions of
+planes, etc.  A prompt appears at which you can do a variety of
+things.  However, this code is somewhat obsolete; at present it is not
+carefully maintained, and many of the options can be better done other
+ways.  However, there are a couple of useful options:
+
+<DL>
+<DD>
+  <I>Write site files</I> (invoke by typing <I>wsite</I> to the prompt):
+  <BR>
+  You can also create sites files with <b>lmscell</b> ... however this one
+  is useful in the context of the layer Green's function code, because
+  it will write out the padded site information, if you invoke
+  <I>wsite -pad</I> , or <I>wsite -ppad</I>.
+  <BR>  <BR>
+
+  <I>Analysis of layer electrostatic potentials</I>
+  <BR>
+  This is useful for computing, e.g. band offsets.  Invoke by <I>qsum</I>
+  or <I>qsum i1 i2</I> , where <I>i1</I> and <I>i2</I> are layer indices.
+</DD>
+</DL>
+</UL>
+
+</UL>

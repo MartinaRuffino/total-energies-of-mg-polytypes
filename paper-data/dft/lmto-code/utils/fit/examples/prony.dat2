@@ -1,0 +1,4 @@
+% repeat i=1:24:1
+% var j=i/10
+j 5*exp(.3*j)+2*exp(2*j) 
+%end

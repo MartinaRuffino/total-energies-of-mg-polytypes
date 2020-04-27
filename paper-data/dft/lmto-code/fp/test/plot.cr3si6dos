@@ -1,0 +1,73 @@
+%char0 ltdos="1,bold=4,col=0,0,0"
+%char0 ltdos2="3,bold=3,col=1,0,0"
+
+fplot
+
+% var ymax=1.4 dy=0.107 dw=.00 ymax+=dy emin=-8 emax=3 ef=0
+
+% var ymax-=dy+dw dy=0.107 dmin=0 dmax=10
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 2 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 2 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.107 dmin=0 dmax=10
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 3 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 3 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 4 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 4 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 5 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 5 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 6 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 6 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 7 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 7 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 8 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 8 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 9 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 9 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 10 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 10 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p -noxn
+ -colsy 11 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 11 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+
+% var ymax-=dy+dw dy=0.16 dmin=0 dmax=15
+ -frme 0,1,{ymax-dy},{ymax} -p0 -x {emin},{emax} -y {dmin},{dmax} -1p
+ -colsy 12 -lt {ltdos} -ord y -qr dosp.1
+ -colsy 12 -lt {ltdos2} -ord y -qr dosp.2
+ -lt 2,bold=3,col=0,0,0,2,.5,.05,.5 -tp 2~{ef},{dmin},{ef},{dmax}
+

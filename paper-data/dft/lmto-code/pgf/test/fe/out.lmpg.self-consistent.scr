@@ -1,0 +1,2505 @@
+ -----------------------  START LMPG -----------------------
+#rf   47: n=8,6 fm=1(1) nk=8,12 fe/fe
+
+ LMPG:     nbas = 14  nspec = 7  vn 7.11.i  verb 31,20
+ special:  scr-rho-out
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor
+ bz:       metal, invit 
+ pgf:      self-consistency  via embedding
+
+ PGFSET (warning): PL 0 extends beyond sites in other PL:
+ max P1xP2 for PL 0 is 2.500000 ... add plat(3) for these layers:
+   PL  min P1xP2  ib   New P1xP2
+   5    0.000000   1    7.000000
+   6    1.000000   3    8.000000
+ PGFSET: 7 principal layers, 14+2+2 sites.  Normal: 0 0 1
+   PL |   0   1   2   3   4   5   6
+ size |   2   2   2   2   2   2   2
+  PLV |   0   0   0   0   0   0   0
+ Basis reordered by increasing PL:
+   PL  1  1  2  2  3  3  4  4  5  5  6  6  7  7
+ Site  5  6  7  8  9 10 11 12 13 14  1  2  3  4
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   0.000000   0.000000   7.000000 Plat(3) as input
+   0.000000   0.000000   1.000000 PlatL:  angle (deg) with Plat(3) = 0
+   0.000000   0.000000   1.000000 PlatR:  angle (deg) with Plat(3) = 0
+   0.000000   0.000000  11.000000 Plat(3) including padding
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000  11.000000        0.000000   0.000000   0.090909
+   alat = 5.44  Cell vol = 1770.881024
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   7.151  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00E-12   alat= 5.44000   awald= 0.165
+         r1=  7.151   nkd= 483      q1=  1.736   nkg= 255
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i:(-1/2,-1/2,-1/2) r2(1,1,0):(1/2,1/2,-1/2)
+         r4z i::(1/2,1/2,-1/22) r2(1,1,0)::(1/2,1/2,-1/22)
+ MKSYM:  found 16 space group operations ... includes inversion
+         7 classes for embedding region + 2 for padding layers
+  2D-reciprocal vectors:
+    1.000000    0.000000    0.000000
+    0.000000    1.000000    0.000000
+ BZMESH:  15 irreducible QP from 64 ( 8 8 1 )  shift= F F F
+
+ IOVSHF: read file vshft: ef=-0.0665  vconst=0
+  
+ ZMESH: nz=10 (ellipse)  ecc,eps=0.5,0  e1,e2=-1.00,-0.0665
+
+ GETZV:  144 valence electrons
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000000   0.000000   0.000003   0.000003  -0.762386
+ XA2        0.000000   0.000000   0.000002   0.000002  -0.762387
+ XA3        0.000000   0.000000   0.000001   0.000001  -0.762388
+ XA4        0.000000   0.000000  -0.000001  -0.000001  -0.762389
+ XB1        0.000000   0.000000   0.000004   0.000004  -0.762385
+ XB2        0.000000   0.000000   0.000004   0.000004  -0.762384
+ XB3        0.000000   0.000000   0.000004   0.000004  -0.762384
+ XA42       0.000000   0.000000  -0.000004  -0.000004  -0.762740
+ XA32       0.000000   0.000000  -0.000002  -0.000002  -0.762738
+ XA43       0.000000   0.000000  -0.000005  -0.000005  -0.000005
+ XA33       0.000000   0.000000  -0.000005  -0.000005  -0.000005
+ Sum Q=-0.000002  Emad=0.000000(0.000000)  Vmtz=-0.623836 (up-dn=-0.015525)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.000003    0.000742    0.000742
+  R      T   -0.000745   -0.000003    0.000742    0.000742
+
+ RMS pot difference in L PL = 0.000001  in R PL = 0.000001  total = 0.000001
+ vconst that minimizes potential mismatch to end layers = -0.000742
+ vconst is now (estimate to satisfy charge neutrality)  =  0.000000
+ difference                                             = -0.000742
+ cpudel    ...   Time this iter:  time(s):  0.283    total:  0.283s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=0.0000000 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... missing -> generate for ipl=-1
+ SUPGBC: read rbc for  GF ... missing -> generate for ipl=7
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.903141    5.729737   -1.213172    0.331077   -2.270263
+ spin 2   18.987353   10.274350   -2.427059    0.718336    2.274350
+  total   29.890495   16.004086   -3.640232    1.049413    0.004086
+      0   11.056979    5.707891   -1.204353    0.328051   -2.292109
+ spin 2   19.328743   10.260953   -2.418181    0.714768    2.260953
+  total   30.385722   15.968844   -3.622534    1.042820   -0.031156
+      1   11.113876    5.713068   -1.204174    0.327752   -2.286932
+ spin 2   19.344073   10.259509   -2.417942    0.714643    2.259509
+  total   30.457949   15.972577   -3.622116    1.042395   -0.027423
+      2   11.130630    5.713205   -1.204157    0.327746   -2.286795
+ spin 2   19.342898   10.259551   -2.417930    0.714636    2.259551
+  total   30.473528   15.972756   -3.622087    1.042383   -0.027244
+      3   11.132914    5.713018   -1.204140    0.327744   -2.286982
+ spin 2   19.338190   10.259356   -2.417913    0.714633    2.259356
+  total   30.471104   15.972374   -3.622053    1.042377   -0.027626
+      4   11.130630    5.713205   -1.204157    0.327746   -2.286795
+ spin 2   19.342898   10.259551   -2.417930    0.714636    2.259551
+  total   30.473528   15.972756   -3.622087    1.042383   -0.027244
+      5   11.113876    5.713068   -1.204174    0.327752   -2.286932
+ spin 2   19.344073   10.259509   -2.417942    0.714643    2.259509
+  total   30.457949   15.972577   -3.622116    1.042395   -0.027423
+      6   11.056979    5.707891   -1.204353    0.328051   -2.292109
+ spin 2   19.328743   10.260953   -2.418181    0.714768    2.260953
+  total   30.385722   15.968844   -3.622534    1.042820   -0.031156
+      7   10.903141    5.729737   -1.213172    0.331077   -2.270263
+ spin 2   18.987353   10.274350   -2.427059    0.718336    2.274350
+  total   29.890495   16.004086   -3.640232    1.049413    0.004086
+ All PL   99.542167   51.440820  -10.855852              -20.559180
+ spin 2  173.344324   92.368080  -21.780138               20.368080
+ PL tot  272.886491  143.808900  -32.635990               -0.191100
+ Deviations from charge neutrality:
+   Left end layer       0.004086
+   Right end layer      0.004086
+   Embedded layers     -0.199272
+   Sum of all layers   -0.191100
+ 
+ gfzerq: ef=-0.0665  dq=0.199  vold=0  dv=9.35e-4  vnew= -0.000935
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.0255  vold=-9.35e-4  dv=1.37e-4  vnew= -0.001072
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=3.28e-4  vold=-0.00107  dv=1.79e-6  vnew= -0.001074
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=5.59e-7  vold=-0.00107  dv=5e-8  vnew= -0.001074
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.903141    5.729737   -1.219326    0.331077   -2.270263
+ spin 2   18.987353   10.274350   -2.438093    0.718336    2.274350
+  total   29.890495   16.004086   -3.657418    1.049413    0.004086
+      0    7.361673    5.715648   -1.211019    0.328098   -2.284352
+ spin 2   19.020650   10.281604   -2.430636    0.714919    2.281604
+  total   26.382323   15.997252   -3.641655    1.043017   -0.002748
+      1    7.407087    5.720871   -1.210849    0.327798   -2.279129
+ spin 2   19.052399   10.280192   -2.430396    0.714794    2.280192
+  total   26.459486   16.001064   -3.641245    1.042592    0.001064
+      2    7.424507    5.721027   -1.210832    0.327792   -2.278973
+ spin 2   19.047144   10.280229   -2.430384    0.714787    2.280229
+  total   26.471650   16.001255   -3.641216    1.042579    0.001255
+      3    7.426657    5.720841   -1.210816    0.327790   -2.279159
+ spin 2   19.040863   10.280026   -2.430366    0.714784    2.280026
+  total   26.467520   16.000867   -3.641182    1.042574    0.000867
+      4    7.424507    5.721027   -1.210832    0.327792   -2.278973
+ spin 2   19.047144   10.280229   -2.430384    0.714787    2.280229
+  total   26.471650   16.001255   -3.641216    1.042579    0.001255
+      5    7.407087    5.720871   -1.210849    0.327798   -2.279129
+ spin 2   19.052399   10.280192   -2.430396    0.714794    2.280192
+  total   26.459486   16.001064   -3.641245    1.042592    0.001064
+      6    7.361673    5.715648   -1.211019    0.328098   -2.284352
+ spin 2   19.020650   10.281604   -2.430636    0.714919    2.281604
+  total   26.382323   15.997252   -3.641655    1.043017   -0.002748
+      7   10.903141    5.729737   -1.219326    0.331077   -2.270263
+ spin 2   18.987353   10.274350   -2.438093    0.718336    2.274350
+  total   29.890495   16.004086   -3.657418    1.049413    0.004086
+ All PL   73.619472   51.495407  -10.914868              -20.504593
+ spin 2  171.255956   92.512774  -21.889383               20.512774
+ PL tot  244.875428  144.008181  -32.804251                0.008181
+ Deviations from charge neutrality:
+   Left end layer       0.004086
+   Right end layer      0.004086
+   Embedded layers      0.000009
+   Sum of all layers    0.008181
+ 
+ gfzerq: ef=-0.0665  dq=8.6e-6  vold=-0.00107  dv=4.69e-8  vnew= -0.001074
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers = -0.001074 Cumulative shift = -0.001074
+
+ shift (-0.0011) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from 0.000000 to -0.001074
+ setting sumev=0 for now
+
+ LMPG: ehf=24.3021156  ehk=24.3020284  sumev=0.0000000  delsev=32.6735088
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=7.78e-5  screened dv=8.49e-7
+ SCRMOM: unscreened dq=4.41e-3  screened dq=4.77e-3
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX: expecting 168 elements but found 48 ... discarding file
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.37e-3
+ AMIX: nmix=0 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.37e-3
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000091  mom=-2.28695  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000096  mom=-2.28698  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000132  mom=-2.28733  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000048  mom=-2.28869  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000093  mom=-2.28695  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000093  mom=-2.28695  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000092  mom=-2.28694  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000091   0.000000  -0.000258  -0.000190  -0.762663
+ XA2        0.000096   0.000000  -0.000579  -0.000507  -0.762981
+ XA3        0.000132   0.000000  -0.001024  -0.000925  -0.763402
+ XA4        0.000048   0.000000  -0.001470  -0.001435  -0.763932
+ XB1        0.000093   0.000000  -0.000025   0.000044  -0.762427
+ XB2        0.000093   0.000000   0.000131   0.000200  -0.762270
+ XB3        0.000092   0.000000   0.000209   0.000278  -0.762193
+ XA42       0.000000   0.000000  -0.002346  -0.002346  -0.765082
+ XA32       0.000000   0.000000  -0.001941  -0.001941  -0.764677
+ XA43       0.000000   0.000000  -0.002754  -0.002754  -0.002754
+ XA33       0.000000   0.000000  -0.002618  -0.002618  -0.002618
+ Sum Q=0.001287  Emad=0.000000(0.000000) Vconst=-0.001074  Vmtz=-0.625000 (up-dn=-0.015660)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.002143   -0.001398    0.001413
+  R      T   -0.000745   -0.002143   -0.001398    0.001413
+
+ RMS pot difference in L PL = 0.000002  in R PL = 0.000002  total = 0.000002
+ vconst that minimizes potential mismatch to end layers =  0.000324
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001074
+ difference                                             =  0.001398
+ Magnetization from sphere program: -41.124099  from output rho: -41.017363
+ SV:   1 1.367D-03 0.2500 6.485E-04      24.30202840********* L
+
+   it  1  of 12    ehf=      24.302116   ehk=      24.302028
+                rms dq=  0.001367        tol= 0.000005   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-41.0173628 ehf=24.3021156 ehk=24.3020284
+ cpudel    ...   Time this iter:  time(s):  1.06     total:  1.34s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0010739 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.843732    5.724425   -1.213362    0.331389   -2.275575
+ spin 2   18.955738   10.276562   -2.427513    0.718612    2.276562
+  total   29.799470   16.000987   -3.640876    1.050001    0.000987
+      0   10.900369    5.724629   -1.212118    0.330839   -2.275371
+ spin 2   18.851817   10.279928   -2.431271    0.720273    2.279928
+  total   29.752186   16.004557   -3.643389    1.051112    0.004557
+      1   11.023127    5.716008   -1.207097    0.328955   -2.283992
+ spin 2   19.207995   10.265616   -2.421536    0.716182    2.265616
+  total   30.231122   15.981624   -3.628632    1.045137   -0.018376
+      2   11.115665    5.712314   -1.204126    0.327783   -2.287686
+ spin 2   19.411275   10.256549   -2.415987    0.713794    2.256549
+  total   30.526939   15.968863   -3.620113    1.041577   -0.031137
+      3   11.148534    5.711226   -1.203163    0.327401   -2.288774
+ spin 2   19.486962   10.253738   -2.414198    0.713022    2.253738
+  total   30.635496   15.964964   -3.617362    1.040422   -0.035036
+      4   11.115665    5.712314   -1.204126    0.327783   -2.287686
+ spin 2   19.411275   10.256549   -2.415987    0.713794    2.256549
+  total   30.526939   15.968863   -3.620113    1.041577   -0.031137
+      5   11.023127    5.716008   -1.207097    0.328955   -2.283992
+ spin 2   19.207995   10.265616   -2.421536    0.716182    2.265616
+  total   30.231122   15.981624   -3.628632    1.045137   -0.018376
+      6   10.900369    5.724629   -1.212118    0.330839   -2.275371
+ spin 2   18.851817   10.279928   -2.431271    0.720273    2.279928
+  total   29.752186   16.004557   -3.643389    1.051112    0.004557
+      7   10.843732    5.724425   -1.213362    0.331389   -2.275575
+ spin 2   18.955738   10.276562   -2.427513    0.718612    2.276562
+  total   29.799470   16.000987   -3.640876    1.050001    0.000987
+ All PL   98.914319   51.465979  -10.876568              -20.534021
+ spin 2  172.340611   92.411048  -21.806813               20.411048
+ PL tot  271.254930  143.877027  -32.683380               -0.122973
+ Deviations from charge neutrality:
+   Left end layer       0.000987
+   Right end layer      0.000987
+   Embedded layers     -0.124948
+   Sum of all layers   -0.122973
+ 
+ gfzerq: ef=-0.0665  dq=0.125  vold=0  dv=5.9e-4  vnew= -0.00059
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.0158  vold=-5.9e-4  dv=8.54e-5  vnew= -0.000676
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=1.28e-4  vold=-6.76e-4  dv=6.99e-7  vnew= -0.000676
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=1.34e-7  vold=-6.76e-4  dv=5e-8  vnew= -0.000677
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.843732    5.724425   -1.217235    0.331389   -2.275575
+ spin 2   18.955738   10.276562   -2.434466    0.718612    2.276562
+  total   29.799470   16.000987   -3.651700    1.050001    0.000987
+      0    7.274409    5.729438   -1.216324    0.330868   -2.270562
+ spin 2   18.559320   10.292548   -2.439103    0.720368    2.292548
+  total   25.833729   16.021986   -3.655427    1.051236    0.021986
+      1    7.376863    5.720887   -1.211300    0.328984   -2.279113
+ spin 2   19.085449   10.278585   -2.429380    0.716278    2.278585
+  total   26.462311   15.999471   -3.640680    1.045262   -0.000529
+      2    7.458599    5.717247   -1.208330    0.327812   -2.282753
+ spin 2   19.386980   10.269718   -2.423837    0.713890    2.269718
+  total   26.845579   15.986965   -3.632168    1.041702   -0.013035
+      3    7.488245    5.716179   -1.207368    0.327430   -2.283821
+ spin 2   19.504855   10.266985   -2.422051    0.713117    2.266985
+  total   26.993100   15.983165   -3.629420    1.040547   -0.016835
+      4    7.458599    5.717247   -1.208330    0.327812   -2.282753
+ spin 2   19.386980   10.269718   -2.423837    0.713890    2.269718
+  total   26.845579   15.986965   -3.632168    1.041702   -0.013035
+      5    7.376863    5.720887   -1.211300    0.328984   -2.279113
+ spin 2   19.085449   10.278585   -2.429380    0.716278    2.278585
+  total   26.462311   15.999471   -3.640680    1.045262   -0.000529
+      6    7.274409    5.729438   -1.216324    0.330868   -2.270562
+ spin 2   18.559320   10.292548   -2.439103    0.720368    2.292548
+  total   25.833729   16.021986   -3.655427    1.051236    0.021986
+      7   10.843732    5.724425   -1.217235    0.331389   -2.275575
+ spin 2   18.955738   10.276562   -2.434466    0.718612    2.276562
+  total   29.799470   16.000987   -3.651700    1.050001    0.000987
+ All PL   73.395452   51.500173  -10.913746              -20.499827
+ spin 2  171.479827   92.501811  -21.875623               20.501811
+ PL tot  244.875279  144.001983  -32.789369                0.001983
+ Deviations from charge neutrality:
+   Left end layer       0.000987
+   Right end layer      0.000987
+   Embedded layers      0.000009
+   Sum of all layers    0.001983
+ 
+ gfzerq: ef=-0.0665  dq=9.03e-6  vold=-6.77e-4  dv=4.93e-8  vnew= -0.000676
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers = -0.000676 Cumulative shift = -0.000676
+
+ shift (-6.8e-4) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001074 to -0.001750
+ setting sumev=0 for now
+
+ LMPG: ehf=24.3448340  ehk=24.3452921  sumev=0.0000000  delsev=32.7102474
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.35e-1  screened dv=1.40e-2
+ SCRMOM: unscreened dq=5.22e-3  screened dq=3.66e-3
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=1.07e-3  last it=1.37e-3
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.07e-3
+   tj:-1.42909
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000098  mom=-2.28085  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000095  mom=-2.28099  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000016  mom=-2.28179  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000821  mom=-2.28344  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000088  mom=-2.28077  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000091  mom=-2.28069  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000089  mom=-2.28067  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000098   0.000000  -0.001608  -0.001535  -0.764161
+ XA2        0.000095   0.000000  -0.001354  -0.001283  -0.763898
+ XA3        0.000016   0.000000  -0.000988  -0.000976  -0.763572
+ XA4        0.000821   0.000000  -0.001564  -0.000951  -0.763541
+ XB1        0.000088   0.000000  -0.001791  -0.001725  -0.764359
+ XB2        0.000091   0.000000  -0.001923  -0.001855  -0.764494
+ XB3        0.000089   0.000000  -0.001987  -0.001921  -0.764562
+ XA42       0.000000   0.000000  -0.002294  -0.002295  -0.765031
+ XA32       0.000000   0.000000  -0.001520  -0.001520  -0.764256
+ XA43       0.000000   0.000000  -0.003116  -0.003116  -0.003116
+ XA33       0.000000   0.000000  -0.002843  -0.002843  -0.002843
+ Sum Q=0.002593  Emad=-0.000002(-0.000002) Vconst=-0.001750  Vmtz=-0.625803 (up-dn=-0.015903)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001907   -0.001162    0.001225
+  R      T   -0.000745   -0.001907   -0.001162    0.001225
+
+ RMS pot difference in L PL = 0.000001  in R PL = 0.000001  total = 0.000001
+ vconst that minimizes potential mismatch to end layers = -0.000588
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001750
+ difference                                             =  0.001162
+ Magnetization from sphere program: -41.040896  from output rho: -41.001634
+ SV:   2 1.072D-03 0.2500 1.234E-03      24.34529210********* A -1.43
+
+   it  2  of 12    ehf=      24.344834   ehk=      24.345292
+ From last iter    ehf=      24.302116   ehk=      24.302028
+ diffe(q)=  0.042718 (0.001072)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-41.0016344 ehf=24.344834 ehk=24.3452921
+ cpudel    ...   Time this iter:  time(s):  0.898    total:  2.24s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0017503 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.859580    5.727664   -1.213446    0.331305   -2.272336
+ spin 2   18.991051   10.274512   -2.427205    0.718453    2.274512
+  total   29.850631   16.002177   -3.640651    1.049758    0.002177
+      0   10.870134    5.715060   -1.210392    0.330533   -2.284940
+ spin 2   19.107942   10.271072   -2.424709    0.717632    2.271072
+  total   29.978077   15.986132   -3.635101    1.048164   -0.013868
+      1   10.780450    5.727252   -1.215317    0.332172   -2.272748
+ spin 2   18.774716   10.284107   -2.433385    0.721226    2.284107
+  total   29.555166   16.011358   -3.648702    1.053397    0.011358
+      2   10.704271    5.731285   -1.218370    0.333343   -2.268715
+ spin 2   18.551215   10.293452   -2.439256    0.723717    2.293452
+  total   29.255487   16.024737   -3.657626    1.057059    0.024737
+      3   10.677103    5.732374   -1.219377    0.333735   -2.267626
+ spin 2   18.471524   10.296352   -2.441195    0.724548    2.296352
+  total   29.148627   16.028726   -3.660571    1.058283    0.028726
+      4   10.704271    5.731285   -1.218370    0.333343   -2.268715
+ spin 2   18.551215   10.293452   -2.439256    0.723717    2.293452
+  total   29.255487   16.024737   -3.657626    1.057059    0.024737
+      5   10.780450    5.727252   -1.215317    0.332172   -2.272748
+ spin 2   18.774716   10.284107   -2.433385    0.721226    2.284107
+  total   29.555166   16.011358   -3.648702    1.053397    0.011358
+      6   10.870134    5.715060   -1.210392    0.330533   -2.284940
+ spin 2   19.107942   10.271072   -2.424709    0.717632    2.271072
+  total   29.978077   15.986132   -3.635101    1.048164   -0.013868
+      7   10.859580    5.727664   -1.213446    0.331305   -2.272336
+ spin 2   18.991051   10.274512   -2.427205    0.718453    2.274512
+  total   29.850631   16.002177   -3.640651    1.049758    0.002177
+ All PL   97.105974   51.534896  -10.934428              -20.465104
+ spin 2  169.321374   92.542639  -21.890304               20.542639
+ PL tot  266.427348  144.077536  -32.824732                0.077536
+ Deviations from charge neutrality:
+   Left end layer       0.002177
+   Right end layer      0.002177
+   Embedded layers      0.073182
+   Sum of all layers    0.077536
+ 
+ gfzerq: ef=-0.0665  dq=0.0732  vold=0  dv=3.54e-4  vnew= 0.000354
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.00911  vold=3.54e-4  dv=5.03e-5  vnew= 0.000404
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=4.5e-5  vold=4.04e-4  dv=2.47e-7  vnew= 0.000404
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=7.15e-11  vold=4.04e-4  dv=3.93e-13  vnew= 0.000404
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.859580    5.727664   -1.211132    0.331305   -2.272336
+ spin 2   18.991051   10.274512   -2.423053    0.718453    2.274512
+  total   29.850631   16.002177   -3.634185    1.049758    0.002177
+      0    7.365077    5.712178   -1.207884    0.330515   -2.287822
+ spin 2   19.584065   10.263260   -2.420021    0.717574    2.263260
+  total   26.949142   15.975438   -3.627905    1.048088   -0.024562
+      1    7.283672    5.724402   -1.212806    0.332154   -2.275598
+ spin 2   19.090942   10.276491   -2.428703    0.721168    2.276491
+  total   26.374614   16.000893   -3.641509    1.053322    0.000893
+      2    7.214961    5.728462   -1.215859    0.333325   -2.271538
+ spin 2   18.761783   10.285969   -2.434578    0.723659    2.285969
+  total   25.976744   16.014431   -3.650437    1.056984    0.014431
+      3    7.189903    5.729560   -1.216866    0.333718   -2.270440
+ spin 2   18.640860   10.288918   -2.436519    0.724490    2.288918
+  total   25.830763   16.018478   -3.653385    1.058208    0.018478
+      4    7.214961    5.728462   -1.215859    0.333325   -2.271538
+ spin 2   18.761783   10.285969   -2.434578    0.723659    2.285969
+  total   25.976744   16.014431   -3.650437    1.056984    0.014431
+      5    7.283672    5.724402   -1.212806    0.332154   -2.275598
+ spin 2   19.090942   10.276491   -2.428703    0.721168    2.276491
+  total   26.374614   16.000893   -3.641509    1.053322    0.000893
+      6    7.365077    5.712178   -1.207884    0.330515   -2.287822
+ spin 2   19.584065   10.263260   -2.420021    0.717574    2.263260
+  total   26.949142   15.975438   -3.627905    1.048088   -0.024562
+      7   10.859580    5.727664   -1.211132    0.331305   -2.272336
+ spin 2   18.991051   10.274512   -2.423053    0.718453    2.274512
+  total   29.850631   16.002177   -3.634185    1.049758    0.002177
+ All PL   72.636481   51.514971  -10.912228              -20.485029
+ spin 2  171.496543   92.489382  -21.849228               20.489382
+ PL tot  244.133024  144.004354  -32.761456                0.004354
+ Deviations from charge neutrality:
+   Left end layer       0.002177
+   Right end layer      0.002177
+   Embedded layers      0.000000
+   Sum of all layers    0.004354
+ 
+ gfzerq: ef=-0.0665  dq=3.55e-14  vold=4.04e-4  dv=1.54e-16  vnew= 0.000404
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000404 Cumulative shift =  0.000404
+
+ shift (4e-4) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001750 to -0.001346
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4724951  ehk=24.4731567  sumev=0.0000000  delsev=32.8255567
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.46e-1  screened dv=1.39e-2
+ SCRMOM: unscreened dq=5.00e-3  screened dq=2.52e-3
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=7.26e-4  last it=1.07e-3
+ AMIX: nmix=2 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=7.26e-4
+   tj: 0.34175  -0.38297
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000128  mom=-2.27841  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000113  mom=-2.27851  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000058  mom=-2.27901  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000804  mom=-2.27975  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000119  mom=-2.27836  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000119  mom=-2.27832  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000119  mom=-2.2783  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000128   0.000000  -0.000933  -0.000837  -0.763513
+ XA2        0.000113   0.000000  -0.000802  -0.000717  -0.763392
+ XA3        0.000058   0.000000  -0.000612  -0.000569  -0.763242
+ XA4        0.000804   0.000000  -0.001317  -0.000716  -0.763410
+ XB1        0.000119   0.000000  -0.001015  -0.000926  -0.763603
+ XB2        0.000119   0.000000  -0.001078  -0.000989  -0.763666
+ XB3        0.000119   0.000000  -0.001109  -0.001021  -0.763698
+ XA42       0.000000   0.000000  -0.002308  -0.002309  -0.765045
+ XA32       0.000000   0.000000  -0.001430  -0.001430  -0.764166
+ XA43       0.000000   0.000000  -0.003232  -0.003233  -0.003233
+ XA33       0.000000   0.000000  -0.002925  -0.002925  -0.002925
+ Sum Q=0.002919  Emad=-0.000001(-0.000002) Vconst=-0.001346  Vmtz=-0.625445 (up-dn=-0.015998)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001869   -0.001124    0.001207
+  R      T   -0.000745   -0.001869   -0.001124    0.001207
+
+ RMS pot difference in L PL = 0.000001  in R PL = 0.000001  total = 0.000001
+ vconst that minimizes potential mismatch to end layers = -0.000222
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001346
+ difference                                             =  0.001124
+ Magnetization from sphere program: -41.003827  from output rho: -40.974411
+ SV:   3 7.259D-04 0.2500 5.601E-04      24.47315673********* A 0.342 -0.383
+
+   it  3  of 12    ehf=      24.472495   ehk=      24.473157
+ From last iter    ehf=      24.344834   ehk=      24.345292
+ diffe(q)=  0.127661 (0.000726)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9744108 ehf=24.4724951 ehk=24.4731567
+ cpudel    ...   Time this iter:  time(s):  0.873    total:  3.11s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0013462 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.860341    5.727082   -1.213402    0.331305   -2.272918
+ spin 2   18.984808   10.274739   -2.427173    0.718414    2.274739
+  total   29.845149   16.001822   -3.640575    1.049718    0.001822
+      0   10.897579    5.716752   -1.210163    0.330336   -2.283248
+ spin 2   19.153268   10.268602   -2.422903    0.716735    2.268602
+  total   30.050847   15.985355   -3.633066    1.047071   -0.014645
+      1   10.873381    5.722933   -1.212062    0.330899   -2.277067
+ spin 2   19.030945   10.273131   -2.426071    0.718020    2.273131
+  total   29.904326   15.996063   -3.638132    1.048920   -0.003937
+      2   10.842776    5.724821   -1.213405    0.331413   -2.275179
+ spin 2   18.935156   10.277174   -2.428587    0.719091    2.277174
+  total   29.777932   16.001995   -3.641992    1.050504    0.001995
+      3   10.830654    5.725297   -1.213856    0.331590   -2.274703
+ spin 2   18.898801   10.278420   -2.429438    0.719458    2.278420
+  total   29.729455   16.003717   -3.643294    1.051047    0.003717
+      4   10.842776    5.724821   -1.213405    0.331413   -2.275179
+ spin 2   18.935156   10.277174   -2.428587    0.719091    2.277174
+  total   29.777932   16.001995   -3.641992    1.050504    0.001995
+      5   10.873381    5.722933   -1.212062    0.330899   -2.277067
+ spin 2   19.030945   10.273131   -2.426071    0.718020    2.273131
+  total   29.904326   15.996063   -3.638132    1.048920   -0.003937
+      6   10.897579    5.716752   -1.210163    0.330336   -2.283248
+ spin 2   19.153268   10.268602   -2.422903    0.716735    2.268602
+  total   30.050847   15.985355   -3.633066    1.047071   -0.014645
+      7   10.860341    5.727082   -1.213402    0.331305   -2.272918
+ spin 2   18.984808   10.274739   -2.427173    0.718414    2.274739
+  total   29.845149   16.001822   -3.640575    1.049718    0.001822
+ All PL   97.778808   51.508475  -10.911919              -20.491525
+ spin 2  171.107155   92.465712  -21.838904               20.465712
+ PL tot  268.885963  143.974186  -32.750824               -0.025814
+ Deviations from charge neutrality:
+   Left end layer       0.001822
+   Right end layer      0.001822
+   Embedded layers     -0.029457
+   Sum of all layers   -0.025814
+ 
+ gfzerq: ef=-0.0665  dq=0.0295  vold=0  dv=1.41e-4  vnew= -0.000141
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.00368  vold=-1.41e-4  dv=2.01e-5  vnew= -0.000161
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=7.16e-6  vold=-1.61e-4  dv=5e-8  vnew= -0.000161
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.860341    5.727082   -1.214324    0.331305   -2.272918
+ spin 2   18.984808   10.274739   -2.428827    0.718414    2.274739
+  total   29.845149   16.001822   -3.643151    1.049718    0.001822
+      0    7.328655    5.717900   -1.211163    0.330343   -2.282100
+ spin 2   19.310809   10.271699   -2.424770    0.716758    2.271699
+  total   26.639463   15.989599   -3.635932    1.047101   -0.010401
+      1    7.306464    5.724077   -1.213062    0.330906   -2.275923
+ spin 2   19.130470   10.276198   -2.427936    0.718043    2.276198
+  total   26.436934   16.000275   -3.640998    1.048949    0.000275
+      2    7.281043    5.725962   -1.214405    0.331420   -2.274038
+ spin 2   18.987307   10.280219   -2.430452    0.719114    2.280219
+  total   26.268350   16.006181   -3.644857    1.050534    0.006181
+      3    7.270523    5.726436   -1.214856    0.331597   -2.273564
+ spin 2   18.932176   10.281456   -2.431303    0.719481    2.281456
+  total   26.202698   16.007892   -3.646160    1.051077    0.007892
+      4    7.281043    5.725962   -1.214405    0.331420   -2.274038
+ spin 2   18.987307   10.280219   -2.430452    0.719114    2.280219
+  total   26.268350   16.006181   -3.644857    1.050534    0.006181
+      5    7.306464    5.724077   -1.213062    0.330906   -2.275923
+ spin 2   19.130470   10.276198   -2.427936    0.718043    2.276198
+  total   26.436934   16.000275   -3.640998    1.048949    0.000275
+      6    7.328655    5.717900   -1.211163    0.330343   -2.282100
+ spin 2   19.310809   10.271699   -2.424770    0.716758    2.271699
+  total   26.639463   15.989599   -3.635932    1.047101   -0.010401
+      7   10.860341    5.727082   -1.214324    0.331305   -2.272918
+ spin 2   18.984808   10.274739   -2.428827    0.718414    2.274739
+  total   29.845149   16.001822   -3.643151    1.049718    0.001822
+ All PL   72.823529   51.516479  -10.920764              -20.483521
+ spin 2  171.758963   92.487166  -21.855273               20.487166
+ PL tot  244.582492  144.003645  -32.776037                0.003645
+ Deviations from charge neutrality:
+   Left end layer       0.001822
+   Right end layer      0.001822
+   Embedded layers      0.000002
+   Sum of all layers    0.003645
+ 
+ gfzerq: ef=-0.0665  dq=1.97e-6  vold=-1.61e-4  dv=1.08e-8  vnew= -0.000161
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers = -0.000161 Cumulative shift = -0.000161
+
+ shift (-1.6e-4) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001346 to -0.001507
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4057563  ehk=24.4058778  sumev=0.0000000  delsev=32.7546711
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=2.42e-2  screened dv=2.11e-3
+ SCRMOM: unscreened dq=2.32e-3  screened dq=9.76e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=2.90e-4  last it=7.26e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: nmix=2 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=2.9e-4
+   tj:-0.32691  -0.15935
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.00015  mom=-2.27619  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000129  mom=-2.27628  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000105  mom=-2.27672  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.00077  mom=-2.27734  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000143  mom=-2.27616  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000141  mom=-2.27614  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000142  mom=-2.27614  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000150   0.000000  -0.000863  -0.000751  -0.763479
+ XA2        0.000129   0.000000  -0.000835  -0.000738  -0.763471
+ XA3        0.000105   0.000000  -0.000806  -0.000728  -0.763472
+ XA4        0.000770   0.000000  -0.001602  -0.001027  -0.763810
+ XB1        0.000143   0.000000  -0.000864  -0.000758  -0.763482
+ XB2        0.000141   0.000000  -0.000871  -0.000765  -0.763487
+ XB3        0.000142   0.000000  -0.000876  -0.000770  -0.763491
+ XA42       0.000000   0.000000  -0.002816  -0.002816  -0.765552
+ XA32       0.000000   0.000000  -0.001860  -0.001860  -0.764597
+ XA43       0.000000   0.000000  -0.003815  -0.003815  -0.003815
+ XA33       0.000000   0.000000  -0.003483  -0.003483  -0.003483
+ Sum Q=0.003158  Emad=-0.000001(-0.000002) Vconst=-0.001507  Vmtz=-0.625649 (up-dn=-0.016079)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.002338   -0.001593    0.001663
+  R      T   -0.000745   -0.002338   -0.001593    0.001663
+
+ RMS pot difference in L PL = 0.000003  in R PL = 0.000003  total = 0.000003
+ vconst that minimizes potential mismatch to end layers =  0.000086
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001507
+ difference                                             =  0.001593
+ Magnetization from sphere program: -40.972440  from output rho: -40.970687
+ SV:   4 2.898D-04 0.2500 4.734E-04      24.40587777********* A -0.327 -0.159
+
+   it  4  of 12    ehf=      24.405756   ehk=      24.405878
+ From last iter    ehf=      24.472495   ehk=      24.473157
+ diffe(q)= -0.066739 (0.000290)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9706867 ehf=24.4057563 ehk=24.4058778
+ cpudel    ...   Time this iter:  time(s):  0.864    total:  3.98s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0015072 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.839691    5.724849   -1.213424    0.331404   -2.275151
+ spin 2   18.972571   10.275597   -2.427304    0.718483    2.275597
+  total   29.812262   16.000446   -3.640727    1.049886    0.000446
+      0   10.847812    5.723389   -1.212956    0.331288   -2.276611
+ spin 2   18.989793   10.274918   -2.427059    0.718410    2.274918
+  total   29.837605   15.998307   -3.640015    1.049698   -0.001693
+      1   10.857661    5.723307   -1.212600    0.331123   -2.276693
+ spin 2   19.028846   10.273284   -2.425946    0.717931    2.273284
+  total   29.886506   15.996591   -3.638546    1.049054   -0.003409
+      2   10.859678    5.723402   -1.212613    0.331126   -2.276598
+ spin 2   19.033348   10.273019   -2.425861    0.717906    2.273019
+  total   29.893026   15.996422   -3.638474    1.049032   -0.003578
+      3   10.859696    5.723450   -1.212636    0.331135   -2.276550
+ spin 2   19.034135   10.273013   -2.425879    0.717917    2.273013
+  total   29.893831   15.996463   -3.638514    1.049052   -0.003537
+      4   10.859678    5.723402   -1.212613    0.331126   -2.276598
+ spin 2   19.033348   10.273019   -2.425861    0.717906    2.273019
+  total   29.893026   15.996422   -3.638474    1.049032   -0.003578
+      5   10.857661    5.723307   -1.212600    0.331123   -2.276693
+ spin 2   19.028846   10.273284   -2.425946    0.717931    2.273284
+  total   29.886506   15.996591   -3.638546    1.049054   -0.003409
+      6   10.847812    5.723389   -1.212956    0.331288   -2.276611
+ spin 2   18.989793   10.274918   -2.427059    0.718410    2.274918
+  total   29.837605   15.998307   -3.640015    1.049698   -0.001693
+      7   10.839691    5.724849   -1.213424    0.331404   -2.275151
+ spin 2   18.972571   10.275597   -2.427304    0.718483    2.275597
+  total   29.812262   16.000446   -3.640727    1.049886    0.000446
+ All PL   97.669379   51.513345  -10.915822              -20.486655
+ spin 2  171.083250   92.466651  -21.838219               20.466651
+ PL tot  268.752629  143.979995  -32.754040               -0.020005
+ Deviations from charge neutrality:
+   Left end layer       0.000446
+   Right end layer      0.000446
+   Embedded layers     -0.020897
+   Sum of all layers   -0.020005
+ 
+ gfzerq: ef=-0.0665  dq=0.0209  vold=0  dv=9.99e-5  vnew= -0.0001
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.0026  vold=-9.99e-5  dv=1.42e-5  vnew= -0.000114
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=3.58e-6  vold=-1.14e-4  dv=5e-8  vnew= -0.000114
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.839691    5.724849   -1.214077    0.331404   -2.275151
+ spin 2   18.972571   10.275597   -2.428477    0.718483    2.275597
+  total   29.812262   16.000446   -3.642554    1.049886    0.000446
+      0    7.291068    5.724199   -1.213666    0.331293   -2.275801
+ spin 2   19.097386   10.277089   -2.428383    0.718426    2.277089
+  total   26.388453   16.001287   -3.642048    1.049719    0.001287
+      1    7.298436    5.724117   -1.213310    0.331128   -2.275883
+ spin 2   19.155097   10.275461   -2.427270    0.717947    2.275461
+  total   26.453533   15.999579   -3.640580    1.049075   -0.000421
+      2    7.301036    5.724213   -1.213323    0.331131   -2.275787
+ spin 2   19.160777   10.275197   -2.427184    0.717922    2.275197
+  total   26.461813   15.999410   -3.640507    1.049053   -0.000590
+      3    7.301243    5.724261   -1.213345    0.331140   -2.275739
+ spin 2   19.162837   10.275191   -2.427202    0.717933    2.275191
+  total   26.464080   15.999452   -3.640547    1.049073   -0.000548
+      4    7.301036    5.724213   -1.213323    0.331131   -2.275787
+ spin 2   19.160777   10.275197   -2.427184    0.717922    2.275197
+  total   26.461813   15.999410   -3.640507    1.049053   -0.000590
+      5    7.298436    5.724117   -1.213310    0.331128   -2.275883
+ spin 2   19.155097   10.275461   -2.427270    0.717947    2.275461
+  total   26.453533   15.999579   -3.640580    1.049075   -0.000421
+      6    7.291068    5.724199   -1.213666    0.331293   -2.275801
+ spin 2   19.097386   10.277089   -2.428383    0.718426    2.277089
+  total   26.388453   16.001287   -3.642048    1.049719    0.001287
+      7   10.839691    5.724849   -1.214077    0.331404   -2.275151
+ spin 2   18.972571   10.275597   -2.428477    0.718483    2.275597
+  total   29.812262   16.000446   -3.642554    1.049886    0.000446
+ All PL   72.761703   51.519018  -10.922095              -20.480982
+ spin 2  171.934498   92.481880  -21.849830               20.481880
+ PL tot  244.696201  144.000898  -32.771926                0.000898
+ Deviations from charge neutrality:
+   Left end layer       0.000446
+   Right end layer      0.000446
+   Embedded layers      0.000006
+   Sum of all layers    0.000898
+ 
+ gfzerq: ef=-0.0665  dq=5.56e-6  vold=-1.14e-4  dv=3.04e-8  vnew= -0.000114
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers = -0.000114 Cumulative shift = -0.000114
+
+ shift (-1.1e-4) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001507 to -0.001621
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4086269  ehk=24.4086287  sumev=0.0000000  delsev=32.7540832
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=5.29e-4  screened dv=9.60e-5
+ SCRMOM: unscreened dq=6.62e-4  screened dq=3.60e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=1.00e-4  last it=2.90e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1e-4
+   tj:-0.13421
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000123  mom=-2.27589  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000099  mom=-2.27598  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000069  mom=-2.27641  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000771  mom=-2.27686  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000115  mom=-2.27586  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000114  mom=-2.27585  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000114  mom=-2.27585  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000123   0.000000  -0.001232  -0.001140  -0.763876
+ XA2        0.000099   0.000000  -0.001093  -0.001019  -0.763757
+ XA3        0.000069   0.000000  -0.000919  -0.000867  -0.763616
+ XA4        0.000771   0.000000  -0.001581  -0.001006  -0.763789
+ XB1        0.000115   0.000000  -0.001313  -0.001227  -0.763960
+ XB2        0.000114   0.000000  -0.001373  -0.001288  -0.764019
+ XB3        0.000114   0.000000  -0.001405  -0.001319  -0.764049
+ XA42       0.000000   0.000000  -0.002540  -0.002540  -0.765276
+ XA32       0.000000   0.000000  -0.001694  -0.001695  -0.764431
+ XA43       0.000000   0.000000  -0.003430  -0.003430  -0.003430
+ XA33       0.000000   0.000000  -0.003134  -0.003134  -0.003134
+ Sum Q=0.002810  Emad=-0.000002(-0.000002) Vconst=-0.001621  Vmtz=-0.625758 (up-dn=-0.016082)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.002117   -0.001372    0.001436
+  R      T   -0.000745   -0.002117   -0.001372    0.001436
+
+ RMS pot difference in L PL = 0.000002  in R PL = 0.000002  total = 0.000002
+ vconst that minimizes potential mismatch to end layers = -0.000249
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001621
+ difference                                             =  0.001372
+ Magnetization from sphere program: -40.967909  from output rho: -40.962860
+ SV:   5 1.003D-04 0.2500 8.790E-05      24.40862874********* A -0.134
+
+   it  5  of 12    ehf=      24.408627   ehk=      24.408629
+ From last iter    ehf=      24.405756   ehk=      24.405878
+ diffe(q)=  0.002871 (0.000100)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9628601 ehf=24.4086269 ehk=24.4086287
+ cpudel    ...   Time this iter:  time(s):  8.21     total:  12.2s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0016213 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.836891    5.724746   -1.213420    0.331404   -2.275254
+ spin 2   18.976009   10.275494   -2.427292    0.718479    2.275494
+  total   29.812899   16.000240   -3.640712    1.049883    0.000240
+      0   10.823475    5.723480   -1.213508    0.331524   -2.276520
+ spin 2   18.960395   10.276381   -2.427900    0.718781    2.276381
+  total   29.783870   15.999860   -3.641408    1.050305   -0.000140
+      1   10.791956    5.726333   -1.214904    0.332018   -2.273667
+ spin 2   18.877466   10.279755   -2.430108    0.719718    2.279755
+  total   29.669422   16.006088   -3.645011    1.051735    0.006088
+      2   10.764313    5.727649   -1.215948    0.332431   -2.272351
+ spin 2   18.811904   10.282519   -2.431948    0.720526    2.282519
+  total   29.576217   16.010168   -3.647896    1.052957    0.010168
+      3   10.754192    5.728058   -1.216303    0.332573   -2.271942
+ spin 2   18.787979   10.283473   -2.432589    0.720808    2.283473
+  total   29.542172   16.011530   -3.648893    1.053381    0.011530
+      4   10.764313    5.727649   -1.215948    0.332431   -2.272351
+ spin 2   18.811904   10.282519   -2.431948    0.720526    2.282519
+  total   29.576217   16.010168   -3.647896    1.052957    0.010168
+      5   10.791956    5.726333   -1.214904    0.332018   -2.273667
+ spin 2   18.877466   10.279755   -2.430108    0.719718    2.279755
+  total   29.669422   16.006088   -3.645011    1.051735    0.006088
+      6   10.823475    5.723480   -1.213508    0.331524   -2.276520
+ spin 2   18.960395   10.276381   -2.427900    0.718781    2.276381
+  total   29.783870   15.999860   -3.641408    1.050305   -0.000140
+      7   10.836891    5.724746   -1.213420    0.331404   -2.275254
+ spin 2   18.976009   10.275494   -2.427292    0.718479    2.275494
+  total   29.812899   16.000240   -3.640712    1.049883    0.000240
+ All PL   97.187462   51.532473  -10.931861              -20.467527
+ spin 2  170.039527   92.511770  -21.867085               20.511770
+ PL tot  267.226989  144.044243  -32.798946                0.044243
+ Deviations from charge neutrality:
+   Left end layer       0.000240
+   Right end layer      0.000240
+   Embedded layers      0.043763
+   Sum of all layers    0.044243
+ 
+ gfzerq: ef=-0.0665  dq=0.0438  vold=0  dv=2.11e-4  vnew= 0.000211
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.00542  vold=2.11e-4  dv=2.98e-5  vnew= 0.000241
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=1.58e-5  vold=2.41e-4  dv=8.66e-8  vnew= 0.000241
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.836891    5.724746   -1.212043    0.331404   -2.275254
+ spin 2   18.976009   10.275494   -2.424820    0.718479    2.275494
+  total   29.812899   16.000240   -3.636863    1.049883    0.000240
+      0    7.307632    5.721775   -1.212013    0.331513   -2.278225
+ spin 2   19.266659   10.271794   -2.425112    0.718747    2.271794
+  total   26.574292   15.993569   -3.637125    1.050260   -0.006431
+      1    7.278570    5.724635   -1.213409    0.332007   -2.275365
+ spin 2   19.143889   10.275197   -2.427320    0.719683    2.275197
+  total   26.422459   15.999832   -3.640729    1.051690   -0.000168
+      2    7.253329    5.725957   -1.214453    0.332421   -2.274043
+ spin 2   19.047383   10.277984   -2.429162    0.720492    2.277984
+  total   26.300713   16.003942   -3.643615    1.052912    0.003942
+      3    7.243776    5.726368   -1.214809    0.332563   -2.273632
+ spin 2   19.011532   10.278946   -2.429803    0.720773    2.278946
+  total   26.255308   16.005314   -3.644611    1.053336    0.005314
+      4    7.253329    5.725957   -1.214453    0.332421   -2.274043
+ spin 2   19.047383   10.277984   -2.429162    0.720492    2.277984
+  total   26.300713   16.003942   -3.643615    1.052912    0.003942
+      5    7.278570    5.724635   -1.213409    0.332007   -2.275365
+ spin 2   19.143889   10.275197   -2.427320    0.719683    2.275197
+  total   26.422459   15.999832   -3.640729    1.051690   -0.000168
+      6    7.307632    5.721775   -1.212013    0.331513   -2.278225
+ spin 2   19.266659   10.271794   -2.425112    0.718747    2.271794
+  total   26.574292   15.993569   -3.637125    1.050260   -0.006431
+      7   10.836891    5.724746   -1.212043    0.331404   -2.275254
+ spin 2   18.976009   10.275494   -2.424820    0.718479    2.275494
+  total   29.812899   16.000240   -3.636863    1.049883    0.000240
+ All PL   72.596620   51.520596  -10.918646              -20.479404
+ spin 2  171.879414   92.479885  -21.842630               20.479885
+ PL tot  244.476034  144.000481  -32.761275                0.000481
+ Deviations from charge neutrality:
+   Left end layer       0.000240
+   Right end layer      0.000240
+   Embedded layers      0.000000
+   Sum of all layers    0.000481
+ 
+ gfzerq: ef=-0.0665  dq=9.35e-12  vold=2.41e-4  dv=5.12e-14  vnew= 0.000241
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000241 Cumulative shift =  0.000241
+
+ shift (2.4e-4) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001621 to -0.001381
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4491283  ehk=24.4491690  sumev=0.0000000  delsev=32.7944158
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.10e-2  screened dv=9.67e-4
+ SCRMOM: unscreened dq=1.31e-3  screened dq=7.65e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=1.93e-4  last it=1.00e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.93e-4
+   tj: 1.34127
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000134  mom=-2.27622  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000112  mom=-2.27632  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000083  mom=-2.2768  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000782  mom=-2.27747  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000126  mom=-2.27619  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000125  mom=-2.27617  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000125  mom=-2.27617  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000134   0.000000  -0.000901  -0.000801  -0.763531
+ XA2        0.000112   0.000000  -0.000796  -0.000712  -0.763443
+ XA3        0.000083   0.000000  -0.000667  -0.000605  -0.763346
+ XA4        0.000782   0.000000  -0.001383  -0.000799  -0.763574
+ XB1        0.000126   0.000000  -0.000959  -0.000865  -0.763591
+ XB2        0.000125   0.000000  -0.001004  -0.000911  -0.763635
+ XB3        0.000125   0.000000  -0.001027  -0.000934  -0.763658
+ XA42       0.000000   0.000000  -0.002442  -0.002442  -0.765178
+ XA32       0.000000   0.000000  -0.001547  -0.001547  -0.764283
+ XA43       0.000000   0.000000  -0.003381  -0.003381  -0.003381
+ XA33       0.000000   0.000000  -0.003069  -0.003069  -0.003069
+ Sum Q=0.002968  Emad=-0.000001(-0.000002) Vconst=-0.001381  Vmtz=-0.625517 (up-dn=-0.016072)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001994   -0.001249    0.001327
+  R      T   -0.000745   -0.001994   -0.001249    0.001327
+
+ RMS pot difference in L PL = 0.000002  in R PL = 0.000002  total = 0.000002
+ vconst that minimizes potential mismatch to end layers = -0.000132
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001381
+ difference                                             =  0.001249
+ Magnetization from sphere program: -40.973172  from output rho: -40.959289
+ SV:   6 1.929D-04 0.2500 8.772E-05      24.44916904********* A 1.34
+
+   it  6  of 12    ehf=      24.449128   ehk=      24.449169
+ From last iter    ehf=      24.408627   ehk=      24.408629
+ diffe(q)=  0.040501 (0.000193)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9592892 ehf=24.4491283 ehk=24.449169
+ cpudel    ...   Time this iter:  time(s):  0.817    total:  13.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0013808 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.848420    5.725746   -1.213401    0.331356   -2.274254
+ spin 2   18.978573   10.275199   -2.427226    0.718437    2.275199
+  total   29.826993   16.000945   -3.640627    1.049792    0.000945
+      0   10.865847    5.720583   -1.211818    0.330896   -2.279417
+ spin 2   19.064326   10.272047   -2.425025    0.717557    2.272047
+  total   29.930173   15.992630   -3.636843    1.048453   -0.007370
+      1   10.853485    5.723688   -1.212754    0.331170   -2.276312
+ spin 2   19.016141   10.273799   -2.426284    0.718068    2.273799
+  total   29.869627   15.997487   -3.639038    1.049238   -0.002513
+      2   10.835693    5.724748   -1.213535    0.331476   -2.275252
+ spin 2   18.966285   10.275879   -2.427653    0.718666    2.275879
+  total   29.801978   16.000627   -3.641188    1.050142    0.000627
+      3   10.828492    5.725045   -1.213805    0.331584   -2.274955
+ spin 2   18.947083   10.276566   -2.428140    0.718880    2.276566
+  total   29.775575   16.001611   -3.641945    1.050464    0.001611
+      4   10.835693    5.724748   -1.213535    0.331476   -2.275252
+ spin 2   18.966285   10.275879   -2.427653    0.718666    2.275879
+  total   29.801978   16.000627   -3.641188    1.050142    0.000627
+      5   10.853485    5.723688   -1.212754    0.331170   -2.276312
+ spin 2   19.016141   10.273799   -2.426284    0.718068    2.273799
+  total   29.869627   15.997487   -3.639038    1.049238   -0.002513
+      6   10.865847    5.720583   -1.211818    0.330896   -2.279417
+ spin 2   19.064326   10.272047   -2.425025    0.717557    2.272047
+  total   29.930173   15.992630   -3.636843    1.048453   -0.007370
+      7   10.848420    5.725746   -1.213401    0.331356   -2.274254
+ spin 2   18.978573   10.275199   -2.427226    0.718437    2.275199
+  total   29.826993   16.000945   -3.640627    1.049792    0.000945
+ All PL   97.635383   51.514575  -10.916822              -20.485425
+ spin 2  170.997734   92.470412  -21.840518               20.470412
+ PL tot  268.633117  143.984987  -32.757339               -0.015013
+ Deviations from charge neutrality:
+   Left end layer       0.000945
+   Right end layer      0.000945
+   Embedded layers     -0.016903
+   Sum of all layers   -0.015013
+ 
+ gfzerq: ef=-0.0665  dq=0.0169  vold=0  dv=8.09e-5  vnew= -0.000081
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.00211  vold=-8.09e-5  dv=1.15e-5  vnew= -0.000092
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=2.35e-6  vold=-9.24e-5  dv=5e-8  vnew= -0.000092
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.848420    5.725746   -1.213930    0.331356   -2.274254
+ spin 2   18.978573   10.275199   -2.428176    0.718437    2.275199
+  total   29.826993   16.000945   -3.642107    1.049792    0.000945
+      0    7.309373    5.721240   -1.212392    0.330900   -2.278760
+ spin 2   19.220069   10.273815   -2.426097    0.717570    2.273815
+  total   26.529442   15.995055   -3.638489    1.048470   -0.004945
+      1    7.297438    5.724344   -1.213328    0.331174   -2.275656
+ spin 2   19.149343   10.275561   -2.427356    0.718081    2.275561
+  total   26.446780   15.999904   -3.640684    1.049255   -0.000096
+      2    7.282468    5.725403   -1.214110    0.331480   -2.274597
+ spin 2   19.074531   10.277634   -2.428725    0.718679    2.277634
+  total   26.356999   16.003036   -3.642834    1.050159    0.003036
+      3    7.276038    5.725699   -1.214380    0.331588   -2.274301
+ spin 2   19.045943   10.278318   -2.429211    0.718894    2.278318
+  total   26.321981   16.004017   -3.643591    1.050481    0.004017
+      4    7.282468    5.725403   -1.214110    0.331480   -2.274597
+ spin 2   19.074531   10.277634   -2.428725    0.718679    2.277634
+  total   26.356999   16.003036   -3.642834    1.050159    0.003036
+      5    7.297438    5.724344   -1.213328    0.331174   -2.275656
+ spin 2   19.149343   10.275561   -2.427356    0.718081    2.275561
+  total   26.446780   15.999904   -3.640684    1.049255   -0.000096
+      6    7.309373    5.721240   -1.212392    0.330900   -2.278760
+ spin 2   19.220069   10.273815   -2.426097    0.717570    2.273815
+  total   26.529442   15.995055   -3.638489    1.048470   -0.004945
+      7   10.848420    5.725746   -1.213930    0.331356   -2.274254
+ spin 2   18.978573   10.275199   -2.428176    0.718437    2.275199
+  total   29.826993   16.000945   -3.642107    1.049792    0.000945
+ All PL   72.751436   51.519165  -10.921901              -20.480835
+ spin 2  171.890973   92.482732  -21.849918               20.482732
+ PL tot  244.642409  144.001897  -32.771819                0.001897
+ Deviations from charge neutrality:
+   Left end layer       0.000945
+   Right end layer      0.000945
+   Embedded layers      0.000007
+   Sum of all layers    0.001897
+ 
+ gfzerq: ef=-0.0665  dq=6.79e-6  vold=-9.24e-5  dv=3.72e-8  vnew= -0.000092
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers = -0.000092 Cumulative shift = -0.000092
+
+ shift (-9.2e-5) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001381 to -0.001473
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4115786  ehk=24.4116048  sumev=0.0000000  delsev=32.7572846
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=5.57e-3  screened dv=4.30e-4
+ SCRMOM: unscreened dq=1.11e-3  screened dq=3.64e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=1.03e-4  last it=1.93e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.03e-4
+   tj:-0.45138
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000134  mom=-2.27627  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000112  mom=-2.27637  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000099  mom=-2.27687  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000716  mom=-2.27771  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000127  mom=-2.27625  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000126  mom=-2.27624  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000126  mom=-2.27623  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000134   0.000000  -0.000929  -0.000829  -0.763558
+ XA2        0.000112   0.000000  -0.000871  -0.000787  -0.763519
+ XA3        0.000099   0.000000  -0.000817  -0.000744  -0.763488
+ XA4        0.000716   0.000000  -0.001524  -0.000989  -0.763769
+ XB1        0.000127   0.000000  -0.000951  -0.000856  -0.763582
+ XB2        0.000126   0.000000  -0.000972  -0.000878  -0.763601
+ XB3        0.000126   0.000000  -0.000983  -0.000889  -0.763612
+ XA42       0.000000   0.000000  -0.002608  -0.002609  -0.765345
+ XA32       0.000000   0.000000  -0.001739  -0.001739  -0.764475
+ XA43       0.000000   0.000000  -0.003518  -0.003519  -0.003519
+ XA33       0.000000   0.000000  -0.003216  -0.003216  -0.003216
+ Sum Q=0.002875  Emad=-0.000001(-0.000002) Vconst=-0.001473  Vmtz=-0.625608 (up-dn=-0.016066)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.002174   -0.001429    0.001493
+  R      T   -0.000745   -0.002174   -0.001429    0.001493
+
+ RMS pot difference in L PL = 0.000002  in R PL = 0.000002  total = 0.000002
+ vconst that minimizes potential mismatch to end layers = -0.000045
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001473
+ difference                                             =  0.001429
+ Magnetization from sphere program: -40.974371  from output rho: -40.963564
+ SV:   7 1.031D-04 0.2500 3.308E-05      24.41160476********* A -0.451
+
+   it  7  of 12    ehf=      24.411579   ehk=      24.411605
+ From last iter    ehf=      24.449128   ehk=      24.449169
+ diffe(q)= -0.037550 (0.000103)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9635645 ehf=24.4115786 ehk=24.4116048
+ cpudel    ...   Time this iter:  time(s):  0.827    total:  13.8s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0014732 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.839824    5.724853   -1.213413    0.331397   -2.275147
+ spin 2   18.973103   10.275592   -2.427300    0.718480    2.275592
+  total   29.812927   16.000445   -3.640712    1.049877    0.000445
+      0   10.843941    5.723240   -1.212992    0.331303   -2.276760
+ spin 2   18.978798   10.275420   -2.427333    0.718521    2.275420
+  total   29.822739   15.998659   -3.640326    1.049825   -0.001341
+      1   10.842843    5.724051   -1.213127    0.331319   -2.275949
+ spin 2   18.987873   10.275038   -2.427039    0.718393    2.275038
+  total   29.830716   15.999089   -3.640167    1.049711   -0.000911
+      2   10.836974    5.724448   -1.213410    0.331430   -2.275552
+ spin 2   18.973671   10.275580   -2.427462    0.718586    2.275580
+  total   29.810645   16.000028   -3.640872    1.050016    0.000028
+      3   10.834318    5.724583   -1.213517    0.331473   -2.275417
+ spin 2   18.968132   10.275830   -2.427642    0.718668    2.275830
+  total   29.802450   16.000413   -3.641159    1.050140    0.000413
+      4   10.836974    5.724448   -1.213410    0.331430   -2.275552
+ spin 2   18.973671   10.275580   -2.427462    0.718586    2.275580
+  total   29.810645   16.000028   -3.640872    1.050016    0.000028
+      5   10.842843    5.724051   -1.213127    0.331319   -2.275949
+ spin 2   18.987873   10.275038   -2.427039    0.718393    2.275038
+  total   29.830716   15.999089   -3.640167    1.049711   -0.000911
+      6   10.843941    5.723240   -1.212992    0.331303   -2.276760
+ spin 2   18.978798   10.275420   -2.427333    0.718521    2.275420
+  total   29.822739   15.998659   -3.640326    1.049825   -0.001341
+      7   10.839824    5.724853   -1.213413    0.331397   -2.275147
+ spin 2   18.973103   10.275592   -2.427300    0.718480    2.275592
+  total   29.812927   16.000445   -3.640712    1.049877    0.000445
+ All PL   97.561483   51.517767  -10.919401              -20.482233
+ spin 2  170.795022   92.479090  -21.845911               20.479090
+ PL tot  268.356505  143.996857  -32.765312               -0.003143
+ Deviations from charge neutrality:
+   Left end layer       0.000445
+   Right end layer      0.000445
+   Embedded layers     -0.004034
+   Sum of all layers   -0.003143
+ 
+ gfzerq: ef=-0.0665  dq=0.00403  vold=0  dv=1.93e-5  vnew= -0.000019
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=5.02e-4  vold=-1.93e-5  dv=2.75e-6  vnew= -0.000022
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=1.34e-7  vold=-2.21e-5  dv=5e-8  vnew= -0.000022
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.839824    5.724853   -1.213539    0.331397   -2.275147
+ spin 2   18.973103   10.275592   -2.427527    0.718480    2.275592
+  total   29.812927   16.000445   -3.641066    1.049877    0.000445
+      0    7.297778    5.723396   -1.213130    0.331304   -2.276604
+ spin 2   19.136428   10.275841   -2.427590    0.718525    2.275841
+  total   26.434207   15.999237   -3.640719    1.049829   -0.000763
+      1    7.295852    5.724208   -1.213265    0.331320   -2.275792
+ spin 2   19.149716   10.275459   -2.427296    0.718396    2.275459
+  total   26.445568   15.999667   -3.640561    1.049715   -0.000333
+      2    7.291237    5.724604   -1.213547    0.331431   -2.275396
+ spin 2   19.127835   10.276001   -2.427718    0.718589    2.276001
+  total   26.419072   16.000605   -3.641265    1.050020    0.000605
+      3    7.288898    5.724740   -1.213654    0.331474   -2.275260
+ spin 2   19.120308   10.276250   -2.427898    0.718671    2.276250
+  total   26.409206   16.000990   -3.641553    1.050144    0.000990
+      4    7.291237    5.724604   -1.213547    0.331431   -2.275396
+ spin 2   19.127835   10.276001   -2.427718    0.718589    2.276001
+  total   26.419072   16.000605   -3.641265    1.050020    0.000605
+      5    7.295852    5.724208   -1.213265    0.331320   -2.275792
+ spin 2   19.149716   10.275459   -2.427296    0.718396    2.275459
+  total   26.445568   15.999667   -3.640561    1.049715   -0.000333
+      6    7.297778    5.723396   -1.213130    0.331304   -2.276604
+ spin 2   19.136428   10.275841   -2.427590    0.718525    2.275841
+  total   26.434207   15.999237   -3.640719    1.049829   -0.000763
+      7   10.839824    5.724853   -1.213539    0.331397   -2.275147
+ spin 2   18.973103   10.275592   -2.427527    0.718480    2.275592
+  total   29.812927   16.000445   -3.641066    1.049877    0.000445
+ All PL   72.738281   51.518865  -10.920616              -20.481135
+ spin 2  171.894472   92.482035  -21.848160               20.482035
+ PL tot  244.632753  144.000900  -32.768776                0.000900
+ Deviations from charge neutrality:
+   Left end layer       0.000445
+   Right end layer      0.000445
+   Embedded layers      0.000009
+   Sum of all layers    0.000900
+ 
+ gfzerq: ef=-0.0665  dq=9e-6  vold=-2.21e-5  dv=4.93e-8  vnew= -0.000022
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers = -0.000022 Cumulative shift = -0.000022
+
+ shift (-2.2e-5) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001473 to -0.001495
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4187465  ehk=24.4187468  sumev=0.0000000  delsev=32.7648784
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.34e-4  screened dv=1.13e-6
+ SCRMOM: unscreened dq=5.85e-4  screened dq=4.63e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=1.32e-4  last it=1.03e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.32e-4
+   tj: 1.49754
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000128  mom=-2.27612  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000106  mom=-2.27621  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000087  mom=-2.27664  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.00072  mom=-2.27721  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000121  mom=-2.2761  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.00012  mom=-2.27609  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.00012  mom=-2.27608  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000128   0.000000  -0.001007  -0.000911  -0.763642
+ XA2        0.000106   0.000000  -0.000927  -0.000848  -0.763582
+ XA3        0.000087   0.000000  -0.000838  -0.000773  -0.763520
+ XA4        0.000720   0.000000  -0.001520  -0.000982  -0.763766
+ XB1        0.000121   0.000000  -0.001045  -0.000954  -0.763681
+ XB2        0.000120   0.000000  -0.001076  -0.000986  -0.763711
+ XB3        0.000120   0.000000  -0.001092  -0.001003  -0.763726
+ XA42       0.000000   0.000000  -0.002546  -0.002547  -0.765283
+ XA32       0.000000   0.000000  -0.001700  -0.001700  -0.764436
+ XA43       0.000000   0.000000  -0.003434  -0.003434  -0.003434
+ XA33       0.000000   0.000000  -0.003139  -0.003139  -0.003139
+ Sum Q=0.002804  Emad=-0.000001(-0.000002) Vconst=-0.001495  Vmtz=-0.625629 (up-dn=-0.016073)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.002123   -0.001378    0.001441
+  R      T   -0.000745   -0.002123   -0.001378    0.001441
+
+ RMS pot difference in L PL = 0.000002  in R PL = 0.000002  total = 0.000002
+ vconst that minimizes potential mismatch to end layers = -0.000118
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001495
+ difference                                             =  0.001378
+ Magnetization from sphere program: -40.971375  from output rho: -40.963167
+ SV:   8 1.320D-04 0.2500 5.713E-05      24.41874681********* A 1.50
+
+   it  8  of 12    ehf=      24.418747   ehk=      24.418747
+ From last iter    ehf=      24.411579   ehk=      24.411605
+ diffe(q)=  0.007168 (0.000132)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9631666 ehf=24.4187465 ehk=24.4187468
+ cpudel    ...   Time this iter:  time(s):  0.796    total:  14.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0014953 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.838635    5.724748   -1.213410    0.331399   -2.275252
+ spin 2   18.973690   10.275579   -2.427297    0.718478    2.275579
+  total   29.812325   16.000328   -3.640707    1.049877    0.000328
+      0   10.837494    5.723511   -1.213198    0.331381   -2.276489
+ spin 2   18.971456   10.275759   -2.427525    0.718603    2.275759
+  total   29.808950   15.999269   -3.640723    1.049984   -0.000731
+      1   10.829123    5.724650   -1.213603    0.331506   -2.275350
+ spin 2   18.959296   10.276258   -2.427830    0.718733    2.276258
+  total   29.788419   16.000908   -3.641432    1.050239    0.000908
+      2   10.818131    5.725246   -1.214055    0.331687   -2.274754
+ spin 2   18.934607   10.277266   -2.428557    0.719062    2.277266
+  total   29.752739   16.002511   -3.642612    1.050749    0.002511
+      3   10.813723    5.725441   -1.214218    0.331752   -2.274559
+ spin 2   18.925243   10.277663   -2.428835    0.719187    2.277663
+  total   29.738966   16.003105   -3.643053    1.050939    0.003105
+      4   10.818131    5.725246   -1.214055    0.331687   -2.274754
+ spin 2   18.934607   10.277266   -2.428557    0.719062    2.277266
+  total   29.752739   16.002511   -3.642612    1.050749    0.002511
+      5   10.829123    5.724650   -1.213603    0.331506   -2.275350
+ spin 2   18.959296   10.276258   -2.427830    0.718733    2.276258
+  total   29.788419   16.000908   -3.641432    1.050239    0.000908
+      6   10.837494    5.723511   -1.213198    0.331381   -2.276489
+ spin 2   18.971456   10.275759   -2.427525    0.718603    2.275759
+  total   29.808950   15.999269   -3.640723    1.049984   -0.000731
+      7   10.838635    5.724748   -1.213410    0.331399   -2.275252
+ spin 2   18.973690   10.275579   -2.427297    0.718478    2.275579
+  total   29.812325   16.000328   -3.640707    1.049877    0.000328
+ All PL   97.460489   51.521751  -10.922748              -20.478249
+ spin 2  170.603341   92.487386  -21.851251               20.487386
+ PL tot  268.063830  144.009137  -32.773999                0.009137
+ Deviations from charge neutrality:
+   Left end layer       0.000328
+   Right end layer      0.000328
+   Embedded layers      0.008482
+   Sum of all layers    0.009137
+ 
+ gfzerq: ef=-0.0665  dq=0.00848  vold=0  dv=4.07e-5  vnew= 0.000041
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.00105  vold=4.07e-5  dv=5.77e-6  vnew= 0.000046
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=5.91e-7  vold=4.65e-5  dv=3.24e-9  vnew= 0.000046
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.838635    5.724748   -1.213144    0.331399   -2.275252
+ spin 2   18.973690   10.275579   -2.426819    0.718478    2.275579
+  total   29.812325   16.000328   -3.639963    1.049877    0.000328
+      0    7.299515    5.723181   -1.212909    0.331379   -2.276819
+ spin 2   19.166607   10.274874   -2.426986    0.718596    2.274874
+  total   26.466122   15.998056   -3.639895    1.049975   -0.001944
+      1    7.291134    5.724321   -1.213314    0.331504   -2.275679
+ spin 2   19.148466   10.275374   -2.427291    0.718727    2.275374
+  total   26.439601   15.999696   -3.640605    1.050231   -0.000304
+      2    7.281582    5.724917   -1.213766    0.331685   -2.275083
+ spin 2   19.111475   10.276384   -2.428019    0.719055    2.276384
+  total   26.393057   16.001301   -3.641785    1.050740    0.001301
+      3    7.277510    5.725113   -1.213929    0.331750   -2.274887
+ spin 2   19.097956   10.276782   -2.428297    0.719180    2.276782
+  total   26.375467   16.001895   -3.642226    1.050930    0.001895
+      4    7.281582    5.724917   -1.213766    0.331685   -2.275083
+ spin 2   19.111475   10.276384   -2.428019    0.719055    2.276384
+  total   26.393057   16.001301   -3.641785    1.050740    0.001301
+      5    7.291134    5.724321   -1.213314    0.331504   -2.275679
+ spin 2   19.148466   10.275374   -2.427291    0.718727    2.275374
+  total   26.439601   15.999696   -3.640605    1.050231   -0.000304
+      6    7.299515    5.723181   -1.212909    0.331379   -2.276819
+ spin 2   19.166607   10.274874   -2.426986    0.718596    2.274874
+  total   26.466122   15.998056   -3.639895    1.049975   -0.001944
+      7   10.838635    5.724748   -1.213144    0.331399   -2.275252
+ spin 2   18.973690   10.275579   -2.426819    0.718478    2.275579
+  total   29.812325   16.000328   -3.639963    1.049877    0.000328
+ All PL   72.699243   51.519449  -10.920195              -20.480551
+ spin 2  171.898434   92.481206  -21.846527               20.481206
+ PL tot  244.597677  144.000655  -32.766722                0.000655
+ Deviations from charge neutrality:
+   Left end layer       0.000328
+   Right end layer      0.000328
+   Embedded layers      0.000000
+   Sum of all layers    0.000655
+ 
+ gfzerq: ef=-0.0665  dq=7.28e-14  vold=4.65e-5  dv=3.89e-16  vnew= 0.000046
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000046 Cumulative shift =  0.000046
+
+ shift (4.6e-5) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001495 to -0.001449
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4265943  ehk=24.4265976  sumev=0.0000000  delsev=32.7724024
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=9.75e-4  screened dv=5.70e-5
+ SCRMOM: unscreened dq=6.57e-4  screened dq=4.79e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.33e-4  last it=1.32e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.33e-4
+   tj: 1.54861
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000116  mom=-2.27622  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000094  mom=-2.27632  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000076  mom=-2.2768  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000702  mom=-2.27752  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000109  mom=-2.2762  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000108  mom=-2.27619  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000108  mom=-2.27619  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000116   0.000000  -0.001058  -0.000971  -0.763701
+ XA2        0.000094   0.000000  -0.000940  -0.000870  -0.763602
+ XA3        0.000076   0.000000  -0.000805  -0.000748  -0.763491
+ XA4        0.000702   0.000000  -0.001423  -0.000899  -0.763674
+ XB1        0.000109   0.000000  -0.001124  -0.001043  -0.763770
+ XB2        0.000108   0.000000  -0.001174  -0.001093  -0.763819
+ XB3        0.000108   0.000000  -0.001200  -0.001119  -0.763844
+ XA42       0.000000   0.000000  -0.002343  -0.002344  -0.765080
+ XA32       0.000000   0.000000  -0.001553  -0.001553  -0.764289
+ XA43       0.000000   0.000000  -0.003174  -0.003175  -0.003175
+ XA33       0.000000   0.000000  -0.002898  -0.002898  -0.002898
+ Sum Q=0.002624  Emad=-0.000001(-0.000002) Vconst=-0.001449  Vmtz=-0.625577 (up-dn=-0.016063)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001948   -0.001203    0.001266
+  R      T   -0.000745   -0.001948   -0.001203    0.001266
+
+ RMS pot difference in L PL = 0.000002  in R PL = 0.000002  total = 0.000002
+ vconst that minimizes potential mismatch to end layers = -0.000246
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001449
+ difference                                             =  0.001203
+ Magnetization from sphere program: -40.973387  from output rho: -40.961757
+ SV:   9 1.332D-04 0.2500 4.143E-05      24.42659756********* A 1.55
+
+   it  9  of 12    ehf=      24.426594   ehk=      24.426598
+ From last iter    ehf=      24.418747   ehk=      24.418747
+ diffe(q)=  0.007848 (0.000133)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9617574 ehf=24.4265943 ehk=24.4265976
+ cpudel    ...   Time this iter:  time(s):  0.814    total:  15.4s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0014488 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.841797    5.725097   -1.213401    0.331380   -2.274903
+ spin 2   18.976246   10.275426   -2.427269    0.718463    2.275426
+  total   29.818043   16.000524   -3.640670    1.049843    0.000524
+      0   10.841957    5.722385   -1.212803    0.331250   -2.277615
+ spin 2   18.993526   10.274960   -2.426936    0.718360    2.274960
+  total   29.835483   15.997345   -3.639739    1.049610   -0.002655
+      1   10.820346    5.725154   -1.213920    0.331622   -2.274846
+ spin 2   18.934101   10.277325   -2.428514    0.719023    2.277325
+  total   29.754446   16.002479   -3.642434    1.050644    0.002479
+      2   10.798672    5.726246   -1.214778    0.331961   -2.273754
+ spin 2   18.880160   10.279584   -2.430019    0.719684    2.279584
+  total   29.678832   16.005830   -3.644797    1.051645    0.005830
+      3   10.790511    5.726570   -1.215069    0.332078   -2.273430
+ spin 2   18.860426   10.280355   -2.430545    0.719915    2.280355
+  total   29.650936   16.006925   -3.645614    1.051993    0.006925
+      4   10.798672    5.726246   -1.214778    0.331961   -2.273754
+ spin 2   18.880160   10.279584   -2.430019    0.719684    2.279584
+  total   29.678832   16.005830   -3.644797    1.051645    0.005830
+      5   10.820346    5.725154   -1.213920    0.331622   -2.274846
+ spin 2   18.934101   10.277325   -2.428514    0.719023    2.277325
+  total   29.754446   16.002479   -3.642434    1.050644    0.002479
+      6   10.841957    5.722385   -1.212803    0.331250   -2.277615
+ spin 2   18.993526   10.274960   -2.426936    0.718360    2.274960
+  total   29.835483   15.997345   -3.639739    1.049610   -0.002655
+      7   10.841797    5.725097   -1.213401    0.331380   -2.274903
+ spin 2   18.976246   10.275426   -2.427269    0.718463    2.275426
+  total   29.818043   16.000524   -3.640670    1.049843    0.000524
+ All PL   97.396055   51.524335  -10.924874              -20.475665
+ spin 2  170.428490   92.494946  -21.856021               20.494946
+ PL tot  267.824545  144.019281  -32.780894                0.019281
+ Deviations from charge neutrality:
+   Left end layer       0.000524
+   Right end layer      0.000524
+   Embedded layers      0.018234
+   Sum of all layers    0.019281
+ 
+ gfzerq: ef=-0.0665  dq=0.0182  vold=0  dv=8.76e-5  vnew= 0.000088
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=0.00227  vold=8.76e-5  dv=1.24e-5  vnew= 0.0001
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=2.74e-6  vold=1e-4  dv=1.5e-8  vnew= 0.0001
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.841797    5.725097   -1.212828    0.331380   -2.274903
+ spin 2   18.976246   10.275426   -2.426241    0.718463    2.275426
+  total   29.818043   16.000524   -3.639070    1.049843    0.000524
+      0    7.309292    5.721676   -1.212182    0.331246   -2.278324
+ spin 2   19.231215   10.273053   -2.425777    0.718346    2.273053
+  total   26.540507   15.994728   -3.637959    1.049592   -0.005272
+      1    7.289355    5.724446   -1.213299    0.331617   -2.275554
+ spin 2   19.143356   10.275426   -2.427355    0.719009    2.275426
+  total   26.432711   15.999872   -3.640654    1.050626   -0.000128
+      2    7.270135    5.725540   -1.214157    0.331957   -2.274460
+ spin 2   19.063264   10.277693   -2.428860    0.719670    2.277693
+  total   26.333399   16.003233   -3.643017    1.051627    0.003233
+      3    7.262562    5.725865   -1.214448    0.332074   -2.274135
+ spin 2   19.033895   10.278467   -2.429386    0.719901    2.278467
+  total   26.296457   16.004332   -3.643834    1.051975    0.004332
+      4    7.270135    5.725540   -1.214157    0.331957   -2.274460
+ spin 2   19.063264   10.277693   -2.428860    0.719670    2.277693
+  total   26.333399   16.003233   -3.643017    1.051627    0.003233
+      5    7.289355    5.724446   -1.213299    0.331617   -2.275554
+ spin 2   19.143356   10.275426   -2.427355    0.719009    2.275426
+  total   26.432711   15.999872   -3.640654    1.050626   -0.000128
+      6    7.309292    5.721676   -1.212182    0.331246   -2.278324
+ spin 2   19.231215   10.273053   -2.425777    0.718346    2.273053
+  total   26.540507   15.994728   -3.637959    1.049592   -0.005272
+      7   10.841797    5.725097   -1.212828    0.331380   -2.274903
+ spin 2   18.976246   10.275426   -2.426241    0.718463    2.275426
+  total   29.818043   16.000524   -3.639070    1.049843    0.000524
+ All PL   72.683719   51.519385  -10.919380              -20.480615
+ spin 2  171.862056   92.481663  -21.845854               20.481663
+ PL tot  244.545776  144.001048  -32.765234                0.001048
+ Deviations from charge neutrality:
+   Left end layer       0.000524
+   Right end layer      0.000524
+   Embedded layers      0.000000
+   Sum of all layers    0.001048
+ 
+ gfzerq: ef=-0.0665  dq=2.27e-13  vold=1e-4  dv=2.49e-15  vnew= 0.0001
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000100 Cumulative shift =  0.000100
+
+ shift (1e-4) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001449 to -0.001349
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4327902  ehk=24.4328174  sumev=0.0000000  delsev=32.7791028
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=6.95e-3  screened dv=5.81e-4
+ SCRMOM: unscreened dq=1.10e-3  screened dq=5.89e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.62e-4  last it=1.33e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.62e-4
+   tj: 2.89024
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000116  mom=-2.2759  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000091  mom=-2.27599  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000051  mom=-2.27633  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000777  mom=-2.27645  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000107  mom=-2.27588  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000106  mom=-2.27587  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000107  mom=-2.27587  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000116   0.000000  -0.001039  -0.000953  -0.763685
+ XA2        0.000091   0.000000  -0.000869  -0.000801  -0.763536
+ XA3        0.000051   0.000000  -0.000645  -0.000607  -0.763353
+ XA4        0.000777   0.000000  -0.001273  -0.000692  -0.763476
+ XB1        0.000107   0.000000  -0.001142  -0.001062  -0.763791
+ XB2        0.000106   0.000000  -0.001218  -0.001138  -0.763865
+ XB3        0.000107   0.000000  -0.001256  -0.001177  -0.763903
+ XA42       0.000000   0.000000  -0.002147  -0.002148  -0.764884
+ XA32       0.000000   0.000000  -0.001335  -0.001335  -0.764071
+ XA43       0.000000   0.000000  -0.003004  -0.003005  -0.003005
+ XA33       0.000000   0.000000  -0.002720  -0.002720  -0.002720
+ Sum Q=0.002706  Emad=-0.000001(-0.000002) Vconst=-0.001349  Vmtz=-0.625481 (up-dn=-0.016084)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001741   -0.000996    0.001076
+  R      T   -0.000745   -0.001741   -0.000996    0.001076
+
+ RMS pot difference in L PL = 0.000001  in R PL = 0.000001  total = 0.000001
+ vconst that minimizes potential mismatch to end layers = -0.000353
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001349
+ difference                                             =  0.000996
+ Magnetization from sphere program: -40.967087  from output rho: -40.962279
+ SV:  10 1.617D-04 0.2500 1.197E-04      24.43281742********* A 2.89
+
+   it 10  of 12    ehf=      24.432790   ehk=      24.432817
+ From last iter    ehf=      24.426594   ehk=      24.426598
+ diffe(q)=  0.006196 (0.000162)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9622786 ehf=24.4327902 ehk=24.4328174
+ cpudel    ...   Time this iter:  time(s):  8.17     total:  23.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0013488 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.848999    5.725794   -1.213384    0.331343   -2.274206
+ spin 2   18.981301   10.275063   -2.427194    0.718417    2.275063
+  total   29.830301   16.000857   -3.640578    1.049760    0.000857
+      0   10.860155    5.720295   -1.211842    0.330910   -2.279705
+ spin 2   19.073601   10.271776   -2.424724    0.717425    2.271776
+  total   29.933756   15.992070   -3.636566    1.048335   -0.007930
+      1   10.828954    5.724816   -1.213606    0.331501   -2.275184
+ spin 2   18.964422   10.275999   -2.427700    0.718673    2.275999
+  total   29.793375   16.000814   -3.641306    1.050174    0.000814
+      2   10.796802    5.726486   -1.214903    0.332017   -2.273514
+ spin 2   18.881837   10.279505   -2.430000    0.719682    2.279505
+  total   29.678639   16.005991   -3.644903    1.051699    0.005991
+      3   10.784631    5.726954   -1.215339    0.332192   -2.273046
+ spin 2   18.850777   10.280626   -2.430786    0.720029    2.280626
+  total   29.635407   16.007580   -3.646125    1.052221    0.007580
+      4   10.796802    5.726486   -1.214903    0.332017   -2.273514
+ spin 2   18.881837   10.279505   -2.430000    0.719682    2.279505
+  total   29.678639   16.005991   -3.644903    1.051699    0.005991
+      5   10.828954    5.724816   -1.213606    0.331501   -2.275184
+ spin 2   18.964422   10.275999   -2.427700    0.718673    2.275999
+  total   29.793375   16.000814   -3.641306    1.050174    0.000814
+      6   10.860155    5.720295   -1.211842    0.330910   -2.279705
+ spin 2   19.073601   10.271776   -2.424724    0.717425    2.271776
+  total   29.933756   15.992070   -3.636566    1.048335   -0.007930
+      7   10.848999    5.725794   -1.213384    0.331343   -2.274206
+ spin 2   18.981301   10.275063   -2.427194    0.718417    2.275063
+  total   29.830301   16.000857   -3.640578    1.049760    0.000857
+ All PL   97.454452   51.521734  -10.922809              -20.478266
+ spin 2  170.653099   92.485312  -21.850023               20.485312
+ PL tot  268.107551  144.007046  -32.772832                0.007046
+ Deviations from charge neutrality:
+   Left end layer       0.000857
+   Right end layer      0.000857
+   Embedded layers      0.005331
+   Sum of all layers    0.007046
+ 
+ gfzerq: ef=-0.0665  dq=0.00533  vold=0  dv=2.56e-5  vnew= 0.000026
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=6.63e-4  vold=2.56e-5  dv=3.63e-6  vnew= 0.000029
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=2.34e-7  vold=2.92e-5  dv=1.28e-9  vnew= 0.000029
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.848999    5.725794   -1.213217    0.331343   -2.274206
+ spin 2   18.981301   10.275063   -2.426894    0.718417    2.275063
+  total   29.830301   16.000857   -3.640110    1.049760    0.000857
+      0    7.317864    5.720087   -1.211661    0.330909   -2.279913
+ spin 2   19.306309   10.271216   -2.424386    0.717421    2.271216
+  total   26.624174   15.991303   -3.636046    1.048330   -0.008697
+      1    7.289173    5.724609   -1.213425    0.331500   -2.275391
+ spin 2   19.145482   10.275443   -2.427361    0.718669    2.275443
+  total   26.434655   16.000052   -3.640786    1.050169    0.000052
+      2    7.260548    5.726280   -1.214722    0.332015   -2.273720
+ spin 2   19.023093   10.278953   -2.429662    0.719678    2.278953
+  total   26.283641   16.005233   -3.644384    1.051693    0.005233
+      3    7.249234    5.726748   -1.215158    0.332191   -2.273252
+ spin 2   18.976122   10.280076   -2.430448    0.720025    2.280076
+  total   26.225356   16.006824   -3.645606    1.052215    0.006824
+      4    7.260548    5.726280   -1.214722    0.332015   -2.273720
+ spin 2   19.023093   10.278953   -2.429662    0.719678    2.278953
+  total   26.283641   16.005233   -3.644384    1.051693    0.005233
+      5    7.289173    5.724609   -1.213425    0.331500   -2.275391
+ spin 2   19.145482   10.275443   -2.427361    0.718669    2.275443
+  total   26.434655   16.000052   -3.640786    1.050169    0.000052
+      6    7.317864    5.720087   -1.211661    0.330909   -2.279913
+ spin 2   19.306309   10.271216   -2.424386    0.717421    2.271216
+  total   26.624174   15.991303   -3.636046    1.048330   -0.008697
+      7   10.848999    5.725794   -1.213217    0.331343   -2.274206
+ spin 2   18.981301   10.275063   -2.426894    0.718417    2.275063
+  total   29.830301   16.000857   -3.640110    1.049760    0.000857
+ All PL   72.682404   51.520288  -10.921204              -20.479712
+ spin 2  171.888493   92.481427  -21.847053               20.481427
+ PL tot  244.570897  144.001715  -32.768258                0.001715
+ Deviations from charge neutrality:
+   Left end layer       0.000857
+   Right end layer      0.000857
+   Embedded layers      0.000000
+   Sum of all layers    0.001715
+ 
+ gfzerq: ef=-0.0665  dq=7.11e-14  vold=2.92e-5  dv=7.78e-16  vnew= 0.000029
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000029 Cumulative shift =  0.000029
+
+ shift (2.9e-5) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001349 to -0.001320
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4255600  ehk=24.4256338  sumev=0.0000000  delsev=32.7706865
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.86e-2  screened dv=1.65e-3
+ SCRMOM: unscreened dq=1.67e-3  screened dq=3.46e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.03e-4  last it=1.62e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=1.03e-4
+   tj:-0.36935
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.00011  mom=-2.27578  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000084  mom=-2.27586  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000055  mom=-2.2761  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.00068  mom=-2.276  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000102  mom=-2.27576  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000101  mom=-2.27577  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000102  mom=-2.27577  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000110   0.000000  -0.000977  -0.000895  -0.763628
+ XA2        0.000084   0.000000  -0.000859  -0.000796  -0.763533
+ XA3        0.000055   0.000000  -0.000707  -0.000666  -0.763418
+ XA4        0.000680   0.000000  -0.001294  -0.000786  -0.763580
+ XB1        0.000102   0.000000  -0.001041  -0.000964  -0.763693
+ XB2        0.000101   0.000000  -0.001089  -0.001014  -0.763739
+ XB3        0.000102   0.000000  -0.001114  -0.001038  -0.763763
+ XA42       0.000000   0.000000  -0.002131  -0.002132  -0.764868
+ XA32       0.000000   0.000000  -0.001389  -0.001389  -0.764125
+ XA43       0.000000   0.000000  -0.002913  -0.002913  -0.002913
+ XA33       0.000000   0.000000  -0.002653  -0.002653  -0.002653
+ Sum Q=0.002467  Emad=-0.000001(-0.000001) Vconst=-0.001320  Vmtz=-0.625447 (up-dn=-0.016085)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001760   -0.001015    0.001081
+  R      T   -0.000745   -0.001760   -0.001015    0.001081
+
+ RMS pot difference in L PL = 0.000001  in R PL = 0.000001  total = 0.000001
+ vconst that minimizes potential mismatch to end layers = -0.000305
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001320
+ difference                                             =  0.001015
+ Magnetization from sphere program: -40.964575  from output rho: -40.961139
+ SV:  11 1.027D-04 0.2500 5.992E-05      24.42563377********* A -0.369
+
+   it 11  of 12    ehf=      24.425560   ehk=      24.425634
+ From last iter    ehf=      24.432790   ehk=      24.432817
+ diffe(q)= -0.007230 (0.000103)    tol= 0.000000 (0.000005)   more=T
+i pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.961139 ehf=24.42556 ehk=24.4256338
+ cpudel    ...   Time this iter:  time(s):  0.811    total:  24.4s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 162 0 0 0
+
+ --- PGFASA ( bigemb ) ---
+ layer GF and qnu, idos, pdos,  using P3
+   PL   0   1   2   3   4   5   6
+  1st   1   3   5   7   9  11  13
+ nbas   2   2   2   2   2   2   2
+ ndim  18  18  18  18  18  18  18
+ ldim  18  18  18  18  18  18  18
+  L+I  18  18  18  18  18  18  18
+  PLV   0   0   0   0   0   0   0
+ 
+ using ef=-0.0665000  vconst=-0.0013196 vconst(L)=-0.0007456 vconst(R)=-0.0007456
+ 
+ pgglst mode 1     8 PL   (-1:6)
+ pgglst mode 111   9 PL   (-1:7)
+ SUPGBC: read lbc for  GF ... ok
+ SUPGBC: read rbc for  GF ... ok
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ iz = 1 of 10  z = -0.999608 0.009563  wz = 0.002003 0.024420  q= 0 0 0
+ pgfasa (warning) layer -1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 0, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 1, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 2, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 3, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 4, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 5, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 6, izp=4, ikp=15, 2 positive Im gii encountered
+ pgfasa (warning) layer 7, izp=4, ikp=15, 2 positive Im gii encountered
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.842512    5.724986   -1.213378    0.331372   -2.275014
+ spin 2   18.976434   10.275395   -2.427243    0.718442    2.275395
+  total   29.818945   16.000381   -3.640621    1.049814    0.000381
+      0   10.846663    5.722657   -1.212735    0.331199   -2.277343
+ spin 2   19.012202   10.274112   -2.426293    0.718061    2.274112
+  total   29.858865   15.996769   -3.639028    1.049260   -0.003231
+      1   10.832531    5.724543   -1.213486    0.331456   -2.275457
+ spin 2   18.972692   10.275662   -2.427436    0.718556    2.275662
+  total   29.805223   16.000205   -3.640922    1.050012    0.000205
+      2   10.815602    5.725416   -1.214173    0.331736   -2.274584
+ spin 2   18.934997   10.277256   -2.428561    0.719066    2.277256
+  total   29.750599   16.002671   -3.642734    1.050802    0.002671
+      3   10.808968    5.725675   -1.214409    0.331833   -2.274325
+ spin 2   18.920417   10.277807   -2.428964    0.719248    2.277807
+  total   29.729385   16.003482   -3.643373    1.051082    0.003482
+      4   10.815602    5.725416   -1.214173    0.331736   -2.274584
+ spin 2   18.934997   10.277256   -2.428561    0.719066    2.277256
+  total   29.750599   16.002671   -3.642734    1.050802    0.002671
+      5   10.832531    5.724543   -1.213486    0.331456   -2.275457
+ spin 2   18.972692   10.275662   -2.427436    0.718556    2.275662
+  total   29.805223   16.000205   -3.640922    1.050012    0.000205
+      6   10.846663    5.722657   -1.212735    0.331199   -2.277343
+ spin 2   19.012202   10.274112   -2.426293    0.718061    2.274112
+  total   29.858865   15.996769   -3.639028    1.049260   -0.003231
+      7   10.842512    5.724986   -1.213378    0.331372   -2.275014
+ spin 2   18.976434   10.275395   -2.427243    0.718442    2.275395
+  total   29.818945   16.000381   -3.640621    1.049814    0.000381
+ All PL   97.483584   51.520878  -10.921954              -20.479122
+ spin 2  170.713067   92.482657  -21.848030               20.482657
+ PL tot  268.196651  144.003535  -32.769984                0.003535
+ Deviations from charge neutrality:
+   Left end layer       0.000381
+   Right end layer      0.000381
+   Embedded layers      0.002773
+   Sum of all layers    0.003535
+ 
+ gfzerq: ef=-0.0665  dq=0.00277  vold=0  dv=1.33e-5  vnew= 0.000013
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=3.45e-4  vold=1.33e-5  dv=1.89e-6  vnew= 0.000015
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0665  dq=6.31e-8  vold=1.52e-5  dv=3.46e-10  vnew= 0.000015
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   10.842512    5.724986   -1.213291    0.331372   -2.275014
+ spin 2   18.976434   10.275395   -2.427087    0.718442    2.275395
+  total   29.818945   16.000381   -3.640378    1.049814    0.000381
+      0    7.304781    5.722549   -1.212641    0.331198   -2.277451
+ spin 2   19.207269   10.273823   -2.426117    0.718058    2.273823
+  total   26.512051   15.996372   -3.638758    1.049257   -0.003628
+      1    7.291154    5.724435   -1.213391    0.331456   -2.275565
+ spin 2   19.149297   10.275373   -2.427261    0.718553    2.275373
+  total   26.440450   15.999808   -3.640652    1.050009   -0.000192
+      2    7.275904    5.725308   -1.214079    0.331736   -2.274692
+ spin 2   19.093339   10.276968   -2.428385    0.719064    2.276968
+  total   26.369243   16.002276   -3.642464    1.050800    0.002276
+      3    7.269577    5.725568   -1.214315    0.331833   -2.274432
+ spin 2   19.071563   10.277520   -2.428788    0.719246    2.277520
+  total   26.341141   16.003087   -3.643103    1.051079    0.003087
+      4    7.275904    5.725308   -1.214079    0.331736   -2.274692
+ spin 2   19.093339   10.276968   -2.428385    0.719064    2.276968
+  total   26.369243   16.002276   -3.642464    1.050800    0.002276
+      5    7.291154    5.724435   -1.213391    0.331456   -2.275565
+ spin 2   19.149297   10.275373   -2.427261    0.718553    2.275373
+  total   26.440450   15.999808   -3.640652    1.050009   -0.000192
+      6    7.304781    5.722549   -1.212641    0.331198   -2.277451
+ spin 2   19.207269   10.273823   -2.426117    0.718058    2.273823
+  total   26.512051   15.996372   -3.638758    1.049257   -0.003628
+      7   10.842512    5.724986   -1.213291    0.331372   -2.275014
+ spin 2   18.976434   10.275395   -2.427087    0.718442    2.275395
+  total   29.818945   16.000381   -3.640378    1.049814    0.000381
+ All PL   72.698277   51.520125  -10.921120              -20.479875
+ spin 2  171.924241   92.480637  -21.846487               20.480637
+ PL tot  244.622518  144.000762  -32.767606                0.000762
+ Deviations from charge neutrality:
+   Left end layer       0.000381
+   Right end layer      0.000381
+   Embedded layers      0.000000
+   Sum of all layers    0.000762
+ 
+ gfzerq: ef=-0.0665  dq=8.88e-15  vold=1.52e-5  dv=7.68e-17  vnew= 0.000015
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000015 Cumulative shift =  0.000015
+
+ shift (1.5e-5) within Pade tolerance (0.03) ... accept Pade correction to G
+
+ PGPDOS: partial dos (Pade approximation) ndos=1001 dosw = -0.8 1
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from -0.001320 to -0.001304
+ setting sumev=0 for now
+
+ LMPG: ehf=24.4229649  ehk=24.4229761  sumev=0.0000000  delsev=32.7681544
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=3.35e-3  screened dv=2.63e-4
+ SCRMOM: unscreened dq=7.81e-4  screened dq=2.68e-4
+  
+ mixing: mode=A  nmix=3  beta=.25
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=7.48e-5  last it=1.03e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=168  beta=0.25  tm=10  rmsdel=7.48e-5
+   tj:-0.58906
+
+ GETZV:  144 valence electrons
+ATOM=XA1  Z=26  Qc=18  R=2.678506  Qv=0.000083  mom=-2.27571  a=0.02  nr=601
+ATOM=XA2  Z=26  Qc=18  R=2.678506  Qv=0.000058  mom=-2.27578  a=0.02  nr=601
+ATOM=XA3  Z=26  Qc=18  R=2.678506  Qv=0.000028  mom=-2.27599  a=0.02  nr=601
+ATOM=XA4  Z=26  Qc=18  R=2.678506  Qv=0.000596  mom=-2.27571  a=0.02  nr=601
+ATOM=XB1  Z=26  Qc=18  R=2.678506  Qv=0.000076  mom=-2.2757  a=0.02  nr=601
+ATOM=XB2  Z=26  Qc=18  R=2.678506  Qv=0.000075  mom=-2.27571  a=0.02  nr=601
+ATOM=XB3  Z=26  Qc=18  R=2.678506  Qv=0.000076  mom=-2.27571  a=0.02  nr=601
+ATOM=XA42 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+ATOM=XA32 Z=26  Qc=18  R=2.678506  Qv=0  mom=-2.27563  a=0.02  nr=601
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA1        0.000083   0.000000  -0.001131  -0.001068  -0.763802
+ XA2        0.000058   0.000000  -0.000975  -0.000931  -0.763668
+ XA3        0.000028   0.000000  -0.000771  -0.000750  -0.763500
+ XA4        0.000596   0.000000  -0.001220  -0.000774  -0.763563
+ XB1        0.000076   0.000000  -0.001222  -0.001165  -0.763896
+ XB2        0.000075   0.000000  -0.001288  -0.001233  -0.763961
+ XB3        0.000076   0.000000  -0.001323  -0.001266  -0.763993
+ XA42       0.000000   0.000000  -0.001823  -0.001823  -0.764559
+ XA32       0.000000   0.000000  -0.001229  -0.001229  -0.763965
+ XA43       0.000000   0.000000  -0.002451  -0.002452  -0.002452
+ XA33       0.000000   0.000000  -0.002243  -0.002243  -0.002243
+ Sum Q=0.001982  Emad=-0.000001(-0.000001) Vconst=-0.001304  Vmtz=-0.625418 (up-dn=-0.016080)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ XA42       0.000000   0.000000  -0.000745  -0.000745  -0.763482
+ XA32       0.000000   0.000000  -0.000745  -0.000745  -0.763481
+ Sum Q=-0.000001  Emad=0.000000(0.000000) Vconst=-0.000746  Vmtz=-0.763481 (up-dn=-0.019624)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T   -0.000745   -0.001526   -0.000781    0.000835
+  R      T   -0.000745   -0.001526   -0.000781    0.000835
+
+ RMS pot difference in L PL = 0.000001  in R PL = 0.000001  total = 0.000001
+ vconst that minimizes potential mismatch to end layers = -0.000524
+ vconst is now (estimate to satisfy charge neutrality)  = -0.001304
+ difference                                             =  0.000781
+ Magnetization from sphere program: -40.963106  from output rho: -40.960512
+ SV:  12 7.478D-05 0.2500 5.996E-05      24.42297611********* A -0.589
+
+   it 12  of 12    ehf=      24.422965   ehk=      24.422976
+ From last iter    ehf=      24.425560   ehk=      24.425634
+ diffe(q)= -0.002595 (0.000075)    tol= 0.000000 (0.000005)   more=F
+x pgf=1 scr=52 na=8 nb=6 nk1=8 nk2=12 nz=10 bzj=0 sc=1 twoc=0 nl=3 nsp=2 ef0=-.0665 nit=12 gamma=0 vesi=0 mmom=-40.9605115 ehf=24.4229649 ehk=24.4229761
+ cpudel    ...   Time this iter:  time(s):  0.825    total:  25.2s
+ Exit 0 LMPG 
+ CPU time:   25.242s   Wall clock   25.296s   11:21:07 30.08.2016        on phpdl1.ph.kcl.ac.uk
+     calls      === cpu time ===  depth 5
+                per call   total
+        1      25.24      25.24   main
+      225       0.08      18.41   |--atscpp
+       12       0.45       5.44   `--pgfasa
+       12       0.02       0.20      |--supgbc
+      600       0.00       0.17      |  `--pgsif
+      600       0.00       0.01      |     |--plham
+     1800       0.00       0.01      |     |  `--bloch
+      600       0.00       0.16      |     `--pgsifd
+    25200       0.00       1.69      |--pgemb
+    25200       0.00       0.60      |  `--plham
+    75600       0.00       0.51      |     `--bloch
+    28800       0.00       1.37      |--pgdysn
+    28800       0.00       0.61      |  |--plham
+    86400       0.00       0.52      |  |  `--bloch
+    28800       0.00       0.70      |  `--pgdys1
+       18       0.81      14.67      `--v0intr

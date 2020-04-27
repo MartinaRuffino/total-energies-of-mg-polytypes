@@ -1,0 +1,54 @@
+--band      : Tabulate energy bands; see doc/Command-line-options.html
+--bonly     : Use in conjuction with --lxb switch
+--chimedit    : Invoke magnetic susceptibility editor
+--chklim    : Check band limits in optics calculations
+--cls       : For core-level spectroscopy
+--cv:       : Calculate electronic specific heat, eV
+--cvK:      : Calculate electronic specific heat, Ry
+--dos       : Calculate total DOS, and qualifying switches
+--dumprho   : Not documented
+--etot      : 1-shot total energy mode.  No forces, dynamics, output density
+--evec      : Writes eigenvectors to disk
+--invbl     : Not documented
+--jdosw     : Channels for optical properties; See doc/optics.html
+--jdosw2    : Channels for optical properties; See doc/optics.html
+--lxb       : Write optical matrix elements for LXB code
+--mem       : Use disk to conserve memory
+--mix=      : Not documented
+--mixsig=   : For self-energy; see Command-line-options.html
+--mlog      : (MPI) write MPI commands to log file
+--mull      : Mulliken analysis; see doc/Command-line-options.html
+--no-fixef0 : Do not adjust estimate of Fermi level after 1st band pass
+--nosymdm   : Not documented
+--oldbz     : Not documented
+--oldvc     : Reference potential defined so average cell potential is zero
+--onesp     : Generate bands for one spin.  Better: use --band~spin1...
+--opt:read  : Read optical matrix elements; See doc/optics.html
+--opt:write : Write optical matrix elements; See doc/optics.html
+--optbas    : Special branch to optimise basis
+--pdiag     : (MPI) parallel diagonaliser
+--pdos      : Partial DOS; see doc/Command-line-options.html
+--popted    : Invoke the optics editor
+--quit=     : quit after execution of certain blocks, e.g. --quit=ham
+--rhopos    : force interstitial density to be every postive
+--rs=       : Controls I/O with rst file; see Command-line-options.html
+--rsedit    : Invoke the restart file editor
+--rsig      : For reading the self-energy; see Command-line-options.html
+--rxes      : RXES spectroscopy
+--sh=       : Not documented
+--shorps    : Shorten basis vectors after final input (e.g. from iors)
+--shorten=no: Suppress all shortening of basis vectors
+--vext      : Add external potential
+--wden      : Write density to file
+--wforce    : Write forces to file
+--window=   : Generate output density in a restricted energy window
+--wpotmt    : Write augmentation potentials to atom files
+--wrhoat    : Write partial atomic densities to atom files
+--wrhomt    : Write augmentation densities to files
+--wsig      : For writing the self-energy; see Command-line-options.html
+--wsmpot    : Write smooth potential to file
+-ef=        : Overwrite Fermi level; use with --band
+-enu=       : Not documented
+-noves      : Use Madelung potential from disk; do not remake from density
+-novintr    : Exclude intra-atomic W when making screened exchange sigma
+--udrs      : generate and save output density

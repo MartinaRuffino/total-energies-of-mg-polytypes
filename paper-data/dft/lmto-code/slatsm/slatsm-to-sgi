@@ -1,0 +1,22 @@
+echo --- slatsm-to-SGI: ccomp to SGI-specific ---
+
+echo '   ' slatsm-to-SGI: ccomp for SGI-BUG patches: \
+     `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SGI-BUG' *.f`
+foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SGI-BUG' *.f` )
+  rm -f xx.f ; ccomp -uSGI-BUG $i xx.f
+  ccomp -dSGI-BUG xx.f $i; rm -f xx.f
+end
+
+echo '   ' slatsm-to-SGI: ccomp for special SGI files: \
+     `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SGI' *.f`
+foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SGI' *.f` )
+  rm -f xx.f ; ccomp -uSGI $i xx.f
+  ccomp -dSGI xx.f $i; rm -f xx.f
+end
+
+set DORISC
+set AWRITE
+set NOSLATSM = ( {dspfa,dspsl,dspdi,dsisl,dsifa,dsi}.f )
+
+if (-e fmain.f) mv -f fmain.f fmain.fortran
+rm -f xx.f

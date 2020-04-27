@@ -1,0 +1,68 @@
+#!/bin/csh -f
+
+# shell script to create MPI version of library slatsm.a
+
+# This script requires environment variable F90m is set,
+# which is the MPI f90 compiler and associated flags
+
+# Also ccomp must be in your path, or environment variable
+# CCOMP must point to it.
+
+# checks before script execution
+
+if (! $?CCOMP) then
+  which ccomp >/dev/null
+  if ($status != 0) then
+    echo Exit -1 slatsm-to-mpi: executable ccomp apparently not in path.
+    echo Set environment variable CCOMP to ccomp preprocessor before executing this script
+    exit -1
+  endif
+  set ccomp = `which ccomp`
+else
+  set ccomp = ($CCOMP)
+  which $ccomp[1] >/dev/null
+  if ($status != 0) then
+    echo Exit -1 slatsm-to-mpi: environment variable CCOMP=$ccomp[1] does not correspond to executable in your path.
+    echo Set environment variable CCOMP to a valid ccomp preprocessor before executing this script.
+    exit -1
+  endif
+endif
+
+if (! $?F90M) then
+  echo Exit -1 slatsm-to-mpi: no environment variable F90M defined.
+  echo Set environment variable F90M to compiler name followed by switches before executing this script
+  exit -1
+endif
+set fc = ($F90M)
+which $fc[1] >/dev/null
+if ($status != 0) then
+  echo Exit -1 slatsm-to-mpi: compiler "$fc[1]" apparently not in path.
+  echo Set environment variable F90M to compiler name followed by switches before executing this script
+  exit -1
+endif
+
+echo "slatsm-to-mpi: compiling with $fc -c"
+echo "              generate MPI versions of subroutines with $ccomp"
+
+echo "              cp slatsm.a slatsm-MPI.a"
+                    cp slatsm.a slatsm-MPI.a
+echo "              ar dv slatsm-MPI.a nullmpi.o"
+                    ar dv slatsm-MPI.a nullmpi.o
+
+foreach i ( `egrep -l '^[Cc]#.*if.*MPI' *.f` )
+   echo ... making MPI version of file $i
+   ar dv slatsm-MPI.a $i:r.o
+   echo $ccomp -uMPE -dMPI $i $i:r-MPI.f
+        $ccomp -uMPE -dMPI $i $i:r-MPI.f
+   echo $fc -c $i:r-MPI.f
+        $fc -c $i:r-MPI.f
+   echo rm $i:r-MPI.f
+        rm $i:r-MPI.f
+   echo ar rv slatsm-MPI.a $i:r-MPI.o
+        ar rv slatsm-MPI.a $i:r-MPI.o
+   echo rm $i:r-MPI.o
+        rm $i:r-MPI.o
+end
+
+echo "   " remember to re-compile fmain.c using mpicc -DMPI switches and then do:
+echo "   " ar rv slatsm-MPI.a fmain.o

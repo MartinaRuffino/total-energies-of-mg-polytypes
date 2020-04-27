@@ -1,0 +1,93 @@
+% char ext fept
+#
+% const bzm=16
+% const lxcf=101 lxcf2=130 # default lxcf=2 lxcf2=-1
+% const idxp=1 idxf=2
+% const nc=0 so=0 bf=0
+%
+BNDTEST
+       	cp rsta.fept.lm.ntht=0 rsta.fept
+       	rm -f mixm.fept eula.fept
+       	lmstr fept -vnk=8 -vnc=1 -vntht=0 -vnit=0
+       	lm    fept -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 --rs=1,0
+       	lm    fept -vnk=8 -vnc=1 -vntht=0 -vnit=1 --pr31,30
+       	cp rsta.fept.lm.ntht=6 rsta.fept
+       	rm -f mixm.fept eula.fept
+       	lm    fept -vnk=8 -vnc=1 -vntht=6 -vnit=0 --pr31,30 --rs=1,0
+       	lm    fept -vnk=8 -vnc=1 -vntht=6 -vnit=1 --pr31,30
+GFTEST
+       	cp rsta.fept.lmgf.ntht=0 rsta.fept
+       	rm -f mixm.fept eula.fept vshft.fept
+       	lmstr fept -vnk=8 -vnc=1 -vntht=0 -vnit=0
+       	lmgf  fept -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 --rs=1,0
+       	lmgf  fept -vnk=8 -vnc=1 -vntht=0 -vnit=1 --pr31,30
+       	cp rsta.fept.lmgf.ntht=6 rsta.fept
+       	rm -f mixm.fept eula.fept vshft.fept
+       	lmgf  fept -vnk=8 -vnc=1 -vntht=6 -vnit=0 --pr31,30 --rs=1,0
+       	lmgf  fept -vnk=8 -vnc=1 -vntht=6 -vnit=1 --pr31,30
+DNFTEST # Run after GFTEST
+        rm -f mixm.fept vshft.fept 
+       	lmgf  fept -vnk=8 -vnc=1 -vidxp=2 -vntht=6 -vnit=0 --pr31,30 --rs=1,0
+       	lmgf  fept -vnk=8 -vnc=1 -vidxp=2 -vntht=6 -vnit=1 --pr31,30
+FRTEST  # Run after GFTEST.  Also makes SO matrix elements
+        rm -f mixm.fept vshft.fept 
+       	lmgf  fept -vnk=8 -vnc=1 -vidxp=2 -vntht=6 -vnit=0 --pr31,30 --rs=1,0
+#       echo Set up SO matrix elements (not used in this test)
+#       lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=6 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 -ef=-0.0695415 --quit=rho --nosym > /dev/null
+        lmgf fept -vrel=2 --spinoronly -vgfmod=1 -vnk=8 -vnc=1 -vntht=6 -vnit=-1 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 -ef=-0.0695415 --quit=rho --nosym
+FRTEST  # Run at any time
+       	rm -f mixm.fept eula.fept vshft.fept
+       	cp rsta.fept.lmgf.ntht=0 rsta.fept
+       	lmgf  fept -vnk=8 -vnc=1 -vidxp=2 -vntht=0 -vnit=0 --pr31,30 --rs=1,0
+       	lmgf  fept -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 --rs=1,0
+        lmgf fept -vrel=2 --spinoronly -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=-1 --pr31,45 -vidxf=1 --iactiv=no -vbegmom=2 -ef=-0.07254 --quit=rho --nosym
+VERS    LM:7 ASA:7
+IO      SHOW=f HELP=f WKP=F IACTIV=f VERBOS=31
+HAM
+% const nsp=2 elind=-.7 rel=1
+        NSPIN={nsp} REL={rel} SO={so} FORCES={so==0} ELIND={elind}
+        NONCOL={nc} BFIELD={bf} SOSCAL=1
+% ifdef lxcf & lxcf2>0
+        XCFUN=0,{lxcf},{lxcf2}     # format for libxc functionals
+% else
+        XCFUN={lxcf}               # internally compiled functionals
+% endif
+% const ccor=t sx=f gamma=sx adnf=~sx scr=4 sharm=0 twoc=0 gfmod=1
+# GF      MODE={gfmod} GFOPTS=padtol=1e-5;qtol=.001;{?~twoc~p2;~p3;}
+GF      MODE={gfmod} GFOPTS=padtol=1e-5;{?~twoc~p2;~p3;}
+OPTIONS ASA[ CCOR={ccor} ADNF={adnf} GAMMA={gamma} TWOC={twoc}] SCR={scr} SX={sx} SHARM={sharm}
+% const nit=1
+ITER    MIX=B2,b=.3,k=10  NIT={abs(nit)}  CONV=1e-7 CONVC=1e-6
+% const met=3 nk={bzm}
+BZ      NKABC={nk}  METAL={met}  # NKABC requires 1 to 3 positive numbers
+        INVIT=f
+% const nz={bzm} ef=-0.0713012
+        EMESH={nz},10,-1,{ef},.5,.3  # nz-pts;contour mode;emin;emax;ecc;bunching
+SYMGRP find SOC
+SYMGRP r4z i r2(1,1,0) SOC
+% const a=5.147289
+STRUC
+  NSPEC=2  NBAS=2  NL=4
+  ALAT={a}
+  PLAT= 1  0  0  0  1  0  0  0  1.3730942
+SPEC
+  SCLWSR=1 OMAX1=.20 .26 .24  OMAX2=.4 .6 .6  WSRMAX=3.3
+% ifdef idxp | idxf
+% const idxp=1 idxf=1
+  ATOM=Fe     Z= 26  R= 2.499366  MMOM=0 0 3 0  IDMOD=0 0 0 1  IDXDN=1 {idxp} 1 {idxf} # A={rel==2?.01:.025}
+  ATOM=Pt     Z= 78  R= 2.573644  MMOM=0 0 1 0  IDMOD=0 0 0 1  IDXDN=1 1 1 {idxf}      # A={rel==2?.01:.025}
+% else
+  ATOM=Fe     Z= 26  R= 2.499366  MMOM=0 0 3 0  IDMOD=0 0 0 1  # A=.01
+  ATOM=Pt     Z= 78  R= 2.573644  MMOM=0 0 1 0  IDMOD=0 0 0 1  # A=.01
+% endif
+SITE
+% ifdef nc | so
+% const ntht=0
+  ATOM=Fe         POS=  0.0000000   0.0000000   0.0000000    #ROT=z:0,y:pi/6*{ntht},z:0
+  ATOM=Pt         POS=  0.5000000   0.5000000   0.6865471    ROT=z:0,y:pi/6*{ntht},z:0 .ROT=z:0,y:pi/6*0,z:0
+% else
+  ATOM=Fe         POS=  0.0000000   0.0000000   0.0000000
+  ATOM=Pt         POS=  0.5000000   0.5000000   0.6865471
+% endif
+% const begmom=nit<=0
+START CNTROL={nit==0} BEGMOM={begmom}

@@ -1,0 +1,35 @@
+#!/bin/csh
+
+# Example:  misc/makeupdate -a nc/bndasa.f -v 7.10d
+# Example:  misc/makeupdate -a '{lmv7.f,blm.f,MakeMainMakefile,nc/bndasa.f,nc/lmaux.f,nc/lmasa.f,nc/secm2c.f,nc/secmat.f}' -v 7.10e
+
+# --- Defaults ---
+defaults:
+set cmprss = gzip  cnam = gz
+set thisfile = $0
+set thisdir = $thisfile:h
+set addfiles
+if ($thisdir == $thisfile) set thisdir = `pwd`
+
+# --- Start reading switches here ---
+options:
+
+# if ( "$1" == "-compress" ) then
+#   set cmprss = compress  cnam = Z; shift; goto options
+# endif
+
+if ( "$1" == "-v" ) then
+  shift; set vn = $1; shift; goto options
+endif
+
+if ( "$1" == "-a" ) then
+  shift; set addfiles = "$1"; shift; goto options
+endif
+
+if ($?vn != 1) then
+  echo invoke as:  makeupdate -v strn ...
+  exit -1
+endif
+
+tar cvf - `$thisdir/cmpdist --qquiet | grep -v '[.][.][.]' | grep -v configure | grep -v MakeMainMakefile` $addfiles | gzip > update.$vn.tar.gz
+

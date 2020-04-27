@@ -1,0 +1,518 @@
+#!/bin/csh
+# Shell script to generate a makefile for fortran programs using
+# libraries slatsm.a (and additional libraries defined by LIBLOC).
+# Environment variables LIBSLA,LIBLOC and BIN are used as defaults;
+# if they are missing this script will assume values for them.
+# Switch -defs generates the variable definitions only (no make rules)
+# Machines Makemakefile knows about:
+#  name      Computer                    Suggested LIBLOC
+#  AIX       IBM RS/6000                  -lessl -lblas -lxlf90
+#  AIX90     IBM RS/6000, xlf90 compiler  -lessl -lblas -lxlf90
+#  SGI       older SGI models
+#  SGI4      SGI R4000, R4400             -lblas or -lcomplib.sgimath or
+#  SGI8      SGI R8000 (TFP chip)         -mp -lcomplib.sgimath_mp
+#  SGIO2     SGI R10000, mixed 32-64 bit  -mp -lcomplib.sgimath_mp
+#  HP        HP 715, 735                  -lvec
+#            NB: compiler switches are set for an newer compiler.
+#            If you have a older one, use the +OP3 switches, below
+#  DECA      Dec alpha                    -ldxml
+#  DEC       Other Dec workstations
+#  APOLLO    Apollo DN-10000              -lblas -lvec
+#  CONVEX    Convex                       -lveclib
+#  CRAY      Cray YMP, C90, J90           -lsci
+#  CRAY2     Cray-2                       -lsci
+#  SUN       Sun workstations
+#  SUN-ULTRA Sun ULTRA workstations
+#  LINUXI    Linux with on Intel chip     /usr/lib/libblas.so.2.0.1
+#  LINUX_PGF Linux using Portland Group FORTRAN compiler (pgroup.com)
+#  LINUXA    Linux on DEC alpha           Also recommended that user
+#  LINUXF    Linux DEC alpha, DEC fort    substitute supplied dgemm
+#                                         from www.netlib.org/atlas
+# --------------- Machine type and switches ---------------
+set dbgf = '#'; set nodbgf
+start:
+if ($#argv == 0) goto message
+set machine = $argv[1] ; shift
+set lib = "" outfile = '$@'
+set fc = f77
+options:
+if ($#argv > 0) then
+  switch ($1)
+    case "-mp":
+      set mp; shift; goto options
+    case "-f90":
+      set fc = f90; shift; goto options
+    case "-l":
+      shift ; set lib = "$lib $1"; shift ; goto options
+    case "-defs":
+      set defs ; shift; goto options
+    case "-o":
+      shift ; set outfile = "$1"; shift ; goto options
+    case "-a":
+      set append; shift; goto options
+    case "-db":
+      set dbg ; set dbgf; set nodbgf = '#'; shift; goto options
+    case "-BIN":
+      if (! $?lbin) set lbin
+      shift ; set lbin = $1; shift ; goto options
+    case "-LIBSLA":
+      if (! $?lsla) set lsla
+      shift ; set lsla = ($lsla $1); shift ; goto options
+    case "-LIBLOC":
+      if (! $?lloc) set lloc
+      shift ; set lloc = ($lloc $1); shift ; goto options
+  endsw
+else
+  if (! $?defs) goto message
+endif
+
+if ($#argv == 0 && $?defs == 0) goto message
+if ($?append) goto Append
+
+# --------------- Compiler definitions and flags ---------------
+echo "# --- Makemakefile: machine dependent compilers and flags for $machine ---"
+echo 'CC = cc'
+
+if ($machine == CRAY2) then
+  echo $nodbgf"CFLAGS = -D$machine -DCRAY -O"
+    echo $dbgf"CFLAGS = -D$machine -DCRAY -g"
+else if ($machine == SGI) then
+  echo $nodbgf"CFLAGS = -DSGI -O"
+    echo $dbgf"CFLAGS = -DSGI -g"
+else if ($machine == SGI4) then
+  echo $nodbgf"CFLAGS = -DSGI -DSGI4 -O"
+    echo $dbgf"CFLAGS = -DSGI -DSGI4 -g"
+else if ($machine == SGI8) then
+  echo $nodbgf"CFLAGS = -DSGI -DSGI8 -64 -O"
+    echo $dbgf"CFLAGS = -DSGI -DSGI8 -64 -g"
+else if ($machine == SGIO2) then
+  echo $nodbgf"CFLAGS = -DSGI -DSGI8 -n32 -mips4 -O"
+    echo $dbgf"CFLAGS = -DSGI -DSGI8 -n32 -mips4 -g"
+else if ($machine == AIX90) then
+  echo $nodbgf"CFLAGS = -DAIX -DAIX90 -O"
+    echo $dbgf"CFLAGS = -DAIX -DAIX90 -g"
+else if ($machine == DECA) then
+  echo $nodbgf"CFLAGS = -DDEC -DDECA -O"
+    echo $dbgf"CFLAGS = -DDEC -DDECA -g"
+else if ($machine == SUN-ULTRA) then
+  echo $nodbgf"CFLAGS = -DSUN -DSUN-ULTRA -O"
+    echo $dbgf"CFLAGS = -DSUN -DSUN-ULTRA -g"
+else if ($machine =~ LINUX*) then
+  echo        "CC = gcc"
+  echo $nodbgf"CFLAGS = -D$machine -DLINUX -O3 -funroll-loops -ffast-math -finline -w"
+    echo $dbgf"CFLAGS = -D$machine -DLINUX -g"
+else
+  echo $nodbgf"CFLAGS = -D$machine -O"
+    echo $dbgf"CFLAGS = -D$machine -g"
+endif
+
+echo '# ... Fortran and linker switches for machine' $machine
+
+if ($machine == VANILLA) then
+  echo '# ... for VANILLA ...'
+  echo "FC = $fc"
+  echo $nodbgf'FFLAGS = -O'
+    echo $dbgf'FFLAGS = -g'
+  echo "LK = $fc"
+  echo $nodbgf'LKFLAGS1 = -O'
+    echo $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == DEC) then
+  echo '# ... for the DEC ...'
+  echo "FC = $fc"
+  echo $nodbgf'FFLAGS = -O -G 0'
+    echo $dbgf'FFLAGS = -g -G 0'
+  echo "LK = $fc"
+  echo $nodbgf'LKFLAGS1 =  -O'
+    echo $dbgf'LKFLAGS1 =  -g'
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == DECA) then
+  echo '# ... for the DEC Alpha ...'
+  echo "FC = $fc"
+  echo $nodbgf'FFLAGS_MORE = -fast -O5 -arch host -tune host -G 0 -recursive'
+  echo $nodbgf'FFLAGS = -fast -O4 -arch host -tune host -G 0 -recursive'
+  echo $nodbgf'FFLAGS_LESS = -fast -O3 -arch host -tune host -G 0 -recursive'
+  echo $nodbgf'FFLAGS_LESS2 = -O -arch host -tune host -G 0 -recursive'
+  echo $nodbgf'FFLAGS_LESS3 = -O1 -arch host -tune host -G 0 -recursive'
+    echo $dbgf'FFLAGS = -g -G 0 -recursive'
+    echo $dbgf'FFLAGS_LESS = -g -G 0 -recursive'
+    echo $dbgf'FFLAGS_LESS2 = -g -G 0 -recursive'
+    echo $dbgf'FFLAGS_LESS3 = -g -G 0 -recursive'
+# set notc
+  if ($?notc) then
+    echo "LK = $fc"
+    echo $nodbgf'#LKFLAGS1 = -non_shared -fast -O5 -arch host -tune host -G 0 -recursive'
+    echo $nodbgf'LKFLAGS1 = -fast -arch host -tune host -G 0 -recursive'
+      echo $dbgf'LKFLAGS1 = -g -G 0 -recursive'
+  else
+  echo 'LK = cc'
+    echo $nodbgf'#LKFLAGS1 = -non_shared -fast -O4 -arch host -tune host -G 0'
+    echo $nodbgf'LKFLAGS1 = -fast -O4 -arch host -tune host -G 0'
+    echo $dbgf'LKFLAGS1 =  -g -G 0'
+  endif
+  echo 'LKFLAGS2 = -lUfor -lfor -lFutil -lm -lots'
+endif
+
+if ($machine =~ SGI*) then
+# if ($machine == SGI)   set mflg = '-G 0'
+  if ($machine == SGI)   set mflg = '-G 0 -mips2'
+  if ($machine == SGI4)  set mflg = '-G 0 -mips2'
+  if ($machine == SGI8)  set mflg = '-G0 -mips4'
+  if ($machine == SGIO2) set mflg = '-G 0 -n32 -mips4'
+  set sopt
+  if ($machine == SGI4)  set sopt = "-sopt,-so=3,-r=3"
+  if ($machine == SGI8)  set sopt = "-sopt,-so=3,-r=3"
+  if ($machine == SGIO2) set sopt = "-sopt,-so=3,-r=3"
+# SGI has two different compiler versions, which complicates matters
+# Not all of these cases have been checked...user may need to tune this:
+  set compiler_name = `f77 -64 -version | & awk '{print $1}'`
+  switch ($compiler_name)
+    case "Ragnarok":
+      set mp
+      breaksw
+
+    case "MIPSpro":
+    case "Mongoose":
+#   patch for "f77: Error: malformed or unknown option: -version"
+    case "f77:":
+      set sopt
+      set procid = `hinv | grep Processor | grep MHZ | head -1 | awk '{print $4}'`
+      if ($procid == 'MHZ') set procid = `hinv | grep Processor | grep MHZ | head -1 | awk '{print $5}'`
+      if ($procid == 'IP32') then
+        set procnam = `hinv | grep Processor | grep CPU | head -1 | awk '{print $3}'`
+        if ($procnam == 'R5000') set procid = {$procid}_5k
+        if ($procnam == 'R10000') set procid = {$procid}_10k
+      endif
+      set mflg = "$mflg -TARG:platform=$procid"
+      set sopt = "-OPT:IEEE_arithmetic=3:roundoff=3:Olimit=0:div_split=ON:alias=typed -LNO:opt=1"
+      if ($machine == SGIO2) then
+        set mflg = "$mflg -n32"
+      else
+        set mflg = "$mflg -64"
+      endif
+      if ($?mp) then
+        set mp = "-mp"
+      else
+       set mp
+      endif
+      breaksw
+  endsw
+
+  echo "FC = $fc"
+  echo $nodbgf"FFLAGS = $mflg -O3 $mp $sopt"
+  echo $nodbgf"FFLAGS_LESS = $mflg -O $mp"
+  echo $nodbgf"FFLAGS_LESS2 = $mflg -O1 $mp"
+  echo $nodbgf"FFLAGS_NONE = $mflg -O0"
+    echo $dbgf"FFLAGS = $mflg -g -DEBUG:trap_uninitialized=ON $mp"
+    echo $dbgf"FFLAGS_LESS = $mflg -g -DEBUG:trap_uninitialized=ON"
+    echo $dbgf"FFLAGS_NONE = $mflg -g -DEBUG:trap_uninitialized=ON"
+  echo "LK = $fc"
+  echo $nodbgf"LKFLAGS1 = $mflg -O3 $mp $sopt"
+    echo $dbgf"LKFLAGS1 = $mflg -g $mp"
+  echo "LKFLAGS2 ="
+endif
+
+if ($machine == SUN || $machine == SUN-ULTRA) then
+  echo '# ... for SUN running Solaris ...'
+  echo "FC = $fc"
+  set arch
+  if ($machine == "SUN-ULTRA") set arch = "-cg92"
+  echo $nodbgf"FFLAGS = -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+  echo $nodbgf"FFLAGS_LESS = -fast -O2 -fsimple=2 -xnolibmopt $arch"
+  echo $nodbgf"FFLAGS_NONE = -fast -O1 -fsimple=0 -xnolibmopt $arch"
+    echo $dbgf"FFLAGS = -g -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+    echo $dbgf"FFLAGS_LESS = -g -fast -O2 -fsimple=2 -xnolibmopt $arch"
+    echo $dbgf"FFLAGS_NONE = -g -fast -O1 -fsimple=0 -xnolibmopt $arch"
+  echo "LK = $fc"
+# NB: avoid -xlibmopt; it can generate bad numbers, eg tan(-pi*4.05d0)
+  echo $nodbgf"LKFLAGS1 = -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+    echo $dbgf"LKFLAGS1 = -g -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+  echo "LKFLAGS2 ="
+endif
+
+if ($machine == CONVEX) then
+  echo '# ... for the CONVEX ...'
+  echo 'FC = fc'
+  echo 'FFLAGS = -g -O2 -tm c1'
+  echo 'FFLAGS_NONE = -g -tm c1'
+  echo 'LK = fc'
+  echo 'LKFLAGS1 = -g -O2 -tm c1'
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == AIX || $machine == AIX90) then
+  echo '# ... for the IBM RS/6000 ...'
+  echo 'FC = xlf'
+  set OPT = "-O"
+  set OPT_LESS = " "
+  set OPT_LESS2 = " "
+  if ($machine == AIX90) then
+    set OPT = "-O3 -qhot"
+    set OPT_LESS = "-O3"
+    set OPT_LESS2 = "-O"
+  endif
+  echo $nodbgf'FFLAGS = '"$OPT"' -qrecur -qcharlen=2000'
+  echo $nodbgf'FFLAGS_LESS = '"$OPT_LESS"' -qrecur -qcharlen=2000'
+  echo $nodbgf'FFLAGS_LESS2 = '"$OPT_LESS2"' -qrecur -qcharlen=2000'
+    echo $dbgf'FFLAGS = -g -qrecur -qcharlen=2000'
+    echo $dbgf'FFLAGS_LESS = -g -qrecur -qcharlen=2000'
+    echo $dbgf'FFLAGS_LESS2 = -g -qrecur -qcharlen=2000'
+  echo 'LK = xlf'
+  echo $nodbgf'LKFLAGS1 = '"$OPT"' -qrecur -qcharlen=2000'
+    echo $dbgf'LKFLAGS1 = -g -qrecur -qcharlen=2000'
+  echo 'LKFLAGS2 ='
+  endif
+
+if ($machine == CRAY) then
+  echo '# ... for the Cray YMP, C90, or J90 ...'
+  echo 'FC = f90'
+  echo $nodbgf'FFLAGS = -dp -eRv -Oaggress,bl,scalar3,vector3,task0'
+  echo $nodbgf'FFLAGS_LESS = -dp -eRv -Oscalar2,vector2,task0'
+  echo $nodbgf'FFLAGS_NONE = -dp -eRv -Oscalar0,vector0,task0'
+    echo $dbgf'FFLAGS = -dp -eRv -g'
+    echo $dbgf'FFLAGS_LESS = -dp -eRv -g'
+    echo $dbgf'FFLAGS_NONE = -dp -eRv -g'
+  echo 'LK = f90'
+  echo $nodbgf'LKFLAGS1 = -dp -eRv -Oaggress,bl,scalar3,vector3,task0'
+    echo $dbgf'LKFLAGS1 = -dp -eRv -g'
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == CRAY2) then
+  echo '# ... for the Cray-2 ...'
+  echo 'FC = cf77 -Wf"-dp" -Wf"-a stack" -Wf"-o recursive" '
+  echo $nodbgf'FFLAGS = -Z v'
+  echo $nodbgf'FFLAGS_LESS ='
+  echo $nodbgf'FFLAGS_NONE = -Wf"-o off"'
+    echo $dbgf'FFLAGS = -Wf"-e z"'
+    echo $dbgf'FFLAGS_LESS = -Wf"-e z"'
+    echo $dbgf'FFLAGS_NONE = -Wf"-e z"'
+  echo 'LK = cf77 -Wf"-dp" -Wf"-a stack" -Wf"-o recursive" '
+  echo 'LKFLAGS1 ='
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == APOLLO) then
+  echo '# ... for the Apollo ...'
+  echo "FC = $fc"
+  echo $nodbgf'FFLAGS = -O4'
+  echo $nodbgf'FFLAGS_LESS = -O1 -g'
+    echo $dbgf'FFLAGS = -W0,-dba -g'
+    echo $dbgf'FFLAGS_LESS = -O1 -g'
+  echo 'LK = ld'
+  echo 'LKFLAGS1 ='
+  echo 'LKFLAGS2 = -lU77 -lF77 -lI77'
+endif
+
+if ($machine == HP) then
+  echo '# ... for the Hewlett-Packard ...'
+  echo "FC = $fc"
+  echo $nodbgf'FFLAGS = +U77 -O +Oall +B +E4'
+#  echo $nodbgf'FFLAGS = +U77 +OP4 +OPunroll +B +E4'
+#  echo $nodbgf'FFLAGS = +U77 +O4 +B +E4'
+  echo $nodbgf'FFLAGS_LESS = +U77 -O +B +E4'
+  echo $nodbgf'FFLAGS_LESS2 = +U77 +O1 +B +E4'
+  echo $nodbgf'FFLAGS_MORE = +U77 +Oall +B +E4'
+#  echo $nodbgf'FFLAGS_MORE = +U77 +O4 +B +E4'
+    echo $dbgf'FFLAGS = +U77 -g +B +E4'
+    echo $dbgf'FFLAGS_LESS = +U77 -g +B +E4'
+    echo $dbgf'FFLAGS_LESS2 = +U77 -g +B +E4'
+    echo $dbgf'FFLAGS_MORE = +U77 -g +B +E4'
+  echo "LK = $fc"
+  echo 'LKFLAGS1 = +U77'
+  echo 'LKFLAGS2 = -lvec'
+endif
+
+if ($machine == LINUXF) then
+  echo '# ... for Linux on a DEC alpha running fort ...'
+  echo 'FC = fort'
+  echo $nodbgf'FFLAGS = -O4 -fast -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS = -O3 -fast -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS2 = -O1 -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_NONE = -O0 -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_LESS = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_NONE = -g -arch host -tune host -recursive'
+  echo 'LK = fort '
+  echo $nodbgf'LKFLAGS1 = '
+  echo   $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == LINUXA || $machine == LINUXI) then
+  echo '# ... for Linux running GNU g77 ...'
+  echo 'FC = g77'
+  echo $nodbgf'FFLAGS = -O3 -funroll-loops -ffast-math -finline -fno-globals -Wno-globals'
+  echo $nodbgf'FFLAGS_LESS = -O1 -fno-globals -Wno-globals'
+  echo $nodbgf'FFLAGS_NONE = -O0 -fno-globals -Wno-globals'
+    echo $dbgf'FFLAGS = -g -fno-globals -Wno-globals'
+    echo $dbgf'FFLAGS_LESS = -g -fno-globals -Wno-globals'
+    echo $dbgf'FFLAGS_NONE = -g -fno-globals -Wno-globals'
+  echo 'LK = g77'
+  echo $nodbgf'LKFLAGS1 = -O3 -funroll-loops -ffast-math -finline'
+    echo $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+endif
+
+if ($machine == LINUX_PGF) then
+  echo '# ... for Linux running Portland Group pgf77 ...'
+  echo 'FC = pgf77'
+  echo $nodbgf'FFLAGS = -O2 -fast'
+  echo $nodbgf'FFLAGS_LESS = -O1'
+  echo $nodbgf'FFLAGS_NONE = -O0'
+    echo $dbgf'FFLAGS = -g'
+    echo $dbgf'FFLAGS_LESS = -g'
+    echo $dbgf'FFLAGS_NONE = -g'
+  echo 'LK = pgf77'
+  echo $nodbgf'LKFLAGS1 = -O3'
+    echo $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+endif
+
+echo ''
+
+# --------------- Variable definitions ---------------
+echo '# --- Miscellaneous variables LIBSLA,LIBLOC,BIN ---'
+# ... LIBSLA is whatever is passed as a switch
+if ($?lsla) then
+  set LIBSLA = "$lsla"
+# ... Otherwise, use environment variable, if available
+else if ($?LIBSLA) then
+  set LIBSLA = "$LIBSLA"
+# ... Otherwise, try to find in standard location
+else if (-d ../slatsm) then
+  set tmp = `pushd ../`
+  set LIBSLA = "$tmp[1]/slatsm/slatsm.a"
+else
+# ... Otherwise, stop with error
+  echo 'Makemakefile: no LIBSLA defined'; goto message
+endif
+echo 'LIBSLA = '$LIBSLA
+
+# ... LIBLOC is whatever is passed as a switch
+if ($?lloc) then
+  set LIBLOC = "$lloc"
+# ... Otherwise, use environment variable, if available
+else if ($?LIBLOC) then
+  set LIBLOC = "$LIBLOC"
+# ... Otherwise try to guess a library
+else if ($machine == AIX || $machine == AIX90) then
+  set LIBLOC
+  set dum = `/usr/bin/lslpp -l | grep -i essl`
+  if ($#dum != 0) then
+    set LIBLOC = `echo $LIBSLA | sed "s/slatsm.a/myessl.a/"`
+    if (-e /usr/lib/libesslp2.a) set LIBLOC = `echo $LIBSLA | sed "s/slatsm.a/myesslp2.a/"`
+  endif
+else if ($machine == SGIO2) then
+  set LIBLOC
+  set dum = `versions | grep -i complib.sw.sgimath`
+  if ($#dum != 0) set LIBLOC = "-lcomplib.sgimath"
+else if ($machine == DECA) then
+  set LIBLOC
+  if (-e /usr/lib/libdxml.a) set LIBLOC = "-ldxml"
+else if ($machine == CRAY) then
+  set LIBLOC
+  if ($?CRAYLIBS_YMP) then
+    if (-e $CRAYLIBS_YMP/libsci.a) set LIBLOC = "-lsci"
+  endif
+# ... Otherwise, nothing
+else
+  set LIBLOC
+endif
+echo 'LIBLOC = '$LIBLOC
+
+# ... BIN is whatever is passed as a switch
+if ($?lbin) then
+  set BIN = "$lbin"
+# ... Otherwise, use environment variable, if available
+else if ($?BIN) then
+  set BIN = "$BIN"
+# ... Otherwise, try to guess a directory
+else if (-d $HOME/bin) then
+  set BIN = "$HOME/bin"
+else if (-d ../../bin) then
+  set tmp = `pushd ../../`
+  set BIN = "$tmp[1]/bin"
+# ... Otherwise, nothing
+else
+  set BIN
+endif
+echo 'BIN = '$BIN
+
+if ($machine =~ SGI* || $machine =~ LINUX*) then
+    set AFTER
+endif
+
+if ($?BEFORE && $?AFTER) then
+  echo 'LIBES = $(LIBLOC) $(LIBSLA) $(LIBLOC) '
+else if ($?AFTER) then
+  echo 'LIBES = $(LIBSLA) $(LIBLOC)'
+else
+  echo 'LIBES = $(LIBLOC) $(LIBSLA)'
+endif
+
+if ($?defs) exit
+
+# --------------- Extract main and subs  ---------------
+set main = $argv[1]; shift; set subs = ""
+while ( $#argv )
+  if ($argv[1]:r != $main:r) set subs = "$subs $argv[1]:r.o"
+  shift
+end
+
+echo 'SUBS =' $subs
+echo ''
+
+# --------------- Make  ---------------
+echo '# --- Make rules ---'
+echo '.f.o: '
+echo '	$(FC) $(FFLAGS) -c $<'
+echo ''
+
+echo $main:r':	'$main:r.o '$(SUBS)'
+echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $lib '$(LIBES) $(LKFLAGS2) -o' "$outfile"
+echo ''
+
+echo 'mvbin:	'
+echo '	mv -f' $main:r '$(BIN)'
+echo ''
+
+exit
+
+# --------------- Append new main to existing Makefile ---------------
+Append:
+set main = $argv[1]:r; shift; set subs = ""
+
+echo ''
+echo $main:r':	'$main:r.o '$(SUBS)'
+echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $lib '$(LIBES) $(LKFLAGS2) -o' "$outfile"
+echo ''
+
+exit
+
+# --------------- Help (error handling) ---------------
+message:
+echo 'usage: Makemakefile MACHINE [switches] main[.fo] sub[.fo] [sub ...]'
+echo '   or  Makemakefile MACHINE -defs [-db]'
+echo '   Switches:'
+echo '     -defs         generates the variable definitions only as a portion of'
+echo '                   a Makefile (no make rules).'
+echo '     -f90          Use f90 compiler'
+echo '     -mp           Set switches for parallel compilation'
+echo '                   (selected compilers only)'
+echo '     -db           compile without optimization and with debugging information'
+echo '     -l lib        include lib in the link'
+echo '     -o outfile    name executable "outfile"'
+echo '     -a            (append) skip declarations:'
+echo '                   Supply segment just to compile-and-link this main'
+echo '     -LIBSLA name  path name of slatsm.a.  This must be passed as a switch,'
+echo '                   or environment variable LIBSLA must be defined.'
+echo '     -LIBLOC name  local libraries to include in link.  If not passed,'
+echo '                   environment variable LIBLOC is used if available.'
+echo '     -BIN    name  path for executable, used when invoking 'make mvbin'.  If'
+echo '                   not passed, environment variable BIN is used if available'
+exit -1

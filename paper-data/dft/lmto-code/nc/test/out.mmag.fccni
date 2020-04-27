@@ -1,0 +1,351 @@
+rdcmd:  lmmag -vnbas=64 -vtk=200 -vttot=1000 -vntherm=2 fccni
+ ----------------------  START MMAG  ----------------------
+
+ rdctrl: reset global max nl from 1 to 0
+
+ MMAG:     nbas = 0(+64)  nspec = 1  verb 35,30,20
+ noncoll:  Non-coll
+ IOEULA:   reading l-independent Euler angles (file 10)
+
+ Automatic symmetry finder turned off.  Use: e
+
+                Plat                                  Qlat
+   0.000000   2.000000   2.000000       -0.250000   0.250000   0.250000
+   2.000000   0.000000   2.000000        0.250000  -0.250000   0.250000
+   2.000000   2.000000   0.000000        0.250000   0.250000  -0.250000
+   alat = 5.4  Cell vol = 2519.424000
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.40000   awald= 0.147   lmax=6
+         r1=  6.535   nkd= 79       q1=  1.203   nkg= 113
+
+ Generator 1 already in group as element 1
+ SGROUP: 1 symmetry operations from 1 generators
+ MKSYM:  found 1 space group operations
+         no attempt to add inversion symmetry
+ pairc:  5056 pairs total  79 is max cluster size
+ 
+ suemph:  5 rules,  64 sites,  4992 pairs
+
+ Collinear energy 1/2*sum_ij sgn(s_i s_j) J_ij = -0.20659200  sum s_i = 64
+ 
+ mmdyn:  simulation to t=1000  kT=0.0013  modet = 31 32  ct = 2 0.1
+ 
+ mmdyn:  new iteration:  tnow=0  t-step=30  xsi = -0.0039 0.0221
+ time = 0  mag = 0.378 0.3295 0.6879 |mag| = 0.8513 etot = -0.150805
+ dbsstp:  new step  neq=130  x=0  h=30  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=0 to 30 (5 calls, 2 mp)  hnext=40
+ 
+ mmdyn:  new iteration:  tnow=30  t-step=40  xsi = 0.0317 0.0248
+ time = 30  mag = 0.3779 0.3295 0.6879 |mag| = 0.8512 etot = -0.150779
+ dbsstp:  new step  neq=130  x=30  h=40  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=30 to 40 (30 calls, 2 mp)  hnext=13.33333
+ 
+ mmdyn:  new iteration:  tnow=40  t-step=13.3333  xsi = 0.0474 0.0256
+ time = 40  mag = 0.3778 0.3294 0.6878 |mag| = 0.8511 etot = -0.150737
+ dbsstp:  new step  neq=130  x=40  h=13.3333  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=40 to 53.33333 (5 calls, 2 mp)  hnext=17.77778
+ 
+ mmdyn:  new iteration:  tnow=53.3333  t-step=17.7778  xsi = 0.0707 0.0266
+ time = 53.33  mag = 0.3776 0.3291 0.6875 |mag| = 0.8506 etot = -0.150579
+ dbsstp:  new step  neq=130  x=53.3333  h=17.7778  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=53.33333 to 57.77778 (34 calls, 3 mp)  hnext=4.88889
+ 
+ mmdyn:  new iteration:  tnow=57.7778  t-step=4.8889  xsi = 0.0788 0.0269
+ time = 57.78  mag = 0.3776 0.3289 0.6872 |mag| = 0.8503 etot = -0.150479
+ dbsstp:  new step  neq=130  x=57.7778  h=4.88889  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=57.77778 to 62.66667 (5 calls, 2 mp)  hnext=6.51852
+ 
+ mmdyn:  new iteration:  tnow=62.6667  t-step=6.5185  xsi = 0.0880 0.0272
+ time = 62.67  mag = 0.3775 0.3286 0.6869 |mag| = 0.8499 etot = -0.150329
+ dbsstp:  new step  neq=130  x=62.6667  h=6.51852  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=62.66667 to 69.18519 (5 calls, 2 mp)  hnext=8.69136
+ 
+ mmdyn:  new iteration:  tnow=69.1852  t-step=8.6914  xsi = 0.1002 0.0276
+ time = 69.19  mag = 0.3773 0.328 0.6862 |mag| = 0.849 etot = -0.150044
+ dbsstp:  new step  neq=130  x=69.1852  h=8.69136  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=69.18519 to 77.87654 (5 calls, 2 mp)  hnext=11.58848
+ 
+ mmdyn:  new iteration:  tnow=77.8765  t-step=11.5885  xsi = 0.1164 0.0281
+ time = 77.88  mag = 0.3769 0.3269 0.6848 |mag| = 0.8472 etot = -0.149460
+ dbsstp:  new step  neq=130  x=77.8765  h=11.5885  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=77.87654 to 89.46502 (5 calls, 2 mp)  hnext=15.4513
+ 
+ mmdyn:  new iteration:  tnow=89.465  t-step=15.4513  xsi = 0.1366 0.0287
+ time = 89.47  mag = 0.3762 0.3242 0.6817 |mag| = 0.8434 etot = -0.148175
+ dbsstp:  new step  neq=130  x=89.465  h=15.4513  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=89.46502 to 104.91632 (5 calls, 2 mp)  hnext=20.60174
+ 
+ mmdyn:  new iteration:  tnow=104.9163  t-step=20.6017  xsi = 0.1584 0.0294
+ time = 104.9  mag = 0.3744 0.3183 0.6745 |mag| = 0.8345 etot = -0.145189
+ dbsstp:  new step  neq=130  x=104.916  h=20.6017  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=104.91632 to 125.51806 (5 calls, 2 mp)  hnext=27.46898
+ 
+ mmdyn:  new iteration:  tnow=125.5181  t-step=27.469  xsi = 0.1719 0.0303
+ time = 125.5  mag = 0.3702 0.3058 0.6583 |mag| = 0.8148 etot = -0.138501
+ dbsstp:  new step  neq=130  x=125.518  h=27.469  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=125.51806 to 152.98704 (5 calls, 2 mp)  hnext=36.62531
+ 
+ mmdyn:  new iteration:  tnow=152.987  t-step=36.6253  xsi = 0.1560 0.0319
+ time = 153  mag = 0.364 0.2859 0.6314 |mag| = 0.7829 etot = -0.127714
+ dbsstp:  new step  neq=130  x=152.987  h=36.6253  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=152.98704 to 189.61236 (9 calls, 3 mp)  hnext=40.28784
+ 
+ mmdyn:  new iteration:  tnow=189.6124  t-step=40.2878  xsi = 0.1072 0.0349
+ time = 189.6  mag = 0.3599 0.2702 0.6111 |mag| = 0.7589 etot = -0.119776
+ dbsstp:  new step  neq=130  x=189.612  h=40.2878  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=189.61236 to 229.9002 (9 calls, 3 mp)  hnext=44.31663
+ 
+ mmdyn:  new iteration:  tnow=229.9002  t-step=44.3166  xsi = 0.0847 0.0382
+ time = 229.9  mag = 0.3584 0.2643 0.6047 |mag| = 0.751 etot = -0.117237
+ dbsstp:  new step  neq=130  x=229.9  h=44.3166  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=229.9002 to 240.97935 (30 calls, 2 mp)  hnext=14.77221
+ 
+ mmdyn:  new iteration:  tnow=240.9794  t-step=14.7722  xsi = 0.0884 0.0388
+ time = 241  mag = 0.3581 0.263 0.6035 |mag| = 0.7495 etot = -0.116748
+ dbsstp:  new step  neq=130  x=240.979  h=14.7722  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=240.97935 to 255.75156 (5 calls, 2 mp)  hnext=19.69628
+ 
+ mmdyn:  new iteration:  tnow=255.7516  t-step=19.6963  xsi = 0.0991 0.0394
+ time = 255.8  mag = 0.3577 0.2609 0.6017 |mag| = 0.747 etot = -0.116000
+ dbsstp:  new step  neq=130  x=255.752  h=19.6963  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=255.75156 to 275.44784 (5 calls, 2 mp)  hnext=26.2617
+ 
+ mmdyn:  new iteration:  tnow=275.4478  t-step=26.2617  xsi = 0.1202 0.0394
+ time = 275.4  mag = 0.357 0.2564 0.598 |mag| = 0.7422 etot = -0.114534
+ dbsstp:  new step  neq=130  x=275.448  h=26.2617  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=275.44784 to 301.70955 (5 calls, 2 mp)  hnext=35.01561
+ 
+ mmdyn:  new iteration:  tnow=301.7095  t-step=35.0156  xsi = 0.1484 0.0386
+ time = 301.7  mag = 0.3546 0.2456 0.5887 |mag| = 0.7298 etot = -0.110901
+ dbsstp:  new step  neq=130  x=301.71  h=35.0156  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=301.70955 to 336.72515 (25 calls, 5 mp)  hnext=14.00624
+ 
+ mmdyn:  new iteration:  tnow=336.7252  t-step=14.0062  xsi = 0.1560 0.0366
+ time = 336.7  mag = 0.346 0.2247 0.5653 |mag| = 0.6998 etot = -0.102248
+ dbsstp:  new step  neq=130  x=336.725  h=14.0062  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=336.72515 to 350.7314 (9 calls, 3 mp)  hnext=15.40687
+ 
+ mmdyn:  new iteration:  tnow=350.7314  t-step=15.4069  xsi = 0.1452 0.0358
+ time = 350.7  mag = 0.3419 0.2176 0.5549 |mag| = 0.6871 etot = -0.098628
+ dbsstp:  new step  neq=130  x=350.731  h=15.4069  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=350.7314 to 366.13826 (5 calls, 2 mp)  hnext=20.54249
+ 
+ mmdyn:  new iteration:  tnow=366.1383  t-step=20.5425  xsi = 0.1262 0.0351
+ time = 366.1  mag = 0.3386 0.2119 0.5456 |mag| = 0.6762 etot = -0.095541
+ dbsstp:  new step  neq=130  x=366.138  h=20.5425  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=366.13826 to 386.68075 (15 calls, 4 mp)  hnext=18.48824
+ 
+ mmdyn:  new iteration:  tnow=386.6808  t-step=18.4882  xsi = 0.0944 0.0345
+ time = 386.7  mag = 0.337 0.2069 0.5383 |mag| = 0.668 etot = -0.093233
+ dbsstp:  new step  neq=130  x=386.681  h=18.4882  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=386.68075 to 405.16899 (25 calls, 5 mp)  hnext=7.3953
+ 
+ mmdyn:  new iteration:  tnow=405.169  t-step=7.3953  xsi = 0.0652 0.0341
+ time = 405.2  mag = 0.3362 0.2056 0.5358 |mag| = 0.6651 etot = -0.092432
+ dbsstp:  new step  neq=130  x=405.169  h=7.3953  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=405.16899 to 412.56429 (15 calls, 4 mp)  hnext=6.65577
+ 
+ mmdyn:  new iteration:  tnow=412.5643  t-step=6.6558  xsi = 0.0543 0.0340
+ time = 412.6  mag = 0.336 0.2053 0.5354 |mag| = 0.6646 etot = -0.092297
+ dbsstp:  new step  neq=130  x=412.564  h=6.65577  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=412.56429 to 419.22005 (5 calls, 2 mp)  hnext=8.87436
+ 
+ mmdyn:  new iteration:  tnow=419.2201  t-step=8.8744  xsi = 0.0452 0.0340
+ time = 419.2  mag = 0.3359 0.2051 0.5352 |mag| = 0.6644 etot = -0.092222
+ dbsstp:  new step  neq=130  x=419.22  h=8.87436  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=419.22005 to 428.09441 (5 calls, 2 mp)  hnext=11.83247
+ 
+ mmdyn:  new iteration:  tnow=428.0944  t-step=11.8325  xsi = 0.0341 0.0339
+ time = 428.1  mag = 0.3358 0.205 0.5351 |mag| = 0.6641 etot = -0.092165
+ dbsstp:  new step  neq=130  x=428.094  h=11.8325  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=428.09441 to 439.92688 (5 calls, 2 mp)  hnext=15.77663
+ 
+ mmdyn:  new iteration:  tnow=439.9269  t-step=15.7766  xsi = 0.0216 0.0339
+ time = 439.9  mag = 0.3357 0.2049 0.535 |mag| = 0.664 etot = -0.092124
+ dbsstp:  new step  neq=130  x=439.927  h=15.7766  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=439.92688 to 455.70351 (5 calls, 2 mp)  hnext=21.03551
+ 
+ mmdyn:  new iteration:  tnow=455.7035  t-step=21.0355  xsi = 0.0092 0.0338
+ time = 455.7  mag = 0.3355 0.2049 0.535 |mag| = 0.6639 etot = -0.092089
+ dbsstp:  new step  neq=130  x=455.704  h=21.0355  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=455.70351 to 476.73902 (5 calls, 2 mp)  hnext=28.04734
+ 
+ mmdyn:  new iteration:  tnow=476.739  t-step=28.0473  xsi = 0.0000 0.0336
+ time = 476.7  mag = 0.3353 0.2048 0.5349 |mag| = 0.6637 etot = -0.092048
+ dbsstp:  new step  neq=130  x=476.739  h=28.0473  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=476.73902 to 504.78637 (25 calls, 5 mp)  hnext=11.21894
+ 
+ mmdyn:  new iteration:  tnow=504.7864  t-step=11.2189  xsi = -0.0015 0.0330
+ time = 504.8  mag = 0.3349 0.2048 0.5349 |mag| = 0.6635 etot = -0.091991
+ dbsstp:  new step  neq=130  x=504.786  h=11.2189  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=504.78637 to 516.00531 (5 calls, 2 mp)  hnext=14.95858
+ 
+ mmdyn:  new iteration:  tnow=516.0053  t-step=14.9586  xsi = 0.0001 0.0326
+ time = 516  mag = 0.3348 0.2047 0.5349 |mag| = 0.6634 etot = -0.091968
+ dbsstp:  new step  neq=130  x=516.005  h=14.9586  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=516.00531 to 530.96389 (5 calls, 2 mp)  hnext=19.94478
+ 
+ mmdyn:  new iteration:  tnow=530.9639  t-step=19.9448  xsi = 0.0031 0.0320
+ time = 531  mag = 0.3347 0.2047 0.5348 |mag| = 0.6633 etot = -0.091937
+ dbsstp:  new step  neq=130  x=530.964  h=19.9448  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=530.96389 to 550.90867 (15 calls, 4 mp)  hnext=17.9503
+ 
+ mmdyn:  new iteration:  tnow=550.9087  t-step=17.9503  xsi = 0.0068 0.0309
+ time = 550.9  mag = 0.3345 0.2047 0.5348 |mag| = 0.6632 etot = -0.091898
+ dbsstp:  new step  neq=130  x=550.909  h=17.9503  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=550.90867 to 555.39624 (34 calls, 3 mp)  hnext=4.93633
+ 
+ mmdyn:  new iteration:  tnow=555.3962  t-step=4.9363  xsi = 0.0073 0.0307
+ time = 555.4  mag = 0.3345 0.2047 0.5347 |mag| = 0.6631 etot = -0.091887
+ dbsstp:  new step  neq=130  x=555.396  h=4.93633  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=555.39624 to 560.33258 (5 calls, 2 mp)  hnext=6.58178
+ 
+ mmdyn:  new iteration:  tnow=560.3326  t-step=6.5818  xsi = 0.0077 0.0304
+ time = 560.3  mag = 0.3344 0.2047 0.5347 |mag| = 0.6631 etot = -0.091878
+ dbsstp:  new step  neq=130  x=560.333  h=6.58178  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=560.33258 to 566.91435 (5 calls, 2 mp)  hnext=8.7757
+ 
+ mmdyn:  new iteration:  tnow=566.9144  t-step=8.7757  xsi = 0.0079 0.0300
+ time = 566.9  mag = 0.3344 0.2047 0.5347 |mag| = 0.663 etot = -0.091866
+ dbsstp:  new step  neq=130  x=566.914  h=8.7757  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=566.91435 to 575.69006 (5 calls, 2 mp)  hnext=11.70094
+ 
+ mmdyn:  new iteration:  tnow=575.6901  t-step=11.7009  xsi = 0.0074 0.0294
+ time = 575.7  mag = 0.3343 0.2047 0.5347 |mag| = 0.663 etot = -0.091850
+ dbsstp:  new step  neq=130  x=575.69  h=11.7009  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=575.69006 to 587.39099 (5 calls, 2 mp)  hnext=15.60125
+ 
+ mmdyn:  new iteration:  tnow=587.391  t-step=15.6012  xsi = 0.0053 0.0287
+ time = 587.4  mag = 0.3343 0.2046 0.5347 |mag| = 0.6629 etot = -0.091831
+ dbsstp:  new step  neq=130  x=587.391  h=15.6012  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=587.39099 to 602.99224 (5 calls, 2 mp)  hnext=20.80167
+ 
+ mmdyn:  new iteration:  tnow=602.9922  t-step=20.8017  xsi = -0.0001 0.0278
+ time = 603  mag = 0.3342 0.2046 0.5346 |mag| = 0.6628 etot = -0.091808
+ dbsstp:  new step  neq=130  x=602.992  h=20.8017  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=602.99224 to 623.79391 (5 calls, 2 mp)  hnext=27.73555
+ 
+ mmdyn:  new iteration:  tnow=623.7939  t-step=27.7356  xsi = -0.0121 0.0267
+ time = 623.8  mag = 0.3341 0.2046 0.5346 |mag| = 0.6627 etot = -0.091782
+ dbsstp:  new step  neq=130  x=623.794  h=27.7356  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=623.79391 to 651.52946 (9 calls, 3 mp)  hnext=30.50911
+ 
+ mmdyn:  new iteration:  tnow=651.5295  t-step=30.5091  xsi = -0.0346 0.0256
+ time = 651.5  mag = 0.3339 0.2046 0.5346 |mag| = 0.6627 etot = -0.091779
+ dbsstp:  new step  neq=130  x=651.529  h=30.5091  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=651.52946 to 659.15674 (34 calls, 3 mp)  hnext=8.39001
+ 
+ mmdyn:  new iteration:  tnow=659.1567  t-step=8.39  xsi = -0.0416 0.0254
+ time = 659.2  mag = 0.3339 0.2046 0.5347 |mag| = 0.6628 etot = -0.091799
+ dbsstp:  new step  neq=130  x=659.157  h=8.39001  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=659.15674 to 667.54674 (9 calls, 3 mp)  hnext=9.22901
+ 
+ mmdyn:  new iteration:  tnow=667.5467  t-step=9.229  xsi = -0.0493 0.0251
+ time = 667.5  mag = 0.3339 0.2047 0.5349 |mag| = 0.6629 etot = -0.091839
+ dbsstp:  new step  neq=130  x=667.547  h=9.22901  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=667.54674 to 676.77575 (5 calls, 2 mp)  hnext=12.30534
+ 
+ mmdyn:  new iteration:  tnow=676.7757  t-step=12.3053  xsi = -0.0578 0.0249
+ time = 676.8  mag = 0.3339 0.2049 0.5351 |mag| = 0.6632 etot = -0.091923
+ dbsstp:  new step  neq=130  x=676.776  h=12.3053  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=676.77575 to 689.08109 (5 calls, 2 mp)  hnext=16.40712
+ 
+ mmdyn:  new iteration:  tnow=689.0811  t-step=16.4071  xsi = -0.0684 0.0247
+ time = 689.1  mag = 0.334 0.2054 0.5357 |mag| = 0.6639 etot = -0.092113
+ dbsstp:  new step  neq=130  x=689.081  h=16.4071  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=689.08109 to 705.48821 (5 calls, 2 mp)  hnext=21.87616
+ 
+ mmdyn:  new iteration:  tnow=705.4882  t-step=21.8762  xsi = -0.0807 0.0244
+ time = 705.5  mag = 0.3341 0.2065 0.5369 |mag| = 0.6653 etot = -0.092530
+ dbsstp:  new step  neq=130  x=705.488  h=21.8762  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=705.48821 to 727.36437 (9 calls, 3 mp)  hnext=24.06378
+ 
+ mmdyn:  new iteration:  tnow=727.3644  t-step=24.0638  xsi = -0.0917 0.0241
+ time = 727.4  mag = 0.3343 0.2081 0.5394 |mag| = 0.6679 etot = -0.093205
+ dbsstp:  new step  neq=130  x=727.364  h=24.0638  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=727.36437 to 733.38032 (30 calls, 2 mp)  hnext=8.02126
+ 
+ mmdyn:  new iteration:  tnow=733.3803  t-step=8.0213  xsi = -0.0934 0.0240
+ time = 733.4  mag = 0.3344 0.2088 0.5402 |mag| = 0.6688 etot = -0.093467
+ dbsstp:  new step  neq=130  x=733.38  h=8.02126  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=733.38032 to 741.40157 (5 calls, 2 mp)  hnext=10.69501
+ 
+ mmdyn:  new iteration:  tnow=741.4016  t-step=10.695  xsi = -0.0946 0.0239
+ time = 741.4  mag = 0.3346 0.2098 0.5413 |mag| = 0.6701 etot = -0.093827
+ dbsstp:  new step  neq=130  x=741.402  h=10.695  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=741.40157 to 752.09659 (5 calls, 2 mp)  hnext=14.26002
+ 
+ mmdyn:  new iteration:  tnow=752.0966  t-step=14.26  xsi = -0.0946 0.0236
+ time = 752.1  mag = 0.3348 0.2112 0.5428 |mag| = 0.6718 etot = -0.094302
+ dbsstp:  new step  neq=130  x=752.097  h=14.26  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=752.09659 to 766.3566 (5 calls, 2 mp)  hnext=19.01335
+ 
+ mmdyn:  new iteration:  tnow=766.3566  t-step=19.0134  xsi = -0.0918 0.0232
+ time = 766.4  mag = 0.3351 0.2129 0.5447 |mag| = 0.674 etot = -0.094882
+ dbsstp:  new step  neq=130  x=766.357  h=19.0134  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=766.3566 to 785.36996 (5 calls, 2 mp)  hnext=25.35114
+ 
+ mmdyn:  new iteration:  tnow=785.37  t-step=25.3511  xsi = -0.0843 0.0224
+ time = 785.4  mag = 0.3355 0.2148 0.5467 |mag| = 0.6764 etot = -0.095509
+ dbsstp:  new step  neq=130  x=785.37  h=25.3511  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=785.36996 to 810.7211 (5 calls, 2 mp)  hnext=33.80152
+ 
+ mmdyn:  new iteration:  tnow=810.7211  t-step=33.8015  xsi = -0.0721 0.0210
+ time = 810.7  mag = 0.3358 0.2166 0.5486 |mag| = 0.6787 etot = -0.096081
+ dbsstp:  new step  neq=130  x=810.721  h=33.8015  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=810.7211 to 844.52262 (15 calls, 4 mp)  hnext=30.42137
+ 
+ mmdyn:  new iteration:  tnow=844.5226  t-step=30.4214  xsi = -0.0620 0.0188
+ time = 844.5  mag = 0.336 0.2182 0.5502 |mag| = 0.6806 etot = -0.096536
+ dbsstp:  new step  neq=130  x=844.523  h=30.4214  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=844.52262 to 874.94399 (15 calls, 4 mp)  hnext=27.37923
+ 
+ mmdyn:  new iteration:  tnow=874.944  t-step=27.3792  xsi = -0.0667 0.0169
+ time = 874.9  mag = 0.3363 0.2192 0.5516 |mag| = 0.6822 etot = -0.096952
+ dbsstp:  new step  neq=130  x=874.944  h=27.3792  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=874.94399 to 902.32322 (5 calls, 2 mp)  hnext=36.50564
+ 
+ mmdyn:  new iteration:  tnow=902.3232  t-step=36.5056  xsi = -0.0828 0.0156
+ time = 902.3  mag = 0.337 0.2208 0.5537 |mag| = 0.6848 etot = -0.097646
+ dbsstp:  new step  neq=130  x=902.323  h=36.5056  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=902.32322 to 911.44963 (30 calls, 2 mp)  hnext=12.16855
+ 
+ mmdyn:  new iteration:  tnow=911.4496  t-step=12.1685  xsi = -0.0899 0.0153
+ time = 911.4  mag = 0.3374 0.2217 0.5548 |mag| = 0.6862 etot = -0.098024
+ dbsstp:  new step  neq=130  x=911.45  h=12.1685  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=911.44963 to 923.61817 (5 calls, 2 mp)  hnext=16.22473
+ 
+ mmdyn:  new iteration:  tnow=923.6182  t-step=16.2247  xsi = -0.0998 0.0150
+ time = 923.6  mag = 0.338 0.2231 0.5569 |mag| = 0.6886 etot = -0.098701
+ dbsstp:  new step  neq=130  x=923.618  h=16.2247  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=923.61817 to 939.8429 (25 calls, 5 mp)  hnext=6.48989
+ 
+ mmdyn:  new iteration:  tnow=939.8429  t-step=6.4899  xsi = -0.1127 0.0148
+ time = 939.8  mag = 0.3391 0.2259 0.5606 |mag| = 0.693 etot = -0.099971
+ dbsstp:  new step  neq=130  x=939.843  h=6.48989  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=939.8429 to 946.3328 (5 calls, 2 mp)  hnext=8.65319
+ 
+ mmdyn:  new iteration:  tnow=946.3328  t-step=8.6532  xsi = -0.1172 0.0147
+ time = 946.3  mag = 0.3397 0.2272 0.5624 |mag| = 0.6952 etot = -0.100603
+ dbsstp:  new step  neq=130  x=946.333  h=8.65319  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=946.3328 to 954.98599 (5 calls, 2 mp)  hnext=11.53759
+ 
+ mmdyn:  new iteration:  tnow=954.986  t-step=11.5376  xsi = -0.1224 0.0148
+ time = 955  mag = 0.3404 0.2291 0.5652 |mag| = 0.6984 etot = -0.101542
+ dbsstp:  new step  neq=130  x=954.986  h=11.5376  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=954.98599 to 966.52357 (5 calls, 2 mp)  hnext=15.38345
+ 
+ mmdyn:  new iteration:  tnow=966.5236  t-step=15.3834  xsi = -0.1272 0.0148
+ time = 966.5  mag = 0.3414 0.232 0.5692 |mag| = 0.7031 etot = -0.102921
+ dbsstp:  new step  neq=130  x=966.524  h=15.3834  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=966.52357 to 981.90702 (5 calls, 2 mp)  hnext=20.51126
+ 
+ mmdyn:  new iteration:  tnow=981.907  t-step=18.093  xsi = -0.1293 0.0150
+ time = 981.9  mag = 0.3428 0.2359 0.5748 |mag| = 0.7096 etot = -0.104840
+ dbsstp:  new step  neq=130  x=981.907  h=18.093  tol=0.04  mx=4  mi=5
+ dbsstp: completed xs=981.90702 to 1000 (5 calls, 2 mp)  hnext=24.12398
+ 
+ mmdyn:  new iteration:  tnow=1000  t-step=0  xsi = -0.1251 0.0152
+ time = 1e3  mag = 0.3437 0.2406 0.5809 |mag| = 0.7165 etot = -0.106909
+ Exit 0 MMAG 
+ CPU time:  0.228s   Wall clock 0.261s  at  19:17:01 06.08.2018  on  ellery

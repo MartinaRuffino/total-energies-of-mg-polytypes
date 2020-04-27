@@ -1,0 +1,545 @@
+rdcmd:  cp rsta.fept.lmgf.ntht=0 rsta.fept
+rdcmd:  rm -f mixm.fept eula.fept vshft.fept
+rdcmd:  lmstr fept -vnk=8 -vnc=1 -vntht=0 -vnit=0
+ ---------------------  START LMSTR  ----------------------
+
+ LMSTR:    nbas = 2  nspec = 2  verb 31
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.373094        0.000000   0.000000   0.728282
+   alat = 5.147289  Cell vol = 187.256107
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.14729   awald= 0.350   lmax=6
+         r1=  3.326   nkd= 113      q1=  3.211   nkg= 197
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i r2(1,1,0)
+         r4z i r2(1,1,0)
+ MKSYM:  found 16 space group operations ... includes inversion
+
+
+ SFILL:  automatic scaling of sphere radii, omax = 20, 26, 24%  Constrain rmax<=3.3
+ SCLWSR:  mode = 0  vol = 187.256 a.u.   Initial sphere packing = 73.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  11.0   0.0   0.0 %    omax2=  20.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.499366    2.775067    1.110308
+   2   Pt          2.573644    2.857539    1.110308
+
+ ASASTR: strux for 2nd gen LMTOs, and Sdot
+         avw = 2.816907
+         Use default rmaxs = 7.606 a.u. = 2.7*avw = 1.478*alat
+
+ pairc, ib=  1:  19 neighbors in range  1.478*alat =   7.61
+ pairc, ib=  2:  19 neighbors in range  1.478*alat =   7.61
+ pairc:  38 pairs total  19 is max cluster size
+ strscr:  generated 38 inequivalent strux from 38 total
+ Exit 0 LMSTR 
+ CPU time:  0.065s   Wall clock 0.097s  at  18:20:16 22.07.2018  on  ellery
+rdcmd:  lmgf  fept -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 --rs=1,0
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 2  nspec = 2  verb 31,30
+ special:  forces, scr-rho-out(model eps)
+ pot:      spin-pol
+ libxc     GGA X (Perdew, Burke & Ernzerhof) + GGA C (Perdew, Burke & Ernzerhof)
+ noncoll:  Non-coll
+ bz:       metal(3), tetra 
+ susite:   (warning) no file eula ... nothing read
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.373094        0.000000   0.000000   0.728282
+   alat = 5.147289  Cell vol = 187.256107
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.14729   awald= 0.350   lmax=6
+         r1=  3.326   nkd= 113      q1=  3.211   nkg= 197
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i r2(1,1,0)
+         r4z i r2(1,1,0)
+ SOGRP:  of 16 symops, 8 retained with z preserved
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i
+         r4z i
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+
+ SFILL:  automatic scaling of sphere radii, omax = 20, 26, 24%  Constrain rmax<=3.3
+ SCLWSR:  mode = 0  vol = 187.256 a.u.   Initial sphere packing = 73.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  11.0   0.0   0.0 %    omax2=  20.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.499366    2.775067    1.110308
+   2   Pt          2.573644    2.857539    1.110308
+ BZMESH: 90 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1368 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+  
+ ZMESH: nz=16 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,-0.0713
+
+ GETZV:  18 valence electrons
+ATOM=Fe   Z=26  Qc=18  R=2.775067  Qv=0.083435  mom=2.93833  a=0.025  nr=391
+   l        pl           q0           q1           q2      id       dl
+   0    4.6429612    0.3147787    0.0000000    0.0060428   0   -0.4819774
+   1    4.3813300    0.3996743    0.0000000    0.0071136   0    0.3911027
+   2    3.8826604    4.7332723    0.0000000    0.0498367   0   -2.5887179
+   3    4.1300000    0.0631583   -0.0121139    0.0031505   1    2.3108637
+   0    4.6360132    0.3140808    0.0000000    0.0070286   0   -0.4553548
+   1    4.3851470    0.4167675    0.0000000    0.0087086   0    0.3773408
+   2    3.6123449    1.7838924    0.0000000    0.0271818   0   -0.3683660
+   3    4.1300000    0.0578109   -0.0095423    0.0023508   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   26.083435   4.046E+00      234.6107    0.1720E+05     -112.0985   0.30
+    8   26.083435   3.465E-05      234.6517    0.1720E+05     -111.8630   1.00
+
+ATOM=Pt   Z=78  Qc=68  R=2.857539  Qv=-0.083435  mom=0.33334  a=0.025  nr=481
+   l        pl           q0           q1           q2      id       dl
+   0    6.7225937    0.3884521    0.0000000    0.0081560   0   -0.8410903
+   1    6.3698969    0.3752312    0.0000000    0.0066839   0    0.4331232
+   2    5.8778991    4.2915543    0.0000000    0.0766233   0   -2.4778055
+   3    5.1300000    0.0697135   -0.0002998    0.0007558   1    2.3108637
+   0    6.7355176    0.4132683    0.0000000    0.0081450   0   -0.9129068
+   1    6.4071511    0.4552275    0.0000000    0.0093718   0    0.3002579
+   2    5.8520957    3.8677701    0.0000000    0.0456239   0   -1.9949729
+   3    5.1300000    0.0553479    0.0027976    0.0009160   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   77.916565   2.702E+00     1183.9268    0.1758E+08     -222.4652   0.30
+   15   77.916565   1.258E-05     1183.9457    0.1758E+08     -222.2924   1.00
+
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Fe         0.083435   0.000000  -0.053421   0.006712  -0.754818
+ Pt        -0.083435   0.000000   0.053420  -0.004976  -0.778272
+ Sum Q=0.000000  Emad=0.000488(-0.004457)  Vmtz=-0.767060 (up-dn=0.037383)
+ LMGF: it 0 of 0  ehk0=-39372.919058  pv=-0.1559  mmom=3.2717  seref=0
+ cpudel    ...   Time this iter:  time(s):  0.170    total:  0.170s
+ Exit 0 LMGF 
+ CPU time:  0.170s   Wall clock 0.201s  at  18:20:16 22.07.2018  on  ellery
+rdcmd:  lmgf  fept -vnk=8 -vnc=1 -vntht=0 -vnit=1 --pr31,30
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 2  nspec = 2  verb 31,30
+ special:  forces, scr-rho-out(model eps)
+ pot:      spin-pol
+ libxc     GGA X (Perdew, Burke & Ernzerhof) + GGA C (Perdew, Burke & Ernzerhof)
+ noncoll:  Non-coll
+ bz:       metal(3), tetra 
+ susite:   (warning) no file eula ... nothing read
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.373094        0.000000   0.000000   0.728282
+   alat = 5.147289  Cell vol = 187.256107
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.14729   awald= 0.350   lmax=6
+         r1=  3.326   nkd= 113      q1=  3.211   nkg= 197
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i r2(1,1,0)
+         r4z i r2(1,1,0)
+ SOGRP:  of 16 symops, 8 retained with z preserved
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i
+         r4z i
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+
+ SFILL:  automatic scaling of sphere radii, omax = 20, 26, 24%  Constrain rmax<=3.3
+ SCLWSR:  mode = 0  vol = 187.256 a.u.   Initial sphere packing = 73.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  11.0   0.0   0.0 %    omax2=  20.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.499366    2.775067    1.110308
+   2   Pt          2.573644    2.857539    1.110308
+ BZMESH: 90 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1368 inequivalent ones found
+  
+ ZMESH: nz=16 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,-0.0713
+
+ GETZV:  18 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Fe         0.083435   0.000000  -0.053421   0.006712  -0.754818
+ Pt        -0.083435   0.000000   0.053420  -0.004976  -0.778272
+ Sum Q=0.000000  Emad=0.000488(-0.004457)  Vmtz=-0.767060 (up-dn=0.037383)
+ cpudel    ...   Time this iter:  time(s):  0.0885   total:  0.0885s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 14 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+          Euler angles:
+   ib   alpha      beta     gamma     class         spin quantization axis
+    1  0.000000  0.000000  0.000000   Fe         0.000000  0.000000  1.000000
+    2  0.000000  0.000000  0.000000   Pt        -0.000000  0.000000  1.000000
+
+ --- GFASA : make qnu, spin-density matrix, idos 
+ Energy integration : pade=1
+
+ AMAGNC: magnetic moments from Euler angles and sphere charges:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.000000  0.000000  2.938332    0.000000  0.000000  2.938332  2.938332
+    2   *  0.000000  0.000000  0.333337    0.000000  0.000000  0.333337  0.333337
+ <Mx>=0.000000  <My>=0.000000  <Mz>=1.635835  <M>=1.635835  <|M|>=1.635835
+
+ GFASA:  integrated quantities to efermi = -0.071301
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1    9.087390   10.635836   -3.305360    1.220211    1.635836
+ spin 2   10.293233    7.364171   -2.271204    0.855174   -1.635829
+  total   19.380623   18.000007   -5.576564    2.075385    0.000007
+ N(up)-N(dn)           3.271665
+         deviation from charge neutrality: 0.000007
+ 
+ gfzerq: ef=-0.0713  dq=7.22e-6  vold=0  dv=3.72e-7  vnew= 0
+ gippad: integrate 16 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0713  dq=3.28e-7  vold=3.72e-7  dv=1.62e-8  vnew= 0
+ gippad: integrate 16 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1    6.635362   10.635832   -3.305356    1.220211    1.635832
+ spin 2   10.743969    7.364168   -2.271201    0.855174   -1.635832
+  total   17.379331   18.000000   -5.576557    2.075385   -0.000000
+ N(up)-N(dn)           3.271664
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = 0.  Cumulative shift = 0
+
+ shift (3.6e-7) within Pade tolerance (1e-5, tolq=0) ... accept Pade correction to G
+
+
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.000000  0.000000  2.938328    0.000000  0.000000  2.938328  2.938328
+    2   *  0.000000  0.000000  0.333335    0.000000  0.000000  0.333335  0.333335
+ <Mx>=0.000000  <My>=0.000000  <Mz>=1.635832  <M>=1.635832  <|M|>=1.635832
+ gfasa: vbar = 0.000000 adds d.c. term vbar * zval = 0.0000064
+
+ gfasa (exit): vconst updated from 0.000000 to 0.000000
+
+ LMGF: ehf=-39372.9190865  ehk=-39372.9190614  sumev=-5.5765573  delsev=0.0000033
+ SCRMOM: screen output rho using model response, elind=1.406 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.49e-6  screened dq=1.16e-6
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=3.02e-7
+ AMIX: nmix=0 mmix=8  nelts=64  beta=0.3  tm=10  rmsdel=3.03e-7
+
+ GETZV:  18 valence electrons
+ATOM=Fe   Z=26  Qc=18  R=2.775067  Qv=0.083435  mom=2.93833  a=0.025  nr=391
+   l        pl           q0           q1           q2      id       dl
+   0    4.6429611    0.3147786    0.0000000    0.0060428   0   -0.4819772
+   1    4.3813300    0.3996742    0.0000000    0.0071136   0    0.3911028
+   2    3.8826605    4.7332718    0.0000000    0.0498367   0   -2.5887209
+   3    4.1300000    0.0631583   -0.0121139    0.0031505   1    2.3108637
+   0    4.6360133    0.3140808   -0.0000000    0.0070286   0   -0.4553551
+   1    4.3851471    0.4167676    0.0000000    0.0087086   0    0.3773406
+   2    3.6123450    1.7838928   -0.0000000    0.0271818   0   -0.3683664
+   3    4.1300000    0.0578108   -0.0095423    0.0023508   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   26.083435   5.729E-05      234.6517    0.1720E+05     -111.8630   0.30
+    2   26.083435   9.626E-06      234.6517    0.1720E+05     -111.8630   1.00
+
+ATOM=Pt   Z=78  Qc=68  R=2.857539  Qv=-0.083435  mom=0.33334  a=0.025  nr=481
+   l        pl           q0           q1           q2      id       dl
+   0    6.7225937    0.3884521   -0.0000000    0.0081560   0   -0.8410903
+   1    6.3698969    0.3752312    0.0000000    0.0066839   0    0.4331233
+   2    5.8778991    4.2915541   -0.0000000    0.0766233   0   -2.4778054
+   3    5.1300000    0.0697135   -0.0002998    0.0007558   1    2.3108637
+   0    6.7355176    0.4132683   -0.0000000    0.0081450   0   -0.9129068
+   1    6.4071511    0.4552276   -0.0000000    0.0093718   0    0.3002579
+   2    5.8520957    3.8677703    0.0000000    0.0456239   0   -1.9949728
+   3    5.1300000    0.0553479    0.0027976    0.0009160   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   77.916565   2.746E-05     1183.9457    0.1758E+08     -222.2924   0.30
+
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Fe         0.083435   0.000000  -0.053420   0.006712  -0.754818
+ Pt        -0.083435   0.000000   0.053421  -0.004976  -0.778272
+ Sum Q=0.000000  Emad=0.000488(-0.004457) Vconst=0.000000  Vmtz=-0.767060 (up-dn=0.037383)
+ Magnetization from sphere program: 3.271668  from output rho: 3.271664
+ SV:   1  3.025e-7 0.3000  1.731e-7  -39372.91906142 3.271664 L
+
+   it  1  of  1    ehf=  -39372.919086   ehk=  -39372.919061
+x nk=8 nc=1 ntht=0 nit=1 mmom=3.2716638 ehf=-39372.9190865 ehk=-39372.9190614
+ cpudel    ...   Time this iter:  time(s):  1.11     total:  1.20s
+ Exit 0 LMGF 
+ CPU time:  1.201s   Wall clock 1.232s  at  18:20:18 22.07.2018  on  ellery
+rdcmd:  cp rsta.fept.lmgf.ntht=6 rsta.fept
+rdcmd:  rm -f mixm.fept eula.fept vshft.fept
+rdcmd:  lmgf  fept -vnk=8 -vnc=1 -vntht=6 -vnit=0 --pr31,30 --rs=1,0
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 2  nspec = 2  verb 31,30
+ special:  forces, scr-rho-out(model eps)
+ pot:      spin-pol
+ libxc     GGA X (Perdew, Burke & Ernzerhof) + GGA C (Perdew, Burke & Ernzerhof)
+ noncoll:  Non-coll
+ bz:       metal(3), tetra 
+ susite:   (warning) no file eula ... nothing read
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.373094        0.000000   0.000000   0.728282
+   alat = 5.147289  Cell vol = 187.256107
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.14729   awald= 0.350   lmax=6
+         r1=  3.326   nkd= 113      q1=  3.211   nkg= 197
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i r2(1,1,0)
+         r4z i r2(1,1,0)
+ SOGRP:  of 16 symops, 8 retained with z preserved
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i
+         r4z i
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+
+ SFILL:  automatic scaling of sphere radii, omax = 20, 26, 24%  Constrain rmax<=3.3
+ SCLWSR:  mode = 0  vol = 187.256 a.u.   Initial sphere packing = 73.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  11.0   0.0   0.0 %    omax2=  20.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.499366    2.775067    1.110308
+   2   Pt          2.573644    2.857539    1.110308
+ BZMESH: 90 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1368 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+  
+ ZMESH: nz=16 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,-0.0713
+
+ GETZV:  18 valence electrons
+ATOM=Fe   Z=26  Qc=18  R=2.775067  Qv=0.083435  mom=2.93833  a=0.025  nr=391
+   l        pl           q0           q1           q2      id       dl
+   0    4.6429612    0.3147787    0.0000000    0.0060428   0   -0.4819774
+   1    4.3813300    0.3996743    0.0000000    0.0071136   0    0.3911027
+   2    3.8826604    4.7332723    0.0000000    0.0498367   0   -2.5887179
+   3    4.1300000    0.0631583   -0.0121139    0.0031505   1    2.3108637
+   0    4.6360132    0.3140808    0.0000000    0.0070286   0   -0.4553548
+   1    4.3851470    0.4167675    0.0000000    0.0087086   0    0.3773408
+   2    3.6123449    1.7838924    0.0000000    0.0271818   0   -0.3683660
+   3    4.1300000    0.0578109   -0.0095423    0.0023508   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   26.083435   4.239E-05      234.6517    0.1720E+05     -111.8630   0.30
+
+ATOM=Pt   Z=78  Qc=68  R=2.857539  Qv=-0.083435  mom=-0.33334  a=0.025  nr=481
+   l        pl           q0           q1           q2      id       dl
+   0    6.7355176    0.4132683    0.0000000    0.0081450   0   -0.9129068
+   1    6.4071511    0.4552275    0.0000000    0.0093718   0    0.3002579
+   2    5.8520957    3.8677701    0.0000000    0.0456239   0   -1.9949729
+   3    5.1300000    0.0553479    0.0027976    0.0009160   1    2.3108637
+   0    6.7225937    0.3884521    0.0000000    0.0081560   0   -0.8410903
+   1    6.3698969    0.3752312    0.0000000    0.0066839   0    0.4331232
+   2    5.8778991    4.2915543    0.0000000    0.0766233   0   -2.4778055
+   3    5.1300000    0.0697135   -0.0002998    0.0007558   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   77.916565   2.212E+00     1183.9466    0.1758E+08     -222.2724   0.30
+   10   77.916565   3.071E-05     1183.9457    0.1758E+08     -222.2924   1.00
+
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Fe         0.083435   0.000000  -0.053421   0.006712  -0.754818
+ Pt        -0.083435   0.000000   0.053420  -0.004976  -0.778272
+ Sum Q=0.000000  Emad=0.000488(-0.004457)  Vmtz=-0.767060 (up-dn=0.003732)
+ LMGF: it 0 of 0  ehk0=-39372.919058  pv=-0.1559  mmom=3.2717  seref=0
+ cpudel    ...   Time this iter:  time(s):  0.155    total:  0.155s
+ Exit 0 LMGF 
+ CPU time:  0.155s   Wall clock 0.186s  at  18:20:18 22.07.2018  on  ellery
+rdcmd:  lmgf  fept -vnk=8 -vnc=1 -vntht=6 -vnit=1 --pr31,30
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 2  nspec = 2  verb 31,30
+ special:  forces, scr-rho-out(model eps)
+ pot:      spin-pol
+ libxc     GGA X (Perdew, Burke & Ernzerhof) + GGA C (Perdew, Burke & Ernzerhof)
+ noncoll:  Non-coll
+ bz:       metal(3), tetra 
+ susite:   (warning) no file eula ... nothing read
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.373094        0.000000   0.000000   0.728282
+   alat = 5.147289  Cell vol = 187.256107
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.14729   awald= 0.350   lmax=6
+         r1=  3.326   nkd= 113      q1=  3.211   nkg= 197
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i r2(1,1,0)
+         r4z i r2(1,1,0)
+ SOGRP:  of 16 symops, 8 retained with z preserved
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i
+         r4z i
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+
+ SFILL:  automatic scaling of sphere radii, omax = 20, 26, 24%  Constrain rmax<=3.3
+ SCLWSR:  mode = 0  vol = 187.256 a.u.   Initial sphere packing = 73.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  11.0   0.0   0.0 %    omax2=  20.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.499366    2.775067    1.110308
+   2   Pt          2.573644    2.857539    1.110308
+ BZMESH: 90 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1368 inequivalent ones found
+  
+ ZMESH: nz=16 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,-0.0713
+
+ GETZV:  18 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Fe         0.083435   0.000000  -0.053421   0.006712  -0.754818
+ Pt        -0.083435   0.000000   0.053420  -0.004976  -0.778272
+ Sum Q=0.000000  Emad=0.000488(-0.004457)  Vmtz=-0.767060 (up-dn=0.003732)
+ cpudel    ...   Time this iter:  time(s):  0.0879   total:  0.0879s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 14 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+          Euler angles:
+   ib   alpha      beta     gamma     class         spin quantization axis
+    1  0.000000  0.000000  0.000000   Fe         0.000000  0.000000  1.000000
+    2  0.000000  3.141593  0.000000   Pt        -0.000000  0.000000 -1.000000
+
+ --- GFASA : make qnu, spin-density matrix, idos 
+ Energy integration : pade=1
+
+ AMAGNC: magnetic moments from Euler angles and sphere charges:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.000000  0.000000  2.938332    0.000000  0.000000  2.938332  2.938332
+    2   *  0.000000  0.000000  0.333337    0.000000  0.000000 -0.333337  0.333337
+ <Mx>=0.000000  <My>=0.000000  <Mz>=1.635835  <M>=1.635835  <|M|>=1.635835
+
+ GFASA:  integrated quantities to efermi = -0.071301
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1    6.140539   10.302499   -3.215717    1.167873    1.302499
+ spin 2   13.240137    7.697509   -2.360848    0.907512   -1.302491
+  total   19.380676   18.000008   -5.576565    2.075385    0.000008
+ N(up)-N(dn)           2.604990
+         deviation from charge neutrality: 0.000008
+ 
+ gfzerq: ef=-0.0713  dq=7.87e-6  vold=0  dv=4.06e-7  vnew= 0
+ gippad: integrate 16 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0713  dq=3.57e-7  vold=4.06e-7  dv=1.76e-8  vnew= 0
+ gippad: integrate 16 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1    6.384164   10.302497   -3.215713    1.167873    1.302497
+ spin 2   10.995266    7.697503   -2.360844    0.907512   -1.302497
+  total   17.379430   18.000000   -5.576557    2.075385   -0.000000
+ N(up)-N(dn)           2.604994
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = 0.  Cumulative shift = 0
+
+ shift (3.9e-7) within Pade tolerance (1e-5, tolq=0) ... accept Pade correction to G
+
+
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.000000  0.000000  2.938329    0.000000  0.000000  2.938329  2.938329
+    2   *  0.000000  0.000000  0.333335    0.000000  0.000000 -0.333335  0.333335
+ <Mx>=0.000000  <My>=0.000000  <Mz>=1.635832  <M>=1.635832  <|M|>=1.635832
+ gfasa: vbar = 0.000000 adds d.c. term vbar * zval = 0.0000070
+
+ gfasa (exit): vconst updated from 0.000000 to 0.000000
+
+ LMGF: ehf=-39372.9191059  ehk=-39372.9190613  sumev=-5.5765572  delsev=0.0000039
+ SCRMOM: screen output rho using model response, elind=1.406 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.50e-6  screened dq=1.06e-6
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=2.75e-7
+ AMIX: nmix=0 mmix=8  nelts=64  beta=0.3  tm=10  rmsdel=2.78e-7
+
+ GETZV:  18 valence electrons
+ATOM=Fe   Z=26  Qc=18  R=2.775067  Qv=0.083435  mom=2.93833  a=0.025  nr=391
+   l        pl           q0           q1           q2      id       dl
+   0    4.6429611    0.3147787    0.0000000    0.0060428   0   -0.4819772
+   1    4.3813300    0.3996742   -0.0000000    0.0071136   0    0.3911028
+   2    3.8826605    4.7332719   -0.0000000    0.0498367   0   -2.5887209
+   3    4.1300000    0.0631583   -0.0121139    0.0031505   1    2.3108637
+   0    4.6360133    0.3140808   -0.0000000    0.0070286   0   -0.4553551
+   1    4.3851471    0.4167676   -0.0000000    0.0087086   0    0.3773406
+   2    3.6123450    1.7838927   -0.0000000    0.0271818   0   -0.3683663
+   3    4.1300000    0.0578109   -0.0095423    0.0023508   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   26.083435   4.841E-05      234.6517    0.1720E+05     -111.8630   0.30
+
+ATOM=Pt   Z=78  Qc=68  R=2.857539  Qv=-0.083435  mom=-0.33334  a=0.025  nr=481
+   l        pl           q0           q1           q2      id       dl
+   0    6.7355176    0.4132683   -0.0000000    0.0081450   0   -0.9129068
+   1    6.4071511    0.4552276   -0.0000000    0.0093718   0    0.3002579
+   2    5.8520957    3.8677704    0.0000000    0.0456239   0   -1.9949729
+   3    5.1300000    0.0553479    0.0027976    0.0009160   1    2.3108637
+   0    6.7225937    0.3884521    0.0000000    0.0081560   0   -0.8410903
+   1    6.3698969    0.3752311    0.0000000    0.0066839   0    0.4331233
+   2    5.8778991    4.2915542   -0.0000000    0.0766233   0   -2.4778055
+   3    5.1300000    0.0697135   -0.0002998    0.0007558   1    2.3108637
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   77.916565   6.700E-05     1183.9457    0.1758E+08     -222.2924   0.30
+    2   77.916565   1.791E-05     1183.9457    0.1758E+08     -222.2924   1.00
+
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Fe         0.083435   0.000000  -0.053420   0.006712  -0.754818
+ Pt        -0.083435   0.000000   0.053421  -0.004976  -0.778272
+ Sum Q=0.000000  Emad=0.000488(-0.004457) Vconst=0.000000  Vmtz=-0.767060 (up-dn=0.003732)
+ Magnetization from sphere program: 3.271668  from output rho: 3.271664
+ SV:   1  2.748e-7 0.3000  1.577e-7  -39372.91906130 3.271664 L
+
+   it  1  of  1    ehf=  -39372.919106   ehk=  -39372.919061
+x nk=8 nc=1 ntht=6 nit=1 mmom=3.2716642 ehf=-39372.9191059 ehk=-39372.9190613
+ cpudel    ...   Time this iter:  time(s):  1.14     total:  1.22s
+ Exit 0 LMGF 
+ CPU time:  1.224s   Wall clock 1.254s  at  18:20:19 22.07.2018  on  ellery

@@ -1,0 +1,1077 @@
+<!DOCTYPE html><html>
+
+<head>
+<title>Levenberg-Marquardt</title>
+<style>
+
+/* For hyperlinks */
+a:link {color:#FF0000;}      /* unvisited link */
+a:link {color:#222288;}      /* unvisited link */
+a:visited {color:#228822;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+body {
+       background-color:#ffffgg;
+     }
+ h1 {
+      color:#880000;
+      text-align:center;
+      font-size:12px;
+    }
+ h2 {
+      color:#bb3300;
+      font-size:120%;
+      font-weight:normal;
+      font-style:italic;
+    }
+
+ h3 {
+      color:#33bb00;
+      font-size:110%;
+      font-weight:normal;
+      font-style:italic;
+      text-indent: 0.5em;
+    }
+
+ h4 {
+      color:#000000;
+      font-size:100%;
+      font-weight:bold;
+      text-indent: 1.0em;
+    }
+
+ h5 {
+      color:#444488;
+      font-size:100%;
+      font-weight:bold;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+ hn {
+      color:#000000;
+      font-size:100%;
+      font-weight:normal;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+  P {
+<!--  font-family:"Times New Roman"; -->
+<!--  font-size:12px; -->
+<!--  color: red; -->
+    }
+
+  q {
+      color: red;
+    }
+
+  a {
+        color: blue;
+    }
+
+  tlarge {
+       <font-size="+1">
+    }
+
+  p.pos_left
+  {
+  position:relative;
+  left:-20px;
+  }
+
+  p.pos_right
+  {
+  position:relative;
+  left:20px;
+  right:520px;
+  }
+
+div.ex
+{
+width:3in;
+padding:10px;
+border:5px solid gray;
+margin:0px;
+}
+
+
+</style>
+
+<!-- Enables the use of latex -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+</head>
+
+<h1><B><FONT size="+2">Levenberg-Marquardt (v7.10)</FONT></B></h1>
+
+This document describes fitting of energy bands by the Levenberg-Marquardt (L-M)
+algorithm in the ASA.
+
+<BR>
+
+The L-M algorithm is a method to fit a nonlinear function of multiple
+variables to data.  Here the ASA hamiltonian, normally generated <i>ab
+initio</i> from density-functional theory, is adapted with empirical
+adjustments to key potential parameters.  Adjustments are made by
+fitting energy bands or partial DOS to a given reference, e.g. from a
+QS<i>GW</i> result.  In its simplest form, the ASA hamiltonian reads
+
+<BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>H</i> = <i>C</i> + <span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&Delta;</span></span>
+<i>S</i>
+<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&Delta;</span></span>
+
+</BR>
+
+<i>H</i> has indices <i>H<sub>RL,R'L'</sub></i> which labels the
+basis set according to site and angular momentum.
+<i>C</i> and &Delta; are diagonal matrices, i.e.
+<i>C<sub>RL,R'L'</sub></i> &prop; <i>&delta;<sub>RL,R'L'</sub></i> and
+&Delta;<i><sub>RL,R'L'</sub></i> &prop; <i>&delta;<sub>RL,R'L'</sub></i>,
+and correspond respectively to the band center of gravity and
+bandwidth in the absence of hybridization with other bands.
+<i>S</i>=<i>S<sub>RL,R'L'</sub></i> is a structure matrix, which does
+not depend on potential.
+
+<BR><BR>
+
+The L-M scheme has been implemented in the ASA band program <b>lm</b>
+In the present implementation, vectors <i>C</i> and &Delta; can be adjusted to fit
+some reference bands or partial DOS.  The extremely simple and elegant
+form of
+<i>H</i>, and its reasonably good accuracy relative to full LDA
+calculations, makes it an ideal candidate semi-empirical hamiltonian.
+These degrees of freedom are minimal, and physically transparent.
+(See <A href="lmto.html#section11">here</A> for an
+interpretation of <i>C</i> and &Delta; in the language of multiple
+scattering theory.)  For example the LDA+<i>U</i> method amounts to a
+shift in <i>C</i> (and also extending it from a matrix diagonal in
+<i>RL</i> to one diagonal in
+<i>R</i> but not <i>L</i>).
+
+<H2><A name="getting_started"><FONT size="+1">Getting started</FONT></A></H2>
+
+The L-M scheme in the ASA modifies vectors <i>C</i> and &Delta; (or some
+subset of all available <i>C</i> and &Delta;) by trying to minimize some
+norm, e.g. RMS difference between ASA and reference energy bands.  Once
+generated and stored, <b>lm</b> can read the modified <i>C</i>'s and
+&Delta;'s, which of course modifies the ASA-LDA hamiltonian.  <b>lm</b>
+doesn't read or store modified <i>C</i> and &Delta; directly, but shifts in
+<i>C</i> and &Delta;: shifts are added to the standard (LDA) parameters.
+
+When <b>lm</b> is run in the L-M fit mode, shifts are stored in file
+<FONT size="+1"><tt>vext0.ext</tt></FONT>.
+<b>lm</b> can read shifts from file <FONT size="+1"><tt>vext.<i>ext</i></tt></FONT>,
+which has the same structure as <FONT size="+1"><tt>vext0.<i>ext</i></tt></FONT>.
+
+To cause <b>lm</b> to read file <FONT size="+1"><tt>vext.<i>ext</i></tt></FONT>,
+add this token to the <FONT size="+1"><tt>HAM</tt></FONT> category:
+<pre>
+HAM     RDVEXT=2
+</pre>
+
+The L-M algorithm is designed to minimize the difference between the
+ASA bands and a reference set, or the difference in partial DOS relative to
+a reference set.  All input parameters for L-M fitting are put into category
+<FONT size="+1"><tt>ITER_FIT</tt></FONT>.  To fit bands use
+<pre>
+ITER     FIT[MODE=2 ...]
+</pre>
+To fit partial DOS use
+<pre>
+ITER     FIT[MODE=12 ...]
+</pre>
+
+In the former case, you will need some reference bands; in the latter
+you will need some reference partial DOS.  Each case is shown by a
+small example below.
+
+<BR>
+
+Following this is a more detailed example: a fit to the bands of ZnGeAs<sub>2</sub>.
+To do this test you need to download and unpack the tar file <FONT size="+1"><tt>levenberg-marquardt-tutorial.gz</tt></FONT>.
+
+<H2><A name="bandexample"><FONT size="+1">Quick test: fitting ASA bands to full-potential LDA bands in Si </FONT></A></H2>
+
+The standard ASA test suite fits energy bands in Si to reference LDA
+bands (generated by <b>lmf</b>).
+
+This is just a toy test; it isn't very interesting because it will
+just correct small errors in the ASA approximation to the LDA bands.
+also it uses already generated reference bands.  In practice you'll
+want to fit high quality bands generated, e.g. by QS<i>GW</i>.  But
+this small example explain how to make fits in with the
+Levenberg-Marquardt algorithm.
+
+<BR><BR>
+
+This script:
+<pre>
+  testing/test.lm si
+</pre>
+
+will run these commands :
+
+<pre>
+  rm -f {ctrl,log,strg,str,sdot,vext0,moms,wkp,es,si,refbnds,bnds,vext,vext0}.si
+  cp testing/{ctrl.si,refbnds.si} . &larr; (1) copy the files needed for the calculation
+  lmstr si --iactiv=no              &larr; (2) Makes the ASA structure constants
+  lm -vnit=0 si --iactiv=no         &larr; (3) Sets up ASA potential parameters
+  lm -vnit=15 si --iactiv=no        &larr; (4) levenberg-Marquardt fit, 15 iterations
+  cp vext0.si vext.si               &larr; (5) copy output of L-M fit to file that lm will read
+  lm -vnit=5 si --iactiv=no         &larr; (6) continue the fit for 5 more iterations
+</pre>
+
+This script took advantage of the fact that several things had been prepared in advance.
+<BR> First, the ASA potential parameters
+<i>E</i><sub>&nu;</sub>, <i>C</i>, &Delta;, <i>p</i>, &gamma;, and &alpha;
+are generated from the logarithmic derivatives <i>P</i> and moments <i>Q</i>
+(described <A href="lmto.html#section2">here</A>).  <i>P</i> and <i>Q</i>
+have already been  generated in a prior self-consistent calculation and
+stored in the input file.  Step <FONT size="+1"><tt>(3)</tt></FONT> generates these
+parameters from <i>P</i> and <i>Q</i> already in the input file, and writes them to disk.
+<BR>
+The most important parameters are <i>C</i> and &Delta;, which
+correspond to band centers and bandwidths for particular $lm$ channels.
+These are the ones that will be adjusted by the Levenberg-Marquardt fitting procedure.
+
+<BR> Second, the reference bands had already been generated and copied to your working directory (file <FONT size="+1"><tt>refbnds.si</tt></FONT>):
+<FONT size="+1"><tt>refbnds.si</tt></FONT> was generated with the <b>lmf</b> program.
+
+
+<BR><BR>
+
+To generate the reference bands yourself
+begin by making a self-consistent calculation.  Here is one way:
+
+<pre>
+  touch ctrl.si; rm -f *.si
+  cp gwd/test/si/ctrl.si .
+  (Edit ctrl.si and change PUTQP=F to PUTQP=T)
+  lmfa si
+  lmf si --no-iactiv --oldvc -vnk=4
+</pre>
+
+Next, you need to generate bands at a list of
+<i>k</i>-points.  These are the points on which the
+bands are to be fit.  If you follow the above steps a list will be generated automatically and
+stored in file <FONT size="+1"><tt>qpts.si</tt></FONT> because
+you set <FONT size="+1"><tt>PUTQP=T</tt></FONT> in <FONT size="+1"><tt>ctrl.si</tt></FONT>.
+You can make file <FONT size="+1"><tt>bnds.si</tt></FONT> with the following:
+<pre>
+  lmf si --iactiv --oldvc -vnk=4 --band:qp:fn=qpts
+</pre>
+
+If everything worked properly, this last command will generate <FONT
+size="+1"><tt>bnds.si</tt></FONT> that should fairly well match file <FONT size="+1"><tt>testing/refbnds.si</tt></FONT>,
+that is bands on the 8 irreducible <i>k</i> points read from <FONT size="+1"><tt>qpts.si</tt></FONT>.
+
+<BR><BR>
+Step <FONT size="+1"><tt>(4)</tt></FONT> does the actual fit, iterating the L-M algorithm 15 times.
+<BR>
+Step <FONT size="+1"><tt>(5)</tt></FONT> copies the parameters generated by the fit to the input file, <FONT size="+1"><tt>vext.si</tt></FONT>.
+(<b>lm</b> does not write the generated fit into the input file because you may want to keep it.)
+<BR>
+Step <FONT size="+1"><tt>(6)</tt></FONT> continues the fit for 5 more iterations.  In this case it has little effect.
+
+<BR>
+At this point, you can run <i>lm</i> in the usual way: because <FONT size="+1"><tt>HAM_RDVEXT=1</tt></FONT>
+<b>lm</b> knows to read <i>vext.si</i> and adjust <i>C</i> and &Delta; before doing any band calculation.
+
+<BR><BR>
+
+To run all of these steps in one go, the script will do it for you:
+<pre>
+  testing/test.lm si
+</pre>
+
+<H2><A name="dosexample"><FONT size="+1">Quick example: fitting InP partial DOS to full-potential LDA DOS </FONT></A></H2>
+
+In this second test the In <i>s</i> partial DOS is fit to a FP-LDA calculation.
+The only parameters allowed to vary in this case are the
+<i>C<sub>s</sub> </i> and &Delta;<sub>s</sub> on the In site.
+
+The FP dos was generated using <b>lmf</b>, with this command:
+<pre>
+  lmf  --pdos~mode=1~sites=1~lcut=0 ...
+</pre>
+
+<FONT size="+1"><tt>--pdos</tt></FONT> causes both <b>lm</b> and
+<b>lmf</b> to generate partial DOS.  The modifiers tell <b>lmf</b> (or <b>lm</b>)
+to make <i>l</i>-resolved DOS on the first site, to <i>l</i>=0.
+Modifiers to
+<FONT size="+1"><tt>--pdos</tt></FONT> do, are described in <A
+href="Command-line-options.html#section1pdos"><B>Command-line-options.html</B></A>.
+
+Here will not describe how to generate the DOS using <b>lmf</b> but just
+use a DOS already generated by it.  The input file relevant to L-M fitting is here:
+
+<pre>
+ITER    FIT[MODE=11 NDOS=501 WG=.001 EBFIT=fitevl fitevu LAM=1 SCL=5 SHFT=1 WT=0,0.2,.05]
+</pre>
+
+See <A href="#tokens">below</A> for documentation of each
+token in ITER_FIT.  In the present case <b>lm</b> is run with:
+<pre>
+lm -vnit=5 -vnk=5 -vlmarq=1 -vfitevl=-0.6 -vfitevu=-0.1 -vrdvext=1 inp '--pdos~mode=1~sites=1~lcut=0' --iactiv=no
+</pre>
+
+The command-line switches specify that:  5 L-M iteration are to be run, with the DOS integrated on a <i>k</i> mesh
+of 5 x 5 x 5 divisions.  The DOS is fit in the (-0.6,-0.1) Ry interval.
+Note that exactly the same <FONT size="+1"><tt>--pdos</tt></FONT> switch must be used in <b>lm</b> as
+was used by <b>lmf</b> to generate the reference DOS. This ensures synchronization of the DOS channels.
+
+Also take a look at file <FONT size="+1"><tt>vext.inp</tt></FONT>.  It should look like this:
+<pre>
+% contents=1 format=0
+PPAR: ASA2
+# class         l isp   shft C    shft Delta  frz
+   1  C1        0  1   -0.000000    0.000000  0  0
+   1  C1        1  1    0.000000    0.000000  1  1
+   1  C1        2  1    0.000000    0.000000  1  1
+   2  A1        0  1    0.000000    0.000000  1  1
+   2  A1        1  1    0.000000    0.000000  1  1
+   2  A1        2  1    0.000000    0.000000  1  1
+   3  EA1       0  1    0.000000    0.000000  1  1
+   3  EA1       1  1    0.000000    0.000000  1  1
+   3  EA1       2  1    0.000000    0.000000  1  1
+   4  EC1       0  1    0.000000    0.000000  1  1
+   4  EC1       1  1    0.000000    0.000000  1  1
+   4  EC1       2  1    0.000000    0.000000  1  1
+</pre>
+The pair of numbers under 'frz' tell <b>lm</b> what parameters to allow to vary: '0' tells
+<b>lm</b> to vary the parameter; '1' tells <b>lm</b> to keep it fixed.
+The first number is for <i>C</i>, the second is for </i> and &Delta;.
+In this example, only parameters in the In <i>s</i> channel (species label C1).
+are allowed to vary.
+
+To see how the RMS error changed with iteration, do:
+<pre>
+  grep LMFITMR out.lm.inp
+</pre>
+
+You can see that the RMS fitting error drops from 1.98 to 0.26.
+The reference and fit DOS are written to disk on each iteration, in files
+<FONT size="+1"><tt>dosr.<i>ext</i></tt></FONT> and
+<FONT size="+1"><tt>dosf.<i>ext</i></tt></FONT>, respectively.
+
+Run the setup together with the L-M fitting with this script
+<pre>
+  testing/test.lm inp
+</pre>
+
+Take a look at the output, <FONT size="+1"><tt>vext0.inp</tt></FONT>.
+Only the In <i>s</i> channel parameters varied, and the shifts are
+small.  This is merely an indication that the ASA partial DOS already
+reproduces the full-potential partial DOS (both are LDA calcualtions.)
+
+If you have the FPLOT package installed, draw a picture of the reference and fit
+dos with:
+<pre>
+  fplot -disp -lt 1,col=1,0,0 dosr.inp -lt 2,col=0,1,0 dosf.inp
+</pre>
+
+<H2><A name="bigbandexample"><FONT size="+1">Detailed example: fitting energy ASA bands of ZnGeAs<sub>2</sub> to QS<i>GW</i> reference bands </FONT></A></H2>
+
+The bands of ZnGeAs<sub>2</sub> are fit to QS<i>GW</i> bands, which
+are (presumably) very accurate.  The fit concentrates <i>q</i>-points
+near the Gamma point.  This is the most important region, since
+transport occurs near the band edges.
+
+<BR>
+
+To run this test you need to download and unpack the tar file <FONT size="+1"><tt>levenberg-marquardt-tutorial.gz</tt></FONT>.
+
+<P> <FONT color="#bb3300"><I>Generating reference bands</I>.</FONT>
+
+<BR> You can skip this if you only want to focus on the L-M fitting.
+In that case you will use <FONT size="+1"><tt>refbnds.zngeas2</tt></FONT> already supplied.  Jump to the
+<A href="#lmfit">Levenberg-Marquardt fit</A> step.
+
+<BR><BR> Continuing this step, you need to run <b>lmf</b> with a self-energy file generated by QS<i>GW</i>.
+<b>lmf</b> requires these switches:
+
+<pre>
+  echo -vasa=f -vlmf=t -vnit=10 -vlmxb=4 -vnl=5 -vbzj=0 --pr31,20 -vtppc=0 -vtpdb=3 -vtppb=0 -vtpsa=0 -vtppa=0 \
+       -vlfc=1 -vlfb=1 -vlfa=1 -vlgc=0 -vbigbas=12 -vgwbas=t -vmetal=0 -vles=11 -vlmbe=1 -vnk=4 -vnkgw=3 -vrw=.87 -vbsig=.11 -vemaxs=2 -vconvc=1d-5 > switches-for-lm
+</pre>
+
+
+<UL>
+Step 1: make a list of <i>q</i>-points over which the reference bands
+are to be generated.
+
+This involves several steps, since we want to combine fine mesh for
+small <i>q</i> with a coarse mesh for general <i>q</i>.
+
+<UL>
+<LI> Autogenerate a fine mesh of <i>q</i>-points (40&times;40&times;40
+divisions, not reduced by symmetry to give them extra weight):
+<br><FONT size="+1"><tt>
+  lmfa zngeas2 `cat switches-for-lm`
+<br>
+  lmf  zngeas2 -vnk=40 --rs=0 -vtet=0 --rs=0,0 --putqp --nosym --quit=ham `cat switches-for-lm`
+<br></tt></FONT>
+This dumps the <i>q</i>-point mesh into file <FONT size="+1"><tt>qpts.zngeas2</tt></FONT>.  It contains
+a fine mesh of <i>q</i>-points throughout the BZ.
+
+<LI> Pare the complete list to the subset inside a sphere smaller than <i>q</i>=0.1:
+<br><FONT size="+1"><tt>
+  lmf  zngeas2 --rs=0 `cat switches-for-lm` '--band~qp,inc=q<.1,save=qp1~fn=qpts'
+<br></tt></FONT>
+The subset is dumped to file <FONT size="+1"><tt>qp1.zngeas2</tt></FONT>.  It should contain 24 points.
+
+<LI> Autogenerate a coarse mesh of <i>q</i>-points (4&times;4&times;4 divisions)
+<br><FONT size="+1"><tt>
+  lmf  zngeas2 -vnk=4 --rs=0 -vtet=0 --rs=0,0 --putqp --quit=ham `cat switches-for-lm`
+<br></tt></FONT>
+File <FONT size="+1"><tt>qpts.zngeas2</tt></FONT> should now contain 13 <i>q</i>-points.
+
+<LI> Combine the fine mesh in a small sphere (<FONT size="+1"><tt>qp1.zngeas2</tt></FONT>)
+with the coarse mesh distributed over the entire zone (<FONT size="+1"><tt>qpts.zngeas2</tt></FONT>):
+<br><FONT size="+1"><tt>
+  lmf  zngeas2 --rs=0 `cat switches-for-lm` '--band~qp,merge=qp1,save=qp~fn=qpts'
+<br></tt></FONT>
+File <FONT size="+1"><tt>qp.zngeas2</tt></FONT> should now contain 37 <i>q</i>-points.
+This is the list of points we use to generate the reference bands.
+
+</LI>
+</UL>
+
+<BR>
+Step 2: Generate reference energy bands on this list of <i>q</i>-points.
+
+<UL>
+<LI> Convert <FONT size="+1"><tt>sigma.zngeas2</tt></FONT> (supplied in ASCII, so that it is portable across machine architectures) to binary format
+<FONT size="+1"><tt>sigm.zngeas2</tt></FONT> :
+<br><FONT size="+1"><tt>
+  lmf --rs=0 --rpos=pos -vsig=11 -vnit=20 zngeas2 `cat switches-for-lm` --iactiv=no --rsig:ascii --wsig <BR>
+  cp sigm2.zngeas2 sigm.zngeas2
+<br></tt></FONT>
+</UL>
+
+Note: the self-energy &Sigma; was made with a particular set of
+positions.  Shifting these positions by multiples of lattice vectors
+will <A href="gw.html">change the phase</A> of &Sigma;.  It is important that you make the
+density from the positions file supplied, or shift the phase appropriately.
+
+<UL>
+<LI> Make a self-consistent density, with addition of the QS<i>GW</i> self-energy:
+<br><FONT size="+1"><tt>
+  lmf --rs=0 --rpos=pos -vsig=11 -vnit=20 zngeas2 `cat switches-for-lm` --iactiv=no
+<br></tt></FONT>
+After this pass, you should have a self-consistent density with a bandgap of 1.35 eV.
+
+<LI> Generate reference bands.  Since QS<i>GW</i> always
+<A href=http://link.aps.org/abstract/PRL/v96/e226402>overestimates bandgaps slightly</A>,
+
+a simple and practical procedure is to scale &Sigma; by 0.8 when
+generating energy bands.  It reduces the gap in this case to 1.08 eV,
+which is the actual gap within experimental error.  To generate bands on the mesh in file
+<FONT size="+1"><tt>qp.zngeas2</tt></FONT> do, with &Sigma; scaled by 0.8, do:
+<br><FONT size="+1"><tt>
+  lmf --rs=1,0 -vmetal=5 -vnit=1 zngeas2 `cat switches-for-lm` --mixsig=.8 --iactiv=no
+<BR>
+  lmf zngeas2 `cat switches-for-lm` --mixsig=.8 --iactiv=no --band:qp:fn=qp
+<br></tt></FONT>
+The first invocation of <b>lmf</b> finds the Fermi level (valence band
+maximum in this case), which will be saved when the bands are
+generated.
+
+<BR>
+
+Note also that <FONT size="+1"><tt>--rs=1,0</tt></FONT>
+ensures that the restart file is not overwritten.  It is important
+that it be correct (you need the <FONT
+size="+1"><tt>metal=5</tt></FONT> switch).  The valence band maximum
+(0.1337Ry) is energy state number 36; the gap between states 36 and 37
+should be 0.079 Ry, or 1.08 eV.  The bands generated in this last step should
+be very similar to file <FONT
+size="+1"><tt>refbnds.zngeas2</tt></FONT>. These are the reference
+bands we will fit the ASA hamiltonian to.  You can copy the bands you
+generated or use the already-existing <FONT
+size="+1"><tt>refbnds.zngeas2</tt></FONT> for the fit.
+
+</UL>
+<BR>
+
+Having reference bands along symmetry lines is not necessary for the fit, but
+it is convenient to see how the fit bands compare to them.  To make bands
+along symmetry lines, do
+<br><FONT size="+1"><tt>
+ &nbsp;&nbsp; lmf zngeas2 `cat switches-for-lm` --mixsig=.8 --iactiv=no --band:fn=syml
+<br>
+ &nbsp;&nbsp; cp bnds.zngeas2 bnds0.zngeas2
+<br></tt></FONT>
+This file will be overwritten, so the latter command saves it for future reference.
+
+<BR>
+
+To do all these step in one go, the commands have been collected in a script file <FONT size="+1"><tt>make_refbnds_zngeas2</tt></FONT>
+Invoke one of the following
+<pre>
+  rdcmd make_refbnds_zngeas2
+  source make_refbnds_zngeas2
+</pre>
+
+</UL>
+
+<A name="lmfit"></A>
+
+<FONT color="#bb3300">
+<i>Levenberg-Marquardt fit of ASA to reference bands in</i> ZnGeAs<sub>2</sub>.
+</FONT>
+
+<BR> We switch to the ASA program, <b>lm</b>.
+
+<UL>
+Step 1:  Self-consistent ASA-LDA calculation. For this do:
+<br><FONT size="+1"><tt>
+  rm -f sigm.zngeas2 mixm.zngeas2 qasa; rm -f {a,b,c,ec,ea}1.zngeas2
+<BR>
+  lmstr -vbzj=0 -vnit=0 --rs=0,1 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31
+<BR>
+  lm -vbzj=0 -vnit=0 --rs=0,1 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 --iactiv=no
+<BR>
+  lm -vbzj=0 -vnit=10 --rs=1,1 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 --iactiv=no
+<br></tt></FONT>
+10 iterations are sufficient to make the density self-consistent.
+The gap should be very small, just as it is in the FP-LDA case.  File
+<FONT size="+1"><tt>rsta.zngeas2</tt></FONT> contains the
+self-consistent ASA-LDA moments.
+
+<BR><BR>
+
+For reference purposes, you might want to generate the ASA-LDA bands.   This
+step also confirms that the <FONT size="+1"><tt>rsta</tt></FONT> files holds
+self-consistent ASA moments:
+
+<br><FONT size="+1"><tt>
+rm -f {a,b,c,ec,ea}1.zngeas2 wkp.zngeas2
+<br>
+lm  -vbzj=0 -vnit=0 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 --quit=band
+<br>
+lm  -vbzj=0 -vnit=0 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 --band:fn=syml
+<br>
+cp bnds.zngeas2 bnds1.zngeas2
+<br></tt></FONT>
+
+<BR>
+
+Step 2: L-M fit. Carry out the fitting with this command:
+<br><FONT size="+1"><tt>
+lm  -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=0 -vlmfit=2
+<br></tt></FONT>
+
+After 5 iterations or so the fit should converge with an RMS deviation (deviation relative
+to the reference bands) about 8e-4.
+<br>
+Enter 0 <return> and <b>lm</b> will dump to file <FONT size="+1"><tt>vext0.zngeas2</tt></FONT> something close to this:
+<pre>
+% contents=2 format=0 nsp=1
+PPAR: ASA2
+# class         l isp   shft C    shft Delta  frz
+   1  C1        0  1    0.023291    0.035295  0  0
+   1  C1        1  1    0.131961    0.027641  0  0
+   1  C1        2  1   -0.120119   -0.000832  0  0
+   2  B1        0  1   -0.061705    0.042492  0  0
+   2  B1        1  1    0.056759    0.032719  0  0
+   2  B1        2  1   -0.262601   -0.027269  0  0
+   3  A1        0  1   -0.023546    0.011017  0  0
+   3  A1        1  1   -0.011141    0.022355  0  0
+   3  A1        2  1   -0.134126    0.000900  0  0
+   5  EC1       0  1    0.067733    0.004855  0  0
+   5  EC1       1  1    0.073864    0.000827  0  0
+   4  EA1       0  1    0.063277   -0.014039  0  0
+   4  EA1       1  1   -0.008023   -0.013392  0  0
+</pre>
+
+The following script will do all these step in one go, noninteractively (do one or the other, not both!)
+<pre>
+  rdcmd  make_levenberg-marquardt_fit_lmfit2
+  source make_levenberg-marquardt_fit_lmfit2
+</pre>
+
+To look more closely at what the algorithm did, note the table printed after the sphere parameters are made:
+<pre>
+ Levenberg-Marquardt mode 2:  fit ASA C+enu,Delta to data
+ Fit 26 parameters in 15 Rl channels.
+ LMFITMR: parameters to include in fit:
+   class        l isp    block   vary(C) vary(D)  ivar     C          Delta
+   1  C1        0  1      low       0       0       1   -0.526385    0.162510
+   1  C1        1  1      low       0       0       3    0.492193    0.153111
+   1  C1        2  1      low       0       0       5   -0.609050    0.006629
+   2  B1        0  1      low       0       0       7   -1.010993    0.136853
+   2  B1        1  1      low       0       0       9    0.002879    0.124217
+   2  B1        2  1      low       0       0      11    1.811730    0.160411
+   3  A1        0  1      low       0       0      13   -1.163264    0.121957
+   3  A1        1  1      low       0       0      15   -0.132967    0.110404
+   3  A1        2  1      low       0       0      17    1.660370    0.148204
+   5  EC1       0  1      low       0       0      19    0.042289    0.168497
+   5  EC1       1  1      low       0       0      21    1.187259    0.188080
+   5  EC1       2  1     high
+   4  EA1       0  1      low       0       0      23    0.055103    0.168103
+   4  EA1       1  1      low       0       0      25    1.200693    0.187536
+   4  EA1       2  1     high
+</pre>
+
+In the input file, <FONT size="+1"><tt>C1, B1, A1</tt></FONT> are Zn, Ge, and As, respectively,
+and <FONT size="+1"><tt>EC1, EA1</tt></FONT> are empty spheres. (It is an unfortunate fact that the ASA requires empty spheres for open structures.)
+The last two columns show the starting values of <i>C</i> and &Delta;.
+
+<BR>
+
+As the table shows, <i>spd</i> orbitals on the the real atoms, and
+<i>sp</i> orbitals on the emtpy spheres will be adjusted:  a `0' under the columns
+<FONT size="+1"><tt>vary(C)</tt></FONT> and <FONT size="+1"><tt>vary(D)</tt></FONT> mean that
+both <FONT size="+1"><tt>C</tt></FONT> and <FONT size="+1"><tt>&Delta;</tt></FONT> will both be adjusted
+in an unrestricted manner.
+
+<BR>
+
+In LDA+U theory, the effect of U is to modify the band center <i>C</i> with a
+term like (<i>n</i>&minus;1/2)<i>U</i>.  LDA+U has no analog to
+modifying the bandwidth &Delta;, but it is necessary as QS<i>GW</i>
+does scale bandwidths.
+
+<BR>
+
+This line
+<br><FONT size="+1"><tt>
+ Levenberg-Marquardt mode 2:  fit ASA C+enu,Delta to data
+<br></tt></FONT>
+tells you that the fit is using 'mode 2': the mode is controlled by <FONT size="+1"><tt>MODE</tt></FONT> in this line of the input file:
+<br><FONT size="+1"><tt>
+&nbsp;&nbsp; FIT[MODE={lmfit} NBFIT=1+16*0 35 NBFITF=11+16*0 LAM=1 SCL=5 SHFT=1 WT=1,.2,.1]
+<br></tt></FONT>
+With mode 2 the linearization energy <FONT size="+1"><tt>enu</tt></FONT> is shifted in tandem with <FONT size="+1"><tt>C</tt></FONT>.
+(Mode 1 differs in that <FONT size="+1"><tt>enu</tt></FONT> not adjusted with <FONT size="+1"><tt>C</tt></FONT>; this mode is kept for historical reasons.)
+
+<BR> The next line tells you that 26 independent parameters are included in the fit,
+in 15 <i>RL</i> channels.  (That's a bit too many; see 
+(See <A href="#constraints">below</A>).
+
+
+<BR> Just following the table are these lines:
+<pre>
+ Data mode 0: Fit to bands                                       &larr; fit to bands, not DOS
+ bands file file contains nq=37, nband=242  efermi=0.133755      &larr; read from refbnds
+ Fit to 35 bands.  Fit to file data, bands 11 to 45.	         &larr; which bands to fit
+ Fermi weights:  cutoff=Ef+0.2 width=0.1 		         &larr; oweighting of each band.
+</pre>
+
+Bands 1:35 are fit: this is controlled by token <FONT size="+1"><tt>NBFIT</tt></FONT> in the input file.
+Because the QS<i>GW</i> bands have 10 core states absent in the ASA, ASA bands 1:35
+must be fit to bands 11:45 in <FONT size="+1"><tt>refbnds</tt></FONT>:
+<FONT size="+1"><tt>NBFITF</tt></FONT> tells the fitting algorithm to align band 1:35 in the hamiltonian with bands 11:.. in the reference data.
+
+<BR><BR>
+
+The last line prints out parameters associated with weighting of the bands in the fitting process.  Bands higher in energy
+are less important than ones below the Fermi level.  Their contribution to the fit
+can smoothly be reduced by introducing a smooth cutoff.  Weights are controlled in the input file by
+token <FONT size="+1"><tt>FIT[WT=..]</tt></FONT>.  <FONT size="+1"><tt>WT</tt></FONT> has three arguments:
+<FONT size="+1"><tt>WT=#,<i>a</i>,<i>b</i></tt></FONT>.
+
+<BR>  When #=1, the cutoff is a Fermi function and state <i>E<sub>kn</sub></i> contributes to the fit with weight
+{1+exp[&minus;(<i>E<sub>kn</sub></i>&minus; (<i>a</i>+<i>E<sub>f</sub></i>))/<i>b</i>]}<sup>-1</sup>.
+
+<BR> For other possibilities, run <FONT size="+1"><tt>lm --input</tt></FONT> and look for <FONT size="+1"><tt>ITER_FIT_WT</tt></FONT>.
+
+<BR><BR>
+
+Step 3: Use the L-M fit hamiltonian to make energy bands.
+<BR><BR>
+
+<IMG
+ WIDTH="361" HEIGHT="312" ALIGN="LEFT" BORDER="2"
+ SRC="zngeas2-bands.png">
+
+Copy <FONT size="+1"><tt>vext0.zngeas2</tt></FONT> to <FONT
+size="+1"><tt>vext.zngeas2</tt></FONT> and you are ready to look at
+the doctored ASA hamiltonian.  To generate bands, do:
+
+<br><FONT size="+1"><tt>
+lm -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --quit=band
+<br>
+lm -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --band:fn=syml
+<br>
+cp bnds.zngeas2 bnds2.zngeas2
+<br></tt></FONT>
+
+Or just do following:
+<br><FONT size="+1"><tt>
+  cp vext0.zngeas2 vext.zngeas2
+<br>
+  rdcmd make_levenberg-marquardt_bands
+<br></tt></FONT>
+
+Draw pictures of bands, comparing <FONT
+size="+1"><tt>bnds0.zngeas2</tt></FONT>, <FONT
+size="+1"><tt>bnds1.zngeas2</tt></FONT>, and <FONT
+size="+1"><tt>bnds.zngeas2</tt></FONT> generated from the above commands.
+
+If you have <b>fplot</b> installed, you can do this automatically as follows:
+<br><FONT size="+1"><tt>
+cp bnds0.zngeas2 bnds.blue
+<br>
+cp bnds1.zngeas2 bnds.red
+<br>
+cp bnds2.zngeas2 bnds.green
+<br>
+rdcmd makeplot.bands
+<br>
+fplot -pr10 -f plot.plbnds
+<br></tt></FONT>
+
+<BR>
+
+This generates the poscript file displayed in the Figure.
+
+<BR><BR>
+
+
+If everything worked as it should, the ASA doctored to fit to the QS<i>GW</i> bands should show stellar agreement.
+In the Figure, blue lines are the QS<i>GW</i> bands (<FONT size="+1"><tt>bnds0.zngeas2</tt></FONT>),
+red dots are the ASA-LDA bands (<FONT size="+1"><tt>bnds1.zngeas2</tt></FONT>), and green lines are the ASA+LM fit to
+the QS<i>GW</i> bands (<FONT size="+1"><tt>bnds2.zngeas2</tt></FONT>),
+
+<BR><BR>
+
+You can try refining the fit, which you do by just
+repeat the fitting command, but this time setting <FONT size="+1"><tt>rdvext</tt></FONT> so it starts from the initial fit:
+<br><FONT size="+1"><tt>
+lm  -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 -vlmfit=2
+<br></tt></FONT>
+There is little point, in this case.
+
+<BR><BR>
+
+It should be evident from the figure that QS<i>GW</i> is not just fixing the bandgap.
+Notice that the LDA and QS<i>GW</i> splittings between the first two conduction bands at &Gamma;
+are very different, as are the dispersions bands along &Gamma;&minus;T.
+
+
+<BR><BR>
+
+<FONT color="#bb3300"><i>Fitting with constraints: fit in a restricted energy window</i></FONT>
+
+The L-M fitting procedure is a complicated non-linear one.  It's not
+necessary in this case, but it may take some fiddling to get good
+starting values for C and &Delta;.  In this case for example, you could
+initially fit just bands near the Fermi level by restricting the bands
+to be fit
+
+When restricting the fitting window, you should also restrict the
+parameters relevant to bands outside window, e.g. the Cu d orbitals.
+To do the fit with constraints, first make a template <FONT
+size="+1"><tt>vext0</tt></FONT> file with shifts zero.  Do this with the following:
+<br><FONT size="+1"><tt> &nbsp;&nbsp;
+lm -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=0 -vlmfit=2 --iactiv=no --quit=ham
+<br></tt></FONT>
+This will generate a template <FONT size="+1"><tt>vext0.zngeas2</tt></FONT> with no shifts.
+
+Use your text editor to set constraints, which you do by changing parameters
+in the <FONT size="+1"><tt>frz</tt></FONT> column.
+Fr this example modify <FONT size="+1"><tt>vext.zngeas2</tt></FONT>: to read:
+<pre>
+% contents=2 format=0 nsp=1
+PPAR: ASA2
+# class         l isp   shft C    shft Delta  frz
+   1  C1        0  1    0.000000    0.000000  0  0
+   1  C1        1  1    0.000000    0.000000  0  0
+   1  C1        2  1    0.000000    0.000000  1  1
+   2  B1        0  1    0.000000    0.000000  0  0
+   2  B1        1  1    0.000000    0.000000  0  0
+   2  B1        2  1    0.000000    0.000000  1  1
+   3  A1        0  1    0.000000    0.000000  0  0
+   3  A1        1  1    0.000000    0.000000  0  0
+   3  A1        2  1    0.000000    0.000000  0  0
+   5  EC1       0  1    0.000000    0.000000  1  1
+   5  EC1       1  1    0.000000    0.000000  1  1
+   4  EA1       0  1    0.000000    0.000000  1  1
+   4  EA1       1  1    0.000000    0.000000  1  1
+</pre>
+
+The pair of 1's in the frz columns tell lm not to vary <FONT size="+1"><tt>C</tt></FONT> (first column) or &Delta; (second column).
+
+To do the fit with these constraints:
+<br>1. replace <FONT size="+1"><tt>vext.zngeas2</tt></FONT> with the contents above;
+or just copy <FONT size="+1"><tt>vext0.zngeas2.constraints</tt></FONT> to
+<FONT size="+1"><tt>vext.zngeas2</tt></FONT>.
+<br>2. Edit the <FONT size="+1"><tt>FIT</tt></FONT> line of input file to read
+<br><FONT size="+1"><tt> &nbsp;&nbsp;
+    FIT[MODE={lmfit} NBFIT=1+16 35 NBFITF=11+16 LAM=1 SCL=5 SHFT=1 WT=1,.2,.1]
+<br></tt></FONT>
+
+This skips the first 16 bands and will fit bands near the Fermi level very well, though bands below &minus;6 eV are not well described.
+ 
+Do the fit as though you were continuing a fit: initial shifts are 0, but the cosntraints are read in.
+<br><FONT size="+1"><tt>
+lm  -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 -vlmfit=2
+<br></tt></FONT>
+
+Note that the fitting procedure varies 14 parameters, rather than 26 we did initially.
+
+Be sure to update <FONT size="+1"><tt>vext0</tt></FONT> by entering 0 < enter > to
+end the fit; then copy <FONT size="+1"><tt>vext0</tt></FONT> to <FONT size="+1"><tt>vext</tt></FONT>.
+You can now removing constraints in <FONT
+size="+1"><tt>vext</tt></FONT>, restore the <i>ctrl</i> file to its original condition to fit
+the whole of the VB.
+<br><FONT size="+1"><tt> &nbsp;&nbsp;
+   FIT[MODE={lmfit} NBFIT=1+16*0 35 NBFITF=11+16*0 LAM=1 SCL=5 SHFT=1 WT=1,.2,.1]
+<br></tt></FONT>
+Repeat the fit and you should get a result similar to the original fit
+(RMS deviation about 8E-4).
+
+You will see that the parameters are a little different, though.  This
+is because this is too much freedom in the  these few parameters.
+
+<BR>
+
+<H2><A name="constraints"><FONT size="+1">
+<FONT color="#bb3300"><i>Using constraints to reduce fitting degrees of freedom</i></FONT>
+</FONT></A></H2>
+
+A good idea is to restrict the degrees of freedom in the fit:
+bandwidth scalings, for example, should be less important than band
+center shifts.  Also ES orbitals are high in energy and it would be
+good to restrict or eliminate freedom in these parameters.
+
+<BR>
+
+Constraints may take one of two forms: 
+
+<br>1. The parameter is not allowed to vary at all; to do this set the
+appropriate switch to 1 in the <FONT size="+1"><tt>frz</tt></FONT>
+column as in the previous example.
+
+<br>2. The parameter can vary, but its variation is linked to
+parameter of the same type.  For this kind of variation, switch the
+<FONT size="+1"><tt>frz</tt></FONT> column to a negative number.
+Columns with the <i>same</i> negative value will shift in unison, and varied as single degree of freedom.
+Suppose, for example the ES lines looked like this:
+<pre>
+   5  EC1       0  1    0.000000    0.000000 -1 -1
+   5  EC1       1  1    0.000000    0.000000 -2  1
+   4  EA1       0  1    0.000000    0.000000 -1 -1
+   4  EA1       1  1    0.000000    0.000000 -2  1
+</pre>
+Then <FONT size="+1"><tt>C</tt></FONT> in the EC1 and ES1 <i>s</i> channels would shift in unison,
+as would <FONT size="+1"><tt>C</tt></FONT> in the two <i>p</i> channels,
+and as would shifts in &Delta; of the two <i>s</i> channels.  On
+the other hand, &Delta; in the <i>p</i> channels would be frozen to its LDA value.
+Thus this particular (perhaps nonsensical) combination of constraints
+contain three independent degrees of freedom.
+
+<BR> A fit was carried out with the following 14 independent degrees of freedom:
+<pre>
+% contents=2 format=0 nsp=1
+PPAR: ASA2
+# class         l isp   shft C    shft Delta  frz
+   1  C1        0  1    0.058380    0.018946  0  0
+   1  C1        1  1    0.082269    0.000000  0  1
+   1  C1        2  1   -0.159998    0.000000  0  1
+   2  B1        0  1   -0.041500    0.030778  0  0
+   2  B1        1  1    0.013639    0.000000  0  1
+   2  B1        2  1    0.094729    0.000000  0  1
+   3  A1        0  1   -0.086119    0.012259  0  0
+   3  A1        1  1   -0.081378    0.037167  0  0
+   3  A1        2  1   -0.160274    0.000000  0  1
+   5  EC1       0  1    0.002388    0.000000 -1  1
+   5  EC1       1  1    0.002388    0.000000 -1  1
+   4  EA1       0  1    0.002388    0.000000 -1  1
+   4  EA1       1  1    0.002388    0.000000 -1  1
+</pre>
+
+Most bandwidth parameters were constrained not to vary; all the ES
+shifts in <FONT size="+1"><tt>C</tt></FONT> are constrained to vary by
+the same amount. The fit is nearly as good as the original fit, with
+about half the number of parameters.  Adding further constraints
+starts to degrade the fit.  You can verify this by copying this data
+(see file <FONT size="+1"><tt>vext.zngeas2.fewparameters</tt></FONT>)
+to <FONT size="+1"><tt>vext.zngeas2</tt></FONT> and running the fit.
+
+<BR>
+
+<H2><A name="format2"><FONT size="+1">
+<FONT color="#bb3300"><i>Many-atom systems: supercell</i></FONT>
+</FONT></A></H2>
+
+When assembling a shift file for a large supercell containing a
+defect, you will want to take shifts on the atoms far from the defect
+from the bulk, and shifts for atoms near the contraint from, say, a
+fit to a QS<i>GW</i> calculation in a small supercell.  In many-atom
+systems the <FONT size="+1"><tt>vext</tt></FONT> can become unwieldy
+and tedious to manage.
+
+To simplify matters you can use a modified format.  The file above
+(file <FONT size="+1"><tt>vext.zngeas2.fewparameters</tt></FONT>)
+can be equivalently represented as follows:
+<pre>
+% contents=2 format=2 nsp=1
+PPAR: ASA2
+# class         l isp   shft C    shft Delta  frz
+   Z==30  C1    0  1    0.058380    0.018946  0  0
+   Z==30  C1    1  1    0.082269    0.000000  0  1
+   Z==30  C1    2  1   -0.159998    0.000000  0  1
+   Z==32  B1    0  1   -0.041500    0.030778  0  0
+   Z==32  B1    1  1    0.013639    0.000000  0  1
+   Z==32  B1    2  1    0.094729    0.000000  0  1
+   Z==33  A1    0  1   -0.086119    0.012259  0  0
+   Z==33  A1    1  1   -0.081378    0.037167  0  0
+   Z==33  A1    2  1   -0.160274    0.000000  0  1
+   Z==0   EC1   0  1    0.002388    0.000000 -1  1
+   Z==0   EC1   1  1    0.002388    0.000000 -1  1
+   Z==0   EA1   0  1    0.002388    0.000000 -1  1
+   Z==0   EA1   1  1    0.002388    0.000000 -1  1
+</pre>
+
+This format (<FONT size="+1"><tt>format=2</tt></FONT>) as opposed to
+the previous (<FONT size="+1"><tt>format=0</tt></FONT>), differs in
+the first column.  When <FONT size="+1"><tt>format=0</tt></FONT> the
+first column is a site index; when <FONT
+size="+1"><tt>format=2</tt></FONT> the first column is an algebraic
+expression involving the species index &nbsp;is&nbsp; and atomic
+number &nbsp;<FONT size="+1"><tt>Z</tt></FONT>, e.g.  
+"<FONT size="+1"><tt>is<2&Z==33</tt></FONT>".  Parameters are copied
+into any class for which the expression evaluates to nonzero.  
+For calculations using the file above, the first three rows will apply
+to all Zn sites, the next three rows to to all Ge sites, and so on.
+It has the important advantage that you don't need to synchronize
+classes with lines in the file, and all sites can get the same shifts.
+This is very useful when merging supercells with lots of "bulk" atoms
+and some defect atoms.
+
+<BR> As a segue to a point defect calculation in a large cell, this
+next example shows how the identical bands and potential can be generated
+in an artificial supercell, doubled in the <i>xy</i> plane and also
+doubled along the <i>z</i> axis (4&times; as many atoms).  
+
+<br><br>
+1. Ensure that potential data is matched to the rsta file in the original cell
+<pre>
+lm -vbzj=0 -vnit=0 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --quit=band
+</pre>
+
+2. Make a supercell of the original lattice:
+<pre>
+  echo  m 1 1 0  1 -1 0  0 0 2  |  lmscell  -vbzj=0 -vnit=10 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31  --rsta --wsite=sitex
+</pre>
+Points to note:
+<br>*  Feeding this text to <FONT size="+1"><tt>lmscell</tt></FONT> (note the <i>m</i> preceding the 9 digits!)
+<br>&nbsp;<FONT size="+1"><tt>m 1 1 0  1 -1 0  0 0 2</tt></FONT>
+<br> tells <FONT size="+1"><tt>lmscell</tt></FONT> to take as supercell lattice vectors
+<FONT size="+1">
+<br> <tt> &nbsp;&nbsp;1&times;<b>P</b><sub>1</sub>&nbsp;+1&times;<b>P</b><sub>2</sub>&nbsp;+0&times;<b>P</b><sub>3</sub>
+<br> <tt> &nbsp;&nbsp;1&times;<b>P</b><sub>1</sub>&nbsp;-1&times;<b>P</b><sub>2</sub>&nbsp;+0&times;<b>P</b><sub>3</sub>
+<br> <tt> &nbsp;&nbsp;0&times;<b>P</b><sub>1</sub>&nbsp;+0&times;<b>P</b><sub>2</sub>&nbsp;+2&times;<b>P</b><sub>3</sub>
+</FONT>
+<br>*  Switch <FONT size="+1"><tt>--rsta</tt></FONT> tells the supercell maker to generate a <FONT size="+1"><tt>rsta</tt></FONT> file for the supercell (called <FONT size="+1"><tt>rstax</tt></FONT>).
+<br>*  Switch <FONT size="+1"><tt>--wsite=sitex</tt></FONT> tells the supercell maker to generate site file <FONT size="+1"><tt>sitex</tt></FONT>.
+
+<br> Now we are ready to make a band calculation in the supercell.  The input file is set up so that if we invoke <FONT size="+1"><tt>lm</tt></FONT> with <FONT size="+1"><tt>-vfile=t</tt></FONT>, it will read site data from file <FONT size="+1"><tt>site.</tt></FONT>.  Do the following prepatory steps:
+<pre>
+cp -p rsta.zngeas2 rsta.bk                              &larr; Preserve rsta file of the original cell
+cp vext.zngeas2.fewparameters.format2 vext.zngeas2      &larr; Copy the vext data file to the file lm reads
+cp rstax.zngeas2 rsta.zngeas2                           &larr; Copy the supercell rsta file to the file lm reads
+cp sitex.zngeas2 site.zngeas2                           &larr; Copy the supercell site file to the file lm reads
+</pre>
+
+Next set up structure constants and sphere potentials for the supercell
+<pre>
+lmstr -vfile=t -vbzj=0 -vnit=1 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --quit=band
+lm -vfile=t -vbzj=0 -vnit=0 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --quit=band
+</pre>
+3. We are ready for the supercell calculation.  Find the Fermi level of the supercell:
+<pre>
+lm -vfile=t -vbzj=0 -vnit=1 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --quit=band
+</pre>
+Generate the bands of the supercell:
+<pre>
+lm -vfile=t -vbzj=0 -vnit=1 -vmetal=2 --rs=1,0 -vnk=6 -vnk2=nk -vadnf=f -vnl=3 -vconvc=1d-6 zngeas2 --pr31 -vrdvext=2 --iactiv=no --band:fn=syml
+</pre>
+The bands generated this way should be identical to the original cell, except that the BZ is 4&times; smaller.  Thus in the supercell, the
+X and T points get folded into the &Gamma; point.  Apart from the zone folding the bands should be identical (e.g. identical bandgap).
+
+To do all these steps in one go, invoke:
+<pre>
+rdcmd make_levenberg-marquardt_bands_supercell
+</pre>
+
+<H2><A name="tokens"><FONT size="+2">Input tokens</FONT></A></H2>
+
+These are the tokens in the <FONT size="+1"><tt>ITER</tt></FONT> category
+that control L-M fitting:
+
+This token tells what kind of data to fit.  The 1s digit must always be 1 (or zero) for now.
+<pre>
+ ITER_FIT_MODE
+   0: No fitting
+   1s digit governs parameters to fit         &larr; this is the only available mode now
+     1: fit ASA C and Delta
+   10s digit governs data to fit:
+     0: fit to bands
+     1: fit to site partial DOS (see documentation)
+</pre>
+
+These tokens apply when bands are fit:
+<pre>
+ ITER_FIT_NBFIT  (pair of integers, default = 1 --)
+   Indices to lowest and highest bands to include in fit
+   Missing second argument => highest band in basis
+ ITER_FIT_NBFITF
+   Index to first reference band to be fit    &larr; Use when differing treatment of core levels
+</pre>
+
+These tokens apply when DOS are fit:
+<pre>
+ ITER_FIT_NDOS (integer)
+   Number of energy points to fit DOS
+ ITER_FIT_WG (real)
+   Broaden calculated DOS with Gaussian, width W
+   Optional 2nd arg specifies different width for reference DOS
+</pre>
+
+The remaining tokens apply to either bands or DOS fitting.
+<pre>
+ ITER_FIT_EBFIT  (pair of real numbers)
+   Energy range to fit eigenvalues or DOS
+
+ ITER_FIT_WT (3 real numbers, default = 0 0 0.1)
+   Fitting weights wt_kn of fit bands E_kn or DOS to file data
+   Arg #1 defines the functional form of the weights.
+   Arg 2 is an energy shift, labeled a below
+   Arg 3 is an energy scale, labeled b below
+   form:
+   0: unit weights
+   1: Fermi function, wt = {1+exp[-(E_kn-(a+Ef))/b]}^-1
+   2: Fermi-like gaussian cutoff, wt = {1+exp[-((E_kn-(a+Ef))/b)^2]}^-1
+   3: Exponential weights, wt = exp[-|(E_kn-(a+Ef))/b|]
+   4: Gaussian weights, wt = exp[-((E_kn-(a+Ef))/b)^2]
+
+ ITER_FIT_SHFT  (integer, default = 0)
+   To set constant potential shift to align fit with reference bands or DOS
+   0: no shift is added
+   1: Align Ef with reference bands or DOS
+   2: Not implemented
+
+ ITER_FIT_LAM  (real, default = 1)
+   Initial value of Levenberg-Marquardt lambda; see Numerical Recipes
+
+ ITER_FIT_SCL (real, default = 5)
+   Scale factor for Levenberg-Marquardt lambda (cf Numerical Recipes)
+</pre>

@@ -1,0 +1,342 @@
+#!/bin/env python2.7
+from pytriqs.operators.util.op_struct import set_operator_structure
+import pytriqs.operators.util as op
+from pytriqs.operators.util.U_matrix import U_matrix,U_matrix_kanamori,spherical_to_cubic,cubic_names,subarray
+from pytriqs.operators.util.hamiltonians import h_int_slater, h_int_kanamori
+from pytriqs.gf import *
+from triqs_cthyb import *
+from pytriqs.archive import HDFArchive
+import pytriqs.utility.mpi as mpi
+from pytriqs.gf.tools import *
+import numpy as np
+import csv,os
+
+from impurity import *
+
+
+def readinfo() :
+    info={}
+    f = h5py.File('solver_input.h5', 'r')
+
+    beta = f['beta'][0]
+    nomg = int(f['nomg'][0])
+    W = np.array([ (2*n+1)*1j*np.pi/beta for n in range(nomg)])
+    info['W']=W
+    info['nsp']=f['nsp'][0]
+    return info
+
+
+def loadfile(f, mode='r'):
+    fd = open(f, mode)
+    s = fd.read()
+    fd.close()
+    return s
+
+
+def readctrl(ext,token) :
+    import re
+    s = loadfile('ctrl.'+ext)
+
+    def ctrlvl(t, s):
+        ps = re.sub(r'(?xs)\b\w+[=:]', lambda m: '__marker__ '+m.group(0), s) + '__marker__'
+        return re.findall(r'(?xs)__marker__\s*'+t+'=\s*(.*?)?\s*__marker__',ps)[0]
+
+    return ctrlvl(token, s)
+
+def readparam(f, ext, compute_vertex=False, verbose=True) :
+    s=loadfile(f)
+    s=s.split('\n')
+    inputp={}
+    p={}
+    p["measure_G2_n_fermionic"]=0
+    p["measure_G2_n_bosonic"]=0
+    p['measure_G2_n_l']=0
+    inputp['mode']="Full"
+
+    intp=["n_warmup_cycles","n_cycles","length_cycle"]
+    inti=["fit_max_moment","fit_start","fit_stop","n_l","NW"]
+
+    floati=["U","J"]
+    stri=["mode"]
+
+    for l in s :
+        if(l==''):
+            break
+
+        key,val=l.split()
+        if(key in intp):
+            p[key]=int(val)
+            if mpi.is_master_node() and verbose:
+                print(key,val)
+        elif (key in inti) :
+            inputp[key]=int(val)
+            if mpi.is_master_node() and verbose:
+                print(key,val)
+        elif ( key in floati) :
+            inputp[key]=float(val)
+            if mpi.is_master_node() and verbose:
+                print(key,val)
+        elif (key in stri) :
+            inputp[key]=str(val)
+            if mpi.is_master_node() and verbose:
+                print(key,val)
+        else :
+            if mpi.is_master_node() and verbose:
+                print(str(key)+' ignored')
+                continue
+    if compute_vertex :
+        p['measure_G2_iw_ph'] = True
+        p['measure_G2_n_fermionic'] = int(readctrl(ext,'NOMF'))
+        p['measure_G2_n_bosonic'] = int(readctrl(ext,'NOMB'))
+
+    for key in p :
+        if mpi.is_master_node() and verbose:
+            print('{0} \t {1}'.format(key,p[key]))
+    return p,inputp
+
+def G0_triqs(imp, G0, spin_names, orbital_names, orbitals_index) :
+
+    n_ind_orb = len(orbital_names)
+    for ispin, spin in enumerate(spin_names) :
+        if imp.offdiag :
+
+            for orb1, orb2 in product(range(n_ind_orb), range(n_ind_orb)) :
+                #Spin polarized ?
+                if imp.nsp == 1 :
+                    G0[spin][orb1, orb2].data[imp.nomg:] = imp.g0[0, orb1, orb2,:]
+                    G0[spin][orb1, orb2].data[:imp.nomg] = np.conjugate(imp.g0[0, orb1, orb2, ::-1])
+
+                else :
+                    G0[spin][orb1, orb2].data[imp.nomg:] = imp.g0[ispin, orb1, orb2,:]
+                    G0[spin][orb1, orb2].data[:imp.nomg] = np.conjugate(imp.g0[ispin, orb1, orb2, ::-1])
+
+        else :
+            for orb in range(n_ind_orb) :
+                if imp.nsp == 1 :
+                    G0[spin+'_'+orbital_names[orb]].data[imp.nomg:,0,0] = imp.g0[0, orb, orb, :]
+                    G0[spin+'_'+orbital_names[orb]].data[:imp.nomg,0,0] = np.conjugate(imp.g0[0, orb, orb, ::-1])
+
+                else :
+                    G0[spin+'_'+orbital_names[orb]].data[imp.nomg:,0,0] = imp.g0[ispin, orb, orb, :]
+                    G0[spin+'_'+orbital_names[orb]].data[:imp.nomg,0,0] = np.conjugate(imp.g0[ispin, orb, orb, ::-1])
+
+
+def feedsig(imp,sig_tab, Sig, spin_names, orbital_names, orbitals_index,legendre=False) :
+    """
+    feed from triqs to sig from imp.
+    shift : takes just positive matsubara freq
+    remark : it can be used to any quantity which has the same structure as sig
+    """
+
+    n_ind_orb = len(orbital_names)
+
+    if legendre :
+        len_mesh=len(Sig.mesh)
+        shift=0
+    else :
+        len_mesh=len(Sig.mesh)/2
+        shift=len_mesh
+
+
+
+    for ispin, spin in enumerate(spin_names) :
+        if imp.offdiag :
+
+            for orb1, orb2 in product(range(n_ind_orb), range(n_ind_orb)) :
+                #Spin polarized ?
+                if imp.nsp == 1 :
+                    sig_tab[0, orb1, orb2,:] += 0.5 * Sig[spin][orb1, orb2].data[shift:]
+                else :
+                    sig_tab[ispin, orb1, orb2,:] = Sig[spin][orb1, orb2].data[shift:]
+
+
+        else :
+            for orb in range(n_ind_orb) :
+                if imp.nsp == 1 :
+                    sig_tab[0, orb, orb, :] +=  0.5 * Sig[spin+'_'+orbital_names[orb]].data[shift:,0,0]
+                else :
+                    sig_tab[ispin, orb, orb, :] = Sig[spin+'_'+orbital_names[orb]].data[shift:,0,0]
+
+
+
+
+def print_para() :
+    para_default="""U,10
+J,0.7
+mode,Full
+n_warmup_cycles,100000
+n_cycles,5000000
+length_cycle,50
+n_l,80
+NW,999
+fit_max_moment,5
+fit_start,800
+fit_stop,900NOMF=10
+measure_G2_n_bosonic,0
+measure_G2_n_fermionic,0
+"""
+    print(para_default)
+    print('print in para_ctqmc_example.dat')
+    f=open('para_ctqmc_example.dat','w')
+    f.write(para_default)
+    f.close()
+
+def readvertex(imp,G2,G, orbital_names) :
+
+    nomg=imp.nomg
+    beta = imp.beta
+    spin_names = ['up','down']
+
+    norb = len(orbital_names)
+    nomg = G['up_' + orbital_names[0]].data.shape[0]
+
+    nomf = G2['up_' + orbital_names[0], 'up_' + orbital_names[0]].data.shape[1]
+    nomb = G2['up_' + orbital_names[0], 'up_' + orbital_names[0]].data.shape[0]
+    chis = np.zeros((nomf, nomf, norb, norb, nomb),dtype=complex)
+    chic = np.zeros((nomf, nomf, norb, norb, nomb),dtype=complex)
+    g = np.zeros((nomg, norb),dtype=complex)
+    for (i1,name1), (i2,name2) in product(enumerate(orbital_names), enumerate(orbital_names) ) :
+        G2s = (G2['down_'+name1,'down_'+name2].data + G2['up_'+name1,'up_'+name2].data - (G2['up_'+name1,'down_'+name2].data+ G2['down_'+name1,'up_'+name2].data)) /2. /beta
+        G2c = (G2['down_'+name1,'down_'+name2].data + G2['up_'+name1,'up_'+name2].data + (G2['up_'+name1,'down_'+name2].data+ G2['down_'+name1,'up_'+name2].data)) /2. /beta
+        for iom in range(nomb) :
+            chic[:,:,i1,i2,iom] = G2c[iom,:,:,0,0,0,0]
+            chis[:,:,i1,i2,iom] = G2s[iom,:,:,0,0,0,0]
+        if i1 == i2 :
+            N = len(G['up_'+name1].data[:,0,0])/2
+            g[:,i1] = 0.5 * (G['up_'+name1].data[:,0,0] + G['down_'+name1].data[:,0,0])
+
+    f = h5py.File('chiloc_'+str(imp.imp_ind+1)+'.h5', 'w')
+    f.create_dataset('chis',data=chis)
+    f.create_dataset('chic',data=chic)
+    f.create_dataset('gf',data=g)
+    f.create_dataset('beta',data=beta)
+
+
+
+
+def solver(imp, ext, compute_vertex, verbose=False) :
+    p,para=readparam('para_triqs.txt',verbose=verbose, ext = ext , compute_vertex = compute_vertex)
+    # p is the parameters used by the solver
+    #para is the parameters used elsewhere
+    beta=imp.beta
+
+
+    U = para['U']
+    J = para['J']
+    typeH = para['mode']
+    n_l = para['n_l']
+
+    nomg = imp.nomg
+
+    spin_names = ['up','down']
+
+    cubic_name = cubic_names(imp.L)
+
+    T = spherical_to_cubic(imp.L)
+    Um = U_matrix(imp.L, U_int=U, J_hund=J, basis='other', T=T)
+
+
+    #Is all the bands included in the dmft ?
+    # A band is concedered as included is in the cix matrix, the diag term is non zero
+    orbital_names=[]
+    for ib in range(len(cubic_name)):
+        if imp.sigind[0,ib,ib] > 0 :
+            orbital_names.append(cubic_name[ib])
+
+    orbital_index=[ cubic_name.index(orb) for orb in orbital_names]
+    if mpi.is_master_node():
+        print("bands select are : ")
+        for ib,b in enumerate(orbital_names) :
+            print('orbital {0} : {1}'.format(orbital_index[ib],b))
+
+    Um=subarray(Um,len(Um.shape)*[ orbital_index ])
+    H_int=h_int_slater(spin_names, orbital_names, Um, off_diag=imp.offdiag)
+
+    #  construction of Gf
+    gf_struct = set_operator_structure(spin_names, orbital_names, imp.offdiag)
+    S = Solver(beta=beta, gf_struct=gf_struct, n_l=n_l, n_iw=nomg)
+
+
+    G0_triqs(imp, S.G0_iw, spin_names, orbital_names, orbital_index)
+    p['random_seed'] = 34788 + 928374 * mpi.rank
+    p["measure_G_l"]=True
+    p['move_double']=True
+
+    S.solve(h_int=H_int,**p)
+    if mpi.is_master_node():
+        print('Density :')
+        for name,g in S.G_iw :
+            print('{} : {}'.format(name,g.density()[0,0].real))
+
+    #extract sig :
+    if mpi.is_master_node():
+        with HDFArchive('imp'+str(imp.imp_ind)+'.h5','w') as A:
+            A['G_iw']=S.G_iw
+
+    # c.sig=np.zeros((len(c.W),c.dim,c.dim),dtype=complex)
+    S.G_iw<<LegendreToMatsubara(S.G_l)
+    Sig=dyson(G0_iw=S.G0_iw,G_iw=S.G_iw)
+
+
+
+    imp.sig=np.zeros((imp.nsp, len(orbital_names), len(orbital_names), imp.nomg),dtype=complex)
+    feedsig(imp,imp.sig, Sig, spin_names, orbital_names, orbital_index)
+    imp.gl=np.zeros((imp.nsp, len(orbital_names), len(orbital_names), n_l),dtype=complex)
+    feedsig(imp,imp.gl, S.G_l, spin_names, orbital_names, orbital_index, legendre=True)
+
+    if mpi.is_master_node():
+        with HDFArchive('imp'+str(imp.imp_ind)+'.h5','a') as A:
+            A['parameters']=p
+            A['para_aux']=para
+            A['S']=S
+            if(p["measure_G2_n_fermionic"]>0) :
+                readvertex(imp, S.G2_iw_ph, S.G_iw, orbital_names)
+
+
+
+def ctqmc(ext, compute_vertex) :
+    f = h5py.File('solver_input.h5', 'r')
+    nicix=f['nicix'][0]
+    info=readinfo()
+    sig_final=[info['W'].imag]
+    gl_final=[]
+
+    for icix in range(nicix) :
+        imp=impurity(icix)
+        imp.readh5()
+        solver(imp, ext, compute_vertex)
+        sig=imp.compress_form(imp.sig)
+
+        for sp in range(info['nsp']) :
+            for sig_orb in sig[sp] :
+                sig_final.append(sig_orb.real)
+                sig_final.append(sig_orb.imag)
+
+        gl=imp.compress_form(imp.gl)
+        for sp in range(info['nsp']) :
+            for gl_orb in gl[sp] :
+                gl_final.append(gl_orb.real)
+
+
+    np.savetxt('sig.inp',np.array(sig_final).T,fmt='%1.8f')
+    np.savetxt('gl.inp',np.array([list(range(len(gl_final[0])))]+gl_final).T,fmt='%1.8f')
+
+
+
+
+
+if __name__ == '__main__':
+    import argparse
+    p = argparse.ArgumentParser(description='run triqs_cthyb with questaal Hamiltonian ')
+    p.add_argument('ext',nargs=1,type=str,help='ext of the system ')
+    p.add_argument('--vertex',action='store_true', help ="""
+calculate the vertex :
+ ctrl file file, in the DMFT section add :
+NOMB=number_of_bosonic_frequency
+NOMF=number_of_fermionic_frequency
+""")
+
+    args = p.parse_args()
+    ext = args.ext[0]
+    compute_vertex = args.vertex
+    ctqmc(ext, compute_vertex)

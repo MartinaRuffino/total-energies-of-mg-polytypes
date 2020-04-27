@@ -1,0 +1,56 @@
+2017-03-27  Brian Cunningham
+
+	* lmf optics mode can write complex matrix elements of velocity operator
+
+2014-08-22  Mark Schilfgaarde  <ms4@phpdl1.ph.kcl.ac.uk>
+
+	* FP optical matrix elements calculated as sum of three terms (rather than its square)
+
+2014-08-20  Mark Schilfgaarde  <ms4@phpdl1.ph.kcl.ac.uk>
+
+	* the FP code implemented with SO coupling
+
+2012-08-09  Mark Schilfgaarde  <ms4@phpdl1.ph.kcl.ac.uk>
+
+	* Bug fix: jdosw in optinq is spin polarized
+
+2010-03-03  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* Optics editor mode has energy-integrated, k-resolved DOS
+
+2009-09-11  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* New tetrahedron integration: joint DOS, k-resolved DOS, optics editor
+
+2006-01-23  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* Bug fix, intdrv
+
+2004-04-28  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* Optics branch can work in parallel mode
+
+2004-02-22  Uk-Jin Roh
+
+	* Added on-the-fly sampling integration to conserve memory
+
+2003-09-09  John Klepeis
+
+	* Added sampling integration for optics
+
+2001-03-01  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* Added scissors operator
+
+2001-02-06  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* slight change in Im eps printout
+
+2001-01-05  Walter Lambrecht
+
+	* asaopm.f (pvopm): bug fix for noncollinear optics mode.
+
+2000-12-20  Walter Lambrecht
+
+	* optics code works with spin-orbit coupling
+

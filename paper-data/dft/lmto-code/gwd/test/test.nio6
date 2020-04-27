@@ -1,0 +1,210 @@
+#!/bin/tcsh
+
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set space = '        '
+
+echo "$space ... test optics for NiO with GW, and also lmf optics with different branches"
+
+set path = ($topdir $topdir/utils $path)
+set mcx = `which mcx`
+if (-x "$mcx") then
+  if `$mcx --h |& grep mc | grep vsn | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.072))}'` set have_mc
+endif
+if (! $?have_mc) then
+  echo "test.nio6 (abort) : missing mcx"
+  exit -1
+endif
+
+set pass
+set tol = 2e-6
+
+echo
+echo "$space ... GW optics, RPA"
+echo "$space $topdir/gwd/test/test.gwd --quiet nio 6"
+             $topdir/gwd/test/test.gwd --quiet nio 6
+set retval = $status
+if ($retval != 0) then
+  unset pass
+endif
+
+echo
+echo "$space ... optics using lmf"
+set lmf = `which lmf`
+echo "$space using lmf = $lmf"
+set lmfgwd = `which lmfgwd`
+echo "$space using lmfgwd = $lmfgwd"
+rm -f out.lmf
+which lmgw > /dev/null
+set retval = $status
+if ($retval != 0) then
+  echo "$space no script lmgw ... aborting"
+  unset pass
+  goto chkxx
+endif
+set lmgw = `which lmgw`
+echo "$space using lmgw = $lmgw"
+
+echo
+echo "$space ... create evec file with lmgw"
+echo "$space $lmgw --sc --wt  --ht --code2 -vnkgw=6 --getsigp --stop=setup nio > out.lmgw"
+             $lmgw --sc --wt  --ht --code2 -vnkgw=6 --getsigp --stop=setup nio > out.lmgw
+set retval = $status
+if ($retval != 0) then
+  unset pass
+endif
+
+echo
+echo "$space ... lmf optics with mefac=0"
+echo "$space" 'lmf -vmefac=0 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf -vmefac=0 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+echo "$space  mv opt.nio opt.mefac0.nio"
+              mv opt.nio opt.mefac0.nio
+echo "$space ... lmf optics with mefac=0, reading qp from evec file (--revec:gw -vnkgw=6)"
+echo "$space" 'lmf --revec:gw -vnkgw=6 -vmefac=0 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --revec:gw -vnkgw=6 -vmefac=0 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+
+echo "$space $mcx opt.nio opt.mefac0.nio -- -abs -max:g -w:nohead ."
+  set err = `$mcx opt.nio opt.mefac0.nio -- -abs -max:g -w:nohead . | awk '{print $3}'`
+
+echo -n "$space ... opt.nio and opt.mefac0.nio difference ($err) within tol ($tol)? ... "
+if (`echo $err 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space ... lmf optics with mefac=1"
+echo "$space" 'lmf -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+lmf -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+echo "$space mv opt.nio opt.mefac1.nio"
+             mv opt.nio opt.mefac1.nio
+echo "$space ... lmf optics with mefac=1, reading qp from evec file (--revec:gw -vnkgw=6)"
+echo "$space" 'lmf --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+echo "$space $mcx opt.nio opt.mefac1.nio -- -abs -max:g -w:nohead ."
+set err = `$mcx opt.nio opt.mefac1.nio -- -abs -max:g -w:nohead . | awk '{print $3}'`
+
+echo -n "$space ... opt.nio and opt.mefac1.nio difference ($err) within tol ($tol)? ... "
+if (`echo $err 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space ... lmf optics with mefac=2"
+echo "$space" 'lmf -vmefac=2 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf -vmefac=2 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+echo "$space mv opt.nio opt.mefac2.nio"
+             mv opt.nio opt.mefac2.nio
+echo "$space lmf optics with mefac=2, reading qp from evec file (--revec:gw -vnkgw=6)"
+echo "$space" 'lmf --revec:gw -vnkgw=6 -vmefac=2 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --revec:gw -vnkgw=6 -vmefac=2 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+echo "$space $mcx opt.nio opt.mefac2.nio -- -abs -max:g -w:nohead ."
+set err = `$mcx opt.nio opt.mefac2.nio -- -abs -max:g -w:nohead . | awk '{print $3}'`
+
+echo -n "$space ... opt.nio and opt.mefac2.nio difference ($err) within tol ($tol)? ... "
+if (`echo $err 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space ... lmf optics with mefac=1, reading qp from evec file and writing/reading optical matrix elements (--opt:write --revec:gw and --opt:read --revec:gw)"
+rm -f opt.nio
+echo "$space" 'lmf --opt:write --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --opt:write --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+echo "$space" 'lmf --opt:read  --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --opt:read  --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+echo "$space $mcx opt.nio opt.mefac1.nio -- -abs -max:g -w:nohead ."
+  set err = `$mcx opt.nio opt.mefac1.nio -- -abs -max:g -w:nohead . | awk '{print $3}'`
+
+echo -n "$space ... opt.nio and opt.mefac1.nio difference ($err) within tol ($tol)? ... "
+if (`echo $err 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+# set tol = 2e-7
+
+echo
+echo "$space ... lmf optics with mefac=1, reading qp from evec file and writing/reading optical matrix elements"
+echo "$space ... generating qpts file with lmfgwd --job=6"
+lmfgwd --job=6 --no-iactiv nio >> out.lmf
+echo "$space ... lmf optics with mefac=1, reading qp from evec file (--opt:write:permqp --revec:gw -vnkgw=6 and --opt:read)"
+rm -f opt.nio
+echo "$space" 'lmf --opt:write:permqp --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --opt:write:permqp --revec:gw -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+echo "$space" 'lmf --opt:read -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf'
+               lmf --opt:read -vnkgw=6 -vmefac=1 -vloptic=1 -vmetal=3 --no-iactiv nio --quit=band >> out.lmf
+set retval = $status
+if ($retval != 0) then
+  echo "$space lmf returned with error"
+  unset pass
+  goto chkxx
+endif
+echo "$space $mcx opt.nio opt.mefac1.nio -- -abs -max:g -w:nohead ."
+set err = `$mcx opt.nio opt.mefac1.nio -- -abs -max:g -w:nohead . | awk '{print $3}'`
+
+echo -n "$space ... opt.nio and opt.mefac1.nio difference ($err) within tol ($tol)? ... "
+if (`echo $err 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+chkxx:
+
+echo
+echo
+if ($?pass) then
+  echo "$space test PASSED (nio 6)"
+else
+  echo "$space test FAILED (nio 6)"
+endif

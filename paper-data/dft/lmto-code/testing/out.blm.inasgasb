@@ -1,0 +1,157 @@
+ ----------------------  START BLM  -----------------------
+ ... site file contains 5 species and 16 atoms
+
+ ... Complete basis for supplied symmetry
+ SGROUP: 1 symmetry operations from 1 generators
+ SYMLAT: Bravais system is monoclinic with 4 symmetry operations.
+ SYMCRY: crystal invariant under 2 symmetry operations for tol=1e-5
+ FIXPOS: shifted site positions by average 6.82e-17
+ SYMCRY: crystal invariant under 2 symmetry operations for tol=1e-5
+ GROUPG: 1 generator(s) were added to complete the group:
+         i*i m(1,-1,0)
+         i*i m(1,-1,0)
+
+ Lattice vectors : alat = 11.4300 a.u.  vol=1507.07 a.u.
+
+                 Plat                     Conventional unit cell          As multiples of Plat
+   0.0000000  0.5000000  0.5000000
+   0.5000000  0.0000000  0.5000000
+   2.0184855  2.0184855  0.0000000
+
+ Basis vectors after sorting and shortening:
+ site spec        pos (Cartesian coordinates)         pos (multiples of plat)
+   1  In        0.000000   0.000000   0.000000    0.000000   0.000000   0.000000
+   2  As        0.250000   0.250000   0.250000    0.250000   0.250000   0.061928
+   3  E         0.500000   0.500000   0.500000    0.500000   0.500000   0.123855
+   4  E         0.750000   0.750000   0.750000    0.750000   0.750000   0.185783
+   5  In        0.500000   0.500000   0.000000    0.000000   0.000000   0.247710
+   6  As        0.750000   0.750000   0.250000    0.250000   0.250000   0.309638
+   7  E         1.000000   1.000000   0.500000    0.500000   0.500000   0.371566
+   8  E         1.250000   1.250000   0.750000    0.750000   0.750000   0.433493
+   9  Ga        1.001155   1.001155   0.000000    0.000000   0.000000   0.495993
+  10  Sb        1.253466   1.253466   0.250000    0.250000   0.250000   0.559066
+  11  E         1.505777   1.505777   0.500000    0.500000   0.500000   0.622138
+  12  E         1.758087   1.758087   0.750000    0.750000   0.750000   0.685210
+  13  Ga        1.510398   1.510398   0.000000    0.000000   0.000000   0.748283
+  14  Sb        1.762709   1.762709   0.250000    0.250000   0.250000   0.811355
+  15  E         2.015019   2.015019   0.500000    0.500000   0.500000   0.874428
+  16  E         2.267330   2.267330   0.750000    0.750000   0.750000   0.937500
+
+ ... Make sphere radii
+
+ pairc, ib=  1:  68 neighbors in range  1.155*alat =  13.20
+ pairc:  68 pairs total  68 is max cluster size
+
+ pairc, ib=  2:  54 neighbors in range  0.990*alat =  11.32
+ pairc:  54 pairs total  54 is max cluster size
+
+ pairc, ib=  3:  33 neighbors in range  0.700*alat =   8.00
+ pairc:  33 pairs total  33 is max cluster size
+
+ pairc, ib=  4:  29 neighbors in range  0.700*alat =   8.00
+ pairc:  29 pairs total  29 is max cluster size
+
+ pairc, ib=  5:  71 neighbors in range  1.155*alat =  13.20
+ pairc:  71 pairs total  71 is max cluster size
+
+ pairc, ib=  6:  54 neighbors in range  0.990*alat =  11.32
+ pairc:  54 pairs total  54 is max cluster size
+
+ pairc, ib=  7:  31 neighbors in range  0.700*alat =   8.00
+ pairc:  31 pairs total  31 is max cluster size
+
+ pairc, ib=  8:  28 neighbors in range  0.700*alat =   8.00
+ pairc:  28 pairs total  28 is max cluster size
+
+ pairc, ib=  9:  50 neighbors in range  0.962*alat =  11.00
+ pairc:  50 pairs total  50 is max cluster size
+
+ pairc, ib= 10:  71 neighbors in range  1.155*alat =  13.20
+ pairc:  71 pairs total  71 is max cluster size
+
+ pairc, ib= 11:  29 neighbors in range  0.700*alat =   8.00
+ pairc:  29 pairs total  29 is max cluster size
+
+ pairc, ib= 12:  29 neighbors in range  0.700*alat =   8.00
+ pairc:  29 pairs total  29 is max cluster size
+
+ pairc, ib= 13:  47 neighbors in range  0.962*alat =  11.00
+ pairc:  47 pairs total  47 is max cluster size
+
+ pairc, ib= 14:  68 neighbors in range  1.155*alat =  13.20
+ pairc:  68 pairs total  68 is max cluster size
+
+ pairc, ib= 15:  31 neighbors in range  0.700*alat =   8.00
+ pairc:  31 pairs total  31 is max cluster size
+
+ pairc, ib= 16:  27 neighbors in range  0.700*alat =   8.00
+ pairc:  27 pairs total  27 is max cluster size
+
+ makrm0: initial MT radii from first estat potential maximum
+  site   spec            rmt       rmt-       rmt-       rold   lock
+                                  <spec avg>  spec-min
+    1    1:In           2.4476    -0.0301     0.0000     0.0000
+    2    2:As           2.4406     0.0001     0.0001     0.0000
+    3    5:E            2.0000     0.0000     0.0000     0.0000
+    4    5:E            2.0000     0.0000     0.0000     0.0000
+    5    1:In           2.5078     0.0301     0.0602     0.0000
+    6    2:As           2.4404    -0.0001     0.0000     0.0000
+    7    5:E            2.0000     0.0000     0.0000     0.0000
+    8    5:E            2.0000     0.0000     0.0000     0.0000
+    9    3:Ga           2.3253     0.0000     0.0000     0.0000
+   10    4:Sb           2.6239     0.0000     0.0000     0.0000
+   11    5:E            2.0000     0.0000     0.0000     0.0000
+   12    5:E            2.0000     0.0000     0.0000     0.0000
+   13    3:Ga           2.3253     0.0000     0.0000     0.0000
+   14    4:Sb           2.6239     0.0000     0.0000     0.0000
+   15    5:E            2.0000     0.0000     0.0000     0.0000
+   16    5:E            2.0000     0.0000     0.0000     0.0000
+ SCLWSR:  mode = 100  vol = 1507.07 a.u.   Initial sphere packing = 51.4%  scaled to 63.2%
+ constr omax1=   0.0   0.0   0.0 %    omax2= 100.0 100.0 100.0 %
+ actual omax1=   0.0   0.0   0.0 %    omax2=   0.0   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   In          2.477723    2.440941    0.985155
+   2   As          2.440497    2.508394    1.027821
+   3   Ga          2.325265    2.364551    1.016895
+   4   Sb          2.623876    2.584925    0.985155
+   5   E           2.000000    2.364551    1.182276
+
+ --- FINDES : find new empty spheres.  Constraints  rmines=1.3  rmaxes=2.5
+
+ RSMESH: NRXYZ=  100 100 100
+         Compatibility of nrxyz with symgrp -- ok
+         505000 irreducible mesh-points from 1000000 ( 100 100 100 )
+ MDESES: 225000  mesh points left from 505000.  Shortest lattice vector 8.082231
+
+---------- Seek new ES class having added  0  ----------
+
+ ... Current vol frac = 0.632 (target 1.0)  nbas = 16  nclass = 5
+ SCLWSR:  mode = 30  vol = 1507.07 a.u.   Initial sphere packing = 63.2%  scaled to 63.2%
+ constr omax1=   0.0   0.0   0.0 %    omax2= 100.0 100.0 100.0 %
+ actual omax1=   0.0   0.0   0.0 %    omax2=   0.0   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   In          2.440941    2.440941    1.000000
+   2   As          2.508394    2.508394    1.000000
+   3   Ga          2.364551    2.364551    1.000000
+   4   Sb          2.584925    2.584925    1.000000
+   5   E           2.364551    2.364551    1.000000
+
+ ... Largest empty sphere found smaller than rmines = 1.3
+
+ ... Final sphere sizes and packing fraction (0 new spheres)
+
+ SCLWSR:  mode = 30  vol = 1507.07 a.u.   Initial sphere packing = 63.2%  scaled to 63.2%
+ constr omax1=   0.0   0.0   0.0 %    omax2= 100.0 100.0 100.0 %
+ actual omax1=   0.0   0.0   0.0 %    omax2=   0.0   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   In          2.440941    2.440941    1.000000
+   2   As          2.508394    2.508394    1.000000
+   3   Ga          2.364551    2.364551    1.000000
+   4   Sb          2.584925    2.584925    1.000000
+   5   E           2.364551    2.364551    1.000000
+
+ ... Create input file ctrl.inasgasb (express mode 3)
+ IOSITE: wrote to file 'site', 16 sites

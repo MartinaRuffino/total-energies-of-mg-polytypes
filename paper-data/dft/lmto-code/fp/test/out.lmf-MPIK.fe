@@ -1,0 +1,3617 @@
+rdcmd:  lmfa fe
+ -----------------------  START LMFA -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMFA:     nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special
+ pot:      spin-pol, XC:BH
+ autogen:  none
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ Species Fe:  Z=26  Qc=18  R=2.324967  Q=0  mom=-2.2
+ mesh:   rmt=2.324967  rmax=49.589065  a=0.03  nr=321  nr(rmax)=423
+  Pl=  4.5     4.5     3.5     4.5     spn 2   4.5     4.5     3.5     4.5    
+  Ql=  1.0     0.0     1.9     0.0     spn 2   1.0     0.0     4.1     0.0    
+
+  iter     qint         drho          vh0          rho0          vsum     beta
+    1   26.000000   3.315E+03      130.0000    0.1293E+03      -52.2170   0.30
+   52   26.000000   3.819E-05      234.0125    0.1701E+05     -160.8066   0.30
+
+
+ sumev=-4.368331  etot=-2540.381937  eref=-2540.568100  diff= 0.186163
+
+ Optimise free-atom basis for species Fe, rmt=2.324967
+ l  it    Rsm      Eh     stiffR   stiffE      Eval      Exact     Pnu    Ql
+ 0  38   2.628  -0.377     104.1    220.8   -0.39197  -0.39279    4.72   1.00
+ ... rsm exceeded rmt .. repeat with rsm=rmt
+ 0   4   2.325  -0.250     104.1    732.1   -0.39094  -0.39279    4.72   1.00
+ 1  13   2.608  -0.100      91.6    990.5   -0.10338  -0.10589    4.52   0.00
+ ... rsm exceeded rmt .. repeat with rsm=rmt
+ 1   1   2.325  -0.100      91.6    668.9   -0.09887  -0.10589    4.52   0.00
+ 2  26   0.991  -0.153     241.3    114.0   -0.49331  -0.49359    3.89   1.90
+ eigenvalue sum:  exact  -1.33060    opt basis  -1.32822    error 0.00238
+
+ Optimise free-atom basis for species Fe, spin 2
+ l  it    Rsm      Eh     stiffR   stiffE      Eval      Exact     Pnu    Ql
+ 0  38   2.508  -0.404     118.4    225.4   -0.42420  -0.42490    4.74   1.00
+ ... rsm exceeded rmt .. repeat with rsm=rmt
+ 0   2   2.325  -0.307     118.4    486.5   -0.42382  -0.42490    4.74   1.00
+ 1  13   2.464  -0.100     113.7   1142.7   -0.11464  -0.11679    4.55   0.00
+ ... rsm exceeded rmt .. repeat with rsm=rmt
+ 1   1   2.325  -0.100     113.7    994.4   -0.11347  -0.11679    4.55   0.00
+ 2  27   0.955  -0.238     172.1     73.1   -0.63708  -0.63727    3.89   4.10
+ eigenvalue sum:  exact  -3.03773    opt basis  -3.03583    error 0.00190
+
+ tailsm: fit tails to 6 smoothed hankels, rmt= 2.32497, rsm= 1.16248
+    q(fit):     0.830270    rms diff:   0.000002
+    fit: r>rmt  0.830270   r<rmt  1.057458   qtot  1.887728
+    rho: r>rmt  0.830270   r<rmt  2.069730   qtot  2.900000
+
+ tailsm: spin 2 ...
+    q(fit):     0.896639    rms diff:   0.000007
+    fit: r>rmt  0.896639   r<rmt  1.888174   qtot  2.784813
+    rho: r>rmt  0.896639   r<rmt  4.203361   qtot  5.100000
+
+ coretail: q=0.011, rho(rmt)=0.0147.  Fit with Hankel e=-19.588  coeff=750.85
+ Exit 0 LMFA 
+ CPU time:    0.157s   Wall clock    0.205s   12:11:15 26.02.2015        on phpdl1.ph.kcl.ac.uk
+rdcmd:  mpirun -n 5 lmf fe --rs=0
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 5 lmf fe --rs=0
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  44 irreducible QP from 1000 ( 10 10 10 )  shift= T T T
+ TETIRR: sorting 6000 tetrahedra ... 1097 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.325  0.930    3    4         3  0.581  1.162    15    1   0.930
+
+ MSHSIZ: mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+         generated from gmax = 13.0 a.u. : 2899 vectors of 4096 (70%)
+
+ GVLIST: gmax = 13 a.u. created 2899 vectors of 4096 (70%)
+         mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+ SGVSYM: 95 symmetry stars found for 2899 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 25 0 7 0
+ suham :  16 augmentation channels, 16 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Fe       0*   1.55  -0.30   4.796    2.50E-06     141 
+  Fe       1    1.55  -0.30   5.070    2.45E-06     177 
+  Fe       2    1.05  -0.30   8.080    1.25E-06     683 
+  Fe       3    1.55  -0.30   5.624    3.19E-06     225 
+  Fe       0*   1.55  -1.10   4.796    2.50E-06     141 
+  Fe       1    1.55  -1.10   5.070    2.45E-06     177 
+  Fe       2    1.05  -1.10   8.080    1.25E-06     683 
+ 
+
+ rdovfa: read and overlap free-atom densities (mesh density) ...
+ rdovfa: expected Fe,      read Fe       with rmt=  2.3250  mesh   321  0.030
+
+ Smooth charge on mesh:            4.672542    moment   -0.897085
+ Sum of local charges:             3.327458    moments  -1.302914
+ Total valence charge:             8.000000    moment   -2.200000
+ Sum of core charges:             18.000000    moment    0.000000
+ Sum of nuclear charges:         -26.000000
+ Homogeneous background:           0.000000
+ Deviation from neutrality:        0.000000
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ avg es pot at rmt= 0.662618  avg sphere pot= 0.600082  vconst=-0.662618
+
+ smooth rhoves     14.303109   charge     4.672542
+ smooth rhoeps =   -4.167292 (  -1.708268,  -2.459024)
+         rhomu =   -5.432572 (  -2.116486,  -3.316086)
+       avg vxc =   -0.886630 (  -0.858239,  -0.915020)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000218
+
+ Energy terms:             smooth           local           total
+   rhoval*vef            -11.548683       -80.609450       -92.158133
+   rhoval*ves            -30.476944       -45.958351       -76.435295
+   psnuc*ves              59.083162    -10000.910531     -9941.827370
+   utot                   14.303109     -5023.434441     -5009.131332
+   rho*exc                -4.167292      -103.147235      -107.314527
+   rho*vxc                -5.432572      -136.568614      -142.001185
+   valence chg             4.672542         3.327458         8.000000
+   valence mag            -0.897085        -1.302914        -2.200000
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5509  0.0208  0.0208  0.0260  0.1332  0.1450  1.7458  1.8034  1.8034
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6004 -0.1176 -0.1176 -0.1132 -0.0124 -0.0023  1.7063  1.7648  1.7648
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.3897 -0.0229 -0.0068  0.1112  0.1172  0.1554  1.2593  1.5610  1.7608
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4432 -0.1560 -0.1321 -0.0326 -0.0282  0.0071  1.1879  1.5147  1.6931
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1488 -0.0745 -0.0444  0.1295  0.1762  0.4106  0.7256  0.9261  1.5789
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2506 -0.1895 -0.1541 -0.0157  0.0280  0.3004  0.6319  0.8501  1.5215
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.1869 -0.0442 -0.0259  0.1020  0.2282  0.2961  0.7114  1.2838  1.3625
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2846 -0.1566 -0.1450 -0.0386  0.0728  0.1923  0.6130  1.2148  1.3081
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1684 -0.1247  0.1158  0.1158  0.1752  0.3682  1.0059  1.0059  1.3735
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2643 -0.2390 -0.0241 -0.0241  0.0243  0.2757  0.9352  0.9352  1.2963
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:      0.050627;   8.000000 electrons;  D(Ef):   17.612
+         Sum occ. bands:   -0.9479796  incl. Bloechl correction:   -0.002225
+         Mag. moment:      -2.142149
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5509  0.0208  0.0208  0.0260  0.1332  0.1450  1.7458  1.8034  1.8034
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6004 -0.1176 -0.1176 -0.1132 -0.0124 -0.0023  1.7063  1.7648  1.7648
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.3897 -0.0229 -0.0068  0.1112  0.1172  0.1554  1.2593  1.5610  1.7608
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4432 -0.1560 -0.1321 -0.0326 -0.0282  0.0071  1.1879  1.5147  1.6931
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1488 -0.0745 -0.0444  0.1295  0.1762  0.4106  0.7256  0.9261  1.5789
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2506 -0.1895 -0.1541 -0.0157  0.0280  0.3004  0.6319  0.8501  1.5215
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.1869 -0.0442 -0.0259  0.1020  0.2282  0.2961  0.7114  1.2838  1.3625
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2846 -0.1566 -0.1450 -0.0386  0.0728  0.1923  0.6130  1.2148  1.3081
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1684 -0.1247  0.1158  0.1158  0.1752  0.3682  1.0059  1.0059  1.3735
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2643 -0.2390 -0.0241 -0.0241  0.0243  0.2757  0.9352  0.9352  1.2963
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:      0.050627;   8.000000 electrons;  D(Ef):   17.612
+         Sum occ. bands:   -0.9479796  incl. Bloechl correction:   -0.002225
+         Mag. moment:      -2.142149
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.912827    2.802975    4.109852     -2.149455   -0.420705   -1.728750
+       contr. to mm extrapolated for r>rmt:  -0.014630 est. true mm =-2.164085
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.211598   -0.300506    4.660000    4.590767    4.500000    4.590767
+ spn 2 0    0.209493   -0.394279    4.660000    4.579911    4.500000    4.579911
+ 1     0    0.237560   -0.217469    4.410000    4.322160    4.250000    4.322160
+ spn 2 0    0.217634   -0.344604    4.410000    4.307400    4.250000    4.307400
+ 2     0    1.920576   -0.206018    3.800000    3.561823    3.147584    3.561823
+ spn 2 0    4.086454   -0.139608    3.800000    3.823208    3.147584    3.823208
+ 3     0    0.011952   -0.715140    4.130000    4.109340    4.102416    4.109340
+ spn 2 0    0.017560   -0.876306    4.130000    4.106748    4.102416    4.106748
+
+ Harris energy:
+ sumev=       -0.947980  val*vef=     -92.158133   sumtv=      91.210153
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.314527     utot=   -5009.131332    ehar=   -2541.038770
+
+ srhov:     -6.056794    -82.632830    -88.689624 sumev=   -0.947980   sumtv=   87.741645
+
+ Kohn-Sham energy:
+ sumtv=       87.741645  sumtc=      2484.196936   ekin=     2571.938581
+ rhoep=     -106.959354   utot=     -5005.998698   ehks=    -2541.019471
+ mag. mom=    -2.142149  (bands)       -2.142148  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 0.  RMS DQ=2.55e-2
+ AMIX: nmix=0 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=1.28e-2
+ unscreened rms difference:  smooth  0.034378   local  0.031049
+   screened rms difference:  smooth  0.031881   local  0.031049   tot  0.025548
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  1  of100    ehf=      -0.470670   ehk=      -0.451371
+h mmom=-2.1421483 ehf=-.47067 ehk=-.451371
+
+ --- BNDFP:  begin iteration 2 of 100 ---
+
+ avg es pot at rmt= 0.662628  avg sphere pot= 0.611864  vconst=-0.662628
+
+ smooth rhoves     13.592130   charge     4.281345
+ smooth rhoeps =   -3.658672 (  -1.570566,  -2.088106)
+         rhomu =   -4.766209 (  -1.970029,  -2.796180)
+       avg vxc =   -0.877815 (  -0.855809,  -0.899820)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000509
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -8.874655       -82.414070       -91.288725
+   rhoval*ves            -30.638100       -45.050135       -75.688235
+   psnuc*ves              57.822360     -9998.113111     -9940.290751
+   utot                   13.592130     -5021.581623     -5007.989493
+   rho*exc                -3.658672      -103.533304      -107.191976
+   rho*vxc                -4.766209      -137.072691      -141.838901
+   valence chg             4.281345         3.718655         8.000000
+   valence mag            -0.655242        -1.515832        -2.171074
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5683 -0.0364 -0.0364 -0.0316  0.0740  0.0850  1.7414  1.7967  1.7967
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6098 -0.1776 -0.1776 -0.1736 -0.0777 -0.0685  1.7056  1.7659  1.7659
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4089 -0.0775 -0.0580  0.0524  0.0565  0.0949  1.2516  1.5530  1.7559
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4556 -0.2131 -0.1851 -0.0966 -0.0927 -0.0594  1.1631  1.5072  1.6692
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1882 -0.1197 -0.0888  0.0697  0.1153  0.3671  0.6975  0.9063  1.5649
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2930 -0.2397 -0.1996 -0.0805 -0.0386  0.2596  0.5976  0.8254  1.5074
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2244 -0.0831 -0.0793  0.0443  0.1636  0.2540  0.6819  1.2667  1.3563
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3242 -0.2126 -0.1893 -0.1010  0.0022  0.1562  0.5763  1.1933  1.2945
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2052 -0.1697  0.0579  0.0579  0.1124  0.3326  0.9852  0.9852  1.3896
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.3040 -0.2872 -0.0863 -0.0863 -0.0434  0.2438  0.9132  0.9132  1.2625
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.012303;   8.000000 electrons;  D(Ef):   21.193
+         Sum occ. bands:   -1.3410397  incl. Bloechl correction:   -0.002610
+         Mag. moment:      -2.236598
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5683 -0.0364 -0.0364 -0.0316  0.0740  0.0850  1.7414  1.7967  1.7967
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6098 -0.1776 -0.1776 -0.1736 -0.0777 -0.0685  1.7056  1.7659  1.7659
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4089 -0.0775 -0.0580  0.0524  0.0565  0.0949  1.2516  1.5530  1.7559
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4556 -0.2131 -0.1851 -0.0966 -0.0927 -0.0594  1.1631  1.5072  1.6692
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1882 -0.1197 -0.0888  0.0697  0.1153  0.3671  0.6975  0.9063  1.5649
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2930 -0.2397 -0.1996 -0.0805 -0.0386  0.2596  0.5976  0.8254  1.5074
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2244 -0.0831 -0.0793  0.0443  0.1636  0.2540  0.6819  1.2667  1.3563
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3242 -0.2126 -0.1893 -0.1010  0.0022  0.1562  0.5763  1.1933  1.2945
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2052 -0.1697  0.0579  0.0579  0.1124  0.3326  0.9852  0.9852  1.3896
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.3040 -0.2872 -0.0863 -0.0863 -0.0434  0.2438  0.9132  0.9132  1.2625
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.012303;   8.000000 electrons;  D(Ef):   21.193
+         Sum occ. bands:   -1.3410397  incl. Bloechl correction:   -0.002610
+         Mag. moment:      -2.236598
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.995858    2.695674    4.300185     -2.253580   -0.392239   -1.861340
+       contr. to mm extrapolated for r>rmt:  -0.006860 est. true mm =-2.260439
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.205757   -0.326996    4.590767    4.588880    4.500000    4.588880
+ spn 2 0    0.200441   -0.435046    4.579911    4.568978    4.500000    4.568978
+ 1     0    0.214035   -0.289092    4.322160    4.310069    4.250000    4.310069
+ spn 2 0    0.189552   -0.413490    4.307400    4.295416    4.250000    4.295416
+ 2     0    1.940821   -0.251584    3.561823    3.567498    3.147584    3.567498
+ spn 2 0    4.219109   -0.193001    3.823208    3.831691    3.147584    3.831691
+ 3     0    0.010528   -0.812394    4.109340    4.107408    4.102416    4.107408
+ spn 2 0    0.015618   -0.951490    4.106748    4.105221    4.102416    4.105221
+
+ Harris energy:
+ sumev=       -1.341040  val*vef=     -91.288725   sumtv=      89.947685
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.191976     utot=   -5007.989493    ehar=   -2541.036847
+
+ srhov:     -5.845660    -86.914678    -92.760338 sumev=   -1.341040   sumtv=   91.419298
+
+ Kohn-Sham energy:
+ sumtv=       91.419298  sumtc=      2484.196936   ekin=     2575.616235
+ rhoep=     -107.341388   utot=     -5009.310160   ehks=    -2541.035314
+ mag. mom=    -2.236598  (bands)       -2.236598  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 1.  RMS DQ=1.83e-2  last it=2.55e-2
+ AMIX: nmix=1 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=9.15e-3
+   tj:-1.02812
+ unscreened rms difference:  smooth  0.018489   local  0.023290
+   screened rms difference:  smooth  0.019253   local  0.023290   tot  0.018308
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  2  of100    ehf=      -0.468747   ehk=      -0.467214
+ From last iter    ehf=      -0.470670   ehk=      -0.451371
+ diffe(q)=  0.001922 (0.018308)    tol= 0.000100 (0.000100)   more=T
+i mmom=-2.2365979 ehf=-.4687475 ehk=-.4672136
+
+ --- BNDFP:  begin iteration 3 of 100 ---
+
+ avg es pot at rmt= 0.643307  avg sphere pot= 0.626109  vconst=-0.643307
+
+ smooth rhoves     12.051775   charge     3.691638
+ smooth rhoeps =   -3.008941 (  -1.367506,  -1.641435)
+         rhomu =   -3.916568 (  -1.740230,  -2.176339)
+       avg vxc =   -0.856377 (  -0.842853,  -0.869902)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000773
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.564932       -86.645856       -92.210788
+   rhoval*ves            -30.577334       -45.904279       -76.481613
+   psnuc*ves              54.680884     -9996.268072     -9941.587187
+   utot                   12.051775     -5021.086176     -5009.034400
+   rho*exc                -3.008941      -104.298701      -107.307642
+   rho*vxc                -3.916568      -138.076210      -141.992778
+   valence chg             3.691638         4.308362         8.000000
+   valence mag            -0.371321        -1.866199        -2.237519
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5675  0.0055  0.0055  0.0108  0.1218  0.1337  1.7391  1.7932  1.7932
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5995 -0.1432 -0.1432 -0.1389 -0.0408 -0.0311  1.7145  1.7745  1.7745
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4064 -0.0383 -0.0219  0.0987  0.1025  0.1441  1.2657  1.5545  1.7652
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4437 -0.1801 -0.1540 -0.0602 -0.0558 -0.0218  1.1795  1.5172  1.6830
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1643 -0.0896 -0.0598  0.1165  0.1638  0.4002  0.7217  0.9211  1.5695
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2669 -0.2098 -0.1718 -0.0436 -0.0007  0.2849  0.6194  0.8424  1.5191
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2024 -0.0590 -0.0414  0.0885  0.2156  0.2839  0.7084  1.2759  1.3624
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2995 -0.1800 -0.1620 -0.0653  0.0423  0.1792  0.5991  1.2079  1.3067
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1831 -0.1384  0.1011  0.1011  0.1617  0.3553  0.9966  0.9966  1.4121
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2792 -0.2587 -0.0504 -0.0504 -0.0048  0.2648  0.9287  0.9287  1.2823
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:      0.025945;   8.000000 electrons;  D(Ef):   17.516
+         Sum occ. bands:   -1.1037581  incl. Bloechl correction:   -0.002483
+         Mag. moment:      -2.219958
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5675  0.0055  0.0055  0.0108  0.1218  0.1337  1.7391  1.7932  1.7932
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5995 -0.1432 -0.1432 -0.1389 -0.0408 -0.0311  1.7145  1.7745  1.7745
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4064 -0.0383 -0.0219  0.0987  0.1025  0.1441  1.2657  1.5545  1.7652
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4437 -0.1801 -0.1540 -0.0602 -0.0558 -0.0218  1.1795  1.5172  1.6830
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1643 -0.0896 -0.0598  0.1165  0.1638  0.4002  0.7217  0.9211  1.5695
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2669 -0.2098 -0.1718 -0.0436 -0.0007  0.2849  0.6194  0.8424  1.5191
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2024 -0.0590 -0.0414  0.0885  0.2156  0.2839  0.7084  1.2759  1.3624
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2995 -0.1800 -0.1620 -0.0653  0.0423  0.1792  0.5991  1.2079  1.3067
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1831 -0.1384  0.1011  0.1011  0.1617  0.3553  0.9966  0.9966  1.4121
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2792 -0.2587 -0.0504 -0.0504 -0.0048  0.2648  0.9287  0.9287  1.2823
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:      0.025945;   8.000000 electrons;  D(Ef):   17.516
+         Sum occ. bands:   -1.1037581  incl. Bloechl correction:   -0.002483
+         Mag. moment:      -2.219958
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.938021    2.772331    4.165690     -2.251471   -0.387748   -1.863723
+       contr. to mm extrapolated for r>rmt:  -0.000835 est. true mm =-2.252306
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.211396   -0.299686    4.588880    4.597589    4.500000    4.597589
+ spn 2 0    0.205113   -0.411831    4.568978    4.573674    4.500000    4.573674
+ 1     0    0.237694   -0.245436    4.310069    4.318722    4.250000    4.318722
+ spn 2 0    0.202220   -0.375745    4.295416    4.300720    4.250000    4.300720
+ 2     0    1.882597   -0.227905    3.567498    3.551723    3.147584    3.551723
+ spn 2 0    4.170859   -0.160574    3.831691    3.829281    3.147584    3.829281
+ 3     0    0.011588   -0.758748    4.107408    4.108682    4.102416    4.108682
+ spn 2 0    0.016554   -0.907088    4.105221    4.106004    4.102416    4.106004
+
+ Harris energy:
+ sumev=       -1.103758  val*vef=     -92.210788   sumtv=      91.107030
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.307642     utot=   -5009.034400    ehar=   -2541.038076
+
+ srhov:     -5.842770    -84.116222    -89.958992 sumev=   -1.103758   sumtv=   88.855234
+
+ Kohn-Sham energy:
+ sumtv=       88.855234  sumtc=      2484.196936   ekin=     2573.052170
+ rhoep=     -107.083533   utot=     -5006.999319   ehks=    -2541.030682
+ mag. mom=    -2.219958  (bands)       -2.219958  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 2.  RMS DQ=4.48e-3  last it=1.83e-2
+ ...  deleting file mixm : nkill=3
+ AMIX: nmix=2 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=2.24e-3
+   tj: 0.41420  -0.19950
+ unscreened rms difference:  smooth  0.001892   local  0.005152
+   screened rms difference:  smooth  0.002773   local  0.005152   tot  0.004479
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  3  of100    ehf=      -0.469976   ehk=      -0.462582
+ From last iter    ehf=      -0.468747   ehk=      -0.467214
+ diffe(q)= -0.001228 (0.004479)    tol= 0.000100 (0.000100)   more=T
+i mmom=-2.2199584 ehf=-.4699759 ehk=-.462582
+
+ --- BNDFP:  begin iteration 4 of 100 ---
+
+ avg es pot at rmt= 0.649137  avg sphere pot= 0.625177  vconst=-0.649137
+
+ smooth rhoves     12.307068   charge     3.753834
+ smooth rhoeps =   -3.068279 (  -1.396966,  -1.671313)
+         rhomu =   -3.994023 (  -1.778521,  -2.215502)
+       avg vxc =   -0.859551 (  -0.846416,  -0.872686)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000781
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.811491       -85.908738       -91.720229
+   rhoval*ves            -30.632058       -45.423881       -76.055939
+   psnuc*ves              55.246194     -9996.040321     -9940.794127
+   utot                   12.307068     -5020.732101     -5008.425033
+   rho*exc                -3.068279      -104.175671      -107.243950
+   rho*vxc                -3.994023      -137.914337      -141.908359
+   valence chg             3.753834         4.246166         8.000000
+   valence mag            -0.368371        -1.861557        -2.229928
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5734 -0.0214 -0.0214 -0.0164  0.0926  0.1040  1.7347  1.7892  1.7892
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6045 -0.1710 -0.1710 -0.1669 -0.0708 -0.0616  1.7113  1.7716  1.7716
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4132 -0.0638 -0.0457  0.0700  0.0735  0.1141  1.2540  1.5488  1.7560
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4502 -0.2066 -0.1786 -0.0897 -0.0856 -0.0524  1.1689  1.5126  1.6742
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1816 -0.1100 -0.0800  0.0874  0.1338  0.3777  0.7043  0.9085  1.5622
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2870 -0.2334 -0.1933 -0.0735 -0.0315  0.2663  0.6039  0.8311  1.5125
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2187 -0.0762 -0.0662  0.0608  0.1835  0.2631  0.6899  1.2660  1.3547
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3183 -0.2061 -0.1831 -0.0942  0.0097  0.1627  0.5825  1.1986  1.3000
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1993 -0.1592  0.0736  0.0736  0.1311  0.3383  0.9854  0.9854  1.3977
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2981 -0.2812 -0.0793 -0.0793 -0.0362  0.2500  0.9189  0.9189  1.2691
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.003902;   8.000000 electrons;  D(Ef):   19.831
+         Sum occ. bands:   -1.2851073  incl. Bloechl correction:   -0.002627
+         Mag. moment:      -2.257961
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5734 -0.0214 -0.0214 -0.0164  0.0926  0.1040  1.7347  1.7892  1.7892
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6045 -0.1710 -0.1710 -0.1669 -0.0708 -0.0616  1.7113  1.7716  1.7716
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4132 -0.0638 -0.0457  0.0700  0.0735  0.1141  1.2540  1.5488  1.7560
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4502 -0.2066 -0.1786 -0.0897 -0.0856 -0.0524  1.1689  1.5126  1.6742
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1816 -0.1100 -0.0800  0.0874  0.1338  0.3777  0.7043  0.9085  1.5622
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2870 -0.2334 -0.1933 -0.0735 -0.0315  0.2663  0.6039  0.8311  1.5125
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2187 -0.0762 -0.0662  0.0608  0.1835  0.2631  0.6899  1.2660  1.3547
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3183 -0.2061 -0.1831 -0.0942  0.0097  0.1627  0.5825  1.1986  1.3000
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1993 -0.1592  0.0736  0.0736  0.1311  0.3383  0.9854  0.9854  1.3977
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2981 -0.2812 -0.0793 -0.0793 -0.0362  0.2500  0.9189  0.9189  1.2691
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.003902;   8.000000 electrons;  D(Ef):   19.831
+         Sum occ. bands:   -1.2851073  incl. Bloechl correction:   -0.002627
+         Mag. moment:      -2.257961
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.977699    2.719077    4.258622     -2.289843   -0.382014   -1.907829
+       contr. to mm extrapolated for r>rmt:  -0.000119 est. true mm =-2.289963
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.208506   -0.317302    4.597589    4.593679    4.500000    4.593679
+ spn 2 0    0.200955   -0.430760    4.573674    4.568790    4.500000    4.568790
+ 1     0    0.224707   -0.275124    4.318722    4.313682    4.250000    4.313682
+ spn 2 0    0.190519   -0.406138    4.300720    4.295782    4.250000    4.295782
+ 2     0    1.899797   -0.247048    3.551723    3.556885    3.147584    3.556885
+ spn 2 0    4.226587   -0.185752    3.829281    3.832641    3.147584    3.832641
+ 3     0    0.010919   -0.792494    4.108682    4.107997    4.102416    4.107997
+ spn 2 0    0.015711   -0.942814    4.106004    4.105300    4.102416    4.105300
+
+ Harris energy:
+ sumev=       -1.285107  val*vef=     -91.720229   sumtv=      90.435122
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.243950     utot=   -5008.425033    ehar=   -2541.036925
+
+ srhov:     -5.781042    -86.132280    -91.913322 sumev=   -1.285107   sumtv=   90.628215
+
+ Kohn-Sham energy:
+ sumtv=       90.628215  sumtc=      2484.196936   ekin=     2574.825151
+ rhoep=     -107.266030   utot=     -5008.596059   ehks=    -2541.036937
+ mag. mom=    -2.257961  (bands)       -2.257961  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 0.  RMS DQ=1.52e-3  last it=4.48e-3
+ AMIX: nmix=0 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=7.59e-4
+ unscreened rms difference:  smooth  0.000205   local  0.001672
+   screened rms difference:  smooth  0.000278   local  0.001672   tot  0.001518
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  4  of100    ehf=      -0.468825   ehk=      -0.468837
+ From last iter    ehf=      -0.469976   ehk=      -0.462582
+ diffe(q)=  0.001151 (0.001518)    tol= 0.000100 (0.000100)   more=T
+i mmom=-2.2579615 ehf=-.4688248 ehk=-.4688374
+
+ --- BNDFP:  begin iteration 5 of 100 ---
+
+ avg es pot at rmt= 0.648680  avg sphere pot= 0.625249  vconst=-0.648680
+
+ smooth rhoves     12.281655   charge     3.747606
+ smooth rhoeps =   -3.062119 (  -1.396825,  -1.665294)
+         rhomu =   -3.985978 (  -1.779161,  -2.206817)
+       avg vxc =   -0.859268 (  -0.846582,  -0.871953)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000782
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.786756       -85.992939       -91.779695
+   rhoval*ves            -30.628275       -45.476753       -76.105028
+   psnuc*ves              55.191585     -9996.069000     -9940.877415
+   utot                   12.281655     -5020.772876     -5008.491221
+   rho*exc                -3.062119      -104.190458      -107.252577
+   rho*vxc                -3.985978      -137.933895      -141.919873
+   valence chg             3.747606         4.252394         8.000000
+   valence mag            -0.359251        -1.884693        -2.243945
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5734 -0.0181 -0.0181 -0.0131  0.0962  0.1077  1.7345  1.7890  1.7890
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6037 -0.1690 -0.1690 -0.1649 -0.0687 -0.0594  1.7122  1.7726  1.7726
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4130 -0.0607 -0.0429  0.0735  0.0771  0.1179  1.2545  1.5487  1.7560
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4493 -0.2047 -0.1768 -0.0877 -0.0835 -0.0503  1.1697  1.5134  1.6745
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1798 -0.1077 -0.0778  0.0910  0.1375  0.3801  0.7059  0.9094  1.5623
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2854 -0.2316 -0.1916 -0.0714 -0.0293  0.2678  0.6051  0.8321  1.5132
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2170 -0.0744 -0.0632  0.0642  0.1875  0.2653  0.6916  1.2664  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3168 -0.2042 -0.1814 -0.0921  0.0119  0.1641  0.5838  1.1994  1.3008
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1976 -0.1568  0.0769  0.0769  0.1348  0.3399  0.9860  0.9860  1.3981
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2965 -0.2795 -0.0773 -0.0773 -0.0340  0.2513  0.9198  0.9198  1.2698
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.001597;   8.000000 electrons;  D(Ef):   19.652
+         Sum occ. bands:   -1.2697365  incl. Bloechl correction:   -0.002621
+         Mag. moment:      -2.285417
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5734 -0.0181 -0.0181 -0.0131  0.0962  0.1077  1.7345  1.7890  1.7890
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6037 -0.1690 -0.1690 -0.1649 -0.0687 -0.0594  1.7122  1.7726  1.7726
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4130 -0.0607 -0.0429  0.0735  0.0771  0.1179  1.2545  1.5487  1.7560
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4493 -0.2047 -0.1768 -0.0877 -0.0835 -0.0503  1.1697  1.5134  1.6745
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1798 -0.1077 -0.0778  0.0910  0.1375  0.3801  0.7059  0.9094  1.5623
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2854 -0.2316 -0.1916 -0.0714 -0.0293  0.2678  0.6051  0.8321  1.5132
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2170 -0.0744 -0.0632  0.0642  0.1875  0.2653  0.6916  1.2664  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3168 -0.2042 -0.1814 -0.0921  0.0119  0.1641  0.5838  1.1994  1.3008
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1976 -0.1568  0.0769  0.0769  0.1348  0.3399  0.9860  0.9860  1.3981
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2965 -0.2795 -0.0773 -0.0773 -0.0340  0.2513  0.9198  0.9198  1.2698
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.001597;   8.000000 electrons;  D(Ef):   19.652
+         Sum occ. bands:   -1.2697365  incl. Bloechl correction:   -0.002621
+         Mag. moment:      -2.285417
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974676    2.721237    4.253440     -2.318033   -0.388379   -1.929654
+       contr. to mm extrapolated for r>rmt:  -0.000170 est. true mm =-2.318203
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.208924   -0.315200    4.593679    4.594343    4.500000    4.594343
+ spn 2 0    0.201185   -0.429558    4.568790    4.568933    4.500000    4.568933
+ 1     0    0.226072   -0.271455    4.313682    4.314432    4.250000    4.314432
+ spn 2 0    0.191156   -0.404197    4.295782    4.295991    4.250000    4.295991
+ 2     0    1.882459   -0.246559    3.556885    3.553764    3.147584    3.553764
+ spn 2 0    4.238244   -0.182895    3.832641    3.833510    3.147584    3.833510
+ 3     0    0.010867   -0.788012    4.107997    4.108104    4.102416    4.108104
+ spn 2 0    0.015770   -0.940233    4.105300    4.105341    4.102416    4.105341
+
+ Harris energy:
+ sumev=       -1.269737  val*vef=     -91.779695   sumtv=      90.509959
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.252577     utot=   -5008.491221    ehar=   -2541.036903
+
+ srhov:     -5.781942    -86.008968    -91.790910 sumev=   -1.269737   sumtv=   90.521173
+
+ Kohn-Sham energy:
+ sumtv=       90.521173  sumtc=      2484.196936   ekin=     2574.718110
+ rhoep=     -107.257252   utot=     -5008.497816   ehks=    -2541.036959
+ mag. mom=    -2.285417  (bands)       -2.285417  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 1.  RMS DQ=1.45e-3  last it=1.52e-3
+ AMIX: nmix=1 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=7.23e-4
+   tj:-0.25656
+ unscreened rms difference:  smooth  0.000078   local  0.001583
+   screened rms difference:  smooth  0.000066   local  0.001583   tot  0.001446
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  5  of100    ehf=      -0.468803   ehk=      -0.468859
+ From last iter    ehf=      -0.468825   ehk=      -0.468837
+ diffe(q)=  0.000021 (0.001446)    tol= 0.000100 (0.000100)   more=T
+i mmom=-2.2854167 ehf=-.4688033 ehk=-.4688588
+
+ --- BNDFP:  begin iteration 6 of 100 ---
+
+ avg es pot at rmt= 0.648718  avg sphere pot= 0.625268  vconst=-0.648718
+
+ smooth rhoves     12.279202   charge     3.746949
+ smooth rhoeps =   -3.061433 (  -1.396947,  -1.664486)
+         rhomu =   -3.985088 (  -1.779454,  -2.205634)
+       avg vxc =   -0.859250 (  -0.846732,  -0.871769)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000784
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.784369       -86.005746       -91.790115
+   rhoval*ves            -30.628928       -45.481254       -76.110182
+   psnuc*ves              55.187333     -9996.068676     -9940.881343
+   utot                   12.279202     -5020.774965     -5008.495763
+   rho*exc                -3.061433      -104.194205      -107.255638
+   rho*vxc                -3.985088      -137.938948      -141.924036
+   valence chg             3.746949         4.253051         8.000000
+   valence mag            -0.357059        -1.912941        -2.270001
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5736 -0.0171 -0.0171 -0.0120  0.0973  0.1089  1.7342  1.7887  1.7887
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6036 -0.1701 -0.1701 -0.1660 -0.0698 -0.0605  1.7124  1.7727  1.7727
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4132 -0.0598 -0.0420  0.0747  0.0782  0.1191  1.2550  1.5485  1.7565
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4493 -0.2057 -0.1777 -0.0887 -0.0847 -0.0514  1.1695  1.5136  1.6743
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1793 -0.1070 -0.0771  0.0922  0.1387  0.3809  0.7065  0.9097  1.5623
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2861 -0.2324 -0.1924 -0.0725 -0.0304  0.2673  0.6047  0.8319  1.5132
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2166 -0.0739 -0.0623  0.0653  0.1889  0.2660  0.6923  1.2667  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3174 -0.2052 -0.1821 -0.0932  0.0107  0.1637  0.5834  1.1991  1.3009
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1972 -0.1561  0.0780  0.0780  0.1361  0.3404  0.9863  0.9863  1.3991
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2971 -0.2802 -0.0783 -0.0783 -0.0352  0.2509  0.9196  0.9196  1.2695
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002411;   8.000000 electrons;  D(Ef):   20.076
+         Sum occ. bands:   -1.2725945  incl. Bloechl correction:   -0.002632
+         Mag. moment:      -2.290192
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5736 -0.0171 -0.0171 -0.0120  0.0973  0.1089  1.7342  1.7887  1.7887
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6036 -0.1701 -0.1701 -0.1660 -0.0698 -0.0605  1.7124  1.7727  1.7727
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4132 -0.0598 -0.0420  0.0747  0.0782  0.1191  1.2550  1.5485  1.7565
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4493 -0.2057 -0.1777 -0.0887 -0.0847 -0.0514  1.1695  1.5136  1.6743
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1793 -0.1070 -0.0771  0.0922  0.1387  0.3809  0.7065  0.9097  1.5623
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2861 -0.2324 -0.1924 -0.0725 -0.0304  0.2673  0.6047  0.8319  1.5132
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2166 -0.0739 -0.0623  0.0653  0.1889  0.2660  0.6923  1.2667  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3174 -0.2052 -0.1821 -0.0932  0.0107  0.1637  0.5834  1.1991  1.3009
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1972 -0.1561  0.0780  0.0780  0.1361  0.3404  0.9863  0.9863  1.3991
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2971 -0.2802 -0.0783 -0.0783 -0.0352  0.2509  0.9196  0.9196  1.2695
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002411;   8.000000 electrons;  D(Ef):   20.076
+         Sum occ. bands:   -1.2725945  incl. Bloechl correction:   -0.002632
+         Mag. moment:      -2.290192
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.975337    2.720305    4.255031     -2.324621   -0.386804   -1.937817
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209042   -0.314528    4.594343    4.594583    4.500000    4.594583
+ spn 2 0    0.200868   -0.430711    4.568933    4.568489    4.500000    4.568489
+ 1     0    0.226271   -0.270693    4.314432    4.314596    4.250000    4.314596
+ spn 2 0    0.190267   -0.406335    4.295991    4.295530    4.250000    4.295530
+ 2     0    1.879175   -0.246078    3.553764    3.553224    3.147584    3.553224
+ spn 2 0    4.243115   -0.183691    3.833510    3.833792    3.147584    3.833792
+ 3     0    0.010870   -0.787349    4.108104    4.108124    4.102416    4.108124
+ spn 2 0    0.015729   -0.942023    4.105341    4.105301    4.102416    4.105301
+
+ Harris energy:
+ sumev=       -1.272595  val*vef=     -91.790115   sumtv=      90.517520
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.255638     utot=   -5008.495763    ehar=   -2541.036944
+
+ srhov:     -5.780524    -86.041837    -91.822362 sumev=   -1.272595   sumtv=   90.549767
+
+ Kohn-Sham energy:
+ sumtv=       90.549767  sumtc=      2484.196936   ekin=     2574.746704
+ rhoep=     -107.261041   utot=     -5008.522622   ehks=    -2541.036959
+ mag. mom=    -2.290192  (bands)       -2.290192  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 2.  RMS DQ=7.98e-4  last it=1.45e-3
+ ...  deleting file mixm : nkill=3
+ AMIX: nmix=2 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=3.99e-4
+   tj:-0.93339  -0.28233
+ unscreened rms difference:  smooth  0.000042   local  0.000874
+   screened rms difference:  smooth  0.000046   local  0.000874   tot  0.000798
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  6  of100    ehf=      -0.468844   ehk=      -0.468859
+ From last iter    ehf=      -0.468803   ehk=      -0.468859
+ diffe(q)= -0.000040 (0.000798)    tol= 0.000100 (0.000100)   more=T
+i mmom=-2.2901923 ehf=-.4688435 ehk=-.4688594
+
+ --- BNDFP:  begin iteration 7 of 100 ---
+
+ avg es pot at rmt= 0.648557  avg sphere pot= 0.625309  vconst=-0.648557
+
+ smooth rhoves     12.268056   charge     3.744444
+ smooth rhoeps =   -3.058999 (  -1.397433,  -1.661566)
+         rhomu =   -3.981917 (  -1.780566,  -2.201352)
+       avg vxc =   -0.859139 (  -0.847001,  -0.871277)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000786
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.775615       -86.043240       -91.818854
+   rhoval*ves            -30.627830       -45.501240       -76.129070
+   psnuc*ves              55.163942     -9996.076113     -9940.912171
+   utot                   12.268056     -5020.788676     -5008.520620
+   rho*exc                -3.058999      -104.203257      -107.262256
+   rho*vxc                -3.981917      -137.951045      -141.932963
+   valence chg             3.744444         4.255556         8.000000
+   valence mag            -0.350833        -1.953859        -2.304692
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5738 -0.0146 -0.0146 -0.0095  0.1000  0.1116  1.7338  1.7882  1.7882
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6031 -0.1705 -0.1705 -0.1664 -0.0702 -0.0610  1.7130  1.7733  1.7733
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4132 -0.0574 -0.0400  0.0773  0.0809  0.1218  1.2556  1.5482  1.7570
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4489 -0.2061 -0.1779 -0.0891 -0.0851 -0.0518  1.1699  1.5142  1.6746
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1780 -0.1054 -0.0755  0.0949  0.1415  0.3827  0.7078  0.9105  1.5624
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2863 -0.2327 -0.1925 -0.0729 -0.0309  0.2674  0.6049  0.8322  1.5136
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2154 -0.0727 -0.0601  0.0678  0.1919  0.2676  0.6938  1.2672  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3175 -0.2056 -0.1822 -0.0936  0.0102  0.1638  0.5835  1.1994  1.3014
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1961 -0.1545  0.0805  0.0805  0.1390  0.3416  0.9869  0.9869  1.4000
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2971 -0.2804 -0.0788 -0.0788 -0.0357  0.2511  0.9198  0.9198  1.2699
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002448;   8.000000 electrons;  D(Ef):   19.020
+         Sum occ. bands:   -1.2698420  incl. Bloechl correction:   -0.002638
+         Mag. moment:      -2.300146
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5738 -0.0146 -0.0146 -0.0095  0.1000  0.1116  1.7338  1.7882  1.7882
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6031 -0.1705 -0.1705 -0.1664 -0.0702 -0.0610  1.7130  1.7733  1.7733
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4132 -0.0574 -0.0400  0.0773  0.0809  0.1218  1.2556  1.5482  1.7570
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4489 -0.2061 -0.1779 -0.0891 -0.0851 -0.0518  1.1699  1.5142  1.6746
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1780 -0.1054 -0.0755  0.0949  0.1415  0.3827  0.7078  0.9105  1.5624
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2863 -0.2327 -0.1925 -0.0729 -0.0309  0.2674  0.6049  0.8322  1.5136
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2154 -0.0727 -0.0601  0.0678  0.1919  0.2676  0.6938  1.2672  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3175 -0.2056 -0.1822 -0.0936  0.0102  0.1638  0.5835  1.1994  1.3014
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1961 -0.1545  0.0805  0.0805  0.1390  0.3416  0.9869  0.9869  1.4000
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2971 -0.2804 -0.0788 -0.0788 -0.0357  0.2511  0.9198  0.9198  1.2699
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002448;   8.000000 electrons;  D(Ef):   19.020
+         Sum occ. bands:   -1.2698420  incl. Bloechl correction:   -0.002638
+         Mag. moment:      -2.300146
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974446    2.720838    4.253608     -2.336838   -0.386822   -1.950016
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209323   -0.312997    4.594583    4.595080    4.500000    4.595080
+ spn 2 0    0.200753   -0.430876    4.568489    4.568331    4.500000    4.568331
+ 1     0    0.227109   -0.268232    4.314596    4.315115    4.250000    4.315115
+ spn 2 0    0.189868   -0.407263    4.295530    4.295253    4.250000    4.295253
+ 2     0    1.871481   -0.245163    3.553224    3.551659    3.147584    3.551659
+ spn 2 0    4.249315   -0.183740    3.833792    3.834191    3.147584    3.834191
+ 3     0    0.010891   -0.784048    4.108124    4.108205    4.102416    4.108205
+ spn 2 0    0.015706   -0.943453    4.105301    4.105261    4.102416    4.105261
+
+ Harris energy:
+ sumev=       -1.269842  val*vef=     -91.818854   sumtv=      90.549012
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.262256     utot=   -5008.520620    ehar=   -2541.036928
+
+ srhov:     -5.780621    -86.012013    -91.792634 sumev=   -1.269842   sumtv=   90.522792
+
+ Kohn-Sham energy:
+ sumtv=       90.522792  sumtc=      2484.196936   ekin=     2574.719729
+ rhoep=     -107.259424   utot=     -5008.497232   ehks=    -2541.036927
+ mag. mom=    -2.300146  (bands)       -2.300146  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 0.  RMS DQ=1.28e-4  last it=7.98e-4
+ AMIX: nmix=0 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=6.39e-5
+ unscreened rms difference:  smooth  0.000032   local  0.000147
+   screened rms difference:  smooth  0.000043   local  0.000147   tot  0.000128
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  7  of100    ehf=      -0.468828   ehk=      -0.468827
+ From last iter    ehf=      -0.468844   ehk=      -0.468859
+ diffe(q)=  0.000016 (0.000128)    tol= 0.000100 (0.000100)   more=T
+i mmom=-2.3001462 ehf=-.4688276 ehk=-.4688272
+
+ --- BNDFP:  begin iteration 8 of 100 ---
+
+ avg es pot at rmt= 0.648627  avg sphere pot= 0.625293  vconst=-0.648627
+
+ smooth rhoves     12.271989   charge     3.745418
+ smooth rhoeps =   -3.059949 (  -1.398005,  -1.661944)
+         rhomu =   -3.983158 (  -1.781337,  -2.201820)
+       avg vxc =   -0.859185 (  -0.847068,  -0.871303)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000785
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.779499       -86.031504       -91.811004
+   rhoval*ves            -30.628433       -45.494018       -76.122451
+   psnuc*ves              55.172411     -9996.073201     -9940.900790
+   utot                   12.271989     -5020.783609     -5008.511621
+   rho*exc                -3.059949      -104.201229      -107.261178
+   rho*vxc                -3.983158      -137.948370      -141.931527
+   valence chg             3.745418         4.254582         8.000000
+   valence mag            -0.350482        -1.951938        -2.302419
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5739 -0.0150 -0.0150 -0.0099  0.0995  0.1111  1.7337  1.7881  1.7881
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6031 -0.1708 -0.1708 -0.1667 -0.0705 -0.0613  1.7130  1.7734  1.7734
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4133 -0.0578 -0.0403  0.0769  0.0805  0.1214  1.2556  1.5482  1.7570
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4489 -0.2064 -0.1782 -0.0895 -0.0855 -0.0521  1.1697  1.5141  1.6744
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1783 -0.1057 -0.0759  0.0944  0.1411  0.3824  0.7076  0.9103  1.5623
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2865 -0.2330 -0.1927 -0.0733 -0.0312  0.2672  0.6047  0.8320  1.5135
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2157 -0.0730 -0.0605  0.0674  0.1914  0.2673  0.6936  1.2671  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3177 -0.2059 -0.1824 -0.0939  0.0098  0.1636  0.5833  1.1993  1.3013
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1964 -0.1548  0.0801  0.0801  0.1385  0.3414  0.9867  0.9867  1.4002
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2973 -0.2806 -0.0791 -0.0791 -0.0360  0.2509  0.9197  0.9197  1.2697
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002798;   8.000000 electrons;  D(Ef):   19.021
+         Sum occ. bands:   -1.2720769  incl. Bloechl correction:   -0.002640
+         Mag. moment:      -2.300155
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 0.2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.2 sec
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.5739 -0.0150 -0.0150 -0.0099  0.0995  0.1111  1.7337  1.7881  1.7881
+ bndfp:  kpt 1 of 44, k=  0.10000  0.00000  0.00000
+ -0.6031 -0.1708 -0.1708 -0.1667 -0.0705 -0.0613  1.7130  1.7734  1.7734
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4133 -0.0578 -0.0403  0.0769  0.0805  0.1214  1.2556  1.5482  1.7570
+ bndfp:  kpt 11 of 44, k=  0.30000  -0.20000  0.00000
+ -0.4489 -0.2064 -0.1782 -0.0895 -0.0855 -0.0521  1.1697  1.5141  1.6744
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.1783 -0.1057 -0.0759  0.0944  0.1411  0.3824  0.7076  0.9103  1.5623
+ bndfp:  kpt 21 of 44, k=  0.60000  -0.30000  0.20000
+ -0.2865 -0.2330 -0.1927 -0.0733 -0.0312  0.2672  0.6047  0.8320  1.5135
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.2157 -0.0730 -0.0605  0.0674  0.1914  0.2673  0.6936  1.2671  1.3548
+ bndfp:  kpt 31 of 44, k=  0.60000  -0.30000  0.00000
+ -0.3177 -0.2059 -0.1824 -0.0939  0.0098  0.1636  0.5833  1.1993  1.3013
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.1964 -0.1548  0.0801  0.0801  0.1385  0.3414  0.9867  0.9867  1.4002
+ bndfp:  kpt 41 of 44, k=  0.70000  0.00000  0.00000
+ -0.2973 -0.2806 -0.0791 -0.0791 -0.0360  0.2509  0.9197  0.9197  1.2697
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002798;   8.000000 electrons;  D(Ef):   19.021
+         Sum occ. bands:   -1.2720769  incl. Bloechl correction:   -0.002640
+         Mag. moment:      -2.300155
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974973    2.720324    4.254649     -2.336816   -0.386417   -1.950399
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209279   -0.313283    4.595080    4.595017    4.500000    4.595017
+ spn 2 0    0.200697   -0.431120    4.568331    4.568250    4.500000    4.568250
+ 1     0    0.226927   -0.268785    4.315115    4.315015    4.250000    4.315015
+ spn 2 0    0.189722   -0.407604    4.295253    4.295194    4.250000    4.295194
+ 2     0    1.871989   -0.245455    3.551659    3.551760    3.147584    3.551760
+ spn 2 0    4.249780   -0.184020    3.834191    3.834222    3.147584    3.834222
+ 3     0    0.010884   -0.784878    4.108205    4.108187    4.102416    4.108187
+ spn 2 0    0.015696   -0.943777    4.105261    4.105254    4.102416    4.105254
+
+ Harris energy:
+ sumev=       -1.272077  val*vef=     -91.811004   sumtv=      90.538927
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.261178     utot=   -5008.511621    ehar=   -2541.036936
+
+ srhov:     -5.780202    -86.037081    -91.817283 sumev=   -1.272077   sumtv=   90.545206
+
+ Kohn-Sham energy:
+ sumtv=       90.545206  sumtc=      2484.196936   ekin=     2574.742142
+ rhoep=     -107.261702   utot=     -5008.517377   ehks=    -2541.036936
+ mag. mom=    -2.300155  (bands)       -2.300155  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 1.  RMS DQ=4.83e-5  last it=1.28e-4
+ AMIX: nmix=1 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=2.41e-5
+   tj:-0.30237
+ unscreened rms difference:  smooth  0.000011   local  0.000055
+   screened rms difference:  smooth  0.000007   local  0.000055   tot  0.000048
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  8  of100    ehf=      -0.468836   ehk=      -0.468836
+ From last iter    ehf=      -0.468828   ehk=      -0.468827
+ diffe(q)= -0.000009 (0.000048)    tol= 0.000100 (0.000100)   more=F
+c mmom=-2.3001547 ehf=-.4688361 ehk=-.4688361
+ Exit 0 LMF      on phpdl1 
+ CPU time:    7.216s   Wall clock    7.286s   12:11:24 26.02.2015        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 7.286s. Resolution 0.000001s
+
+rdcmd:  mpirun -n 5 lmf  fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=1
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=1
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special:  sharm
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ noncoll:  Non-coll, L.S coupling
+ optics:   Im(eps(w)), 301 pts in [0,1]
+ bz:       metal(3), tetra, invit 
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: i*r3(1,-1,-1) r2(1,0,-1)
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+ BZMESH:  406 irreducible QP from 13824 ( 24 24 24 )  shift= T T T
+ TETIRR: sorting 82944 tetrahedra ... 16562 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.325  0.930    3    4         3  0.581  1.162    15    1   0.930
+
+ MSHSIZ: mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+         generated from gmax = 13.0 a.u. : 2899 vectors of 4096 (70%)
+
+ GVLIST: gmax = 13 a.u. created 2899 vectors of 4096 (70%)
+         mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+ SGVSYM: 95 symmetry stars found for 2899 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 25 0 7 0
+ suham :  16 augmentation channels, 16 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Fe       0*   1.55  -0.30   4.796    2.50E-06     141 
+  Fe       1    1.55  -0.30   5.070    2.45E-06     177 
+  Fe       2    1.05  -0.30   8.080    1.25E-06     683 
+  Fe       3    1.55  -0.30   5.624    3.19E-06     225 
+  Fe       0*   1.55  -1.10   4.796    2.50E-06     141 
+  Fe       1    1.55  -1.10   5.070    2.45E-06     177 
+  Fe       2    1.05  -1.10   8.080    1.25E-06     683 
+ 
+          noncollinear hamiltonian
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ avg es pot at rmt= 0.648602  avg sphere pot= 0.625284  vconst=-0.648602
+
+ smooth rhoves     12.271636   charge     3.745375
+ smooth rhoeps =   -3.059923 (  -1.398154,  -1.661769)
+         rhomu =   -3.983122 (  -1.781576,  -2.201547)
+       avg vxc =   -0.859180 (  -0.847083,  -0.871277)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000785
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.779410       -86.033356       -91.812766
+   rhoval*ves            -30.628170       -45.495930       -76.124100
+   psnuc*ves              55.171442     -9996.075916     -9940.904474
+   utot                   12.271636     -5020.785923     -5008.514287
+   rho*exc                -3.059923      -104.201450      -107.261372
+   rho*vxc                -3.983122      -137.948658      -141.931780
+   valence chg             3.745375         4.254625         8.000000
+   valence mag            -0.350009        -1.950936        -2.300945
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ optics: transitions for occ=(1,50)  unocc=(1,50):  8 states below Ef
+         increase no. calc. evals to 50 
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 1.1 sec
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.6153 -0.5862 -0.1724 -0.1708 -0.1681 -0.0653 -0.0633 -0.0154 -0.0145
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.3540 -0.2646 -0.2423 -0.1005 -0.0739 -0.0543 -0.0515  0.0020  0.0215
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.3616 -0.2955 -0.2336 -0.1476 -0.0910 -0.0717 -0.0534 -0.0458  0.0032
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3593 -0.3015 -0.2298 -0.1801 -0.0883 -0.0758 -0.0641 -0.0504  0.0102
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.3328 -0.2643 -0.2336 -0.1865 -0.0958 -0.0755 -0.0711 -0.0471  0.0579
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.3046 -0.2405 -0.2073 -0.1741 -0.1071 -0.0697 -0.0672 -0.0421  0.1016
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.4325 -0.3940 -0.2144 -0.1753 -0.0824 -0.0725 -0.0661 -0.0559 -0.0434
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.4204 -0.3833 -0.2051 -0.1975 -0.0943 -0.0646 -0.0595 -0.0539 -0.0422
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.3501 -0.2912 -0.2239 -0.1861 -0.0880 -0.0821 -0.0632 -0.0445  0.0178
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.3401 -0.2441 -0.2388 -0.1148 -0.0978 -0.0700 -0.0213 -0.0169  0.0883
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.3265 -0.2385 -0.2225 -0.1310 -0.0992 -0.0713 -0.0281 -0.0191  0.0969
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.5179 -0.4872 -0.1942 -0.1899 -0.1080 -0.0736 -0.0668 -0.0435 -0.0397
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4823 -0.4504 -0.2017 -0.1991 -0.0842 -0.0734 -0.0665 -0.0532 -0.0509
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.4002 -0.3621 -0.2169 -0.2166 -0.0782 -0.0759 -0.0724 -0.0576 -0.0220
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.3032 -0.2382 -0.2301 -0.2122 -0.1072 -0.0903 -0.0680 -0.0492  0.1032
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.2820 -0.2421 -0.1858 -0.1665 -0.1156 -0.0787 -0.0574 -0.0464  0.1157
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.2728 -0.2200 -0.2178 -0.1473 -0.1060 -0.1049 -0.0528 -0.0500  0.1217
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.3470 -0.2520 -0.2371 -0.1062 -0.0947 -0.0703 -0.0072  0.0106  0.0396
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2908 -0.2375 -0.2036 -0.1908 -0.1117 -0.0853 -0.0609 -0.0349  0.0808
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.2781 -0.2290 -0.2045 -0.1644 -0.0964 -0.0944 -0.0682 -0.0304  0.0989
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.3134 -0.2505 -0.2103 -0.1365 -0.1142 -0.0602 -0.0499 -0.0398  0.1126
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4951 -0.4639 -0.1739 -0.1716 -0.1291 -0.1135 -0.0447 -0.0214 -0.0197
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.2734 -0.2421 -0.1962 -0.1557 -0.1187 -0.0877 -0.0540 -0.0481  0.1206
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.3487 -0.2895 -0.2060 -0.1856 -0.0978 -0.0686 -0.0540 -0.0393  0.0045
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.3033 -0.2269 -0.2222 -0.1850 -0.1011 -0.0950 -0.0484 -0.0294  0.0672
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.2801 -0.2330 -0.1979 -0.1746 -0.1141 -0.0800 -0.0641 -0.0228  0.0853
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.2793 -0.2465 -0.2193 -0.1970 -0.1132 -0.1044 -0.0583 -0.0524  0.1155
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.4293 -0.3945 -0.1717 -0.1672 -0.1371 -0.1099 -0.0305 -0.0228 -0.0156
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.3314 -0.2625 -0.1975 -0.1946 -0.0990 -0.0740 -0.0502 -0.0290  0.0330
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2886 -0.2392 -0.2045 -0.1765 -0.1129 -0.0971 -0.0340 -0.0274  0.0635
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.2850 -0.2263 -0.1980 -0.1722 -0.1146 -0.0820 -0.0559 -0.0072  0.0806
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.2517 -0.2436 -0.2204 -0.1307 -0.1215 -0.1131 -0.0501 -0.0487  0.1260
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.3049 -0.2168 -0.2153 -0.1807 -0.1033 -0.0990 -0.0324 -0.0110  0.0549
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.2758 -0.2575 -0.1742 -0.1697 -0.1361 -0.0801 -0.0250 -0.0165  0.0815
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.2434 -0.2392 -0.2285 -0.1220 -0.1211 -0.1125 -0.0481 -0.0477  0.1287
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.2886 -0.2547 -0.1862 -0.1463 -0.1349 -0.0964 -0.0082  0.0047  0.0604
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.2813 -0.2791 -0.1638 -0.1633 -0.1526 -0.0377 -0.0201 -0.0078  0.1310
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.2940 -0.2673 -0.1783 -0.1534 -0.1276 -0.0908  0.0082  0.0263  0.0639
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.2959 -0.2823 -0.1934 -0.1574 -0.0897 -0.0749 -0.0261  0.0680  0.0851
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.3030 -0.2956 -0.1949 -0.1726 -0.0664 -0.0621 -0.0205  0.0958  0.0999
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.3227 -0.3225 -0.2067 -0.2039 -0.0314 -0.0174 -0.0017  0.1391  0.1565
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002028;   8.000000 electrons;  D(Ef):   15.995
+         Sum occ. bands:   -1.2713869  incl. Bloechl correction:   -0.000554
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ optics: transitions for occ=(1,50)  unocc=(1,50):  8 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 5.4 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 3 sec
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.6153 -0.5862 -0.1724 -0.1708 -0.1681 -0.0653 -0.0633 -0.0154 -0.0145
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.3540 -0.2646 -0.2423 -0.1005 -0.0739 -0.0543 -0.0515  0.0020  0.0215
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.3616 -0.2955 -0.2336 -0.1476 -0.0910 -0.0717 -0.0534 -0.0458  0.0032
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3593 -0.3015 -0.2298 -0.1801 -0.0883 -0.0758 -0.0641 -0.0504  0.0102
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.3328 -0.2643 -0.2336 -0.1865 -0.0958 -0.0755 -0.0711 -0.0471  0.0579
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.3046 -0.2405 -0.2073 -0.1741 -0.1071 -0.0697 -0.0672 -0.0421  0.1016
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.4325 -0.3940 -0.2144 -0.1753 -0.0824 -0.0725 -0.0661 -0.0559 -0.0434
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.4204 -0.3833 -0.2051 -0.1975 -0.0943 -0.0646 -0.0595 -0.0539 -0.0422
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.3501 -0.2912 -0.2239 -0.1861 -0.0880 -0.0821 -0.0632 -0.0445  0.0178
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.3401 -0.2441 -0.2388 -0.1148 -0.0978 -0.0700 -0.0213 -0.0169  0.0883
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.3265 -0.2385 -0.2225 -0.1310 -0.0992 -0.0713 -0.0281 -0.0191  0.0969
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.5179 -0.4872 -0.1942 -0.1899 -0.1080 -0.0736 -0.0668 -0.0435 -0.0397
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4823 -0.4504 -0.2017 -0.1991 -0.0842 -0.0734 -0.0665 -0.0532 -0.0509
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.4002 -0.3621 -0.2169 -0.2166 -0.0782 -0.0759 -0.0724 -0.0576 -0.0220
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.3032 -0.2382 -0.2301 -0.2122 -0.1072 -0.0903 -0.0680 -0.0492  0.1032
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.2820 -0.2421 -0.1858 -0.1665 -0.1156 -0.0787 -0.0574 -0.0464  0.1157
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.2728 -0.2200 -0.2178 -0.1473 -0.1060 -0.1049 -0.0528 -0.0500  0.1217
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.3470 -0.2520 -0.2371 -0.1062 -0.0947 -0.0703 -0.0072  0.0106  0.0396
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2908 -0.2375 -0.2036 -0.1908 -0.1117 -0.0853 -0.0609 -0.0349  0.0808
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.2781 -0.2290 -0.2045 -0.1644 -0.0964 -0.0944 -0.0682 -0.0304  0.0989
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.3134 -0.2505 -0.2103 -0.1365 -0.1142 -0.0602 -0.0499 -0.0398  0.1126
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4951 -0.4639 -0.1739 -0.1716 -0.1291 -0.1135 -0.0447 -0.0214 -0.0197
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.2734 -0.2421 -0.1962 -0.1557 -0.1187 -0.0877 -0.0540 -0.0481  0.1206
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.3487 -0.2895 -0.2060 -0.1856 -0.0978 -0.0686 -0.0540 -0.0393  0.0045
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.3033 -0.2269 -0.2222 -0.1850 -0.1011 -0.0950 -0.0484 -0.0294  0.0672
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.2801 -0.2330 -0.1979 -0.1746 -0.1141 -0.0800 -0.0641 -0.0228  0.0853
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.2793 -0.2465 -0.2193 -0.1970 -0.1132 -0.1044 -0.0583 -0.0524  0.1155
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.4293 -0.3945 -0.1717 -0.1672 -0.1371 -0.1099 -0.0305 -0.0228 -0.0156
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.3314 -0.2625 -0.1975 -0.1946 -0.0990 -0.0740 -0.0502 -0.0290  0.0330
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2886 -0.2392 -0.2045 -0.1765 -0.1129 -0.0971 -0.0340 -0.0274  0.0635
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.2850 -0.2263 -0.1980 -0.1722 -0.1146 -0.0820 -0.0559 -0.0072  0.0806
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.2517 -0.2436 -0.2204 -0.1307 -0.1215 -0.1131 -0.0501 -0.0487  0.1260
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.3049 -0.2168 -0.2153 -0.1807 -0.1033 -0.0990 -0.0324 -0.0110  0.0549
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.2758 -0.2575 -0.1742 -0.1697 -0.1361 -0.0801 -0.0250 -0.0165  0.0815
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.2434 -0.2392 -0.2285 -0.1220 -0.1211 -0.1125 -0.0481 -0.0477  0.1287
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.2886 -0.2547 -0.1862 -0.1463 -0.1349 -0.0964 -0.0082  0.0047  0.0604
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.2813 -0.2791 -0.1638 -0.1633 -0.1526 -0.0377 -0.0201 -0.0078  0.1310
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.2940 -0.2673 -0.1783 -0.1534 -0.1276 -0.0908  0.0082  0.0263  0.0639
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.2959 -0.2823 -0.1934 -0.1574 -0.0897 -0.0749 -0.0261  0.0680  0.0851
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.3030 -0.2956 -0.1949 -0.1726 -0.0664 -0.0621 -0.0205  0.0958  0.0999
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.3227 -0.3225 -0.2067 -0.2039 -0.0314 -0.0174 -0.0017  0.1391  0.1565
+
+ IORBTM:  orbital moments :
+ site  spec        spin   Moment decomposed by l ...
+    1    Fe           1    0.000000   -0.001800   -0.067941    0.000279
+    1    Fe           2    0.000000    0.001968    0.027368    0.000077
+    1  L+ - L-  -0.040049
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002028;   8.000000 electrons;  D(Ef):   15.995
+         Sum occ. bands:   -1.2713869  incl. Bloechl correction:   -0.000554
+         Mag. moment:      -2.275559
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ OPTINQ:  Im eps(w) using occ bands (1,50) and unocc (1,50)
+          301 points in energy window (0,1)  Efermi=-0.002028
+          Reduce bands to range (1,18)
+ TETWTQ:  total number of (occ,unocc) pairs = 1192904, 105 or fewer per qp
+ OPTINT:  writing opt file ...
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974893    2.723548    4.251345      2.308002    0.385296    1.922706
+ mag true  -0.000032 -0.000043 -2.308002  smooth  0.000216  0.000115 -0.385296
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209412   -0.313191    4.595017    4.595049    4.500000    4.595049
+ spn 2 0    0.201527   -0.429245    4.568250    4.569081    4.500000    4.569081
+ 1     0    0.223585   -0.272452    4.315015    4.314062    4.250000    4.314062
+ spn 2 0    0.192251   -0.403226    4.295194    4.296194    4.250000    4.296194
+ 2     0    1.889439   -0.243309    3.551760    3.554599    3.147584    3.554599
+ spn 2 0    4.231915   -0.185090    3.834222    3.832928    3.147584    3.832928
+ 3     0    0.011009   -0.787096    4.108187    4.108137    4.102416    4.108137
+ spn 2 0    0.015755   -0.943250    4.105254    4.105264    4.102416    4.105264
+
+ Harris energy:
+ sumev=       -1.271387  val*vef=     -91.812766   sumtv=      90.541379
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.261372     utot=   -5008.514287    ehar=   -2541.037344
+
+ srhov:     -5.786647    -85.973633    -91.760280 sumev=   -1.271387   sumtv=   90.488894
+
+ Kohn-Sham energy:
+ sumtv=       90.488894  sumtc=      2484.196936   ekin=     2574.685830
+ rhoep=     -107.253921   utot=     -5008.469273   ehks=    -2541.037364
+ mag. mom=    -2.275559  (bands)       -2.275559  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 2.  RMS DQ=8.90e-4
+ AMIX: nmix=2 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=4.45e-4
+   tj: 0.83565   0.23968
+ unscreened rms difference:  smooth  0.000064   local  0.000987
+   screened rms difference:  smooth  0.000073   local  0.000987   tot  0.000890
+
+   it  1  of100    ehf=      -0.469244   ehk=      -0.469264
+i nsp=2 lteto=3 optmod=1 nk=24 so=1 mmom=-2.2755593 ehf=-.4692436 ehk=-.4692639
+ Exit 0 lmf : exit (--quit=band) 
+ CPU time:   27.854s   Wall clock   27.920s   12:11:52 26.02.2015        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 27.92s. Resolution 0.000001s
+
+rdcmd:  cp opt.fe opt-so1.fe
+rdcmd:  mpirun -n 5 lmf  fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=3
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=3
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special:  sharm
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ noncoll:  LzSz+L.S(pert)
+ optics:   Im(eps(w)), 301 pts in [0,1]
+ bz:       metal(3), tetra, invit 
+
+ Automatic symmetry finder turned off.  Use: i*r3(1,-1,-1) r2(1,0,-1)
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+ BZMESH:  406 irreducible QP from 13824 ( 24 24 24 )  shift= T T T
+ TETIRR: sorting 82944 tetrahedra ... 16562 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.325  0.930    3    4         3  0.581  1.162    15    1   0.930
+
+ MSHSIZ: mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+         generated from gmax = 13.0 a.u. : 2899 vectors of 4096 (70%)
+
+ GVLIST: gmax = 13 a.u. created 2899 vectors of 4096 (70%)
+         mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+ SGVSYM: 95 symmetry stars found for 2899 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 25 0 7 0
+ suham :  16 augmentation channels, 16 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Fe       0*   1.55  -0.30   4.796    2.50E-06     141 
+  Fe       1    1.55  -0.30   5.070    2.45E-06     177 
+  Fe       2    1.05  -0.30   8.080    1.25E-06     683 
+  Fe       3    1.55  -0.30   5.624    3.19E-06     225 
+  Fe       0*   1.55  -1.10   4.796    2.50E-06     141 
+  Fe       1    1.55  -1.10   5.070    2.45E-06     177 
+  Fe       2    1.05  -1.10   8.080    1.25E-06     683 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ avg es pot at rmt= 0.648602  avg sphere pot= 0.625284  vconst=-0.648602
+
+ smooth rhoves     12.271636   charge     3.745375
+ smooth rhoeps =   -3.059923 (  -1.398154,  -1.661769)
+         rhomu =   -3.983122 (  -1.781576,  -2.201547)
+       avg vxc =   -0.859180 (  -0.847083,  -0.871277)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000785
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.779410       -86.033356       -91.812766
+   rhoval*ves            -30.628170       -45.495930       -76.124100
+   psnuc*ves              55.171442     -9996.075916     -9940.904474
+   utot                   12.271636     -5020.785923     -5008.514287
+   rho*exc                -3.059923      -104.201450      -107.261372
+   rho*vxc                -3.983122      -137.948658      -141.931780
+   valence chg             3.745375         4.254625         8.000000
+   valence mag            -0.350009        -1.950936        -2.300945
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ optics: transitions for occ=(1,25)  unocc=(1,25):  4 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 2 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 1.3 sec
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.5862 -0.0154 -0.0145 -0.0116  0.1068  0.1088  1.7668  1.7772  1.7772
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.6153 -0.1724 -0.1708 -0.1681 -0.0653 -0.0633  1.7555  1.7675  1.7675
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.2646 -0.1005  0.0020  0.1043  0.1243  0.1915  0.7431  1.3371  1.4880
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.3540 -0.2423 -0.0739 -0.0543 -0.0515  0.0215  0.6319  1.3114  1.4323
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.2955 -0.0910 -0.0458  0.0981  0.1222  0.1696  0.9097  1.3627  1.5223
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.3616 -0.2336 -0.1476 -0.0717 -0.0534  0.0032  0.8116  1.3214  1.4602
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3015 -0.0883 -0.0641  0.0934  0.1236  0.1728  0.9816  1.3148  1.5096
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3593 -0.2298 -0.1801 -0.0757 -0.0504  0.0102  0.8882  1.2544  1.4516
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.2643 -0.0958 -0.0711  0.0941  0.1275  0.2133  0.9282  1.1894  1.4600
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.3328 -0.2336 -0.1865 -0.0755 -0.0471  0.0579  0.8347  1.1187  1.4048
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.2073 -0.1071 -0.0673  0.1016  0.1319  0.3090  0.7686  1.0254  1.3989
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.3046 -0.2405 -0.1741 -0.0696 -0.0421  0.1758  0.6687  0.9514  1.3433
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.3940 -0.0661 -0.0434  0.0875  0.0958  0.1171  1.1780  1.5185  1.7666
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.4325 -0.2144 -0.1753 -0.0824 -0.0725 -0.0559  1.0894  1.4887  1.6884
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.3833 -0.0590 -0.0539  0.0716  0.1054  0.1282  1.2725  1.3621  1.7168
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.4204 -0.2051 -0.1975 -0.0943 -0.0650 -0.0422  1.1885  1.2920  1.6587
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.2912 -0.0820 -0.0632  0.0816  0.1297  0.1770  0.9911  1.2520  1.5694
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.3501 -0.2239 -0.1861 -0.0881 -0.0445  0.0178  0.8985  1.1821  1.5200
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.2441 -0.0978 -0.0169  0.0982  0.1448  0.2280  0.7060  1.2611  1.4453
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.3401 -0.2388 -0.1148 -0.0700 -0.0213  0.0883  0.5928  1.2091  1.4026
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.2225 -0.0992 -0.0281  0.0969  0.1502  0.2951  0.6444  1.1470  1.4392
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.3265 -0.2385 -0.1310 -0.0713 -0.0191  0.1807  0.5245  1.0838  1.3990
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.4872 -0.0435 -0.0397  0.0537  0.0964  0.1052  1.5315  1.5816  1.8129
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.5179 -0.1942 -0.1899 -0.1080 -0.0736 -0.0668  1.4652  1.5243  1.7327
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4504 -0.0530 -0.0509  0.0792  0.0964  0.1066  1.4562  1.4892  1.6826
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4823 -0.2017 -0.1991 -0.0842 -0.0734 -0.0666  1.3846  1.4238  1.6064
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.3621 -0.0784 -0.0765  0.0956  0.1151  0.1413  1.2653  1.2964  1.4925
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.4002 -0.2169 -0.2166 -0.0716 -0.0576 -0.0220  1.1813  1.2246  1.4253
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.2301 -0.1072 -0.0903  0.1032  0.1264  0.2612  0.9523  1.0427  1.3282
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.3032 -0.2382 -0.2122 -0.0680 -0.0492  0.1111  0.8636  0.9659  1.2649
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.1665 -0.1156 -0.0787  0.1157  0.1287  0.4663  0.6506  0.8600  1.2557
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.2820 -0.2421 -0.1858 -0.0574 -0.0464  0.3590  0.5431  0.7828  1.1903
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.1473 -0.1060 -0.1049  0.1217  0.1243  0.5962  0.5971  0.7425  1.2505
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.2728 -0.2200 -0.2178 -0.0528 -0.0500  0.4925  0.4943  0.6605  1.1825
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.2520 -0.0947 -0.0072  0.0967  0.1612  0.1919  0.7044  1.3379  1.4368
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.3470 -0.2371 -0.1062 -0.0703  0.0106  0.0396  0.5895  1.3100  1.3776
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2036 -0.1117 -0.0609  0.0808  0.1370  0.2874  0.9098  0.9254  1.6171
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2908 -0.2375 -0.1908 -0.0853 -0.0349  0.1535  0.8101  0.8505  1.5710
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.1644 -0.0964 -0.0944  0.0989  0.1417  0.4512  0.6481  0.8606  1.5954
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.2781 -0.2290 -0.2045 -0.0682 -0.0304  0.3476  0.5402  0.7816  1.5453
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.2103 -0.1142 -0.0398  0.1126  0.1268  0.3310  0.6783  1.1585  1.1949
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.3134 -0.2505 -0.1365 -0.0602 -0.0499  0.2078  0.5674  1.0914  1.1355
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4639 -0.0213 -0.0197  0.0316  0.0463  0.1301  1.5370  1.6211  1.7555
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4951 -0.1739 -0.1716 -0.1291 -0.1135 -0.0447  1.4678  1.5588  1.6873
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.1557 -0.1187 -0.0877  0.1206  0.1279  0.4931  0.6723  0.8377  1.1324
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.2734 -0.2421 -0.1962 -0.0540 -0.0481  0.3846  0.5698  0.7599  1.0632
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.2895 -0.0686 -0.0541  0.0634  0.1330  0.1610  0.9987  1.3537  1.5169
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.3487 -0.2060 -0.1856 -0.0978 -0.0393  0.0045  0.9050  1.2854  1.4585
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.2222 -0.1010 -0.0484  0.0672  0.1428  0.2459  0.8974  1.0775  1.5992
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.3033 -0.2269 -0.1850 -0.0950 -0.0294  0.1102  0.8038  0.9981  1.5506
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.1746 -0.1141 -0.0642  0.0853  0.1492  0.3719  0.7435  0.9191  1.6292
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.2801 -0.2330 -0.1979 -0.0800 -0.0228  0.2588  0.6447  0.8398  1.5809
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.1970 -0.1132 -0.1044  0.1155  0.1229  0.3097  0.9016  1.0780  1.0963
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.2793 -0.2465 -0.2193 -0.0583 -0.0524  0.1668  0.8133  0.9952  1.0332
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.3945 -0.0227 -0.0156  0.0180  0.0533  0.1425  1.4495  1.4831  1.6450
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.4293 -0.1717 -0.1672 -0.1371 -0.1099 -0.0305  1.3635  1.4132  1.5641
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.2625 -0.0740 -0.0502  0.0608  0.1450  0.1782  0.9410  1.3746  1.4066
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.3314 -0.1975 -0.1946 -0.0990 -0.0290  0.0330  0.8458  1.2963  1.3530
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2045 -0.1129 -0.0340  0.0635  0.1426  0.2708  0.9215  1.0131  1.6104
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2886 -0.2392 -0.1765 -0.0971 -0.0274  0.1467  0.8313  0.9324  1.5507
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.1722 -0.1146 -0.0559  0.0806  0.1679  0.4325  0.6516  0.9489  1.5604
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.2850 -0.2263 -0.1980 -0.0820 -0.0072  0.3375  0.5456  0.8727  1.4996
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.1306 -0.1215 -0.1131  0.1260  0.1277  0.5042  0.7984  0.8248  0.9083
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.2517 -0.2436 -0.2204 -0.0501 -0.0487  0.3911  0.7019  0.7465  0.8383
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.2153 -0.0990 -0.0324  0.0549  0.1664  0.2461  0.8365  1.2336  1.3844
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.3049 -0.2168 -0.1807 -0.1033 -0.0110  0.1268  0.7399  1.1601  1.3180
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.1742 -0.1361 -0.0250  0.0815  0.1567  0.3706  0.8237  0.9153  1.5850
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.2758 -0.2575 -0.1697 -0.0801 -0.0165  0.2656  0.7346  0.8373  1.5089
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.1220 -0.1211 -0.1125  0.1287  0.1291  0.6570  0.7063  0.7778  0.8137
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.2434 -0.2392 -0.2285 -0.0481 -0.0477  0.5565  0.6089  0.6815  0.7549
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.1862 -0.1349  0.0047  0.0604  0.1691  0.3402  0.8113  1.0552  1.4202
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.2886 -0.2547 -0.1463 -0.0964 -0.0082  0.2395  0.7218  0.9833  1.3356
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.1638 -0.1633 -0.0078  0.1310  0.1528  0.5859  0.6889  0.7595  1.6322
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.2813 -0.2791 -0.1526 -0.0377 -0.0201  0.5003  0.6016  0.6832  1.5383
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.1783 -0.1534  0.0263  0.0639  0.1895  0.4626  0.6730  1.0067  1.3848
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.2940 -0.2673 -0.1276 -0.0908  0.0082  0.3804  0.5802  0.9431  1.2892
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.1934 -0.1574  0.0680  0.0851  0.1491  0.3599  0.9551  0.9563  1.4226
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.2959 -0.2823 -0.0897 -0.0749 -0.0261  0.2708  0.8833  0.8885  1.2976
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.1949 -0.1726  0.0958  0.0999  0.1559  0.4173  0.8966  0.9196  1.3990
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.3030 -0.2956 -0.0664 -0.0621 -0.0205  0.3383  0.8315  0.8575  1.2697
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.2067 -0.2039  0.1391  0.1565  0.1778  0.6203  0.7650  0.7709  1.4032
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.3227 -0.3225 -0.0314 -0.0174 -0.0017  0.5640  0.7143  0.7215  1.2638
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002028;   8.000000 electrons;  D(Ef):   15.996
+         Sum occ. bands:   -1.2713868  incl. Bloechl correction:   -0.000554
+         Mag. moment:      -2.275404
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ optics: transitions for occ=(1,25)  unocc=(1,25):  4 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 4.4 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 2.2 sec
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.5862 -0.0154 -0.0145 -0.0116  0.1068  0.1088  1.7668  1.7772  1.7772
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.6153 -0.1724 -0.1708 -0.1681 -0.0653 -0.0633  1.7555  1.7675  1.7675
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.2646 -0.1005  0.0020  0.1043  0.1243  0.1915  0.7431  1.3371  1.4880
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.3540 -0.2423 -0.0739 -0.0543 -0.0515  0.0215  0.6319  1.3114  1.4323
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.2955 -0.0910 -0.0458  0.0981  0.1222  0.1696  0.9097  1.3627  1.5223
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.3616 -0.2336 -0.1476 -0.0717 -0.0534  0.0032  0.8116  1.3214  1.4602
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3015 -0.0883 -0.0641  0.0934  0.1236  0.1728  0.9816  1.3148  1.5096
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3593 -0.2298 -0.1801 -0.0757 -0.0504  0.0102  0.8882  1.2544  1.4516
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.2643 -0.0958 -0.0711  0.0941  0.1275  0.2133  0.9282  1.1894  1.4600
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.3328 -0.2336 -0.1865 -0.0755 -0.0471  0.0579  0.8347  1.1187  1.4048
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.2073 -0.1071 -0.0673  0.1016  0.1319  0.3090  0.7686  1.0254  1.3989
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.3046 -0.2405 -0.1741 -0.0696 -0.0421  0.1758  0.6687  0.9514  1.3433
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.3940 -0.0661 -0.0434  0.0875  0.0958  0.1171  1.1780  1.5185  1.7666
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.4325 -0.2144 -0.1753 -0.0824 -0.0725 -0.0559  1.0894  1.4887  1.6884
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.3833 -0.0590 -0.0539  0.0716  0.1054  0.1282  1.2725  1.3621  1.7168
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.4204 -0.2051 -0.1975 -0.0943 -0.0650 -0.0422  1.1885  1.2920  1.6587
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.2912 -0.0820 -0.0632  0.0816  0.1297  0.1770  0.9911  1.2520  1.5694
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.3501 -0.2239 -0.1861 -0.0881 -0.0445  0.0178  0.8985  1.1821  1.5200
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.2441 -0.0978 -0.0169  0.0982  0.1448  0.2280  0.7060  1.2611  1.4453
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.3401 -0.2388 -0.1148 -0.0700 -0.0213  0.0883  0.5928  1.2091  1.4026
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.2225 -0.0992 -0.0281  0.0969  0.1502  0.2951  0.6444  1.1470  1.4392
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.3265 -0.2385 -0.1310 -0.0713 -0.0191  0.1807  0.5245  1.0838  1.3990
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.4872 -0.0435 -0.0397  0.0537  0.0964  0.1052  1.5315  1.5816  1.8129
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.5179 -0.1942 -0.1899 -0.1080 -0.0736 -0.0668  1.4652  1.5243  1.7327
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4504 -0.0530 -0.0509  0.0792  0.0964  0.1066  1.4562  1.4892  1.6826
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4823 -0.2017 -0.1991 -0.0842 -0.0734 -0.0666  1.3846  1.4238  1.6064
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.3621 -0.0784 -0.0765  0.0956  0.1151  0.1413  1.2653  1.2964  1.4925
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.4002 -0.2169 -0.2166 -0.0716 -0.0576 -0.0220  1.1813  1.2246  1.4253
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.2301 -0.1072 -0.0903  0.1032  0.1264  0.2612  0.9523  1.0427  1.3282
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.3032 -0.2382 -0.2122 -0.0680 -0.0492  0.1111  0.8636  0.9659  1.2649
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.1665 -0.1156 -0.0787  0.1157  0.1287  0.4663  0.6506  0.8600  1.2557
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.2820 -0.2421 -0.1858 -0.0574 -0.0464  0.3590  0.5431  0.7828  1.1903
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.1473 -0.1060 -0.1049  0.1217  0.1243  0.5962  0.5971  0.7425  1.2505
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.2728 -0.2200 -0.2178 -0.0528 -0.0500  0.4925  0.4943  0.6605  1.1825
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.2520 -0.0947 -0.0072  0.0967  0.1612  0.1919  0.7044  1.3379  1.4368
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.3470 -0.2371 -0.1062 -0.0703  0.0106  0.0396  0.5895  1.3100  1.3776
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2036 -0.1117 -0.0609  0.0808  0.1370  0.2874  0.9098  0.9254  1.6171
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2908 -0.2375 -0.1908 -0.0853 -0.0349  0.1535  0.8101  0.8505  1.5710
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.1644 -0.0964 -0.0944  0.0989  0.1417  0.4512  0.6481  0.8606  1.5954
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.2781 -0.2290 -0.2045 -0.0682 -0.0304  0.3476  0.5402  0.7816  1.5453
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.2103 -0.1142 -0.0398  0.1126  0.1268  0.3310  0.6783  1.1585  1.1949
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.3134 -0.2505 -0.1365 -0.0602 -0.0499  0.2078  0.5674  1.0914  1.1355
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4639 -0.0213 -0.0197  0.0316  0.0463  0.1301  1.5370  1.6211  1.7555
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4951 -0.1739 -0.1716 -0.1291 -0.1135 -0.0447  1.4678  1.5588  1.6873
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.1557 -0.1187 -0.0877  0.1206  0.1279  0.4931  0.6723  0.8377  1.1324
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.2734 -0.2421 -0.1962 -0.0540 -0.0481  0.3846  0.5698  0.7599  1.0632
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.2895 -0.0686 -0.0541  0.0634  0.1330  0.1610  0.9987  1.3537  1.5169
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.3487 -0.2060 -0.1856 -0.0978 -0.0393  0.0045  0.9050  1.2854  1.4585
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.2222 -0.1010 -0.0484  0.0672  0.1428  0.2459  0.8974  1.0775  1.5992
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.3033 -0.2269 -0.1850 -0.0950 -0.0294  0.1102  0.8038  0.9981  1.5506
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.1746 -0.1141 -0.0642  0.0853  0.1492  0.3719  0.7435  0.9191  1.6292
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.2801 -0.2330 -0.1979 -0.0800 -0.0228  0.2588  0.6447  0.8398  1.5809
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.1970 -0.1132 -0.1044  0.1155  0.1229  0.3097  0.9016  1.0780  1.0963
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.2793 -0.2465 -0.2193 -0.0583 -0.0524  0.1668  0.8133  0.9952  1.0332
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.3945 -0.0227 -0.0156  0.0180  0.0533  0.1425  1.4495  1.4831  1.6450
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.4293 -0.1717 -0.1672 -0.1371 -0.1099 -0.0305  1.3635  1.4132  1.5641
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.2625 -0.0740 -0.0502  0.0608  0.1450  0.1782  0.9410  1.3746  1.4066
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.3314 -0.1975 -0.1946 -0.0990 -0.0290  0.0330  0.8458  1.2963  1.3530
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2045 -0.1129 -0.0340  0.0635  0.1426  0.2708  0.9215  1.0131  1.6104
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2886 -0.2392 -0.1765 -0.0971 -0.0274  0.1467  0.8313  0.9324  1.5507
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.1722 -0.1146 -0.0559  0.0806  0.1679  0.4325  0.6516  0.9489  1.5604
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.2850 -0.2263 -0.1980 -0.0820 -0.0072  0.3375  0.5456  0.8727  1.4996
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.1306 -0.1215 -0.1131  0.1260  0.1277  0.5042  0.7984  0.8248  0.9083
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.2517 -0.2436 -0.2204 -0.0501 -0.0487  0.3911  0.7019  0.7465  0.8383
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.2153 -0.0990 -0.0324  0.0549  0.1664  0.2461  0.8365  1.2336  1.3844
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.3049 -0.2168 -0.1807 -0.1033 -0.0110  0.1268  0.7399  1.1601  1.3180
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.1742 -0.1361 -0.0250  0.0815  0.1567  0.3706  0.8237  0.9153  1.5850
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.2758 -0.2575 -0.1697 -0.0801 -0.0165  0.2656  0.7346  0.8373  1.5089
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.1220 -0.1211 -0.1125  0.1287  0.1291  0.6570  0.7063  0.7778  0.8137
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.2434 -0.2392 -0.2285 -0.0481 -0.0477  0.5565  0.6089  0.6815  0.7549
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.1862 -0.1349  0.0047  0.0604  0.1691  0.3402  0.8113  1.0552  1.4202
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.2886 -0.2547 -0.1463 -0.0964 -0.0082  0.2395  0.7218  0.9833  1.3356
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.1638 -0.1633 -0.0078  0.1310  0.1528  0.5859  0.6889  0.7595  1.6322
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.2813 -0.2791 -0.1526 -0.0377 -0.0201  0.5003  0.6016  0.6832  1.5383
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.1783 -0.1534  0.0263  0.0639  0.1895  0.4626  0.6730  1.0067  1.3848
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.2940 -0.2673 -0.1276 -0.0908  0.0082  0.3804  0.5802  0.9431  1.2892
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.1934 -0.1574  0.0680  0.0851  0.1491  0.3599  0.9551  0.9563  1.4226
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.2959 -0.2823 -0.0897 -0.0749 -0.0261  0.2708  0.8833  0.8885  1.2976
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.1949 -0.1726  0.0958  0.0999  0.1559  0.4173  0.8966  0.9196  1.3990
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.3030 -0.2956 -0.0664 -0.0621 -0.0205  0.3383  0.8315  0.8575  1.2697
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.2067 -0.2039  0.1391  0.1565  0.1778  0.6203  0.7650  0.7709  1.4032
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.3227 -0.3225 -0.0314 -0.0174 -0.0017  0.5640  0.7143  0.7215  1.2638
+
+ IORBTM:  orbital moments :
+ site  spec        spin   Moment decomposed by l ...
+    1    Fe           1    0.000000   -0.001783   -0.068685    0.000284
+    1    Fe           2    0.000000    0.001952    0.027949    0.000077
+    1  L+ - L-  -0.040206
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002028;   8.000000 electrons;  D(Ef):   15.996
+         Sum occ. bands:   -1.2713868  incl. Bloechl correction:   -0.000554
+         Mag. moment:      -2.275404
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ OPTINQ:  Im eps(w) (spin 1) using occ bands (1,25) and unocc (1,25)
+          301 points in energy window (0,1)  Efermi=-0.002028
+          Reduce bands to range (1,9)
+ TETWTQ:  total number of (occ,unocc) pairs = 258196, 24 or fewer per qp
+ TETWTQ:  total number of (occ,unocc) pairs = 305088, 29 or fewer per qp
+ OPTINT:  writing opt file ...
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974822    2.723444    4.251378     -2.307918   -0.385223   -1.922695
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209415   -0.313157    4.595017    4.595064    4.500000    4.595064
+ spn 2 0    0.201492   -0.429284    4.568250    4.569063    4.500000    4.569063
+ 1     0    0.223613   -0.272439    4.315015    4.314066    4.250000    4.314066
+ spn 2 0    0.192204   -0.403311    4.295194    4.296175    4.250000    4.296175
+ 2     0    1.889411   -0.243358    3.551760    3.554531    3.147584    3.554531
+ spn 2 0    4.231917   -0.185130    3.834222    3.832888    3.147584    3.832888
+ 3     0    0.011014   -0.786802    4.108187    4.108143    4.102416    4.108143
+ spn 2 0    0.015758   -0.943100    4.105254    4.105267    4.102416    4.105267
+
+ Harris energy:
+ sumev=       -1.271387  val*vef=     -91.812766   sumtv=      90.541379
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.261372     utot=   -5008.514287    ehar=   -2541.037344
+
+ srhov:     -5.786213    -85.970488    -91.756701 sumev=   -1.271387   sumtv=   90.485314
+
+ Kohn-Sham energy:
+ sumtv=       90.485314  sumtc=      2484.196936   ekin=     2574.682250
+ rhoep=     -107.253584   utot=     -5008.466029   ehks=    -2541.037363
+ mag. mom=    -2.275404  (bands)       -2.275405  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 3.  RMS DQ=8.91e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: Reducing nmix to  0: t_j exceeds tm: tj= 23.76383
+ AMIX: nmix=0 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=4.46e-4
+ unscreened rms difference:  smooth  0.000062   local  0.000988
+   screened rms difference:  smooth  0.000072   local  0.000988   tot  0.000891
+
+   it  1  of100    ehf=      -0.469244   ehk=      -0.469263
+i nsp=2 lteto=3 optmod=1 nk=24 so=3 mmom=-2.2754046 ehf=-.4692435 ehk=-.4692634
+ Exit 0 lmf : exit (--quit=band) 
+ CPU time:   18.148s   Wall clock   18.218s   12:12:11 26.02.2015        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 18.219s. Resolution 0.000001s
+
+rdcmd:  cp opt.fe opt-so3.fe
+rdcmd:  mpirun -n 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special:  sharm
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ optics:   Im(eps(w)), 301 pts in [0,1]
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  406 irreducible QP from 13824 ( 24 24 24 )  shift= T T T
+ TETIRR: sorting 82944 tetrahedra ... 16562 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.325  0.930    3    4         3  0.581  1.162    15    1   0.930
+
+ MSHSIZ: mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+         generated from gmax = 13.0 a.u. : 2899 vectors of 4096 (70%)
+
+ GVLIST: gmax = 13 a.u. created 2899 vectors of 4096 (70%)
+         mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+ SGVSYM: 95 symmetry stars found for 2899 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 25 0 7 0
+ suham :  16 augmentation channels, 16 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Fe       0*   1.55  -0.30   4.796    2.50E-06     141 
+  Fe       1    1.55  -0.30   5.070    2.45E-06     177 
+  Fe       2    1.05  -0.30   8.080    1.25E-06     683 
+  Fe       3    1.55  -0.30   5.624    3.19E-06     225 
+  Fe       0*   1.55  -1.10   4.796    2.50E-06     141 
+  Fe       1    1.55  -1.10   5.070    2.45E-06     177 
+  Fe       2    1.05  -1.10   8.080    1.25E-06     683 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ avg es pot at rmt= 0.648602  avg sphere pot= 0.625284  vconst=-0.648602
+
+ smooth rhoves     12.271636   charge     3.745375
+ smooth rhoeps =   -3.059923 (  -1.398154,  -1.661769)
+         rhomu =   -3.983122 (  -1.781576,  -2.201547)
+       avg vxc =   -0.859180 (  -0.847083,  -0.871277)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000785
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.779410       -86.033356       -91.812766
+   rhoval*ves            -30.628170       -45.495930       -76.124100
+   psnuc*ves              55.171442     -9996.075916     -9940.904474
+   utot                   12.271636     -5020.785923     -5008.514287
+   rho*exc                -3.059923      -104.201450      -107.261372
+   rho*vxc                -3.983122      -137.948658      -141.931780
+   valence chg             3.745375         4.254625         8.000000
+   valence mag            -0.350009        -1.950936        -2.300945
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Start first of two band passes ...
+
+ optics: transitions for occ=(1,25)  unocc=(1,25):  4 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 2.9 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0 sec
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.5862 -0.0144 -0.0144 -0.0135  0.1067  0.1087  1.7668  1.7772  1.7772
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.6153 -0.1705 -0.1705 -0.1698 -0.0648 -0.0632  1.7555  1.7675  1.7675
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.2646 -0.1000  0.0022  0.1042  0.1242  0.1914  0.7431  1.3372  1.4879
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.3540 -0.2422 -0.0741 -0.0541 -0.0517  0.0213  0.6319  1.3115  1.4322
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.2954 -0.0904 -0.0467  0.0980  0.1221  0.1695  0.9098  1.3627  1.5222
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.3616 -0.2335 -0.1475 -0.0721 -0.0524  0.0030  0.8116  1.3215  1.4601
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3015 -0.0876 -0.0636  0.0933  0.1235  0.1727  0.9816  1.3148  1.5096
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3593 -0.2297 -0.1800 -0.0761 -0.0511  0.0101  0.8882  1.2544  1.4515
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.2643 -0.0954 -0.0712  0.0940  0.1273  0.2132  0.9283  1.1894  1.4600
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.3328 -0.2335 -0.1864 -0.0754 -0.0474  0.0579  0.8348  1.1187  1.4048
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.2072 -0.1069 -0.0680  0.1015  0.1319  0.3089  0.7686  1.0254  1.3988
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.3045 -0.2403 -0.1740 -0.0690 -0.0422  0.1756  0.6687  0.9514  1.3433
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.3939 -0.0670 -0.0438  0.0876  0.0956  0.1168  1.1781  1.5185  1.7666
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.4324 -0.2143 -0.1751 -0.0809 -0.0720 -0.0565  1.0894  1.4887  1.6883
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.3832 -0.0614 -0.0549  0.0715  0.1054  0.1279  1.2728  1.3621  1.7168
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.4204 -0.2050 -0.1973 -0.0938 -0.0614 -0.0428  1.1886  1.2918  1.6586
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.2912 -0.0843 -0.0634  0.0816  0.1295  0.1768  0.9911  1.2520  1.5694
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.3501 -0.2238 -0.1860 -0.0851 -0.0448  0.0177  0.8986  1.1821  1.5200
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.2440 -0.0973 -0.0175  0.0981  0.1446  0.2280  0.7060  1.2611  1.4453
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.3400 -0.2387 -0.1146 -0.0706 -0.0206  0.0884  0.5927  1.2092  1.4025
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.2225 -0.0986 -0.0279  0.0969  0.1502  0.2951  0.6444  1.1470  1.4392
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.3265 -0.2384 -0.1308 -0.0719 -0.0194  0.1806  0.5244  1.0838  1.3989
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.4872 -0.0439 -0.0403  0.0537  0.0963  0.1050  1.5312  1.5816  1.8129
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.5179 -0.1940 -0.1899 -0.1077 -0.0733 -0.0663  1.4653  1.5248  1.7326
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4503 -0.0539 -0.0521  0.0794  0.0961  0.1065  1.4561  1.4892  1.6826
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4823 -0.2015 -0.1990 -0.0833 -0.0737 -0.0652  1.3847  1.4240  1.6063
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.3621 -0.0762 -0.0747  0.0956  0.1149  0.1411  1.2652  1.2964  1.4924
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.4002 -0.2167 -0.2165 -0.0744 -0.0586 -0.0223  1.1815  1.2249  1.4252
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.2301 -0.1069 -0.0900  0.1031  0.1259  0.2611  0.9527  1.0427  1.3281
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.3032 -0.2381 -0.2122 -0.0683 -0.0494  0.1115  0.8636  0.9655  1.2648
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.1664 -0.1154 -0.0786  0.1158  0.1286  0.4663  0.6506  0.8600  1.2557
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.2819 -0.2420 -0.1857 -0.0575 -0.0467  0.3589  0.5431  0.7828  1.1903
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.1471 -0.1054 -0.1054  0.1229  0.1229  0.5966  0.5966  0.7425  1.2505
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.2727 -0.2188 -0.2188 -0.0516 -0.0516  0.4934  0.4934  0.6605  1.1825
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.2519 -0.0943 -0.0069  0.0967  0.1611  0.1918  0.7044  1.3382  1.4367
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.3470 -0.2370 -0.1057 -0.0711  0.0104  0.0396  0.5895  1.3101  1.3773
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2035 -0.1115 -0.0613  0.0807  0.1371  0.2873  0.9098  0.9253  1.6171
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2908 -0.2375 -0.1907 -0.0849 -0.0350  0.1532  0.8102  0.8506  1.5710
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.1643 -0.0958 -0.0944  0.0989  0.1417  0.4512  0.6480  0.8606  1.5953
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.2780 -0.2289 -0.2045 -0.0687 -0.0305  0.3476  0.5401  0.7816  1.5453
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.2103 -0.1140 -0.0400  0.1126  0.1268  0.3310  0.6783  1.1584  1.1947
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.3133 -0.2504 -0.1364 -0.0603 -0.0498  0.2077  0.5674  1.0916  1.1356
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4639 -0.0215 -0.0200  0.0314  0.0462  0.1299  1.5371  1.6213  1.7558
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4951 -0.1736 -0.1714 -0.1290 -0.1134 -0.0443  1.4678  1.5588  1.6873
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.1556 -0.1186 -0.0876  0.1206  0.1278  0.4931  0.6723  0.8377  1.1324
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.2734 -0.2420 -0.1962 -0.0541 -0.0483  0.3845  0.5698  0.7599  1.0631
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.2895 -0.0683 -0.0540  0.0634  0.1329  0.1609  0.9988  1.3538  1.5169
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.3487 -0.2059 -0.1855 -0.0973 -0.0399  0.0044  0.9051  1.2855  1.4585
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.2222 -0.1006 -0.0485  0.0672  0.1426  0.2458  0.8975  1.0775  1.5992
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.3033 -0.2268 -0.1849 -0.0951 -0.0297  0.1103  0.8039  0.9980  1.5506
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.1746 -0.1140 -0.0649  0.0853  0.1492  0.3719  0.7435  0.9191  1.6292
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.2800 -0.2330 -0.1978 -0.0793 -0.0230  0.2587  0.6448  0.8397  1.5809
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.1970 -0.1130 -0.1042  0.1156  0.1229  0.3097  0.9017  1.0781  1.0960
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.2793 -0.2464 -0.2192 -0.0584 -0.0527  0.1666  0.8134  0.9953  1.0332
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.3945 -0.0235 -0.0160  0.0177  0.0531  0.1424  1.4495  1.4831  1.6445
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.4293 -0.1715 -0.1669 -0.1371 -0.1098 -0.0294  1.3636  1.4134  1.5641
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.2624 -0.0737 -0.0505  0.0608  0.1449  0.1780  0.9411  1.3744  1.4066
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.3314 -0.1974 -0.1945 -0.0986 -0.0292  0.0329  0.8458  1.2964  1.3532
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2044 -0.1127 -0.0338  0.0635  0.1443  0.2707  0.9223  1.0131  1.6104
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2885 -0.2391 -0.1764 -0.0970 -0.0279  0.1449  0.8314  0.9315  1.5507
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.1721 -0.1145 -0.0565  0.0806  0.1679  0.4325  0.6516  0.9489  1.5604
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.2849 -0.2262 -0.1979 -0.0815 -0.0073  0.3375  0.5456  0.8727  1.4996
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.1305 -0.1212 -0.1130  0.1261  0.1276  0.5042  0.7983  0.8250  0.9082
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.2516 -0.2435 -0.2203 -0.0502 -0.0490  0.3911  0.7019  0.7466  0.8380
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.2153 -0.0989 -0.0326  0.0549  0.1662  0.2460  0.8365  1.2336  1.3844
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.3048 -0.2167 -0.1806 -0.1031 -0.0112  0.1268  0.7400  1.1601  1.3179
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.1739 -0.1360 -0.0250  0.0815  0.1567  0.3705  0.8245  0.9152  1.5850
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.2757 -0.2575 -0.1698 -0.0800 -0.0168  0.2656  0.7346  0.8366  1.5089
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.1218 -0.1209 -0.1124  0.1286  0.1290  0.6572  0.7061  0.7777  0.8137
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.2433 -0.2392 -0.2284 -0.0483 -0.0480  0.5566  0.6089  0.6813  0.7549
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.1861 -0.1350  0.0045  0.0603  0.1692  0.3402  0.8114  1.0552  1.4202
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.2885 -0.2546 -0.1460 -0.0963 -0.0083  0.2394  0.7219  0.9832  1.3356
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.1636 -0.1629 -0.0083  0.1310  0.1528  0.5862  0.6871  0.7595  1.6322
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.2812 -0.2791 -0.1529 -0.0375 -0.0198  0.5004  0.6013  0.6849  1.5383
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.1782 -0.1532  0.0262  0.0639  0.1894  0.4626  0.6730  1.0067  1.3848
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.2940 -0.2672 -0.1276 -0.0907  0.0081  0.3804  0.5802  0.9431  1.2892
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.1933 -0.1572  0.0680  0.0850  0.1490  0.3599  0.9548  0.9559  1.4226
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.2959 -0.2822 -0.0896 -0.0749 -0.0262  0.2708  0.8836  0.8889  1.2976
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.1948 -0.1725  0.0958  0.0999  0.1558  0.4173  0.8958  0.9192  1.3990
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.3029 -0.2955 -0.0663 -0.0621 -0.0206  0.3383  0.8318  0.8582  1.2697
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.2066 -0.2038  0.1392  0.1565  0.1776  0.6207  0.7642  0.7703  1.4032
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.3226 -0.3224 -0.0312 -0.0173 -0.0019  0.5643  0.7146  0.7220  1.2638
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002169;   8.000000 electrons;  D(Ef):   16.050
+         Sum occ. bands:   -1.2709790  incl. Bloechl correction:   -0.000562
+         Mag. moment:      -2.275862
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ optics: transitions for occ=(1,25)  unocc=(1,25):  4 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 5.4 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.1 sec
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.5862 -0.0144 -0.0144 -0.0135  0.1067  0.1087  1.7668  1.7772  1.7772
+ bndfp:  kpt 1 of 406, k=  0.04167  0.00000  0.00000
+ -0.6153 -0.1705 -0.1705 -0.1698 -0.0648 -0.0632  1.7555  1.7675  1.7675
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.2646 -0.1000  0.0022  0.1042  0.1242  0.1914  0.7431  1.3372  1.4879
+ bndfp:  kpt 11 of 406, k=  0.04167  0.41667  0.41667
+ -0.3540 -0.2422 -0.0741 -0.0541 -0.0517  0.0213  0.6319  1.3115  1.4322
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.2954 -0.0904 -0.0467  0.0980  0.1221  0.1695  0.9098  1.3627  1.5222
+ bndfp:  kpt 21 of 406, k=  0.08333  0.33333  0.37500
+ -0.3616 -0.2335 -0.1475 -0.0721 -0.0524  0.0030  0.8116  1.3215  1.4601
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3015 -0.0876 -0.0636  0.0933  0.1235  0.1727  0.9816  1.3148  1.5096
+ bndfp:  kpt 31 of 406, k=  0.12500  0.29167  0.37500
+ -0.3593 -0.2297 -0.1800 -0.0761 -0.0511  0.0101  0.8882  1.2544  1.4515
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.2643 -0.0954 -0.0712  0.0940  0.1273  0.2132  0.9283  1.1894  1.4600
+ bndfp:  kpt 41 of 406, k=  0.16667  0.29167  0.41667
+ -0.3328 -0.2335 -0.1864 -0.0754 -0.0474  0.0579  0.8348  1.1187  1.4048
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.2072 -0.1069 -0.0680  0.1015  0.1319  0.3089  0.7686  1.0254  1.3988
+ bndfp:  kpt 51 of 406, k=  0.20833  0.33333  0.50000
+ -0.3045 -0.2403 -0.1740 -0.0690 -0.0422  0.1756  0.6687  0.9514  1.3433
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.3939 -0.0670 -0.0438  0.0876  0.0956  0.1168  1.1781  1.5185  1.7666
+ bndfp:  kpt 61 of 406, k=  0.29167  -0.25000  0.00000
+ -0.4324 -0.2143 -0.1751 -0.0809 -0.0720 -0.0565  1.0894  1.4887  1.6883
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.3832 -0.0614 -0.0549  0.0715  0.1054  0.1279  1.2728  1.3621  1.7168
+ bndfp:  kpt 71 of 406, k=  0.33333  -0.16667  0.12500
+ -0.4204 -0.2050 -0.1973 -0.0938 -0.0614 -0.0428  1.1886  1.2918  1.6586
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.2912 -0.0843 -0.0634  0.0816  0.1295  0.1768  0.9911  1.2520  1.5694
+ bndfp:  kpt 81 of 406, k=  0.41667  -0.25000  0.12500
+ -0.3501 -0.2238 -0.1860 -0.0851 -0.0448  0.0177  0.8986  1.1821  1.5200
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.2440 -0.0973 -0.0175  0.0981  0.1446  0.2280  0.7060  1.2611  1.4453
+ bndfp:  kpt 91 of 406, k=  0.50000  -0.37500  0.08333
+ -0.3400 -0.2387 -0.1146 -0.0706 -0.0206  0.0884  0.5927  1.2092  1.4025
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.2225 -0.0986 -0.0279  0.0969  0.1502  0.2951  0.6444  1.1470  1.4392
+ bndfp:  kpt 101 of 406, k=  0.58333  -0.41667  0.12500
+ -0.3265 -0.2384 -0.1308 -0.0719 -0.0194  0.1806  0.5244  1.0838  1.3989
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.4872 -0.0439 -0.0403  0.0537  0.0963  0.1050  1.5312  1.5816  1.8129
+ bndfp:  kpt 111 of 406, k=  0.12500  0.16667  0.16667
+ -0.5179 -0.1940 -0.1899 -0.1077 -0.0733 -0.0663  1.4653  1.5248  1.7326
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4503 -0.0539 -0.0521  0.0794  0.0961  0.1065  1.4561  1.4892  1.6826
+ bndfp:  kpt 121 of 406, k=  0.16667  0.16667  0.20833
+ -0.4823 -0.2015 -0.1990 -0.0833 -0.0737 -0.0652  1.3847  1.4240  1.6063
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.3621 -0.0762 -0.0747  0.0956  0.1149  0.1411  1.2652  1.2964  1.4924
+ bndfp:  kpt 131 of 406, k=  0.20833  0.20833  0.29167
+ -0.4002 -0.2167 -0.2165 -0.0744 -0.0586 -0.0223  1.1815  1.2249  1.4252
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.2301 -0.1069 -0.0900  0.1031  0.1259  0.2611  0.9527  1.0427  1.3281
+ bndfp:  kpt 141 of 406, k=  0.25000  0.29167  0.41667
+ -0.3032 -0.2381 -0.2122 -0.0683 -0.0494  0.1115  0.8636  0.9655  1.2648
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.1664 -0.1154 -0.0786  0.1158  0.1286  0.4663  0.6506  0.8600  1.2557
+ bndfp:  kpt 151 of 406, k=  0.29167  0.41667  0.58333
+ -0.2819 -0.2420 -0.1857 -0.0575 -0.0467  0.3589  0.5431  0.7828  1.1903
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.1471 -0.1054 -0.1054  0.1229  0.1229  0.5966  0.5966  0.7425  1.2505
+ bndfp:  kpt 161 of 406, k=  0.37500  0.37500  0.62500
+ -0.2727 -0.2188 -0.2188 -0.0516 -0.0516  0.4934  0.4934  0.6605  1.1825
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.2519 -0.0943 -0.0069  0.0967  0.1611  0.1918  0.7044  1.3382  1.4367
+ bndfp:  kpt 171 of 406, k=  0.50000  -0.37500  0.00000
+ -0.3470 -0.2370 -0.1057 -0.0711  0.0104  0.0396  0.5895  1.3101  1.3773
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2035 -0.1115 -0.0613  0.0807  0.1371  0.2873  0.9098  0.9253  1.6171
+ bndfp:  kpt 181 of 406, k=  0.54167  -0.20833  0.20833
+ -0.2908 -0.2375 -0.1907 -0.0849 -0.0350  0.1532  0.8102  0.8506  1.5710
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.1643 -0.0958 -0.0944  0.0989  0.1417  0.4512  0.6480  0.8606  1.5953
+ bndfp:  kpt 191 of 406, k=  0.66667  -0.33333  0.20833
+ -0.2780 -0.2289 -0.2045 -0.0687 -0.0305  0.3476  0.5401  0.7816  1.5453
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.2103 -0.1140 -0.0400  0.1126  0.1268  0.3310  0.6783  1.1584  1.1947
+ bndfp:  kpt 201 of 406, k=  0.20833  0.45833  0.45833
+ -0.3133 -0.2504 -0.1364 -0.0603 -0.0498  0.2077  0.5674  1.0916  1.1356
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4639 -0.0215 -0.0200  0.0314  0.0462  0.1299  1.5371  1.6213  1.7558
+ bndfp:  kpt 211 of 406, k=  0.29167  -0.04167  0.04167
+ -0.4951 -0.1736 -0.1714 -0.1290 -0.1134 -0.0443  1.4678  1.5588  1.6873
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.1556 -0.1186 -0.0876  0.1206  0.1278  0.4931  0.6723  0.8377  1.1324
+ bndfp:  kpt 221 of 406, k=  0.33333  0.41667  0.54167
+ -0.2734 -0.2420 -0.1962 -0.0541 -0.0483  0.3845  0.5698  0.7599  1.0631
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.2895 -0.0683 -0.0540  0.0634  0.1329  0.1609  0.9988  1.3538  1.5169
+ bndfp:  kpt 231 of 406, k=  0.45833  -0.20833  0.04167
+ -0.3487 -0.2059 -0.1855 -0.0973 -0.0399  0.0044  0.9051  1.2855  1.4585
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.2222 -0.1006 -0.0485  0.0672  0.1426  0.2458  0.8975  1.0775  1.5992
+ bndfp:  kpt 241 of 406, k=  0.54167  -0.20833  0.12500
+ -0.3033 -0.2268 -0.1849 -0.0951 -0.0297  0.1103  0.8039  0.9980  1.5506
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.1746 -0.1140 -0.0649  0.0853  0.1492  0.3719  0.7435  0.9191  1.6292
+ bndfp:  kpt 251 of 406, k=  0.62500  -0.25000  0.16667
+ -0.2800 -0.2330 -0.1978 -0.0793 -0.0230  0.2587  0.6448  0.8397  1.5809
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.1970 -0.1130 -0.1042  0.1156  0.1229  0.3097  0.9017  1.0781  1.0960
+ bndfp:  kpt 261 of 406, k=  0.29167  0.37500  0.37500
+ -0.2793 -0.2464 -0.2192 -0.0584 -0.0527  0.1666  0.8134  0.9953  1.0332
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.3945 -0.0235 -0.0160  0.0177  0.0531  0.1424  1.4495  1.4831  1.6445
+ bndfp:  kpt 271 of 406, k=  0.37500  -0.04167  0.04167
+ -0.4293 -0.1715 -0.1669 -0.1371 -0.1098 -0.0294  1.3636  1.4134  1.5641
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.2624 -0.0737 -0.0505  0.0608  0.1449  0.1780  0.9411  1.3744  1.4066
+ bndfp:  kpt 281 of 406, k=  0.50000  -0.20833  0.00000
+ -0.3314 -0.1974 -0.1945 -0.0986 -0.0292  0.0329  0.8458  1.2964  1.3532
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2044 -0.1127 -0.0338  0.0635  0.1443  0.2707  0.9223  1.0131  1.6104
+ bndfp:  kpt 291 of 406, k=  0.58333  -0.16667  0.12500
+ -0.2885 -0.2391 -0.1764 -0.0970 -0.0279  0.1449  0.8314  0.9315  1.5507
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.1721 -0.1145 -0.0565  0.0806  0.1679  0.4325  0.6516  0.9489  1.5604
+ bndfp:  kpt 301 of 406, k=  0.70833  -0.29167  0.12500
+ -0.2849 -0.2262 -0.1979 -0.0815 -0.0073  0.3375  0.5456  0.8727  1.4996
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.1305 -0.1212 -0.1130  0.1261  0.1276  0.5042  0.7983  0.8250  0.9082
+ bndfp:  kpt 311 of 406, k=  0.41667  0.41667  0.45833
+ -0.2516 -0.2435 -0.2203 -0.0502 -0.0490  0.3911  0.7019  0.7466  0.8380
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.2153 -0.0989 -0.0326  0.0549  0.1662  0.2460  0.8365  1.2336  1.3844
+ bndfp:  kpt 321 of 406, k=  0.58333  -0.20833  0.00000
+ -0.3048 -0.2167 -0.1806 -0.1031 -0.0112  0.1268  0.7400  1.1601  1.3179
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.1739 -0.1360 -0.0250  0.0815  0.1567  0.3705  0.8245  0.9152  1.5850
+ bndfp:  kpt 331 of 406, k=  0.66667  -0.16667  0.12500
+ -0.2757 -0.2575 -0.1698 -0.0800 -0.0168  0.2656  0.7346  0.8366  1.5089
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.1218 -0.1209 -0.1124  0.1286  0.1290  0.6572  0.7061  0.7777  0.8137
+ bndfp:  kpt 341 of 406, k=  0.45833  0.50000  0.50000
+ -0.2433 -0.2392 -0.2284 -0.0483 -0.0480  0.5566  0.6089  0.6813  0.7549
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.1861 -0.1350  0.0045  0.0603  0.1692  0.3402  0.8114  1.0552  1.4202
+ bndfp:  kpt 351 of 406, k=  0.66667  -0.16667  0.04167
+ -0.2885 -0.2546 -0.1460 -0.0963 -0.0083  0.2394  0.7219  0.9832  1.3356
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.1636 -0.1629 -0.0083  0.1310  0.1528  0.5862  0.6871  0.7595  1.6322
+ bndfp:  kpt 361 of 406, k=  0.79167  -0.16667  0.16667
+ -0.2812 -0.2791 -0.1529 -0.0375 -0.0198  0.5004  0.6013  0.6849  1.5383
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.1782 -0.1532  0.0262  0.0639  0.1894  0.4626  0.6730  1.0067  1.3848
+ bndfp:  kpt 371 of 406, k=  0.75000  -0.20833  0.00000
+ -0.2940 -0.2672 -0.1276 -0.0907  0.0081  0.3804  0.5802  0.9431  1.2892
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.1933 -0.1572  0.0680  0.0850  0.1490  0.3599  0.9548  0.9559  1.4226
+ bndfp:  kpt 381 of 406, k=  0.70833  -0.04167  0.04167
+ -0.2959 -0.2822 -0.0896 -0.0749 -0.0262  0.2708  0.8836  0.8889  1.2976
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.1948 -0.1725  0.0958  0.0999  0.1558  0.4173  0.8958  0.9192  1.3990
+ bndfp:  kpt 391 of 406, k=  0.75000  -0.04167  0.00000
+ -0.3029 -0.2955 -0.0663 -0.0621 -0.0206  0.3383  0.8318  0.8582  1.2697
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.2066 -0.2038  0.1392  0.1565  0.1776  0.6207  0.7642  0.7703  1.4032
+ bndfp:  kpt 401 of 406, k=  0.87500  -0.04167  0.04167
+ -0.3226 -0.3224 -0.0312 -0.0173 -0.0019  0.5643  0.7146  0.7220  1.2638
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002169;   8.000000 electrons;  D(Ef):   16.050
+         Sum occ. bands:   -1.2709790  incl. Bloechl correction:   -0.000562
+         Mag. moment:      -2.275862
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ OPTINQ:  Im eps(w) (spin 1) using occ bands (1,25) and unocc (1,25)
+          301 points in energy window (0,1)  Efermi=-0.002169
+          Reduce bands to range (1,9)
+ TETWTQ:  total number of (occ,unocc) pairs = 258322, 28 or fewer per qp
+ TETWTQ:  total number of (occ,unocc) pairs = 305466, 33 or fewer per qp
+ OPTINT:  writing opt file ...
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974849    2.723359    4.251490     -2.308387   -0.385347   -1.923039
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209418   -0.313142    4.595017    4.595071    4.500000    4.595071
+ spn 2 0    0.201499   -0.429275    4.568250    4.569068    4.500000    4.569068
+ 1     0    0.223564   -0.272468    4.315015    4.314058    4.250000    4.314058
+ spn 2 0    0.192166   -0.403393    4.295194    4.296155    4.250000    4.296155
+ 2     0    1.889238   -0.243436    3.551760    3.554423    3.147584    3.554423
+ spn 2 0    4.232194   -0.185123    3.834222    3.832895    3.147584    3.832895
+ 3     0    0.011012   -0.786605    4.108187    4.108148    4.102416    4.108148
+ spn 2 0    0.015759   -0.943095    4.105254    4.105267    4.102416    4.105267
+
+ Harris energy:
+ sumev=       -1.270979  val*vef=     -91.812766   sumtv=      90.541787
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.261372     utot=   -5008.514287    ehar=   -2541.036936
+
+ srhov:     -5.785988    -85.970877    -91.756865 sumev=   -1.270979   sumtv=   90.485886
+
+ Kohn-Sham energy:
+ sumtv=       90.485886  sumtc=      2484.196936   ekin=     2574.682822
+ rhoep=     -107.253667   utot=     -5008.466110   ehks=    -2541.036955
+ mag. mom=    -2.275862  (bands)       -2.275862  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 4.  RMS DQ=8.79e-4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 3
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: Reducing nmix to  0: t_j exceeds tm: tj=-67.51196
+ AMIX: nmix=0 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=4.39e-4
+ unscreened rms difference:  smooth  0.000061   local  0.000974
+   screened rms difference:  smooth  0.000071   local  0.000974   tot  0.000879
+
+   it  1  of100    ehf=      -0.468836   ehk=      -0.468855
+i nsp=2 lteto=3 optmod=1 nk=24 mmom=-2.2758619 ehf=-.4688357 ehk=-.4688551
+ Exit 0 lmf : exit (--quit=band) 
+ CPU time:   21.396s   Wall clock   21.495s   12:12:33 26.02.2015        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 21.495s. Resolution 0.000001s
+
+rdcmd:  mpirun -n 5 lmf fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 --quit=band --jdosw=5,6,8,21,22,24 --jdosw2=7,9,23,25
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 5 lmf fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 --quit=band --jdosw=5,6,8,21,22,24 --jdosw2=7,9,23,25
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special:  sharm
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ optics:   DOS, 1001 pts in [-0.7,0.8]
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  140 irreducible QP from 4096 ( 16 16 16 )  shift= T T T
+ TETIRR: sorting 24576 tetrahedra ... 4772 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.325  0.930    3    4         3  0.581  1.162    15    1   0.930
+
+ MSHSIZ: mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+         generated from gmax = 13.0 a.u. : 2899 vectors of 4096 (70%)
+
+ GVLIST: gmax = 13 a.u. created 2899 vectors of 4096 (70%)
+         mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+ SGVSYM: 95 symmetry stars found for 2899 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 25 0 7 0
+ suham :  16 augmentation channels, 16 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Fe       0*   1.55  -0.30   4.796    2.50E-06     141 
+  Fe       1    1.55  -0.30   5.070    2.45E-06     177 
+  Fe       2    1.05  -0.30   8.080    1.25E-06     683 
+  Fe       3    1.55  -0.30   5.624    3.19E-06     225 
+  Fe       0*   1.55  -1.10   4.796    2.50E-06     141 
+  Fe       1    1.55  -1.10   5.070    2.45E-06     177 
+  Fe       2    1.05  -1.10   8.080    1.25E-06     683 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ avg es pot at rmt= 0.648602  avg sphere pot= 0.625284  vconst=-0.648602
+
+ smooth rhoves     12.271636   charge     3.745375
+ smooth rhoeps =   -3.059923 (  -1.398154,  -1.661769)
+         rhomu =   -3.983122 (  -1.781576,  -2.201547)
+       avg vxc =   -0.859180 (  -0.847083,  -0.871277)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000785
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.779410       -86.033356       -91.812766
+   rhoval*ves            -30.628170       -45.495930       -76.124100
+   psnuc*ves              55.171442     -9996.075916     -9940.904474
+   utot                   12.271636     -5020.785923     -5008.514287
+   rho*exc                -3.059923      -104.201450      -107.261372
+   rho*vxc                -3.983122      -137.948658      -141.931780
+   valence chg             3.745375         4.254625         8.000000
+   valence mag            -0.350009        -1.950936        -2.300945
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ BNDFP:  Mulliken projection of JDOS 
+         group:  6 channel(s): 5,6,8,21,22,24 (occ)  
+         grp 2:  4 channel(s): 7,9,23,25 (occ)  
+
+ Start first of two band passes ...
+
+ optics: transitions for occ=(1,25)  unocc=(1,25):  4 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 1 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0 sec
+ bndfp:  kpt 1 of 140, k=  0.06250  0.00000  0.00000
+ -0.5829 -0.0145 -0.0145 -0.0125  0.1048  0.1094  1.7575  1.7803  1.7803
+ bndfp:  kpt 1 of 140, k=  0.06250  0.00000  0.00000
+ -0.6121 -0.1705 -0.1705 -0.1689 -0.0662 -0.0626  1.7435  1.7694  1.7694
+ bndfp:  kpt 11 of 140, k=  0.12500  0.12500  0.18750
+ -0.4937 -0.0409 -0.0373  0.0477  0.0920  0.1084  1.5480  1.5953  1.8591
+ bndfp:  kpt 11 of 140, k=  0.12500  0.12500  0.18750
+ -0.5242 -0.1915 -0.1875 -0.1133 -0.0767 -0.0634  1.4839  1.5382  1.7806
+ bndfp:  kpt 21 of 140, k=  0.18750  0.31250  0.43750
+ -0.2406 -0.1013 -0.0724  0.0985  0.1281  0.2452  0.8711  1.1327  1.4087
+ bndfp:  kpt 21 of 140, k=  0.18750  0.31250  0.43750
+ -0.3196 -0.2378 -0.1825 -0.0717 -0.0467  0.0959  0.7761  1.0607  1.3523
+ bndfp:  kpt 31 of 140, k=  0.31250  -0.12500  0.12500
+ -0.4132 -0.0503 -0.0484  0.0672  0.0843  0.1262  1.3697  1.4070  1.7942
+ bndfp:  kpt 31 of 140, k=  0.31250  -0.12500  0.12500
+ -0.4475 -0.1953 -0.1949 -0.0971 -0.0796 -0.0469  1.2864  1.3400  1.7336
+ bndfp:  kpt 41 of 140, k=  0.50000  -0.43750  0.00000
+ -0.2527 -0.1023  0.0311  0.1028  0.1408  0.2005  0.6597  1.3221  1.4530
+ bndfp:  kpt 41 of 140, k=  0.50000  -0.43750  0.00000
+ -0.3515 -0.2442 -0.0711 -0.0644  0.0176  0.0317  0.5371  1.2995  1.4003
+ bndfp:  kpt 51 of 140, k=  0.68750  -0.31250  0.31250
+ -0.1337 -0.1110 -0.1110  0.1203  0.1203  0.5854  0.5854  0.7428  1.5419
+ bndfp:  kpt 51 of 140, k=  0.68750  -0.31250  0.31250
+ -0.2621 -0.2249 -0.2249 -0.0510 -0.0510  0.4826  0.4826  0.6588  1.4808
+ bndfp:  kpt 61 of 140, k=  0.25000  0.31250  0.37500
+ -0.2418 -0.1045 -0.0953  0.1074  0.1220  0.2487  0.9805  1.1155  1.2625
+ bndfp:  kpt 61 of 140, k=  0.25000  0.31250  0.37500
+ -0.3069 -0.2393 -0.2191 -0.0649 -0.0531  0.0955  0.8928  1.0397  1.1965
+ bndfp:  kpt 71 of 140, k=  0.37500  0.37500  0.56250
+ -0.1481 -0.1137 -0.0982  0.1218  0.1267  0.5312  0.6777  0.7622  1.1585
+ bndfp:  kpt 71 of 140, k=  0.37500  0.37500  0.56250
+ -0.2713 -0.2306 -0.2096 -0.0531 -0.0490  0.4236  0.5766  0.6831  1.0889
+ bndfp:  kpt 81 of 140, k=  0.56250  -0.18750  0.18750
+ -0.2006 -0.1129 -0.0533  0.0749  0.1400  0.2868  0.9176  0.9307  1.6585
+ bndfp:  kpt 81 of 140, k=  0.56250  -0.18750  0.18750
+ -0.2871 -0.2390 -0.1876 -0.0889 -0.0317  0.1563  0.8181  0.8558  1.6160
+ bndfp:  kpt 91 of 140, k=  0.31250  0.50000  0.50000
+ -0.1651 -0.1221 -0.0749  0.1210  0.1282  0.4659  0.6566  1.0001  1.0029
+ bndfp:  kpt 91 of 140, k=  0.31250  0.50000  0.50000
+ -0.2764 -0.2526 -0.1810 -0.0539 -0.0486  0.3582  0.5500  0.9160  0.9430
+ bndfp:  kpt 101 of 140, k=  0.56250  -0.18750  0.06250
+ -0.2230 -0.0987 -0.0330  0.0557  0.1501  0.2335  0.9010  1.1710  1.4835
+ bndfp:  kpt 101 of 140, k=  0.56250  -0.18750  0.06250
+ -0.3042 -0.2221 -0.1784 -0.1030 -0.0239  0.1044  0.8074  1.0933  1.4204
+ bndfp:  kpt 111 of 140, k=  0.43750  0.43750  0.43750
+ -0.1224 -0.1224 -0.1177  0.1274  0.1274  0.5239  0.8204  0.8204  0.8490
+ bndfp:  kpt 111 of 140, k=  0.43750  0.43750  0.43750
+ -0.2456 -0.2456 -0.2232 -0.0492 -0.0492  0.4128  0.7252  0.7252  0.7935
+ bndfp:  kpt 121 of 140, k=  0.75000  -0.25000  0.06250
+ -0.1748 -0.1408 -0.0073  0.0707  0.1849  0.4572  0.6549  0.9905  1.4406
+ bndfp:  kpt 121 of 140, k=  0.75000  -0.25000  0.06250
+ -0.2902 -0.2539 -0.1554 -0.0871  0.0052  0.3723  0.5556  0.9204  1.3576
+ bndfp:  kpt 131 of 140, k=  0.81250  -0.12500  0.12500
+ -0.1803 -0.1777  0.0401  0.1357  0.1657  0.5809  0.7290  0.7719  1.5350
+ bndfp:  kpt 131 of 140, k=  0.81250  -0.12500  0.12500
+ -0.2967 -0.2956 -0.1118 -0.0335 -0.0100  0.5036  0.6528  0.7044  1.4263
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002745;   8.000000 electrons;  D(Ef):   16.439
+         Sum occ. bands:   -1.2709764  incl. Bloechl correction:   -0.001210
+         Mag. moment:      -2.259763
+
+ Saved qp weights ...
+ Start second band pass ...
+
+ optics: transitions for occ=(1,25)  unocc=(1,25):  4 states below Ef
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 1 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0.3 sec
+ bndfp:  kpt 1 of 140, k=  0.06250  0.00000  0.00000
+ -0.5829 -0.0145 -0.0145 -0.0125  0.1048  0.1094  1.7575  1.7803  1.7803
+ bndfp:  kpt 1 of 140, k=  0.06250  0.00000  0.00000
+ -0.6121 -0.1705 -0.1705 -0.1689 -0.0662 -0.0626  1.7435  1.7694  1.7694
+ bndfp:  kpt 11 of 140, k=  0.12500  0.12500  0.18750
+ -0.4937 -0.0409 -0.0373  0.0477  0.0920  0.1084  1.5480  1.5953  1.8591
+ bndfp:  kpt 11 of 140, k=  0.12500  0.12500  0.18750
+ -0.5242 -0.1915 -0.1875 -0.1133 -0.0767 -0.0634  1.4839  1.5382  1.7806
+ bndfp:  kpt 21 of 140, k=  0.18750  0.31250  0.43750
+ -0.2406 -0.1013 -0.0724  0.0985  0.1281  0.2452  0.8711  1.1327  1.4087
+ bndfp:  kpt 21 of 140, k=  0.18750  0.31250  0.43750
+ -0.3196 -0.2378 -0.1825 -0.0717 -0.0467  0.0959  0.7761  1.0607  1.3523
+ bndfp:  kpt 31 of 140, k=  0.31250  -0.12500  0.12500
+ -0.4132 -0.0503 -0.0484  0.0672  0.0843  0.1262  1.3697  1.4070  1.7942
+ bndfp:  kpt 31 of 140, k=  0.31250  -0.12500  0.12500
+ -0.4475 -0.1953 -0.1949 -0.0971 -0.0796 -0.0469  1.2864  1.3400  1.7336
+ bndfp:  kpt 41 of 140, k=  0.50000  -0.43750  0.00000
+ -0.2527 -0.1023  0.0311  0.1028  0.1408  0.2005  0.6597  1.3221  1.4530
+ bndfp:  kpt 41 of 140, k=  0.50000  -0.43750  0.00000
+ -0.3515 -0.2442 -0.0711 -0.0644  0.0176  0.0317  0.5371  1.2995  1.4003
+ bndfp:  kpt 51 of 140, k=  0.68750  -0.31250  0.31250
+ -0.1337 -0.1110 -0.1110  0.1203  0.1203  0.5854  0.5854  0.7428  1.5419
+ bndfp:  kpt 51 of 140, k=  0.68750  -0.31250  0.31250
+ -0.2621 -0.2249 -0.2249 -0.0510 -0.0510  0.4826  0.4826  0.6588  1.4808
+ bndfp:  kpt 61 of 140, k=  0.25000  0.31250  0.37500
+ -0.2418 -0.1045 -0.0953  0.1074  0.1220  0.2487  0.9805  1.1155  1.2625
+ bndfp:  kpt 61 of 140, k=  0.25000  0.31250  0.37500
+ -0.3069 -0.2393 -0.2191 -0.0649 -0.0531  0.0955  0.8928  1.0397  1.1965
+ bndfp:  kpt 71 of 140, k=  0.37500  0.37500  0.56250
+ -0.1481 -0.1137 -0.0982  0.1218  0.1267  0.5312  0.6777  0.7622  1.1585
+ bndfp:  kpt 71 of 140, k=  0.37500  0.37500  0.56250
+ -0.2713 -0.2306 -0.2096 -0.0531 -0.0490  0.4236  0.5766  0.6831  1.0889
+ bndfp:  kpt 81 of 140, k=  0.56250  -0.18750  0.18750
+ -0.2006 -0.1129 -0.0533  0.0749  0.1400  0.2868  0.9176  0.9307  1.6585
+ bndfp:  kpt 81 of 140, k=  0.56250  -0.18750  0.18750
+ -0.2871 -0.2390 -0.1876 -0.0889 -0.0317  0.1563  0.8181  0.8558  1.6160
+ bndfp:  kpt 91 of 140, k=  0.31250  0.50000  0.50000
+ -0.1651 -0.1221 -0.0749  0.1210  0.1282  0.4659  0.6566  1.0001  1.0029
+ bndfp:  kpt 91 of 140, k=  0.31250  0.50000  0.50000
+ -0.2764 -0.2526 -0.1810 -0.0539 -0.0486  0.3582  0.5500  0.9160  0.9430
+ bndfp:  kpt 101 of 140, k=  0.56250  -0.18750  0.06250
+ -0.2230 -0.0987 -0.0330  0.0557  0.1501  0.2335  0.9010  1.1710  1.4835
+ bndfp:  kpt 101 of 140, k=  0.56250  -0.18750  0.06250
+ -0.3042 -0.2221 -0.1784 -0.1030 -0.0239  0.1044  0.8074  1.0933  1.4204
+ bndfp:  kpt 111 of 140, k=  0.43750  0.43750  0.43750
+ -0.1224 -0.1224 -0.1177  0.1274  0.1274  0.5239  0.8204  0.8204  0.8490
+ bndfp:  kpt 111 of 140, k=  0.43750  0.43750  0.43750
+ -0.2456 -0.2456 -0.2232 -0.0492 -0.0492  0.4128  0.7252  0.7252  0.7935
+ bndfp:  kpt 121 of 140, k=  0.75000  -0.25000  0.06250
+ -0.1748 -0.1408 -0.0073  0.0707  0.1849  0.4572  0.6549  0.9905  1.4406
+ bndfp:  kpt 121 of 140, k=  0.75000  -0.25000  0.06250
+ -0.2902 -0.2539 -0.1554 -0.0871  0.0052  0.3723  0.5556  0.9204  1.3576
+ bndfp:  kpt 131 of 140, k=  0.81250  -0.12500  0.12500
+ -0.1803 -0.1777  0.0401  0.1357  0.1657  0.5809  0.7290  0.7719  1.5350
+ bndfp:  kpt 131 of 140, k=  0.81250  -0.12500  0.12500
+ -0.2967 -0.2956 -0.1118 -0.0335 -0.0100  0.5036  0.6528  0.7044  1.4263
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.002745;   8.000000 electrons;  D(Ef):   16.439
+         Sum occ. bands:   -1.2709764  incl. Bloechl correction:   -0.001210
+         Mag. moment:      -2.259763
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ OPTINQ:  DOS from occ bands (1,25), 2 Mulliken projection(s)
+          Resolve by k
+          1001 points in energy window (-0.7,0.8)  Efermi=-0.002745
+          Reduce bands to range (1,7)
+ TETWTQ:  total number of (occ,unocc) pairs = 28706, 8 or fewer per qp
+ OPTINT:  writing jdos file ...
+          writing binary file poptb:  140 channels, 3 polarizations
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    6.974565    2.724021    4.250544     -2.293589   -0.380481   -1.913109
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:Fe      
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.209607   -0.312884    4.595017    4.595187    4.500000    4.595187
+ spn 2 0    0.201306   -0.429679    4.568250    4.568880    4.500000    4.568880
+ 1     0    0.223968   -0.272248    4.315015    4.314115    4.250000    4.314115
+ spn 2 0    0.191680   -0.404180    4.295194    4.295971    4.250000    4.295971
+ 2     0    1.895799   -0.242813    3.551760    3.555282    3.147584    3.555282
+ spn 2 0    4.225367   -0.185508    3.834222    3.832500    3.147584    3.832500
+ 3     0    0.011114   -0.786001    4.108187    4.108162    4.102416    4.108162
+ spn 2 0    0.015724   -0.943384    4.105254    4.105261    4.102416    4.105261
+
+ Harris energy:
+ sumev=       -1.270976  val*vef=     -91.812766   sumtv=      90.541790
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2484.196936
+ rhoeps=    -107.261372     utot=   -5008.514287    ehar=   -2541.036933
+
+ srhov:     -5.786890    -85.947327    -91.734217 sumev=   -1.270976   sumtv=   90.463241
+
+ Kohn-Sham energy:
+ sumtv=       90.463241  sumtc=      2484.196936   ekin=     2574.660177
+ rhoep=     -107.250488   utot=     -5008.446656   ehks=    -2541.036967
+ mag. mom=    -2.259763  (bands)       -2.259763  (output rho)
+  
+ mixing: mode=A  nmix=6  beta=.5  elind=-1  kill=3
+ mixrho:  sought 6 iter from file mixm; read 5.  RMS DQ=1.21e-3
+ AMIX: condition of normal eqns >100000. Reducing nmix to 4
+ AMIX: condition of normal eqns >100000. Reducing nmix to 3
+ AMIX: condition of normal eqns >100000. Reducing nmix to 2
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=8  nelts=7660  beta=0.5  tm=5  rmsdel=6.06e-4
+   tj: 3.61669
+ add q=  0.000001 to preserve neutrality
+ unscreened rms difference:  smooth  0.000074   local  0.001333
+   screened rms difference:  smooth  0.000087   local  0.001333   tot  0.001213
+
+   it  1  of100    ehf=      -0.468833   ehk=      -0.468867
+i lteto=3 optmod=-5 lpart=12 nk=16 mmom=-2.2597629 ehf=-.4688331 ehk=-.4688675
+ Exit 0 lmf : exit (--quit=band) 
+ CPU time:    3.238s   Wall clock    3.334s   12:12:38 26.02.2015        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 3.334s. Resolution 0.000001s
+
+rdcmd:  cp jdos.fe dos-tet3.fe
+rdcmd:  lmf fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 '--popted:readb:npol 3:kshowe -0.01 1 sort ds,q3:kmape 0.05 1:saveka:q'
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special:  sharm
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ optics:   DOS, 1001 pts in [-0.7,0.8]
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  140 irreducible QP from 4096 ( 16 16 16 )  shift= T T T
+ TETIRR: sorting 24576 tetrahedra ... 4772 inequivalent ones found
+
+
+ Entering the popt file editor. Parsing command-line options ...
+
+ Option : readb
+ read 1001 energies, 420 spectra from file poptb
+
+ Option : npol 3
+
+ popt file has 3 polarizations
+
+ Option : kshowe -0.01 1 sort ds,q3
+    iq     q1          q2          q3            D(k)          BZ contr
+    87    0.312500    0.000000    0.000000      -0.03807      -0.00006
+     4    0.062500    0.187500    0.187500      -0.00017       0.00000
+    12    0.125000    0.187500    0.250000      -0.00001       0.00000
+    72    0.437500   -0.250000    0.000000      -0.00001       0.00000
+    20    0.187500    0.250000    0.375000       0.00000       0.00000
+    29    0.312500   -0.250000    0.000000       0.00000       0.00000
+   140    0.937500    0.000000    0.000000       0.00000       0.00000
+     5    0.062500    0.250000    0.250000       0.00000       0.00000
+    54    0.187500    0.250000    0.250000       0.00000       0.00000
+    60    0.250000    0.250000    0.312500       0.00000       0.00000
+    88    0.312500    0.312500    0.312500       0.00000       0.00000
+    51    0.687500   -0.312500    0.312500       0.00000       0.00000
+    89    0.312500    0.375000    0.375000       0.00000       0.00000
+    26    0.250000    0.250000    0.437500       0.00000       0.00000
+    66    0.312500    0.312500    0.437500       0.00000       0.00000
+    90    0.312500    0.437500    0.437500       0.00000       0.00000
+    93    0.375000    0.375000    0.437500       0.00000       0.00000
+   111    0.437500    0.437500    0.437500       0.00000       0.00000
+    27    0.250000    0.312500    0.500000       0.00000       0.00000
+    67    0.312500    0.375000    0.500000       0.00000       0.00000
+    91    0.312500    0.500000    0.500000       0.00000       0.00000
+    94    0.375000    0.437500    0.500000       0.00000       0.00000
+   112    0.437500    0.500000    0.500000       0.00000       0.00000
+    32    0.312500    0.312500    0.562500       0.00000       0.00000
+    68    0.312500    0.437500    0.562500       0.00000       0.00000
+    71    0.375000    0.375000    0.562500       0.00000       0.00000
+    97    0.437500    0.437500    0.562500       0.00000       0.00000
+    33    0.312500    0.375000    0.625000       0.00000       0.00000
+   137    0.812500    0.000000    0.000000       0.00000       0.00000
+    53    0.187500    0.187500    0.187500       0.00001       0.00000
+    19    0.187500    0.187500    0.312500       0.00001       0.00000
+    24    0.250000   -0.187500    0.000000       0.00004       0.00000
+    69    0.375000   -0.187500    0.000000       0.00005       0.00000
+    30    0.312500   -0.187500    0.062500       0.00007       0.00000
+    64    0.312500   -0.125000    0.000000       0.00071       0.00000
+    25    0.250000   -0.125000    0.062500       0.00268       0.00003
+   138    0.875000   -0.062500    0.000000       0.00391       0.00002
+    59    0.250000   -0.062500    0.000000       0.01116       0.00007
+    13    0.125000    0.250000    0.312500       0.01140       0.00013
+   139    0.937500   -0.062500    0.062500       0.01157       0.00002
+    17    0.187500   -0.125000    0.000000       0.03235       0.00019
+    48    0.562500   -0.250000    0.250000       0.03522       0.00021
+    35    0.375000   -0.250000    0.062500       0.03978       0.00047
+    61    0.250000    0.312500    0.375000       0.04108       0.00048
+    50    0.625000   -0.312500    0.250000       0.04745       0.00056
+    11    0.125000    0.125000    0.187500       0.05512       0.00032
+    39    0.437500   -0.250000    0.125000       0.06391       0.00075
+    52    0.187500    0.000000    0.000000       0.12404       0.00018
+    18    0.187500   -0.062500    0.062500       0.14783       0.00087
+    63    0.250000    0.437500    0.500000       0.22072       0.00259
+    44    0.500000   -0.250000    0.187500       0.24963       0.00293
+    55    0.187500    0.312500    0.312500       0.28579       0.00167
+    62    0.250000    0.375000    0.437500       0.33395       0.00391
+    28    0.250000    0.375000    0.562500       0.39421       0.00462
+    36    0.375000   -0.187500    0.125000       0.42519       0.00498
+    40    0.437500   -0.187500    0.187500       0.53570       0.00314
+   135    0.812500   -0.062500    0.062500       0.57233       0.00335
+    21    0.187500    0.312500    0.437500       0.61490       0.00721
+    86    0.687500   -0.250000    0.250000       0.63419       0.00372
+   136    0.875000   -0.125000    0.062500       0.64634       0.00379
+    31    0.312500   -0.125000    0.125000       0.66828       0.00392
+   133    0.750000   -0.062500    0.000000       0.78907       0.00462
+    76    0.500000   -0.250000    0.062500       0.79974       0.00937
+   132    0.687500    0.000000    0.000000       0.83158       0.00122
+    47    0.562500   -0.312500    0.187500       0.83316       0.00976
+    85    0.687500   -0.312500    0.187500       0.89041       0.00522
+    84    0.625000   -0.250000    0.187500       1.04345       0.01223
+    65    0.312500   -0.062500    0.062500       1.06478       0.00624
+   134    0.812500   -0.125000    0.000000       1.12884       0.00661
+     6    0.062500    0.312500    0.312500       1.22913       0.00720
+    49    0.625000   -0.375000    0.187500       1.29542       0.00759
+    56    0.187500    0.375000    0.375000       1.30055       0.00762
+    14    0.125000    0.312500    0.375000       1.35602       0.01589
+    80    0.562500   -0.250000    0.125000       1.41798       0.01662
+    81    0.562500   -0.187500    0.187500       1.57489       0.00923
+    73    0.437500   -0.187500    0.062500       1.65752       0.01942
+     3    0.062500    0.125000    0.125000       1.66923       0.00978
+    43    0.500000   -0.312500    0.125000       1.82069       0.02134
+    77    0.500000   -0.187500    0.125000       1.91166       0.02240
+    83    0.625000   -0.312500    0.125000       1.96828       0.02307
+    79    0.562500   -0.312500    0.062500       2.20998       0.02590
+    74    0.437500   -0.125000    0.125000       2.50337       0.01467
+   103    0.625000   -0.312500    0.000000       2.51253       0.01472
+   106    0.687500   -0.312500    0.062500       2.53997       0.01488
+    38    0.437500   -0.312500    0.062500       2.65230       0.03108
+    70    0.375000   -0.125000    0.062500       2.92464       0.03427
+    75    0.500000   -0.312500    0.000000       2.96776       0.01739
+    46    0.562500   -0.375000    0.125000       3.01975       0.03539
+    10    0.125000   -0.062500    0.000000       3.13375       0.01836
+    57    0.187500    0.437500    0.437500       3.22156       0.01888
+    22    0.187500    0.375000    0.500000       3.23137       0.03787
+    82    0.625000   -0.375000    0.062500       3.36103       0.01969
+   100    0.562500   -0.250000    0.000000       3.41524       0.02001
+   104    0.625000   -0.250000    0.062500       3.69623       0.04332
+   130    0.812500   -0.187500    0.062500       3.70962       0.02174
+    15    0.125000    0.375000    0.437500       3.73405       0.04376
+    23    0.187500    0.437500    0.562500       3.86186       0.02263
+   128    0.750000   -0.187500    0.000000       3.97451       0.02329
+    34    0.375000   -0.312500    0.000000       4.00919       0.02349
+   109    0.750000   -0.250000    0.187500       4.08368       0.02393
+   129    0.750000   -0.125000    0.062500       4.12129       0.04830
+   107    0.687500   -0.250000    0.125000       4.13272       0.04843
+   131    0.812500   -0.125000    0.125000       4.33064       0.02537
+   127    0.687500   -0.062500    0.062500       4.45702       0.02612
+     7    0.062500    0.375000    0.375000       4.64821       0.02724
+    98    0.500000   -0.187500    0.000000       4.80946       0.02818
+   126    0.687500   -0.125000    0.000000       5.02274       0.02943
+   108    0.687500   -0.187500    0.187500       5.17403       0.03032
+   125    0.625000   -0.062500    0.000000       5.21614       0.03056
+    92    0.375000   -0.062500    0.000000       6.40244       0.03751
+   101    0.562500   -0.187500    0.062500       6.72307       0.07879
+    95    0.437500   -0.125000    0.000000       7.09597       0.04158
+   105    0.625000   -0.187500    0.125000       7.88460       0.09240
+    58    0.187500    0.500000    0.500000       8.59572       0.02518
+   124    0.562500    0.000000    0.000000       9.24442       0.01354
+    99    0.500000   -0.125000    0.062500      10.61662       0.12441
+     2    0.062500    0.062500    0.062500      11.20878       0.02189
+   123    0.812500   -0.187500    0.187500      11.36223       0.02219
+    78    0.562500   -0.375000    0.000000      11.86192       0.06950
+   102    0.562500   -0.125000    0.125000      12.07130       0.07073
+   122    0.750000   -0.187500    0.125000      12.36613       0.14492
+    96    0.437500   -0.062500    0.062500      12.76210       0.07478
+     9    0.062500    0.500000    0.500000      13.14214       0.03850
+   120    0.687500   -0.125000    0.125000      14.25393       0.08352
+    41    0.500000   -0.437500    0.000000      14.61438       0.08563
+   117    0.625000   -0.125000    0.062500      16.59194       0.19444
+   115    0.562500   -0.062500    0.062500      16.72423       0.09799
+   116    0.625000   -0.187500    0.000000      17.74951       0.10400
+   119    0.687500   -0.187500    0.062500      17.88206       0.20956
+   121    0.750000   -0.250000    0.062500      18.54765       0.10868
+    16    0.125000    0.437500    0.500000      18.90339       0.22152
+   118    0.687500   -0.250000    0.000000      18.92334       0.11088
+    45    0.562500   -0.437500    0.062500      19.35041       0.11338
+   114    0.562500   -0.125000    0.000000      19.68413       0.11534
+    42    0.500000   -0.375000    0.062500      19.73322       0.23125
+     8    0.062500    0.437500    0.437500      21.20143       0.12423
+    37    0.437500   -0.375000    0.000000      21.64793       0.12684
+   113    0.500000   -0.062500    0.000000      26.25334       0.15383
+     1    0.062500    0.000000    0.000000      29.15699       0.04271
+   110    0.437500    0.000000    0.000000      36.24896       0.05310
+                                                   sum =       4.09752
+
+ Option : kmape 0.05 1
+ Map data omega=0.05, pol=1:  140 k-pts => (16 16 16) array
+
+ Option : saveka
+ wrote poptk to ascii file pka
+
+ Option : q
+ Exit 0 exit popt editor 
+ CPU time:    0.273s   Wall clock    0.319s   12:12:38 26.02.2015        on phpdl1.ph.kcl.ac.uk
+rdcmd:  mpirun -n 5 lmf fe --iactiv --band~con~fn=fs
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 5 lmf fe --iactiv --band~con~fn=fs
+ -----------------------  START LMF -----------------------
+ HEADER Fe test spin pol, f-orbitals for cls and mull
+
+ rdctrl: reset global max nl from 5 to 4
+
+ LMF:      nbas = 1  nspec = 1  vn 7.11.d  verb 30
+ special
+ pot:      spin-pol, XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+   0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000  -1.000000   0.000000
+   0.500000   0.500000  -0.500000        1.000000   0.000000  -1.000000
+   alat = 5.423516  Cell vol = 79.765082
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42352   awald= 0.465
+         r1=  2.466   nkd= 137      q1=  4.687   nkg= 201
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  44 irreducible QP from 1000 ( 10 10 10 )  shift= T T T
+ TETIRR: sorting 6000 tetrahedra ... 1097 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.325  0.930    3    4         3  0.581  1.162    15    1   0.930
+
+ MSHSIZ: mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+         generated from gmax = 13.0 a.u. : 2899 vectors of 4096 (70%)
+
+ GVLIST: gmax = 13 a.u. created 2899 vectors of 4096 (70%)
+         mesh has 16 x 16 x 16 divisions; length 0.294, 0.294, 0.294
+ SGVSYM: 95 symmetry stars found for 2899 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 25 0 7 0
+ suham :  16 augmentation channels, 16 local potential channels  Maximum lmxa=3
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Fe       0*   1.55  -0.30   4.796    2.50E-06     141 
+  Fe       1    1.55  -0.30   5.070    2.45E-06     177 
+  Fe       2    1.05  -0.30   8.080    1.25E-06     683 
+  Fe       3    1.55  -0.30   5.624    3.19E-06     225 
+  Fe       0*   1.55  -1.10   4.796    2.50E-06     141 
+  Fe       1    1.55  -1.10   5.070    2.45E-06     177 
+  Fe       2    1.05  -1.10   8.080    1.25E-06     683 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 100 ---
+
+ avg es pot at rmt= 0.648602  avg sphere pot= 0.625284  vconst=-0.648602
+
+ smooth rhoves     12.271636   charge     3.745375
+ smooth rhoeps =   -3.059923 (  -1.398154,  -1.661769)
+         rhomu =   -3.983122 (  -1.781576,  -2.201547)
+       avg vxc =   -0.859180 (  -0.847083,  -0.871277)
+
+ locpot:
+
+ site  1  z= 26.0  rmt= 2.32497  nr=321   a=0.030  nlml=16  rg=0.581  Vfloat=T
+ sm core charge = 0.687311 (sphere) + 0.014701 (spillout) = 0.702013
+ potential shift to crystal energy zero:    0.000785
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -5.779410       -86.033356       -91.812766
+   rhoval*ves            -30.628170       -45.495930       -76.124100
+   psnuc*ves              55.171442     -9996.075916     -9940.904474
+   utot                   12.271636     -5020.785923     -5008.514287
+   rho*exc                -3.059923      -104.201450      -107.261372
+   rho*vxc                -3.983122      -137.948658      -141.931780
+   valence chg             3.745375         4.254625         8.000000
+   valence mag            -0.350009        -1.950936        -2.300945
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence     8.00000   cores    18.00000   nucleii   -26.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Read efermi from weights file : ef = -0.002745
+ suqlst: read qp for bands, mode 3
+ Using h= 0.000000  origin =  0.000000  0.000000  0.000000
+ qx= 0.500000 0.500000 0.000000  x1,x2= 0.000000 1.000000  nx= 35   o=  0.000000  0.000000  0.000000
+ qy= 0.000000 0.000000 1.000000  y1,y2= 0.000000 1.000000  ny= 51  np= 1785
+ q(   1,   1)  0.000000  0.000000  0.000000  q(   1,  51)  0.000000  0.000000  1.000000
+ q(  35,   1)  0.500000  0.500000  0.000000  q(  35,  51)  0.500000  0.500000  1.000000
+        width  0.707107    height  1.000000
+ save 5 bands:   2 3 4 5 6                                                      
+
+ bndfp:  MPIK band plotting mode 3:  1785 q-points
+
+
+ ... Start MPI k-loop
+ ... Done MPI k-loop: 12.1 seconds elapsed
+ ... Sharing data between processes... MPI broadcast took 0 sec
+
+ Writing bands to bands file (MPIK) ...
+ suqlst: read qp for bands, mode 3
+ Using h= 0.000000  origin =  0.000000  0.000000  0.000000
+ qx= 0.500000 0.500000 0.000000  x1,x2= 0.000000 1.000000  nx= 35   o=  0.000000  0.000000  0.000000
+ qy= 0.000000 0.000000 1.000000  y1,y2= 0.000000 1.000000  ny= 51  np= 1785
+ q(   1,   1)  0.000000  0.000000  0.000000  q(   1,  51)  0.000000  0.000000  1.000000
+ q(  35,   1)  0.500000  0.500000  0.000000  q(  35,  51)  0.500000  0.500000  1.000000
+        width  0.707107    height  1.000000
+ save 5 bands:   2 3 4 5 6                                                      
+ line  1 of 35   q(1)=  0.000000  0.000000  0.000000
+ bndfp:  kpt 1 of 1785, k=  0.00000  0.00000  0.00000
+ bndfp:  kpt 1 of 1785, k=  0.00000  0.00000  0.00000
+ bndfp:  kpt 11 of 1785, k=  0.00000  0.00000  0.20000
+ bndfp:  kpt 11 of 1785, k=  0.00000  0.00000  0.20000
+ bndfp:  kpt 21 of 1785, k=  0.00000  0.00000  0.40000
+ bndfp:  kpt 21 of 1785, k=  0.00000  0.00000  0.40000
+ bndfp:  kpt 31 of 1785, k=  0.00000  0.00000  0.60000
+ bndfp:  kpt 31 of 1785, k=  0.00000  0.00000  0.60000
+ bndfp:  kpt 41 of 1785, k=  0.00000  0.00000  0.80000
+ bndfp:  kpt 41 of 1785, k=  0.00000  0.00000  0.80000
+ bndfp:  kpt 51 of 1785, k=  0.00000  0.00000  1.00000
+ bndfp:  kpt 51 of 1785, k=  0.00000  0.00000  1.00000
+ line  2 of 35   q(1)=  0.014706  0.014706  0.000000
+ bndfp:  kpt 61 of 1785, k=  0.01471  0.01471  0.18000
+ bndfp:  kpt 61 of 1785, k=  0.01471  0.01471  0.18000
+ bndfp:  kpt 71 of 1785, k=  0.01471  0.01471  0.38000
+ bndfp:  kpt 71 of 1785, k=  0.01471  0.01471  0.38000
+ bndfp:  kpt 81 of 1785, k=  0.01471  0.01471  0.58000
+ bndfp:  kpt 81 of 1785, k=  0.01471  0.01471  0.58000
+ bndfp:  kpt 91 of 1785, k=  0.01471  0.01471  0.78000
+ bndfp:  kpt 91 of 1785, k=  0.01471  0.01471  0.78000
+ bndfp:  kpt 101 of 1785, k=  0.01471  0.01471  0.98000
+ bndfp:  kpt 101 of 1785, k=  0.01471  0.01471  0.98000
+ line  3 of 35   q(1)=  0.029412  0.029412  0.000000
+ bndfp:  kpt 111 of 1785, k=  0.02941  0.02941  0.16000
+ bndfp:  kpt 111 of 1785, k=  0.02941  0.02941  0.16000
+ bndfp:  kpt 121 of 1785, k=  0.02941  0.02941  0.36000
+ bndfp:  kpt 121 of 1785, k=  0.02941  0.02941  0.36000
+ bndfp:  kpt 131 of 1785, k=  0.02941  0.02941  0.56000
+ bndfp:  kpt 131 of 1785, k=  0.02941  0.02941  0.56000
+ bndfp:  kpt 141 of 1785, k=  0.02941  0.02941  0.76000
+ bndfp:  kpt 141 of 1785, k=  0.02941  0.02941  0.76000
+ bndfp:  kpt 151 of 1785, k=  0.02941  0.02941  0.96000
+ bndfp:  kpt 151 of 1785, k=  0.02941  0.02941  0.96000
+ line  4 of 35   q(1)=  0.044118  0.044118  0.000000
+ bndfp:  kpt 161 of 1785, k=  0.04412  0.04412  0.14000
+ bndfp:  kpt 161 of 1785, k=  0.04412  0.04412  0.14000
+ bndfp:  kpt 171 of 1785, k=  0.04412  0.04412  0.34000
+ bndfp:  kpt 171 of 1785, k=  0.04412  0.04412  0.34000
+ bndfp:  kpt 181 of 1785, k=  0.04412  0.04412  0.54000
+ bndfp:  kpt 181 of 1785, k=  0.04412  0.04412  0.54000
+ bndfp:  kpt 191 of 1785, k=  0.04412  0.04412  0.74000
+ bndfp:  kpt 191 of 1785, k=  0.04412  0.04412  0.74000
+ bndfp:  kpt 201 of 1785, k=  0.04412  0.04412  0.94000
+ bndfp:  kpt 201 of 1785, k=  0.04412  0.04412  0.94000
+ line  5 of 35   q(1)=  0.058824  0.058824  0.000000
+ bndfp:  kpt 211 of 1785, k=  0.05882  0.05882  0.12000
+ bndfp:  kpt 211 of 1785, k=  0.05882  0.05882  0.12000
+ bndfp:  kpt 221 of 1785, k=  0.05882  0.05882  0.32000
+ bndfp:  kpt 221 of 1785, k=  0.05882  0.05882  0.32000
+ bndfp:  kpt 231 of 1785, k=  0.05882  0.05882  0.52000
+ bndfp:  kpt 231 of 1785, k=  0.05882  0.05882  0.52000
+ bndfp:  kpt 241 of 1785, k=  0.05882  0.05882  0.72000
+ bndfp:  kpt 241 of 1785, k=  0.05882  0.05882  0.72000
+ bndfp:  kpt 251 of 1785, k=  0.05882  0.05882  0.92000
+ bndfp:  kpt 251 of 1785, k=  0.05882  0.05882  0.92000
+ line  6 of 35   q(1)=  0.073529  0.073529  0.000000
+ bndfp:  kpt 261 of 1785, k=  0.07353  0.07353  0.10000
+ bndfp:  kpt 261 of 1785, k=  0.07353  0.07353  0.10000
+ bndfp:  kpt 271 of 1785, k=  0.07353  0.07353  0.30000
+ bndfp:  kpt 271 of 1785, k=  0.07353  0.07353  0.30000
+ bndfp:  kpt 281 of 1785, k=  0.07353  0.07353  0.50000
+ bndfp:  kpt 281 of 1785, k=  0.07353  0.07353  0.50000
+ bndfp:  kpt 291 of 1785, k=  0.07353  0.07353  0.70000
+ bndfp:  kpt 291 of 1785, k=  0.07353  0.07353  0.70000
+ bndfp:  kpt 301 of 1785, k=  0.07353  0.07353  0.90000
+ bndfp:  kpt 301 of 1785, k=  0.07353  0.07353  0.90000
+ line  7 of 35   q(1)=  0.088235  0.088235  0.000000
+ bndfp:  kpt 311 of 1785, k=  0.08824  0.08824  0.08000
+ bndfp:  kpt 311 of 1785, k=  0.08824  0.08824  0.08000
+ bndfp:  kpt 321 of 1785, k=  0.08824  0.08824  0.28000
+ bndfp:  kpt 321 of 1785, k=  0.08824  0.08824  0.28000
+ bndfp:  kpt 331 of 1785, k=  0.08824  0.08824  0.48000
+ bndfp:  kpt 331 of 1785, k=  0.08824  0.08824  0.48000
+ bndfp:  kpt 341 of 1785, k=  0.08824  0.08824  0.68000
+ bndfp:  kpt 341 of 1785, k=  0.08824  0.08824  0.68000
+ bndfp:  kpt 351 of 1785, k=  0.08824  0.08824  0.88000
+ bndfp:  kpt 351 of 1785, k=  0.08824  0.08824  0.88000
+ line  8 of 35   q(1)=  0.102941  0.102941  0.000000
+ bndfp:  kpt 361 of 1785, k=  0.10294  0.10294  0.06000
+ bndfp:  kpt 361 of 1785, k=  0.10294  0.10294  0.06000
+ bndfp:  kpt 371 of 1785, k=  0.10294  0.10294  0.26000
+ bndfp:  kpt 371 of 1785, k=  0.10294  0.10294  0.26000
+ bndfp:  kpt 381 of 1785, k=  0.10294  0.10294  0.46000
+ bndfp:  kpt 381 of 1785, k=  0.10294  0.10294  0.46000
+ bndfp:  kpt 391 of 1785, k=  0.10294  0.10294  0.66000
+ bndfp:  kpt 391 of 1785, k=  0.10294  0.10294  0.66000
+ bndfp:  kpt 401 of 1785, k=  0.10294  0.10294  0.86000
+ bndfp:  kpt 401 of 1785, k=  0.10294  0.10294  0.86000
+ line  9 of 35   q(1)=  0.117647  0.117647  0.000000
+ bndfp:  kpt 411 of 1785, k=  0.11765  0.11765  0.04000
+ bndfp:  kpt 411 of 1785, k=  0.11765  0.11765  0.04000
+ bndfp:  kpt 421 of 1785, k=  0.11765  0.11765  0.24000
+ bndfp:  kpt 421 of 1785, k=  0.11765  0.11765  0.24000
+ bndfp:  kpt 431 of 1785, k=  0.11765  0.11765  0.44000
+ bndfp:  kpt 431 of 1785, k=  0.11765  0.11765  0.44000
+ bndfp:  kpt 441 of 1785, k=  0.11765  0.11765  0.64000
+ bndfp:  kpt 441 of 1785, k=  0.11765  0.11765  0.64000
+ bndfp:  kpt 451 of 1785, k=  0.11765  0.11765  0.84000
+ bndfp:  kpt 451 of 1785, k=  0.11765  0.11765  0.84000
+ line 10 of 35   q(1)=  0.132353  0.132353  0.000000
+ bndfp:  kpt 461 of 1785, k=  0.13235  0.13235  0.02000
+ bndfp:  kpt 461 of 1785, k=  0.13235  0.13235  0.02000
+ bndfp:  kpt 471 of 1785, k=  0.13235  0.13235  0.22000
+ bndfp:  kpt 471 of 1785, k=  0.13235  0.13235  0.22000
+ bndfp:  kpt 481 of 1785, k=  0.13235  0.13235  0.42000
+ bndfp:  kpt 481 of 1785, k=  0.13235  0.13235  0.42000
+ bndfp:  kpt 491 of 1785, k=  0.13235  0.13235  0.62000
+ bndfp:  kpt 491 of 1785, k=  0.13235  0.13235  0.62000
+ bndfp:  kpt 501 of 1785, k=  0.13235  0.13235  0.82000
+ bndfp:  kpt 501 of 1785, k=  0.13235  0.13235  0.82000
+ line 11 of 35   q(1)=  0.147059  0.147059  0.000000
+ bndfp:  kpt 511 of 1785, k=  0.14706  0.14706  0.00000
+ bndfp:  kpt 511 of 1785, k=  0.14706  0.14706  0.00000
+ bndfp:  kpt 521 of 1785, k=  0.14706  0.14706  0.20000
+ bndfp:  kpt 521 of 1785, k=  0.14706  0.14706  0.20000
+ bndfp:  kpt 531 of 1785, k=  0.14706  0.14706  0.40000
+ bndfp:  kpt 531 of 1785, k=  0.14706  0.14706  0.40000
+ bndfp:  kpt 541 of 1785, k=  0.14706  0.14706  0.60000
+ bndfp:  kpt 541 of 1785, k=  0.14706  0.14706  0.60000
+ bndfp:  kpt 551 of 1785, k=  0.14706  0.14706  0.80000
+ bndfp:  kpt 551 of 1785, k=  0.14706  0.14706  0.80000
+ bndfp:  kpt 561 of 1785, k=  0.14706  0.14706  1.00000
+ bndfp:  kpt 561 of 1785, k=  0.14706  0.14706  1.00000
+ line 12 of 35   q(1)=  0.161765  0.161765  0.000000
+ bndfp:  kpt 571 of 1785, k=  0.16176  0.16176  0.18000
+ bndfp:  kpt 571 of 1785, k=  0.16176  0.16176  0.18000
+ bndfp:  kpt 581 of 1785, k=  0.16176  0.16176  0.38000
+ bndfp:  kpt 581 of 1785, k=  0.16176  0.16176  0.38000
+ bndfp:  kpt 591 of 1785, k=  0.16176  0.16176  0.58000
+ bndfp:  kpt 591 of 1785, k=  0.16176  0.16176  0.58000
+ bndfp:  kpt 601 of 1785, k=  0.16176  0.16176  0.78000
+ bndfp:  kpt 601 of 1785, k=  0.16176  0.16176  0.78000
+ bndfp:  kpt 611 of 1785, k=  0.16176  0.16176  0.98000
+ bndfp:  kpt 611 of 1785, k=  0.16176  0.16176  0.98000
+ line 13 of 35   q(1)=  0.176471  0.176471  0.000000
+ bndfp:  kpt 621 of 1785, k=  0.17647  0.17647  0.16000
+ bndfp:  kpt 621 of 1785, k=  0.17647  0.17647  0.16000
+ bndfp:  kpt 631 of 1785, k=  0.17647  0.17647  0.36000
+ bndfp:  kpt 631 of 1785, k=  0.17647  0.17647  0.36000
+ bndfp:  kpt 641 of 1785, k=  0.17647  0.17647  0.56000
+ bndfp:  kpt 641 of 1785, k=  0.17647  0.17647  0.56000
+ bndfp:  kpt 651 of 1785, k=  0.17647  0.17647  0.76000
+ bndfp:  kpt 651 of 1785, k=  0.17647  0.17647  0.76000
+ bndfp:  kpt 661 of 1785, k=  0.17647  0.17647  0.96000
+ bndfp:  kpt 661 of 1785, k=  0.17647  0.17647  0.96000
+ line 14 of 35   q(1)=  0.191176  0.191176  0.000000
+ bndfp:  kpt 671 of 1785, k=  0.19118  0.19118  0.14000
+ bndfp:  kpt 671 of 1785, k=  0.19118  0.19118  0.14000
+ bndfp:  kpt 681 of 1785, k=  0.19118  0.19118  0.34000
+ bndfp:  kpt 681 of 1785, k=  0.19118  0.19118  0.34000
+ bndfp:  kpt 691 of 1785, k=  0.19118  0.19118  0.54000
+ bndfp:  kpt 691 of 1785, k=  0.19118  0.19118  0.54000
+ bndfp:  kpt 701 of 1785, k=  0.19118  0.19118  0.74000
+ bndfp:  kpt 701 of 1785, k=  0.19118  0.19118  0.74000
+ bndfp:  kpt 711 of 1785, k=  0.19118  0.19118  0.94000
+ bndfp:  kpt 711 of 1785, k=  0.19118  0.19118  0.94000
+ line 15 of 35   q(1)=  0.205882  0.205882  0.000000
+ bndfp:  kpt 721 of 1785, k=  0.20588  0.20588  0.12000
+ bndfp:  kpt 721 of 1785, k=  0.20588  0.20588  0.12000
+ bndfp:  kpt 731 of 1785, k=  0.20588  0.20588  0.32000
+ bndfp:  kpt 731 of 1785, k=  0.20588  0.20588  0.32000
+ bndfp:  kpt 741 of 1785, k=  0.20588  0.20588  0.52000
+ bndfp:  kpt 741 of 1785, k=  0.20588  0.20588  0.52000
+ bndfp:  kpt 751 of 1785, k=  0.20588  0.20588  0.72000
+ bndfp:  kpt 751 of 1785, k=  0.20588  0.20588  0.72000
+ bndfp:  kpt 761 of 1785, k=  0.20588  0.20588  0.92000
+ bndfp:  kpt 761 of 1785, k=  0.20588  0.20588  0.92000
+ line 16 of 35   q(1)=  0.220588  0.220588  0.000000
+ bndfp:  kpt 771 of 1785, k=  0.22059  0.22059  0.10000
+ bndfp:  kpt 771 of 1785, k=  0.22059  0.22059  0.10000
+ bndfp:  kpt 781 of 1785, k=  0.22059  0.22059  0.30000
+ bndfp:  kpt 781 of 1785, k=  0.22059  0.22059  0.30000
+ bndfp:  kpt 791 of 1785, k=  0.22059  0.22059  0.50000
+ bndfp:  kpt 791 of 1785, k=  0.22059  0.22059  0.50000
+ bndfp:  kpt 801 of 1785, k=  0.22059  0.22059  0.70000
+ bndfp:  kpt 801 of 1785, k=  0.22059  0.22059  0.70000
+ bndfp:  kpt 811 of 1785, k=  0.22059  0.22059  0.90000
+ bndfp:  kpt 811 of 1785, k=  0.22059  0.22059  0.90000
+ line 17 of 35   q(1)=  0.235294  0.235294  0.000000
+ bndfp:  kpt 821 of 1785, k=  0.23529  0.23529  0.08000
+ bndfp:  kpt 821 of 1785, k=  0.23529  0.23529  0.08000
+ bndfp:  kpt 831 of 1785, k=  0.23529  0.23529  0.28000
+ bndfp:  kpt 831 of 1785, k=  0.23529  0.23529  0.28000
+ bndfp:  kpt 841 of 1785, k=  0.23529  0.23529  0.48000
+ bndfp:  kpt 841 of 1785, k=  0.23529  0.23529  0.48000
+ bndfp:  kpt 851 of 1785, k=  0.23529  0.23529  0.68000
+ bndfp:  kpt 851 of 1785, k=  0.23529  0.23529  0.68000
+ bndfp:  kpt 861 of 1785, k=  0.23529  0.23529  0.88000
+ bndfp:  kpt 861 of 1785, k=  0.23529  0.23529  0.88000
+ line 18 of 35   q(1)=  0.250000  0.250000  0.000000
+ bndfp:  kpt 871 of 1785, k=  0.25000  0.25000  0.06000
+ bndfp:  kpt 871 of 1785, k=  0.25000  0.25000  0.06000
+ bndfp:  kpt 881 of 1785, k=  0.25000  0.25000  0.26000
+ bndfp:  kpt 881 of 1785, k=  0.25000  0.25000  0.26000
+ bndfp:  kpt 891 of 1785, k=  0.25000  0.25000  0.46000
+ bndfp:  kpt 891 of 1785, k=  0.25000  0.25000  0.46000
+ bndfp:  kpt 901 of 1785, k=  0.25000  0.25000  0.66000
+ bndfp:  kpt 901 of 1785, k=  0.25000  0.25000  0.66000
+ bndfp:  kpt 911 of 1785, k=  0.25000  0.25000  0.86000
+ bndfp:  kpt 911 of 1785, k=  0.25000  0.25000  0.86000
+ line 19 of 35   q(1)=  0.264706  0.264706  0.000000
+ bndfp:  kpt 921 of 1785, k=  0.26471  0.26471  0.04000
+ bndfp:  kpt 921 of 1785, k=  0.26471  0.26471  0.04000
+ bndfp:  kpt 931 of 1785, k=  0.26471  0.26471  0.24000
+ bndfp:  kpt 931 of 1785, k=  0.26471  0.26471  0.24000
+ bndfp:  kpt 941 of 1785, k=  0.26471  0.26471  0.44000
+ bndfp:  kpt 941 of 1785, k=  0.26471  0.26471  0.44000
+ bndfp:  kpt 951 of 1785, k=  0.26471  0.26471  0.64000
+ bndfp:  kpt 951 of 1785, k=  0.26471  0.26471  0.64000
+ bndfp:  kpt 961 of 1785, k=  0.26471  0.26471  0.84000
+ bndfp:  kpt 961 of 1785, k=  0.26471  0.26471  0.84000
+ line 20 of 35   q(1)=  0.279412  0.279412  0.000000
+ bndfp:  kpt 971 of 1785, k=  0.27941  0.27941  0.02000
+ bndfp:  kpt 971 of 1785, k=  0.27941  0.27941  0.02000
+ bndfp:  kpt 981 of 1785, k=  0.27941  0.27941  0.22000
+ bndfp:  kpt 981 of 1785, k=  0.27941  0.27941  0.22000
+ bndfp:  kpt 991 of 1785, k=  0.27941  0.27941  0.42000
+ bndfp:  kpt 991 of 1785, k=  0.27941  0.27941  0.42000
+ bndfp:  kpt 1001 of 1785, k=  0.27941  0.27941  0.62000
+ bndfp:  kpt 1001 of 1785, k=  0.27941  0.27941  0.62000
+ bndfp:  kpt 1011 of 1785, k=  0.27941  0.27941  0.82000
+ bndfp:  kpt 1011 of 1785, k=  0.27941  0.27941  0.82000
+ line 21 of 35   q(1)=  0.294118  0.294118  0.000000
+ bndfp:  kpt 1021 of 1785, k=  0.29412  0.29412  0.00000
+ bndfp:  kpt 1021 of 1785, k=  0.29412  0.29412  0.00000
+ bndfp:  kpt 1031 of 1785, k=  0.29412  0.29412  0.20000
+ bndfp:  kpt 1031 of 1785, k=  0.29412  0.29412  0.20000
+ bndfp:  kpt 1041 of 1785, k=  0.29412  0.29412  0.40000
+ bndfp:  kpt 1041 of 1785, k=  0.29412  0.29412  0.40000
+ bndfp:  kpt 1051 of 1785, k=  0.29412  0.29412  0.60000
+ bndfp:  kpt 1051 of 1785, k=  0.29412  0.29412  0.60000
+ bndfp:  kpt 1061 of 1785, k=  0.29412  0.29412  0.80000
+ bndfp:  kpt 1061 of 1785, k=  0.29412  0.29412  0.80000
+ bndfp:  kpt 1071 of 1785, k=  0.29412  0.29412  1.00000
+ bndfp:  kpt 1071 of 1785, k=  0.29412  0.29412  1.00000
+ line 22 of 35   q(1)=  0.308824  0.308824  0.000000
+ bndfp:  kpt 1081 of 1785, k=  0.30882  0.30882  0.18000
+ bndfp:  kpt 1081 of 1785, k=  0.30882  0.30882  0.18000
+ bndfp:  kpt 1091 of 1785, k=  0.30882  0.30882  0.38000
+ bndfp:  kpt 1091 of 1785, k=  0.30882  0.30882  0.38000
+ bndfp:  kpt 1101 of 1785, k=  0.30882  0.30882  0.58000
+ bndfp:  kpt 1101 of 1785, k=  0.30882  0.30882  0.58000
+ bndfp:  kpt 1111 of 1785, k=  0.30882  0.30882  0.78000
+ bndfp:  kpt 1111 of 1785, k=  0.30882  0.30882  0.78000
+ bndfp:  kpt 1121 of 1785, k=  0.30882  0.30882  0.98000
+ bndfp:  kpt 1121 of 1785, k=  0.30882  0.30882  0.98000
+ line 23 of 35   q(1)=  0.323529  0.323529  0.000000
+ bndfp:  kpt 1131 of 1785, k=  0.32353  0.32353  0.16000
+ bndfp:  kpt 1131 of 1785, k=  0.32353  0.32353  0.16000
+ bndfp:  kpt 1141 of 1785, k=  0.32353  0.32353  0.36000
+ bndfp:  kpt 1141 of 1785, k=  0.32353  0.32353  0.36000
+ bndfp:  kpt 1151 of 1785, k=  0.32353  0.32353  0.56000
+ bndfp:  kpt 1151 of 1785, k=  0.32353  0.32353  0.56000
+ bndfp:  kpt 1161 of 1785, k=  0.32353  0.32353  0.76000
+ bndfp:  kpt 1161 of 1785, k=  0.32353  0.32353  0.76000
+ bndfp:  kpt 1171 of 1785, k=  0.32353  0.32353  0.96000
+ bndfp:  kpt 1171 of 1785, k=  0.32353  0.32353  0.96000
+ line 24 of 35   q(1)=  0.338235  0.338235  0.000000
+ bndfp:  kpt 1181 of 1785, k=  0.33824  0.33824  0.14000
+ bndfp:  kpt 1181 of 1785, k=  0.33824  0.33824  0.14000
+ bndfp:  kpt 1191 of 1785, k=  0.33824  0.33824  0.34000
+ bndfp:  kpt 1191 of 1785, k=  0.33824  0.33824  0.34000
+ bndfp:  kpt 1201 of 1785, k=  0.33824  0.33824  0.54000
+ bndfp:  kpt 1201 of 1785, k=  0.33824  0.33824  0.54000
+ bndfp:  kpt 1211 of 1785, k=  0.33824  0.33824  0.74000
+ bndfp:  kpt 1211 of 1785, k=  0.33824  0.33824  0.74000
+ bndfp:  kpt 1221 of 1785, k=  0.33824  0.33824  0.94000
+ bndfp:  kpt 1221 of 1785, k=  0.33824  0.33824  0.94000
+ line 25 of 35   q(1)=  0.352941  0.352941  0.000000
+ bndfp:  kpt 1231 of 1785, k=  0.35294  0.35294  0.12000
+ bndfp:  kpt 1231 of 1785, k=  0.35294  0.35294  0.12000
+ bndfp:  kpt 1241 of 1785, k=  0.35294  0.35294  0.32000
+ bndfp:  kpt 1241 of 1785, k=  0.35294  0.35294  0.32000
+ bndfp:  kpt 1251 of 1785, k=  0.35294  0.35294  0.52000
+ bndfp:  kpt 1251 of 1785, k=  0.35294  0.35294  0.52000
+ bndfp:  kpt 1261 of 1785, k=  0.35294  0.35294  0.72000
+ bndfp:  kpt 1261 of 1785, k=  0.35294  0.35294  0.72000
+ bndfp:  kpt 1271 of 1785, k=  0.35294  0.35294  0.92000
+ bndfp:  kpt 1271 of 1785, k=  0.35294  0.35294  0.92000
+ line 26 of 35   q(1)=  0.367647  0.367647  0.000000
+ bndfp:  kpt 1281 of 1785, k=  0.36765  0.36765  0.10000
+ bndfp:  kpt 1281 of 1785, k=  0.36765  0.36765  0.10000
+ bndfp:  kpt 1291 of 1785, k=  0.36765  0.36765  0.30000
+ bndfp:  kpt 1291 of 1785, k=  0.36765  0.36765  0.30000
+ bndfp:  kpt 1301 of 1785, k=  0.36765  0.36765  0.50000
+ bndfp:  kpt 1301 of 1785, k=  0.36765  0.36765  0.50000
+ bndfp:  kpt 1311 of 1785, k=  0.36765  0.36765  0.70000
+ bndfp:  kpt 1311 of 1785, k=  0.36765  0.36765  0.70000
+ bndfp:  kpt 1321 of 1785, k=  0.36765  0.36765  0.90000
+ bndfp:  kpt 1321 of 1785, k=  0.36765  0.36765  0.90000
+ line 27 of 35   q(1)=  0.382353  0.382353  0.000000
+ bndfp:  kpt 1331 of 1785, k=  0.38235  0.38235  0.08000
+ bndfp:  kpt 1331 of 1785, k=  0.38235  0.38235  0.08000
+ bndfp:  kpt 1341 of 1785, k=  0.38235  0.38235  0.28000
+ bndfp:  kpt 1341 of 1785, k=  0.38235  0.38235  0.28000
+ bndfp:  kpt 1351 of 1785, k=  0.38235  0.38235  0.48000
+ bndfp:  kpt 1351 of 1785, k=  0.38235  0.38235  0.48000
+ bndfp:  kpt 1361 of 1785, k=  0.38235  0.38235  0.68000
+ bndfp:  kpt 1361 of 1785, k=  0.38235  0.38235  0.68000
+ bndfp:  kpt 1371 of 1785, k=  0.38235  0.38235  0.88000
+ bndfp:  kpt 1371 of 1785, k=  0.38235  0.38235  0.88000
+ line 28 of 35   q(1)=  0.397059  0.397059  0.000000
+ bndfp:  kpt 1381 of 1785, k=  0.39706  0.39706  0.06000
+ bndfp:  kpt 1381 of 1785, k=  0.39706  0.39706  0.06000
+ bndfp:  kpt 1391 of 1785, k=  0.39706  0.39706  0.26000
+ bndfp:  kpt 1391 of 1785, k=  0.39706  0.39706  0.26000
+ bndfp:  kpt 1401 of 1785, k=  0.39706  0.39706  0.46000
+ bndfp:  kpt 1401 of 1785, k=  0.39706  0.39706  0.46000
+ bndfp:  kpt 1411 of 1785, k=  0.39706  0.39706  0.66000
+ bndfp:  kpt 1411 of 1785, k=  0.39706  0.39706  0.66000
+ bndfp:  kpt 1421 of 1785, k=  0.39706  0.39706  0.86000
+ bndfp:  kpt 1421 of 1785, k=  0.39706  0.39706  0.86000
+ line 29 of 35   q(1)=  0.411765  0.411765  0.000000
+ bndfp:  kpt 1431 of 1785, k=  0.41176  0.41176  0.04000
+ bndfp:  kpt 1431 of 1785, k=  0.41176  0.41176  0.04000
+ bndfp:  kpt 1441 of 1785, k=  0.41176  0.41176  0.24000
+ bndfp:  kpt 1441 of 1785, k=  0.41176  0.41176  0.24000
+ bndfp:  kpt 1451 of 1785, k=  0.41176  0.41176  0.44000
+ bndfp:  kpt 1451 of 1785, k=  0.41176  0.41176  0.44000
+ bndfp:  kpt 1461 of 1785, k=  0.41176  0.41176  0.64000
+ bndfp:  kpt 1461 of 1785, k=  0.41176  0.41176  0.64000
+ bndfp:  kpt 1471 of 1785, k=  0.41176  0.41176  0.84000
+ bndfp:  kpt 1471 of 1785, k=  0.41176  0.41176  0.84000
+ line 30 of 35   q(1)=  0.426471  0.426471  0.000000
+ bndfp:  kpt 1481 of 1785, k=  0.42647  0.42647  0.02000
+ bndfp:  kpt 1481 of 1785, k=  0.42647  0.42647  0.02000
+ bndfp:  kpt 1491 of 1785, k=  0.42647  0.42647  0.22000
+ bndfp:  kpt 1491 of 1785, k=  0.42647  0.42647  0.22000
+ bndfp:  kpt 1501 of 1785, k=  0.42647  0.42647  0.42000
+ bndfp:  kpt 1501 of 1785, k=  0.42647  0.42647  0.42000
+ bndfp:  kpt 1511 of 1785, k=  0.42647  0.42647  0.62000
+ bndfp:  kpt 1511 of 1785, k=  0.42647  0.42647  0.62000
+ bndfp:  kpt 1521 of 1785, k=  0.42647  0.42647  0.82000
+ bndfp:  kpt 1521 of 1785, k=  0.42647  0.42647  0.82000
+ line 31 of 35   q(1)=  0.441176  0.441176  0.000000
+ bndfp:  kpt 1531 of 1785, k=  0.44118  0.44118  0.00000
+ bndfp:  kpt 1531 of 1785, k=  0.44118  0.44118  0.00000
+ bndfp:  kpt 1541 of 1785, k=  0.44118  0.44118  0.20000
+ bndfp:  kpt 1541 of 1785, k=  0.44118  0.44118  0.20000
+ bndfp:  kpt 1551 of 1785, k=  0.44118  0.44118  0.40000
+ bndfp:  kpt 1551 of 1785, k=  0.44118  0.44118  0.40000
+ bndfp:  kpt 1561 of 1785, k=  0.44118  0.44118  0.60000
+ bndfp:  kpt 1561 of 1785, k=  0.44118  0.44118  0.60000
+ bndfp:  kpt 1571 of 1785, k=  0.44118  0.44118  0.80000
+ bndfp:  kpt 1571 of 1785, k=  0.44118  0.44118  0.80000
+ bndfp:  kpt 1581 of 1785, k=  0.44118  0.44118  1.00000
+ bndfp:  kpt 1581 of 1785, k=  0.44118  0.44118  1.00000
+ line 32 of 35   q(1)=  0.455882  0.455882  0.000000
+ bndfp:  kpt 1591 of 1785, k=  0.45588  0.45588  0.18000
+ bndfp:  kpt 1591 of 1785, k=  0.45588  0.45588  0.18000
+ bndfp:  kpt 1601 of 1785, k=  0.45588  0.45588  0.38000
+ bndfp:  kpt 1601 of 1785, k=  0.45588  0.45588  0.38000
+ bndfp:  kpt 1611 of 1785, k=  0.45588  0.45588  0.58000
+ bndfp:  kpt 1611 of 1785, k=  0.45588  0.45588  0.58000
+ bndfp:  kpt 1621 of 1785, k=  0.45588  0.45588  0.78000
+ bndfp:  kpt 1621 of 1785, k=  0.45588  0.45588  0.78000
+ bndfp:  kpt 1631 of 1785, k=  0.45588  0.45588  0.98000
+ bndfp:  kpt 1631 of 1785, k=  0.45588  0.45588  0.98000
+ line 33 of 35   q(1)=  0.470588  0.470588  0.000000
+ bndfp:  kpt 1641 of 1785, k=  0.47059  0.47059  0.16000
+ bndfp:  kpt 1641 of 1785, k=  0.47059  0.47059  0.16000
+ bndfp:  kpt 1651 of 1785, k=  0.47059  0.47059  0.36000
+ bndfp:  kpt 1651 of 1785, k=  0.47059  0.47059  0.36000
+ bndfp:  kpt 1661 of 1785, k=  0.47059  0.47059  0.56000
+ bndfp:  kpt 1661 of 1785, k=  0.47059  0.47059  0.56000
+ bndfp:  kpt 1671 of 1785, k=  0.47059  0.47059  0.76000
+ bndfp:  kpt 1671 of 1785, k=  0.47059  0.47059  0.76000
+ bndfp:  kpt 1681 of 1785, k=  0.47059  0.47059  0.96000
+ bndfp:  kpt 1681 of 1785, k=  0.47059  0.47059  0.96000
+ line 34 of 35   q(1)=  0.485294  0.485294  0.000000
+ bndfp:  kpt 1691 of 1785, k=  0.48529  0.48529  0.14000
+ bndfp:  kpt 1691 of 1785, k=  0.48529  0.48529  0.14000
+ bndfp:  kpt 1701 of 1785, k=  0.48529  0.48529  0.34000
+ bndfp:  kpt 1701 of 1785, k=  0.48529  0.48529  0.34000
+ bndfp:  kpt 1711 of 1785, k=  0.48529  0.48529  0.54000
+ bndfp:  kpt 1711 of 1785, k=  0.48529  0.48529  0.54000
+ bndfp:  kpt 1721 of 1785, k=  0.48529  0.48529  0.74000
+ bndfp:  kpt 1721 of 1785, k=  0.48529  0.48529  0.74000
+ bndfp:  kpt 1731 of 1785, k=  0.48529  0.48529  0.94000
+ bndfp:  kpt 1731 of 1785, k=  0.48529  0.48529  0.94000
+ line 35 of 35   q(1)=  0.500000  0.500000  0.000000
+ bndfp:  kpt 1741 of 1785, k=  0.50000  0.50000  0.12000
+ bndfp:  kpt 1741 of 1785, k=  0.50000  0.50000  0.12000
+ bndfp:  kpt 1751 of 1785, k=  0.50000  0.50000  0.32000
+ bndfp:  kpt 1751 of 1785, k=  0.50000  0.50000  0.32000
+ bndfp:  kpt 1761 of 1785, k=  0.50000  0.50000  0.52000
+ bndfp:  kpt 1761 of 1785, k=  0.50000  0.50000  0.52000
+ bndfp:  kpt 1771 of 1785, k=  0.50000  0.50000  0.72000
+ bndfp:  kpt 1771 of 1785, k=  0.50000  0.50000  0.72000
+ bndfp:  kpt 1781 of 1785, k=  0.50000  0.50000  0.92000
+ bndfp:  kpt 1781 of 1785, k=  0.50000  0.50000  0.92000
+ Exit 0 finished generating bands on q-mesh 
+ CPU time:   12.393s   Wall clock   12.490s   12:12:52 26.02.2015        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 12.491s. Resolution 0.000001s
+

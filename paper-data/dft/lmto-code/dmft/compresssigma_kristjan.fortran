@@ -1,0 +1,47 @@
+         subroutine compresssigmatransformation2(strans, dmftu, sigind, isx, cix, csize, iorbital, ll, nl, natom, iso, ncix, maxdim, maxdim2, lmax2, norbitals, nbands, maxsize)
+         implicit none
+         complex(8), intent(out) :: strans(maxsize,ncix,nbands,nbands)
+         complex(8), intent(in)  :: dmftu(nbands,maxdim2,norbitals)
+         integer, intent(in)     :: isx(maxdim2, norbitals)
+         integer, intent(in)     :: sigind(maxdim,maxdim,ncix)!, cix(natom,4), csize(ncix)
+         integer, intent(in)     :: cix(natom,lmax2+1), ll(natom,4), nl(natom)
+         integer, intent(in)     :: natom, iso, ncix, maxdim, maxdim2, lmax2, norbitals, nbands, maxsize
+          !----- locals
+         integer    :: i, j, icase, jcase, lcase, l1case, l2case, icix1, icix2, it, ind1, nind1, ind2, nind2, icix, l1, l2, ip1, ip2
+         strans=0
+         do icase=1,natom
+           do l1case=1,nl(icase)
+           icix1 = cix(icase,l1case)
+           if ( icix == 0 ) cycle
+           l1 = ll(icase,l1case)
+           nind1 = (2*l1+1)*iso
+           iorb1 = iorbital(icase,l1case)
+           do jcase=1,natom
+             do l2case=1,nl(jcase)
+               if ( cix(jcase,l2case) /= icix ) cycle
+               l2 = ll(jcase,l2case)
+               nind2 = (2*l2+1)*iso
+               icix2 = cix(jcase,l2case)
+               if ( icix2 /= icix1 ) cycle
+               iorb2 = iorbital(jcase,l2case)
+               do ind1=1,nind1
+                 do ind2=1,nind2
+                    it = abs(sigind(ind1,ind2,icix))
+
+                    if (it > 0) then
+
+                    do i=1,nbands                    ! over bands-1
+                      do j=1,nbands                  ! over bands-2
+                         strans(it,icix1,i,j) = strans(it,icix,i,j) + conjg(dmftu(j,ind2,icix2))*dmftu(i,ind1,icix1)
+                      enddo
+                    enddo
+
+                    endif
+                 enddo
+               enddo
+             enddo
+           enddo
+           enddo
+         enddo
+         end subroutine compresssigmatransformation2
+

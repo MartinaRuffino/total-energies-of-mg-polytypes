@@ -1,0 +1,962 @@
+rdcmd:  echo -1 | lmfgwd na -vbigbas=2 -vnapval=1 --make-Q0P
+ -----------------------  START LMFGWD -----------------------
+
+ LMFGWD:   nbas = 1  nspec = 1  vn 7.11.b  verb 31,30
+ special
+ pot:      XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 7.964  Cell vol = 252.559529
+
+ LATTC:  as= 2.000   tol=1.00E-12   alat= 7.96400   awald= 0.316
+         r1=  2.735   nkd= 169      q1=  5.244   nkg= 321
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(1,1,0)
+         i*r3d r2(1,1,0)
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        3.137  1.255    4    4         4  0.784  1.569    15    1   1.255
+
+ MSHSIZ: mesh has 15 x 15 x 15 divisions; length 0.460, 0.460, 0.460
+         generated from gmax = 8.0 a.u. : 2171 vectors of 3375 (64%)
+
+ GVLIST: gmax = 8 a.u. created 2171 vectors of 3375 (64%)
+         mesh has 15 x 15 x 15 divisions; length 0.460, 0.460, 0.460
+ SGVSYM: 75 symmetry stars found for 2171 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 37 0 16 22
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      25     0     0    25    25       0
+   2       9     0    16     9    25       0
+   3       3     0     0     3     3      22
+  all     37     0    16    37    53      22
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   2.60  -0.01   2.859    3.30E-06      87 
+  A        1*   2.60  -0.01   2.970    1.19E-06     135 
+  A        2*   2.60  -0.01   3.083    3.50E-06     135 
+  A        3*   2.60  -0.01   3.200    1.54E-06     141 
+  A        4    2.60  -0.01   3.319    4.86E-06     141 
+  A        0*   1.20  -1.20   6.195    2.27E-06     959 
+  A        1*   1.20  -1.20   6.605    1.02E-06    1253 
+  A        2    1.20  -1.20   7.014    1.25E-06    1481 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ avg es pot at rmt= 0.117837  avg sphere pot= 0.110974  vconst=-0.117837
+
+ smooth rhoves      0.959997   charge     1.415584
+
+ locpot:
+
+ site  1  z= 11.0  rmt= 3.13700  nr=343   a=0.025  nlml=25  rg=0.784  Vfloat=T
+ sm core charge = 0.01368 (sphere) + 0.000189 (spillout) = 0.013869
+ potential shift to crystal energy zero:    0.000002
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -0.355515       -83.137605       -83.493119
+   rhoval*ves             -9.292215       -60.185364       -69.477579
+   psnuc*ves              11.212209     -1180.413980     -1169.201771
+   utot                    0.959997      -620.299672      -619.339675
+   rho*exc                 0.000000       -26.688871       -26.688871
+   rho*vxc                 0.000000       -35.213138       -35.213138
+   valence chg             1.415584         5.584416         7.000000
+   core charge             4.000000         0.000000         4.000000
+
+ Charges:  valence     7.00000   cores     4.00000   nucleii   -11.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ avg es pot at rmt= 0.117837  avg sphere pot= 0.110974  vconst=-0.117837
+
+ smooth rhoves      0.959997   charge     1.415584
+ smooth rhoeps =   -0.503462   rhomu =   -0.652024  avg vxc =   -0.431359 
+
+ locpot:
+
+ site  1  z= 11.0  rmt= 3.13700  nr=343   a=0.025  nlml=25  rg=0.784  Vfloat=T
+ writing sphere density to file rhoMT.1 ...
+ sm core charge = 0.01368 (sphere) + 0.000189 (spillout) = 0.013869
+ potential shift to crystal energy zero:    0.000002
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -1.000104       -83.137605       -84.137709
+   rhoval*ves             -9.292215       -60.185364       -69.477579
+   psnuc*ves              11.212209     -1180.413980     -1169.201771
+   utot                    0.959997      -620.299672      -619.339675
+   rho*exc                -0.503462       -26.688871       -27.192333
+   rho*vxc                -0.652024       -35.213138       -35.865162
+   valence chg             1.415584         5.584416         7.000000
+   core charge             4.000000         0.000000         4.000000
+
+ Charges:  valence     7.00000   cores     4.00000   nucleii   -11.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ Start first of two band passes ...
+  lmfgw: input one of the following jobs:
+   -1 : creates files GWinput, QPNT, QIBZ, Q0P, QGpsi, QGcou, KPTin1BZ
+   -2 : Performs some sanity checks on GWinput
+    0 : init mode; creates files SYMOPS, LATTC, CLASS, NLAindx, ldima
+    1 : GW driver mode; creates files gwb,gw1,gw2,gwa,vxc,evec,rhoMT.*,normchk
+    4 : band mode 
+    5 : eigenvalue-only mode 
+  job?
+ ... Creating files GWinput, QIBZ, KPTin1BZ
+ BZMESH:  16 irreducible QP from 216 ( 6 6 6 )  shift= F F F
+
+ ... Creating in GWinput the following product basis:
+ site  phi(o)     phi(u)     dot(o)     dot(u)     loc(o)     loc(u)
+   1   11100      11110      01000      01000      -1---      -1---   
+
+ ... Creating files Q0P, QGpsi, QGcou
+ suq0x : 6 special gamma-points  auxf = 11.339110 (error = 0.0)
+         qa = 0.069710  q0x(1) = 0.00000000 0.04929237 0.04929237
+ q0irre: 1 irreducible special gamma-point(s)
+
+ Maximum number of PW = 92 for basis,  49 for coulomb
+ Extended mesh has 91 irreducible qp out of 432
+
+ Exit 0 lmfgw, job -1 
+ CPU time:    0.213s   Wall clock    0.259s   08:51:33 30.06.2014        on phpdl1.ph.kcl.ac.uk
+rdcmd:  echo  0 | lmfgwd na -vbigbas=2 -vnapval=1
+ -----------------------  START LMFGWD -----------------------
+
+ LMFGWD:   nbas = 1  nspec = 1  vn 7.11.b  verb 31,30
+ special
+ pot:      XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 7.964  Cell vol = 252.559529
+
+ LATTC:  as= 2.000   tol=1.00E-12   alat= 7.96400   awald= 0.316
+         r1=  2.735   nkd= 169      q1=  5.244   nkg= 321
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(1,1,0)
+         i*r3d r2(1,1,0)
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        3.137  1.255    4    4         4  0.784  1.569    15    1   1.255
+
+ MSHSIZ: mesh has 15 x 15 x 15 divisions; length 0.460, 0.460, 0.460
+         generated from gmax = 8.0 a.u. : 2171 vectors of 3375 (64%)
+
+ GVLIST: gmax = 8 a.u. created 2171 vectors of 3375 (64%)
+         mesh has 15 x 15 x 15 divisions; length 0.460, 0.460, 0.460
+ SGVSYM: 75 symmetry stars found for 2171 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 37 0 16 22
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      25     0     0    25    25       0
+   2       9     0    16     9    25       0
+   3       3     0     0     3     3      22
+  all     37     0    16    37    53      22
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   2.60  -0.01   2.859    3.30E-06      87 
+  A        1*   2.60  -0.01   2.970    1.19E-06     135 
+  A        2*   2.60  -0.01   3.083    3.50E-06     135 
+  A        3*   2.60  -0.01   3.200    1.54E-06     141 
+  A        4    2.60  -0.01   3.319    4.86E-06     141 
+  A        0*   1.20  -1.20   6.195    2.27E-06     959 
+  A        1*   1.20  -1.20   6.605    1.02E-06    1253 
+  A        2    1.20  -1.20   7.014    1.25E-06    1481 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ avg es pot at rmt= 0.117837  avg sphere pot= 0.110974  vconst=-0.117837
+
+ smooth rhoves      0.959997   charge     1.415584
+
+ locpot:
+
+ site  1  z= 11.0  rmt= 3.13700  nr=343   a=0.025  nlml=25  rg=0.784  Vfloat=T
+ sm core charge = 0.01368 (sphere) + 0.000189 (spillout) = 0.013869
+ potential shift to crystal energy zero:    0.000002
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -0.355515       -83.137605       -83.493119
+   rhoval*ves             -9.292215       -60.185364       -69.477579
+   psnuc*ves              11.212209     -1180.413980     -1169.201771
+   utot                    0.959997      -620.299672      -619.339675
+   rho*exc                 0.000000       -26.688871       -26.688871
+   rho*vxc                 0.000000       -35.213138       -35.213138
+   valence chg             1.415584         5.584416         7.000000
+   core charge             4.000000         0.000000         4.000000
+
+ Charges:  valence     7.00000   cores     4.00000   nucleii   -11.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ avg es pot at rmt= 0.117837  avg sphere pot= 0.110974  vconst=-0.117837
+
+ smooth rhoves      0.959997   charge     1.415584
+ smooth rhoeps =   -0.503462   rhomu =   -0.652024  avg vxc =   -0.431359 
+
+ locpot:
+
+ site  1  z= 11.0  rmt= 3.13700  nr=343   a=0.025  nlml=25  rg=0.784  Vfloat=T
+ writing sphere density to file rhoMT.1 ...
+ sm core charge = 0.01368 (sphere) + 0.000189 (spillout) = 0.013869
+ potential shift to crystal energy zero:    0.000002
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -1.000104       -83.137605       -84.137709
+   rhoval*ves             -9.292215       -60.185364       -69.477579
+   psnuc*ves              11.212209     -1180.413980     -1169.201771
+   utot                    0.959997      -620.299672      -619.339675
+   rho*exc                -0.503462       -26.688871       -27.192333
+   rho*vxc                -0.652024       -35.213138       -35.865162
+   valence chg             1.415584         5.584416         7.000000
+   core charge             4.000000         0.000000         4.000000
+
+ Charges:  valence     7.00000   cores     4.00000   nucleii   -11.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ Start first of two band passes ...
+  lmfgw: input one of the following jobs:
+   -1 : creates files GWinput, QPNT, QIBZ, Q0P, QGpsi, QGcou, KPTin1BZ
+   -2 : Performs some sanity checks on GWinput
+    0 : init mode; creates files SYMOPS, LATTC, CLASS, NLAindx, ldima
+    1 : GW driver mode; creates files gwb,gw1,gw2,gwa,vxc,evec,rhoMT.*,normchk
+    4 : band mode 
+    5 : eigenvalue-only mode 
+  job?
+
+ gw setup, job 0 code  0
+
+ Creating files SYMOPS, LATTC, CLASS, NLAindx, ldima
+
+ OK! lmfgw generated files, job 0
+rdcmd:  echo  1 | lmfgwd na -vbigbas=2 -vnapval=1
+ -----------------------  START LMFGWD -----------------------
+
+ LMFGWD:   nbas = 1  nspec = 1  vn 7.11.b  verb 31,30
+ special
+ pot:      XC:BH
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(3), tetra, invit 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 7.964  Cell vol = 252.559529
+
+ LATTC:  as= 2.000   tol=1.00E-12   alat= 7.96400   awald= 0.316
+         r1=  2.735   nkd= 169      q1=  5.244   nkg= 321
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(1,1,0)
+         i*r3d r2(1,1,0)
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        3.137  1.255    4    4         4  0.784  1.569    15    1   1.255
+
+ MSHSIZ: mesh has 15 x 15 x 15 divisions; length 0.460, 0.460, 0.460
+         generated from gmax = 8.0 a.u. : 2171 vectors of 3375 (64%)
+
+ GVLIST: gmax = 8 a.u. created 2171 vectors of 3375 (64%)
+         mesh has 15 x 15 x 15 divisions; length 0.460, 0.460, 0.460
+ SGVSYM: 75 symmetry stars found for 2171 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 37 0 16 22
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      25     0     0    25    25       0
+   2       9     0    16     9    25       0
+   3       3     0     0     3     3      22
+  all     37     0    16    37    53      22
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   2.60  -0.01   2.859    3.30E-06      87 
+  A        1*   2.60  -0.01   2.970    1.19E-06     135 
+  A        2*   2.60  -0.01   3.083    3.50E-06     135 
+  A        3*   2.60  -0.01   3.200    1.54E-06     141 
+  A        4    2.60  -0.01   3.319    4.86E-06     141 
+  A        0*   1.20  -1.20   6.195    2.27E-06     959 
+  A        1*   1.20  -1.20   6.605    1.02E-06    1253 
+  A        2    1.20  -1.20   7.014    1.25E-06    1481 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ avg es pot at rmt= 0.117837  avg sphere pot= 0.110974  vconst=-0.117837
+
+ smooth rhoves      0.959997   charge     1.415584
+
+ locpot:
+
+ site  1  z= 11.0  rmt= 3.13700  nr=343   a=0.025  nlml=25  rg=0.784  Vfloat=T
+ sm core charge = 0.01368 (sphere) + 0.000189 (spillout) = 0.013869
+ potential shift to crystal energy zero:    0.000002
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -0.355515       -83.137605       -83.493119
+   rhoval*ves             -9.292215       -60.185364       -69.477579
+   psnuc*ves              11.212209     -1180.413980     -1169.201771
+   utot                    0.959997      -620.299672      -619.339675
+   rho*exc                 0.000000       -26.688871       -26.688871
+   rho*vxc                 0.000000       -35.213138       -35.213138
+   valence chg             1.415584         5.584416         7.000000
+   core charge             4.000000         0.000000         4.000000
+
+ Charges:  valence     7.00000   cores     4.00000   nucleii   -11.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ avg es pot at rmt= 0.117837  avg sphere pot= 0.110974  vconst=-0.117837
+
+ smooth rhoves      0.959997   charge     1.415584
+ smooth rhoeps =   -0.503462   rhomu =   -0.652024  avg vxc =   -0.431359 
+
+ locpot:
+
+ site  1  z= 11.0  rmt= 3.13700  nr=343   a=0.025  nlml=25  rg=0.784  Vfloat=T
+ writing sphere density to file rhoMT.1 ...
+ sm core charge = 0.01368 (sphere) + 0.000189 (spillout) = 0.013869
+ potential shift to crystal energy zero:    0.000002
+
+ Energy terms:             smooth           local           total
+   rhoval*vef             -1.000104       -83.137605       -84.137709
+   rhoval*ves             -9.292215       -60.185364       -69.477579
+   psnuc*ves              11.212209     -1180.413980     -1169.201771
+   utot                    0.959997      -620.299672      -619.339675
+   rho*exc                -0.503462       -26.688871       -27.192333
+   rho*vxc                -0.652024       -35.213138       -35.865162
+   valence chg             1.415584         5.584416         7.000000
+   core charge             4.000000         0.000000         4.000000
+
+ Charges:  valence     7.00000   cores     4.00000   nucleii   -11.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ Start first of two band passes ...
+  lmfgw: input one of the following jobs:
+   -1 : creates files GWinput, QPNT, QIBZ, Q0P, QGpsi, QGcou, KPTin1BZ
+   -2 : Performs some sanity checks on GWinput
+    0 : init mode; creates files SYMOPS, LATTC, CLASS, NLAindx, ldima
+    1 : GW driver mode; creates files gwb,gw1,gw2,gwa,vxc,evec,rhoMT.*,normchk
+    4 : band mode 
+    5 : eigenvalue-only mode 
+  job?
+
+ gw setup, job 1 code  0
+
+ ... Generate radial wave functions (file gwa)
+
+ getcor:  qcore=  4.00  qsc= 10.00  konf = 3  2* 3  4  5 
+ sum q= 4.00  sum ec=  -158.76212098  sum tc=   250.97593524  rho(rmax) 0.00001
+
+ ... Make w.f. and matrix elements, 432 qp: file(s) gwb, vxc, evec
+
+ sugw:  kpt 1 of 432, k=  0.00000  0.00000  0.00000
+ -1.9651 -1.9651 -1.9651 -0.3740  0.7187  0.7187  0.7187  0.7988  0.7988
+ sugw:  kpt 11 of 432, k=  -0.16667  -0.33333  0.16667
+ -1.9666 -1.9656 -1.9652 -0.2683  0.3063  0.3534  0.5364  0.6975  0.7593
+ sugw:  kpt 21 of 432, k=  -0.16667  0.33333  -0.50000
+ -1.9673 -1.9661 -1.9653 -0.1317  0.0697  0.2699  0.4752  0.6623  0.8317
+ sugw:  kpt 31 of 432, k=  -0.16667  0.00000  -0.16667
+ -1.9657 -1.9653 -1.9651 -0.3384  0.4534  0.5993  0.6292  0.6650  0.7240
+ sugw:  kpt 41 of 432, k=  -0.33333  -0.16667  0.16667
+ -1.9666 -1.9656 -1.9652 -0.2683  0.3063  0.3534  0.5364  0.6975  0.7593
+ sugw:  kpt 51 of 432, k=  -0.33333  0.50000  -0.50000
+ -1.9670 -1.9662 -1.9657 -0.0142  0.0173  0.1771  0.2514  0.9645  0.9796
+ sugw:  kpt 61 of 432, k=  -0.33333  0.16667  -0.16667
+ -1.9666 -1.9656 -1.9652 -0.2683  0.3063  0.3534  0.5364  0.6975  0.7593
+ sugw:  kpt 71 of 432, k=  -0.50000  -0.16667  0.00000
+ -1.9669 -1.9660 -1.9656 -0.1993  0.1986  0.3699  0.4336  0.6152  0.7438
+ sugw:  kpt 81 of 432, k=  0.50000  -0.33333  -0.50000
+ -1.9670 -1.9662 -1.9657 -0.0142  0.0173  0.1771  0.2514  0.9645  0.9796
+ sugw:  kpt 91 of 432, k=  -0.50000  0.33333  -0.16667
+ -1.9673 -1.9661 -1.9653 -0.1317  0.0697  0.2699  0.4752  0.6623  0.8317
+ sugw:  kpt 101 of 432, k=  -0.66667  0.00000  0.00000
+ -1.9668 -1.9665 -1.9665 -0.0980  0.2702  0.2795  0.2795  0.4015  0.7138
+ sugw:  kpt 111 of 432, k=  0.33333  -0.16667  -0.50000
+ -1.9673 -1.9661 -1.9653 -0.1317  0.0697  0.2699  0.4752  0.6623  0.8317
+ sugw:  kpt 121 of 432, k=  0.33333  -0.50000  -0.16667
+ -1.9673 -1.9661 -1.9653 -0.1317  0.0697  0.2699  0.4752  0.6623  0.8317
+ sugw:  kpt 131 of 432, k=  0.16667  -0.83333  0.00000
+ -1.9671 -1.9667 -1.9665  0.0496  0.0842  0.2495  0.2923  0.4378  0.5486
+ sugw:  kpt 141 of 432, k=  0.16667  -0.16667  -0.66667
+ -1.9672 -1.9666 -1.9657 -0.0653  0.1136  0.1649  0.5026  0.5681  0.7107
+ sugw:  kpt 151 of 432, k=  0.16667  -0.33333  -0.16667
+ -1.9666 -1.9656 -1.9652 -0.2683  0.3063  0.3534  0.5364  0.6975  0.7593
+ sugw:  kpt 161 of 432, k=  0.00000  -0.66667  0.00000
+ -1.9668 -1.9665 -1.9665 -0.0980  0.2702  0.2795  0.2795  0.4015  0.7138
+ sugw:  kpt 171 of 432, k=  0.00000  0.00000  -0.66667
+ -1.9668 -1.9665 -1.9665 -0.0980  0.2702  0.2795  0.2795  0.4015  0.7138
+ sugw:  kpt 181 of 432, k=  0.00000  -0.16667  -0.16667
+ -1.9657 -1.9653 -1.9651 -0.3384  0.4534  0.5993  0.6292  0.6650  0.7240
+ sugw:  kpt 191 of 432, k=  -0.16667  -0.50000  0.00000
+ -1.9669 -1.9660 -1.9656 -0.1993  0.1986  0.3699  0.4336  0.6152  0.7438
+ sugw:  kpt 201 of 432, k=  -0.16667  0.16667  -0.66667
+ -1.9672 -1.9666 -1.9657 -0.0653  0.1136  0.1649  0.5026  0.5681  0.7107
+ sugw:  kpt 211 of 432, k=  -0.16667  -0.16667  -0.33333
+ -1.9666 -1.9656 -1.9652 -0.2683  0.3063  0.3534  0.5364  0.6975  0.7593
+ sugw:  kpt 221 of 432, k=  -0.33333  -0.28404  0.04929
+ -1.9668 -1.9657 -1.9651 -0.2511  0.2087  0.4691  0.5488  0.6066  0.6937
+ sugw:  kpt 231 of 432, k=  -0.33333  0.38263  -0.61737
+ -1.9669 -1.9666 -1.9655  0.0016  0.0254  0.0965  0.3717  0.8507  0.8948
+ sugw:  kpt 241 of 432, k=  -0.33333  0.04929  -0.28404
+ -1.9668 -1.9657 -1.9651 -0.2511  0.2087  0.4691  0.5488  0.6066  0.6937
+ sugw:  kpt 251 of 432, k=  -0.50000  -0.28404  -0.11737
+ -1.9673 -1.9660 -1.9653 -0.1585  0.1014  0.3016  0.5570  0.5824  0.7717
+ sugw:  kpt 261 of 432, k=  -0.50000  -0.45071  0.38263
+ -1.9668 -1.9663 -1.9658 -0.0098  0.0528  0.1336  0.2285  1.0167  1.0558
+ sugw:  kpt 271 of 432, k=  -0.50000  0.21596  -0.28404
+ -1.9672 -1.9661 -1.9653 -0.1386  0.1168  0.2110  0.4684  0.7059  0.8023
+ sugw:  kpt 281 of 432, k=  -0.66667  -0.11737  -0.11737
+ -1.9671 -1.9665 -1.9660 -0.0817  0.1544  0.2041  0.4284  0.5030  0.7267
+ sugw:  kpt 291 of 432, k=  0.33333  -0.28404  -0.61737
+ -1.9671 -1.9666 -1.9654 -0.0251  0.0364  0.1130  0.4460  0.7579  0.8218
+ sugw:  kpt 301 of 432, k=  0.33333  -0.61737  -0.28404
+ -1.9671 -1.9666 -1.9654 -0.0251  0.0364  0.1130  0.4460  0.7579  0.8218
+ sugw:  kpt 311 of 432, k=  -0.83333  0.04929  -0.11737
+ -1.9671 -1.9668 -1.9665  0.0551  0.1187  0.2081  0.3166  0.3982  0.5264
+ sugw:  kpt 321 of 432, k=  0.16667  0.71596  0.21596
+ -1.9672 -1.9667 -1.9657 -0.0157  0.0661  0.1437  0.5139  0.5847  0.6845
+ sugw:  kpt 331 of 432, k=  0.16667  -0.45071  -0.28404
+ -1.9672 -1.9659 -1.9653 -0.1786  0.1386  0.2833  0.4871  0.6726  0.8082
+ sugw:  kpt 341 of 432, k=  0.00000  -0.78404  -0.11737
+ -1.9671 -1.9667 -1.9665  0.0098  0.1284  0.2521  0.2931  0.4218  0.5731
+ sugw:  kpt 351 of 432, k=  0.00000  -0.11737  -0.78404
+ -1.9671 -1.9667 -1.9665  0.0098  0.1284  0.2521  0.2931  0.4218  0.5731
+ sugw:  kpt 361 of 432, k=  0.00000  -0.28404  -0.28404
+ -1.9666 -1.9656 -1.9651 -0.2716  0.2469  0.5225  0.5687  0.5938  0.6701
+ sugw:  kpt 371 of 432, k=  -0.16667  -0.61737  -0.11737
+ -1.9671 -1.9664 -1.9657 -0.1112  0.1413  0.2179  0.4769  0.5689  0.7299
+ sugw:  kpt 381 of 432, k=  -0.16667  0.04929  -0.78404
+ -1.9672 -1.9667 -1.9663  0.0173  0.0839  0.2250  0.3425  0.4733  0.5914
+ sugw:  kpt 391 of 432, k=  -0.16667  -0.28404  -0.45071
+ -1.9672 -1.9659 -1.9653 -0.1786  0.1386  0.2833  0.4871  0.6726  0.8082
+ sugw:  kpt 401 of 432, k=  -0.33333  -0.45071  -0.11737
+ -1.9673 -1.9659 -1.9652 -0.1686  0.0922  0.3453  0.4965  0.6282  0.7702
+ sugw:  kpt 411 of 432, k=  0.66667  0.21596  0.21596
+ -1.9672 -1.9667 -1.9656 -0.0437  0.0785  0.1302  0.5828  0.6235  0.6482
+ sugw:  kpt 421 of 432, k=  -0.33333  -0.11737  -0.45071
+ -1.9673 -1.9659 -1.9652 -0.1686  0.0922  0.3453  0.4965  0.6282  0.7702
+ sugw:  kpt 431 of 432, k=  -0.50000  -0.45071  -0.28404
+ -1.9672 -1.9662 -1.9655 -0.0475  0.0187  0.2079  0.3011  0.8749  0.9327
+ 
+ sugw: minimum reduced hilbert space = 37 ... check nband_chi0 in GWinput
+ Exit 0 bndfp 
+ CPU time:   15.423s   Wall clock   15.459s   08:51:48 30.06.2014        on phpdl1.ph.kcl.ac.uk
+rdcmd:  echo na | lmf2gw_0
+ lmf2gw: read files from ext=.na         432  qp made by           1  threads
+ File CLASS:  nclass =   1
+ nqbze nqpz ndimh(max)=  432  216   37
+ikp isp nband q=     1     1    37      0.000000   0.000000   0.000000 geig sumcheck=  0.203671D+01 0.212948D-06
+ikp isp nband q=     2     1    37      0.166667   0.166667   0.000000 geig sumcheck=  0.104038D-03-0.521203D+00
+ikp isp nband q=     3     1    37      0.333333   0.333333   0.000000 geig sumcheck= -0.157898D-03 0.562844D+01
+ikp isp nband q=     4     1    37      0.500000   0.500000   0.000000 geig sumcheck= -0.844340D+00 0.430147D-05
+ikp isp nband q=     5     1    37      0.666667   0.666667   0.000000 geig sumcheck= -0.157898D-03-0.562844D+01
+ikp isp nband q=     6     1    37      0.833333   0.833333   0.000000 geig sumcheck=  0.104038D-03 0.521203D+00
+ikp isp nband q=     7     1    37      0.166667   0.000000   0.166667 geig sumcheck= -0.128961D-03-0.253977D+01
+ikp isp nband q=     8     1    37      0.333333   0.166667   0.166667 geig sumcheck= -0.232594D-02-0.630277D+01
+ikp isp nband q=     9     1    37      0.500000   0.333333   0.166667 geig sumcheck= -0.623125D-03 0.844035D+01
+ikp isp nband q=    10     1    37      0.666667   0.500000   0.166667 geig sumcheck= -0.163772D-03-0.464966D-01
+ikp isp nband q=    11     1    37      0.833333   0.666667   0.166667 geig sumcheck=  0.132901D-03-0.480479D+00
+ikp isp nband q=    12     1    37      1.000000   0.833333   0.166667 geig sumcheck=  0.119723D+01 0.724601D+00
+ikp isp nband q=    13     1    37      0.333333   0.000000   0.333333 geig sumcheck=  0.917899D-04 0.220631D+01
+ikp isp nband q=    14     1    37      0.500000   0.166667   0.333333 geig sumcheck= -0.672573D-04-0.686116D+00
+ikp isp nband q=    15     1    37      0.666667   0.333333   0.333333 geig sumcheck=  0.765001D-04 0.314232D+01
+ikp isp nband q=    16     1    37      0.833333   0.500000   0.333333 geig sumcheck=  0.833639D-04 0.509963D+01
+ikp isp nband q=    17     1    37      1.000000   0.666667   0.333333 geig sumcheck=  0.387819D+01 0.603790D+00
+ikp isp nband q=    18     1    37      1.166667   0.833333   0.333333 geig sumcheck= -0.378953D-04-0.790954D+00
+ikp isp nband q=    19     1    37      0.500000   0.000000   0.500000 geig sumcheck=  0.141154D+01 0.900235D-05
+ikp isp nband q=    20     1    37      0.666667   0.166667   0.500000 geig sumcheck=  0.630298D-04 0.752126D+01
+ikp isp nband q=    21     1    37      0.833333   0.333333   0.500000 geig sumcheck=  0.358212D-03 0.305322D+01
+ikp isp nband q=    22     1    37      1.000000   0.500000   0.500000 geig sumcheck= -0.474157D+01 0.827981D-07
+ikp isp nband q=    23     1    37      1.166667   0.666667   0.500000 geig sumcheck=  0.358212D-03-0.305322D+01
+ikp isp nband q=    24     1    37      1.333333   0.833333   0.500000 geig sumcheck=  0.630298D-04-0.752126D+01
+ikp isp nband q=    25     1    37      0.666667   0.000000   0.666667 geig sumcheck=  0.917899D-04-0.220631D+01
+ikp isp nband q=    26     1    37      0.833333   0.166667   0.666667 geig sumcheck= -0.378953D-04 0.790954D+00
+ikp isp nband q=    27     1    37      1.000000   0.333333   0.666667 geig sumcheck=  0.387819D+01-0.603790D+00
+ikp isp nband q=    28     1    37      1.166667   0.500000   0.666667 geig sumcheck=  0.833639D-04-0.509963D+01
+ikp isp nband q=    29     1    37      1.333333   0.666667   0.666667 geig sumcheck=  0.274536D-03 0.595135D+01
+ikp isp nband q=    30     1    37      1.500000   0.833333   0.666667 geig sumcheck= -0.672573D-04 0.686116D+00
+ikp isp nband q=    31     1    37      0.833333   0.000000   0.833333 geig sumcheck= -0.128961D-03 0.253977D+01
+ikp isp nband q=    32     1    37      1.000000   0.166667   0.833333 geig sumcheck=  0.119723D+01-0.724601D+00
+ikp isp nband q=    33     1    37      1.166667   0.333333   0.833333 geig sumcheck=  0.132901D-03 0.480479D+00
+ikp isp nband q=    34     1    37      1.333333   0.500000   0.833333 geig sumcheck= -0.131569D-03-0.354150D+01
+ikp isp nband q=    35     1    37      1.500000   0.666667   0.833333 geig sumcheck= -0.623125D-03-0.844035D+01
+ikp isp nband q=    36     1    37      1.666667   0.833333   0.833333 geig sumcheck= -0.232594D-02 0.630277D+01
+ikp isp nband q=    37     1    37      0.000000   0.166667   0.166667 geig sumcheck= -0.261323D+01 0.204790D+00
+ikp isp nband q=    38     1    37      0.166667   0.333333   0.166667 geig sumcheck=  0.725610D-04-0.137385D+01
+ikp isp nband q=    39     1    37      0.333333   0.500000   0.166667 geig sumcheck= -0.231460D-03-0.291718D+01
+ikp isp nband q=    40     1    37      0.500000   0.666667   0.166667 geig sumcheck= -0.230486D-03-0.735640D+01
+ikp isp nband q=    41     1    37      0.666667   0.833333   0.166667 geig sumcheck= -0.249541D-03-0.815937D+01
+ikp isp nband q=    42     1    37      0.833333   1.000000   0.166667 geig sumcheck= -0.260453D-03-0.179542D-01
+ikp isp nband q=    43     1    37      0.166667   0.166667   0.333333 geig sumcheck=  0.595673D-06 0.658229D+01
+ikp isp nband q=    44     1    37      0.333333   0.333333   0.333333 geig sumcheck= -0.134176D-03-0.198169D+01
+ikp isp nband q=    45     1    37      0.500000   0.500000   0.333333 geig sumcheck=  0.318873D+01 0.365681D+01
+ikp isp nband q=    46     1    37      0.666667   0.666667   0.333333 geig sumcheck= -0.504578D-04-0.187855D+01
+ikp isp nband q=    47     1    37      0.833333   0.833333   0.333333 geig sumcheck=  0.149551D-03 0.568896D+01
+ikp isp nband q=    48     1    37      1.000000   1.000000   0.333333 geig sumcheck= -0.193716D+01 0.383574D+01
+ikp isp nband q=    49     1    37      0.333333   0.166667   0.500000 geig sumcheck=  0.836170D-04-0.267728D+01
+ikp isp nband q=    50     1    37      0.500000   0.333333   0.500000 geig sumcheck=  0.209030D+01-0.615165D+01
+ikp isp nband q=    51     1    37      0.666667   0.500000   0.500000 geig sumcheck=  0.920189D-04-0.159216D+01
+ikp isp nband q=    52     1    37      0.833333   0.666667   0.500000 geig sumcheck=  0.363977D-03 0.509968D+01
+ikp isp nband q=    53     1    37      1.000000   0.833333   0.500000 geig sumcheck=  0.703112D+00-0.781159D+00
+ikp isp nband q=    54     1    37      1.166667   1.000000   0.500000 geig sumcheck= -0.674717D-05 0.534630D+01
+ikp isp nband q=    55     1    37      0.500000   0.166667   0.666667 geig sumcheck=  0.248481D-03-0.700600D+01
+ikp isp nband q=    56     1    37      0.666667   0.333333   0.666667 geig sumcheck=  0.106594D-03 0.530870D+01
+ikp isp nband q=    57     1    37      0.833333   0.500000   0.666667 geig sumcheck=  0.583486D-03 0.272609D+01
+ikp isp nband q=    58     1    37      1.000000   0.666667   0.666667 geig sumcheck= -0.456541D+01 0.383977D+01
+ikp isp nband q=    59     1    37      1.166667   0.833333   0.666667 geig sumcheck= -0.153567D-02-0.978876D+01
+ikp isp nband q=    60     1    37      1.333333   1.000000   0.666667 geig sumcheck=  0.896825D-04-0.556563D+01
+ikp isp nband q=    61     1    37      0.666667   0.166667   0.833333 geig sumcheck= -0.104287D-02-0.751359D+01
+ikp isp nband q=    62     1    37      0.833333   0.333333   0.833333 geig sumcheck= -0.680444D-04-0.600478D+01
+ikp isp nband q=    63     1    37      1.000000   0.500000   0.833333 geig sumcheck= -0.242286D+01-0.256689D+01
+ikp isp nband q=    64     1    37      1.166667   0.666667   0.833333 geig sumcheck= -0.308877D-02 0.696677D+01
+ikp isp nband q=    65     1    37      1.333333   0.833333   0.833333 geig sumcheck=  0.138203D-03 0.627214D+01
+ikp isp nband q=    66     1    37      1.500000   1.000000   0.833333 geig sumcheck=  0.106338D-03-0.560824D+01
+ikp isp nband q=    67     1    37      0.833333   0.166667   1.000000 geig sumcheck=  0.159015D-03 0.152279D+01
+ikp isp nband q=    68     1    37      1.000000   0.333333   1.000000 geig sumcheck=  0.132172D+01-0.203168D+01
+ikp isp nband q=    69     1    37      1.166667   0.500000   1.000000 geig sumcheck=  0.681359D-05-0.228930D+01
+ikp isp nband q=    70     1    37      1.333333   0.666667   1.000000 geig sumcheck= -0.544113D-04-0.314421D+01
+ikp isp nband q=    71     1    37      1.500000   0.833333   1.000000 geig sumcheck= -0.134608D-04 0.903225D+01
+ikp isp nband q=    72     1    37      1.666667   1.000000   1.000000 geig sumcheck=  0.547024D-05-0.292644D+01
+ikp isp nband q=    73     1    37      0.000000   0.333333   0.333333 geig sumcheck=  0.405053D+01-0.328799D+00
+ikp isp nband q=    74     1    37      0.166667   0.500000   0.333333 geig sumcheck= -0.451894D-03-0.272610D+01
+ikp isp nband q=    75     1    37      0.333333   0.666667   0.333333 geig sumcheck= -0.268619D-03 0.555474D+01
+ikp isp nband q=    76     1    37      0.500000   0.833333   0.333333 geig sumcheck=  0.222350D-03 0.224744D+01
+ikp isp nband q=    77     1    37      0.666667   1.000000   0.333333 geig sumcheck=  0.349417D-04-0.261070D+01
+ikp isp nband q=    78     1    37      0.833333   1.166667   0.333333 geig sumcheck= -0.277751D-04 0.568915D+01
+ikp isp nband q=    79     1    37      0.166667   0.333333   0.500000 geig sumcheck= -0.548369D-03-0.305317D+01
+ikp isp nband q=    80     1    37      0.333333   0.500000   0.500000 geig sumcheck= -0.171928D-03-0.491165D+00
+ikp isp nband q=    81     1    37      0.500000   0.666667   0.500000 geig sumcheck=  0.115457D+01 0.100244D+01
+ikp isp nband q=    82     1    37      0.666667   0.833333   0.500000 geig sumcheck=  0.115446D-03 0.294568D+00
+ikp isp nband q=    83     1    37      0.833333   1.000000   0.500000 geig sumcheck= -0.369162D-04-0.274898D+01
+ikp isp nband q=    84     1    37      1.000000   1.166667   0.500000 geig sumcheck= -0.275781D+00-0.122966D+01
+ikp isp nband q=    85     1    37      0.333333   0.333333   0.666667 geig sumcheck=  0.332367D-03 0.198945D+01
+ikp isp nband q=    86     1    37      0.500000   0.500000   0.666667 geig sumcheck=  0.496514D-02-0.847296D+01
+ikp isp nband q=    87     1    37      0.666667   0.666667   0.666667 geig sumcheck=  0.168224D-03 0.247156D+01
+ikp isp nband q=    88     1    37      0.833333   0.833333   0.666667 geig sumcheck=  0.130599D-02 0.387757D+01
+ikp isp nband q=    89     1    37      1.000000   1.000000   0.666667 geig sumcheck=  0.509991D+01-0.759776D+00
+ikp isp nband q=    90     1    37      1.166667   1.166667   0.666667 geig sumcheck=  0.210357D-02 0.490717D+01
+ikp isp nband q=    91     1    37      0.500000   0.333333   0.833333 geig sumcheck=  0.262991D-03 0.820838D+01
+ikp isp nband q=    92     1    37      0.666667   0.500000   0.833333 geig sumcheck=  0.256138D-04 0.786235D+01
+ikp isp nband q=    93     1    37      0.833333   0.666667   0.833333 geig sumcheck=  0.940399D-03 0.533708D+01
+ikp isp nband q=    94     1    37      1.000000   0.833333   0.833333 geig sumcheck= -0.139870D+01 0.522134D+01
+ikp isp nband q=    95     1    37      1.166667   1.000000   0.833333 geig sumcheck= -0.594774D-05 0.511851D+01
+ikp isp nband q=    96     1    37      1.333333   1.166667   0.833333 geig sumcheck= -0.726547D-05 0.356094D+01
+ikp isp nband q=    97     1    37      0.666667   0.333333   1.000000 geig sumcheck= -0.391002D-04-0.619344D+00
+ikp isp nband q=    98     1    37      0.833333   0.500000   1.000000 geig sumcheck= -0.770642D-04-0.208269D+00
+ikp isp nband q=    99     1    37      1.000000   0.666667   1.000000 geig sumcheck= -0.219694D+01-0.488504D+01
+ikp isp nband q=   100     1    37      1.166667   0.833333   1.000000 geig sumcheck= -0.110222D-03-0.427618D+01
+ikp isp nband q=   101     1    37      1.333333   1.000000   1.000000 geig sumcheck=  0.257181D-05-0.385280D+01
+ikp isp nband q=   102     1    37      1.500000   1.166667   1.000000 geig sumcheck=  0.561267D-04-0.517147D+01
+ikp isp nband q=   103     1    37      0.833333   0.333333   1.166667 geig sumcheck=  0.171709D-04-0.480358D+00
+ikp isp nband q=   104     1    37      1.000000   0.500000   1.166667 geig sumcheck=  0.155525D+01-0.542765D+01
+ikp isp nband q=   105     1    37      1.166667   0.666667   1.166667 geig sumcheck= -0.467489D-03 0.127483D+02
+ikp isp nband q=   106     1    37      1.333333   0.833333   1.166667 geig sumcheck= -0.260941D-04-0.213125D+01
+ikp isp nband q=   107     1    37      1.500000   1.000000   1.166667 geig sumcheck= -0.254138D-04-0.371720D+00
+ikp isp nband q=   108     1    37      1.666667   1.166667   1.166667 geig sumcheck=  0.139334D-03 0.518274D+01
+ikp isp nband q=   109     1    37      0.000000   0.500000   0.500000 geig sumcheck=  0.466719D+01 0.462620D-05
+ikp isp nband q=   110     1    37      0.166667   0.666667   0.500000 geig sumcheck=  0.314336D-03-0.477224D+01
+ikp isp nband q=   111     1    37      0.333333   0.833333   0.500000 geig sumcheck=  0.181710D-05-0.513886D+01
+ikp isp nband q=   112     1    37      0.500000   1.000000   0.500000 geig sumcheck= -0.797146D+01-0.671297D-05
+ikp isp nband q=   113     1    37      0.666667   1.166667   0.500000 geig sumcheck=  0.181710D-05 0.513886D+01
+ikp isp nband q=   114     1    37      0.833333   1.333333   0.500000 geig sumcheck=  0.314336D-03 0.477224D+01
+ikp isp nband q=   115     1    37      0.166667   0.500000   0.666667 geig sumcheck= -0.160488D-03-0.509959D+01
+ikp isp nband q=   116     1    37      0.333333   0.666667   0.666667 geig sumcheck=  0.741967D-04 0.112287D+00
+ikp isp nband q=   117     1    37      0.500000   0.833333   0.666667 geig sumcheck=  0.164501D-03 0.592188D+01
+ikp isp nband q=   118     1    37      0.666667   1.000000   0.666667 geig sumcheck=  0.140571D-03-0.614048D+01
+ikp isp nband q=   119     1    37      0.833333   1.166667   0.666667 geig sumcheck= -0.131291D-02 0.741798D+01
+ikp isp nband q=   120     1    37      1.000000   1.333333   0.666667 geig sumcheck= -0.314031D+01-0.329400D+01
+ikp isp nband q=   121     1    37      0.333333   0.500000   0.833333 geig sumcheck=  0.733884D-04-0.489971D+01
+ikp isp nband q=   122     1    37      0.500000   0.666667   0.833333 geig sumcheck= -0.853127D-04-0.927599D+01
+ikp isp nband q=   123     1    37      0.666667   0.833333   0.833333 geig sumcheck=  0.856031D-04-0.525454D+01
+ikp isp nband q=   124     1    37      0.833333   1.000000   0.833333 geig sumcheck=  0.186633D-03-0.611633D+01
+ikp isp nband q=   125     1    37      1.000000   1.166667   0.833333 geig sumcheck=  0.636240D+00 0.710697D+01
+ikp isp nband q=   126     1    37      1.166667   1.333333   0.833333 geig sumcheck=  0.270067D-02 0.344795D+01
+ikp isp nband q=   127     1    37      0.500000   0.500000   1.000000 geig sumcheck=  0.994795D+00-0.211509D-04
+ikp isp nband q=   128     1    37      0.666667   0.666667   1.000000 geig sumcheck= -0.109509D-03 0.541482D+01
+ikp isp nband q=   129     1    37      0.833333   0.833333   1.000000 geig sumcheck= -0.926787D-04-0.677320D+01
+ikp isp nband q=   130     1    37      1.000000   1.000000   1.000000 geig sumcheck=  0.758940D+01 0.178635D-02
+ikp isp nband q=   131     1    37      1.166667   1.166667   1.000000 geig sumcheck= -0.926787D-04 0.677320D+01
+ikp isp nband q=   132     1    37      1.333333   1.333333   1.000000 geig sumcheck= -0.109509D-03-0.541482D+01
+ikp isp nband q=   133     1    37      0.666667   0.500000   1.166667 geig sumcheck=  0.733884D-04 0.489971D+01
+ikp isp nband q=   134     1    37      0.833333   0.666667   1.166667 geig sumcheck=  0.270067D-02-0.344795D+01
+ikp isp nband q=   135     1    37      1.000000   0.833333   1.166667 geig sumcheck=  0.636239D+00-0.710697D+01
+ikp isp nband q=   136     1    37      1.166667   1.000000   1.166667 geig sumcheck=  0.186633D-03 0.611633D+01
+ikp isp nband q=   137     1    37      1.333333   1.166667   1.166667 geig sumcheck=  0.856031D-04 0.525454D+01
+ikp isp nband q=   138     1    37      1.500000   1.333333   1.166667 geig sumcheck= -0.853127D-04 0.927599D+01
+ikp isp nband q=   139     1    37      0.833333   0.500000   1.333333 geig sumcheck= -0.160488D-03 0.509959D+01
+ikp isp nband q=   140     1    37      1.000000   0.666667   1.333333 geig sumcheck= -0.314031D+01 0.329400D+01
+ikp isp nband q=   141     1    37      1.166667   0.833333   1.333333 geig sumcheck= -0.131291D-02-0.741798D+01
+ikp isp nband q=   142     1    37      1.333333   1.000000   1.333333 geig sumcheck=  0.140571D-03 0.614048D+01
+ikp isp nband q=   143     1    37      1.500000   1.166667   1.333333 geig sumcheck=  0.164501D-03-0.592188D+01
+ikp isp nband q=   144     1    37      1.666667   1.333333   1.333333 geig sumcheck=  0.741967D-04-0.112287D+00
+ikp isp nband q=   145     1    37      0.000000   0.666667   0.666667 geig sumcheck=  0.405053D+01 0.328806D+00
+ikp isp nband q=   146     1    37      0.166667   0.833333   0.666667 geig sumcheck= -0.277751D-04-0.568915D+01
+ikp isp nband q=   147     1    37      0.333333   1.000000   0.666667 geig sumcheck=  0.349416D-04 0.261070D+01
+ikp isp nband q=   148     1    37      0.500000   1.166667   0.666667 geig sumcheck=  0.222350D-03-0.224744D+01
+ikp isp nband q=   149     1    37      0.666667   1.333333   0.666667 geig sumcheck= -0.268620D-03-0.555474D+01
+ikp isp nband q=   150     1    37      0.833333   1.500000   0.666667 geig sumcheck= -0.451894D-03 0.272610D+01
+ikp isp nband q=   151     1    37      0.166667   0.666667   0.833333 geig sumcheck=  0.171709D-04 0.480358D+00
+ikp isp nband q=   152     1    37      0.333333   0.833333   0.833333 geig sumcheck=  0.139334D-03-0.518274D+01
+ikp isp nband q=   153     1    37      0.500000   1.000000   0.833333 geig sumcheck= -0.254140D-04 0.371720D+00
+ikp isp nband q=   154     1    37      0.666667   1.166667   0.833333 geig sumcheck= -0.260940D-04 0.213125D+01
+ikp isp nband q=   155     1    37      0.833333   1.333333   0.833333 geig sumcheck= -0.467489D-03-0.127483D+02
+ikp isp nband q=   156     1    37      1.000000   1.500000   0.833333 geig sumcheck=  0.155525D+01 0.542765D+01
+ikp isp nband q=   157     1    37      0.333333   0.666667   1.000000 geig sumcheck= -0.391003D-04 0.619344D+00
+ikp isp nband q=   158     1    37      0.500000   0.833333   1.000000 geig sumcheck=  0.561267D-04 0.517147D+01
+ikp isp nband q=   159     1    37      0.666667   1.000000   1.000000 geig sumcheck=  0.257182D-05 0.385280D+01
+ikp isp nband q=   160     1    37      0.833333   1.166667   1.000000 geig sumcheck= -0.110222D-03 0.427618D+01
+ikp isp nband q=   161     1    37      1.000000   1.333333   1.000000 geig sumcheck= -0.219695D+01 0.488504D+01
+ikp isp nband q=   162     1    37      1.166667   1.500000   1.000000 geig sumcheck= -0.770642D-04 0.208269D+00
+ikp isp nband q=   163     1    37      0.500000   0.666667   1.166667 geig sumcheck=  0.262991D-03-0.820838D+01
+ikp isp nband q=   164     1    37      0.666667   0.833333   1.166667 geig sumcheck= -0.726547D-05-0.356094D+01
+ikp isp nband q=   165     1    37      0.833333   1.000000   1.166667 geig sumcheck= -0.594764D-05-0.511851D+01
+ikp isp nband q=   166     1    37      1.000000   1.166667   1.166667 geig sumcheck= -0.139870D+01-0.522134D+01
+ikp isp nband q=   167     1    37      1.166667   1.333333   1.166667 geig sumcheck=  0.940399D-03-0.533708D+01
+ikp isp nband q=   168     1    37      1.333333   1.500000   1.166667 geig sumcheck=  0.256138D-04-0.786235D+01
+ikp isp nband q=   169     1    37      0.666667   0.666667   1.333333 geig sumcheck=  0.332366D-03-0.198945D+01
+ikp isp nband q=   170     1    37      0.833333   0.833333   1.333333 geig sumcheck=  0.210357D-02-0.490717D+01
+ikp isp nband q=   171     1    37      1.000000   1.000000   1.333333 geig sumcheck=  0.509991D+01 0.759777D+00
+ikp isp nband q=   172     1    37      1.166667   1.166667   1.333333 geig sumcheck=  0.130599D-02-0.387757D+01
+ikp isp nband q=   173     1    37      1.333333   1.333333   1.333333 geig sumcheck=  0.168222D-03-0.247156D+01
+ikp isp nband q=   174     1    37      1.500000   1.500000   1.333333 geig sumcheck=  0.495259D-02 0.847296D+01
+ikp isp nband q=   175     1    37      0.833333   0.666667   1.500000 geig sumcheck= -0.548369D-03 0.305317D+01
+ikp isp nband q=   176     1    37      1.000000   0.833333   1.500000 geig sumcheck= -0.275781D+00 0.122966D+01
+ikp isp nband q=   177     1    37      1.166667   1.000000   1.500000 geig sumcheck= -0.369162D-04 0.274898D+01
+ikp isp nband q=   178     1    37      1.333333   1.166667   1.500000 geig sumcheck=  0.115446D-03-0.294568D+00
+ikp isp nband q=   179     1    37      1.500000   1.333333   1.500000 geig sumcheck=  0.115458D+01-0.100244D+01
+ikp isp nband q=   180     1    37      1.666667   1.500000   1.500000 geig sumcheck= -0.171928D-03 0.491165D+00
+ikp isp nband q=   181     1    37      0.000000   0.833333   0.833333 geig sumcheck= -0.261323D+01-0.204790D+00
+ikp isp nband q=   182     1    37      0.166667   1.000000   0.833333 geig sumcheck= -0.260453D-03 0.179542D-01
+ikp isp nband q=   183     1    37      0.333333   1.166667   0.833333 geig sumcheck= -0.249542D-03 0.815937D+01
+ikp isp nband q=   184     1    37      0.500000   1.333333   0.833333 geig sumcheck= -0.230486D-03 0.735640D+01
+ikp isp nband q=   185     1    37      0.666667   1.500000   0.833333 geig sumcheck= -0.231460D-03 0.291718D+01
+ikp isp nband q=   186     1    37      0.833333   1.666667   0.833333 geig sumcheck=  0.725610D-04 0.137385D+01
+ikp isp nband q=   187     1    37      0.166667   0.833333   1.000000 geig sumcheck=  0.159015D-03-0.152279D+01
+ikp isp nband q=   188     1    37      0.333333   1.000000   1.000000 geig sumcheck=  0.547025D-05 0.292644D+01
+ikp isp nband q=   189     1    37      0.500000   1.166667   1.000000 geig sumcheck= -0.134608D-04-0.903225D+01
+ikp isp nband q=   190     1    37      0.666667   1.333333   1.000000 geig sumcheck= -0.544114D-04 0.314421D+01
+ikp isp nband q=   191     1    37      0.833333   1.500000   1.000000 geig sumcheck=  0.681363D-05 0.228930D+01
+ikp isp nband q=   192     1    37      1.000000   1.666667   1.000000 geig sumcheck=  0.132172D+01 0.203168D+01
+ikp isp nband q=   193     1    37      0.333333   0.833333   1.166667 geig sumcheck= -0.104287D-02 0.751359D+01
+ikp isp nband q=   194     1    37      0.500000   1.000000   1.166667 geig sumcheck=  0.106338D-03 0.560824D+01
+ikp isp nband q=   195     1    37      0.666667   1.166667   1.166667 geig sumcheck=  0.138203D-03-0.627214D+01
+ikp isp nband q=   196     1    37      0.833333   1.333333   1.166667 geig sumcheck= -0.308877D-02-0.696677D+01
+ikp isp nband q=   197     1    37      1.000000   1.500000   1.166667 geig sumcheck= -0.242286D+01 0.256689D+01
+ikp isp nband q=   198     1    37      1.166667   1.666667   1.166667 geig sumcheck= -0.680444D-04 0.600478D+01
+ikp isp nband q=   199     1    37      0.500000   0.833333   1.333333 geig sumcheck=  0.248481D-03 0.700600D+01
+ikp isp nband q=   200     1    37      0.666667   1.000000   1.333333 geig sumcheck=  0.896825D-04 0.556563D+01
+ikp isp nband q=   201     1    37      0.833333   1.166667   1.333333 geig sumcheck= -0.153567D-02 0.978876D+01
+ikp isp nband q=   202     1    37      1.000000   1.333333   1.333333 geig sumcheck= -0.456541D+01-0.383976D+01
+ikp isp nband q=   203     1    37      1.166667   1.500000   1.333333 geig sumcheck=  0.583486D-03-0.272609D+01
+ikp isp nband q=   204     1    37      1.333333   1.666667   1.333333 geig sumcheck=  0.106594D-03-0.530870D+01
+ikp isp nband q=   205     1    37      0.666667   0.833333   1.500000 geig sumcheck=  0.836170D-04 0.267728D+01
+ikp isp nband q=   206     1    37      0.833333   1.000000   1.500000 geig sumcheck= -0.674715D-05-0.534630D+01
+ikp isp nband q=   207     1    37      1.000000   1.166667   1.500000 geig sumcheck=  0.703110D+00 0.781160D+00
+ikp isp nband q=   208     1    37      1.166667   1.333333   1.500000 geig sumcheck=  0.363977D-03-0.509968D+01
+ikp isp nband q=   209     1    37      1.333333   1.500000   1.500000 geig sumcheck=  0.920184D-04 0.159216D+01
+ikp isp nband q=   210     1    37      1.500000   1.666667   1.500000 geig sumcheck=  0.209030D+01 0.615165D+01
+ikp isp nband q=   211     1    37      0.833333   0.833333   1.666667 geig sumcheck=  0.595676D-06-0.658229D+01
+ikp isp nband q=   212     1    37      1.000000   1.000000   1.666667 geig sumcheck= -0.193716D+01-0.383574D+01
+ikp isp nband q=   213     1    37      1.166667   1.166667   1.666667 geig sumcheck=  0.149551D-03-0.568896D+01
+ikp isp nband q=   214     1    37      1.333333   1.333333   1.666667 geig sumcheck= -0.504579D-04 0.187855D+01
+ikp isp nband q=   215     1    37      1.500000   1.500000   1.666667 geig sumcheck=  0.318873D+01-0.365682D+01
+ikp isp nband q=   216     1    37      1.666667   1.666667   1.666667 geig sumcheck= -0.134176D-03 0.198169D+01
+ikp isp nband q=   217     1    37      0.000000   0.049292   0.049292 geig sumcheck= -0.111891D+01-0.827030D+00
+ikp isp nband q=   218     1    37      0.166667   0.215959   0.049292 geig sumcheck=  0.964973D-05-0.374412D+01
+ikp isp nband q=   219     1    37      0.333333   0.382626   0.049292 geig sumcheck=  0.252335D-01-0.125946D+01
+ikp isp nband q=   220     1    37      0.500000   0.549292   0.049292 geig sumcheck=  0.245479D-03 0.955727D+01
+ikp isp nband q=   221     1    37      0.666667   0.715959   0.049292 geig sumcheck= -0.331011D-03-0.649278D+01
+ikp isp nband q=   222     1    37      0.833333   0.882626   0.049292 geig sumcheck= -0.169654D-02 0.131887D+01
+ikp isp nband q=   223     1    37      0.166667   0.049292   0.215959 geig sumcheck= -0.443265D-04-0.358203D-01
+ikp isp nband q=   224     1    37      0.333333   0.215959   0.215959 geig sumcheck=  0.139473D-02-0.690270D+01
+ikp isp nband q=   225     1    37      0.500000   0.382626   0.215959 geig sumcheck=  0.279016D-03-0.608592D+01
+ikp isp nband q=   226     1    37      0.666667   0.549292   0.215959 geig sumcheck= -0.103900D-05 0.230818D+01
+ikp isp nband q=   227     1    37      0.833333   0.715959   0.215959 geig sumcheck= -0.412340D-03 0.403609D+01
+ikp isp nband q=   228     1    37      1.000000   0.882626   0.215959 geig sumcheck= -0.885821D+00 0.106095D+01
+ikp isp nband q=   229     1    37      0.333333   0.049292   0.382626 geig sumcheck=  0.637585D-02-0.119315D+01
+ikp isp nband q=   230     1    37      0.500000   0.215959   0.382626 geig sumcheck= -0.761935D-03-0.575957D+01
+ikp isp nband q=   231     1    37      0.666667   0.382626   0.382626 geig sumcheck= -0.852592D-04 0.117703D+01
+ikp isp nband q=   232     1    37      0.833333   0.549292   0.382626 geig sumcheck=  0.152920D-03-0.197794D+01
+ikp isp nband q=   233     1    37      1.000000   0.715959   0.382626 geig sumcheck= -0.294892D+01-0.183684D+01
+ikp isp nband q=   234     1    37      1.166667   0.882626   0.382626 geig sumcheck= -0.136126D-04-0.144849D+01
+ikp isp nband q=   235     1    37      0.500000   0.049292   0.549292 geig sumcheck=  0.505353D-05 0.941106D+01
+ikp isp nband q=   236     1    37      0.666667   0.215959   0.549292 geig sumcheck= -0.429522D-04 0.412662D+01
+ikp isp nband q=   237     1    37      0.833333   0.382626   0.549292 geig sumcheck= -0.209123D-03 0.532170D+01
+ikp isp nband q=   238     1    37      1.000000   0.549292   0.549292 geig sumcheck=  0.646251D+01 0.250463D+01
+ikp isp nband q=   239     1    37      1.166667   0.715959   0.549292 geig sumcheck=  0.193474D-03-0.842308D+01
+ikp isp nband q=   240     1    37      1.333333   0.882626   0.549292 geig sumcheck= -0.207439D-03 0.192757D+01
+ikp isp nband q=   241     1    37      0.666667   0.049292   0.715959 geig sumcheck= -0.425187D-03-0.329922D+01
+ikp isp nband q=   242     1    37      0.833333   0.215959   0.715959 geig sumcheck= -0.175034D-03 0.449430D+01
+ikp isp nband q=   243     1    37      1.000000   0.382626   0.715959 geig sumcheck=  0.312755D+01-0.212104D+01
+ikp isp nband q=   244     1    37      1.166667   0.549292   0.715959 geig sumcheck= -0.553163D-04 0.717865D+01
+ikp isp nband q=   245     1    37      1.333333   0.715959   0.715959 geig sumcheck=  0.199937D-03 0.396849D+00
+ikp isp nband q=   246     1    37      1.500000   0.882626   0.715959 geig sumcheck= -0.709340D-05-0.187929D+01
+ikp isp nband q=   247     1    37      0.833333   0.049292   0.882626 geig sumcheck= -0.424065D-03-0.514644D+01
+ikp isp nband q=   248     1    37      1.000000   0.215959   0.882626 geig sumcheck=  0.306122D+01 0.751293D+00
+ikp isp nband q=   249     1    37      1.166667   0.382626   0.882626 geig sumcheck=  0.215546D-03 0.112742D+01
+ikp isp nband q=   250     1    37      1.333333   0.549292   0.882626 geig sumcheck= -0.364616D-03 0.398233D+01
+ikp isp nband q=   251     1    37      1.500000   0.715959   0.882626 geig sumcheck= -0.608299D-04-0.734175D+01
+ikp isp nband q=   252     1    37      1.666667   0.882626   0.882626 geig sumcheck=  0.435046D-03-0.140982D+01
+ikp isp nband q=   253     1    37      0.000000   0.215959   0.215959 geig sumcheck=  0.164100D+01-0.119997D+01
+ikp isp nband q=   254     1    37      0.166667   0.382626   0.215959 geig sumcheck=  0.104272D-03-0.236681D+01
+ikp isp nband q=   255     1    37      0.333333   0.549292   0.215959 geig sumcheck=  0.155463D-03-0.466771D+01
+ikp isp nband q=   256     1    37      0.500000   0.715959   0.215959 geig sumcheck=  0.515297D-04-0.149746D+01
+ikp isp nband q=   257     1    37      0.666667   0.882626   0.215959 geig sumcheck=  0.592720D-03 0.557658D+01
+ikp isp nband q=   258     1    37      0.833333   1.049292   0.215959 geig sumcheck=  0.499599D-03-0.139748D+01
+ikp isp nband q=   259     1    37      0.166667   0.215959   0.382626 geig sumcheck= -0.220056D-03-0.236669D+01
+ikp isp nband q=   260     1    37      0.333333   0.382626   0.382626 geig sumcheck= -0.118654D-03-0.391696D+01
+ikp isp nband q=   261     1    37      0.500000   0.549292   0.382626 geig sumcheck= -0.234753D-03 0.145403D+00
+ikp isp nband q=   262     1    37      0.666667   0.715959   0.382626 geig sumcheck= -0.450090D-04 0.615030D+01
+ikp isp nband q=   263     1    37      0.833333   0.882626   0.382626 geig sumcheck=  0.322476D-04-0.204366D+01
+ikp isp nband q=   264     1    37      1.000000   1.049292   0.382626 geig sumcheck=  0.118899D+01 0.200134D+01
+ikp isp nband q=   265     1    37      0.333333   0.215959   0.549292 geig sumcheck=  0.137564D-03-0.259042D+01
+ikp isp nband q=   266     1    37      0.500000   0.382626   0.549292 geig sumcheck=  0.104382D-03-0.675138D+01
+ikp isp nband q=   267     1    37      0.666667   0.549292   0.549292 geig sumcheck=  0.151172D-03-0.256342D+01
+ikp isp nband q=   268     1    37      0.833333   0.715959   0.549292 geig sumcheck= -0.633131D-03-0.312949D+01
+ikp isp nband q=   269     1    37      1.000000   0.882626   0.549292 geig sumcheck=  0.240427D+01 0.861238D+00
+ikp isp nband q=   270     1    37      1.166667   1.049292   0.549292 geig sumcheck=  0.628087D-04-0.490078D+01
+ikp isp nband q=   271     1    37      0.500000   0.215959   0.715959 geig sumcheck=  0.278681D-03-0.656669D+01
+ikp isp nband q=   272     1    37      0.666667   0.382626   0.715959 geig sumcheck= -0.216112D-04 0.425804D+00
+ikp isp nband q=   273     1    37      0.833333   0.549292   0.715959 geig sumcheck=  0.618111D-03 0.317650D-01
+ikp isp nband q=   274     1    37      1.000000   0.715959   0.715959 geig sumcheck=  0.449911D+01-0.439379D+01
+ikp isp nband q=   275     1    37      1.166667   0.882626   0.715959 geig sumcheck=  0.115835D-03-0.345208D+01
+ikp isp nband q=   276     1    37      1.333333   1.049292   0.715959 geig sumcheck= -0.399591D-04 0.803914D+01
+ikp isp nband q=   277     1    37      0.666667   0.215959   0.882626 geig sumcheck= -0.150499D-02-0.497024D+01
+ikp isp nband q=   278     1    37      0.833333   0.382626   0.882626 geig sumcheck= -0.751487D-04-0.484473D+01
+ikp isp nband q=   279     1    37      1.000000   0.549292   0.882626 geig sumcheck=  0.411310D+01-0.331069D+01
+ikp isp nband q=   280     1    37      1.166667   0.715959   0.882626 geig sumcheck= -0.149576D-03 0.778958D+01
+ikp isp nband q=   281     1    37      1.333333   0.882626   0.882626 geig sumcheck= -0.200884D-03-0.429101D+01
+ikp isp nband q=   282     1    37      1.500000   1.049292   0.882626 geig sumcheck=  0.332726D-04-0.210374D+01
+ikp isp nband q=   283     1    37      0.833333   0.215959   1.049292 geig sumcheck=  0.155812D-03-0.220226D+01
+ikp isp nband q=   284     1    37      1.000000   0.382626   1.049292 geig sumcheck=  0.899617D+00-0.290287D+01
+ikp isp nband q=   285     1    37      1.166667   0.549292   1.049292 geig sumcheck= -0.114318D-03 0.374827D+01
+ikp isp nband q=   286     1    37      1.333333   0.715959   1.049292 geig sumcheck=  0.183841D-03 0.581737D+01
+ikp isp nband q=   287     1    37      1.500000   0.882626   1.049292 geig sumcheck= -0.794432D-04-0.134336D+01
+ikp isp nband q=   288     1    37      1.666667   1.049292   1.049292 geig sumcheck= -0.349227D-03 0.691489D+01
+ikp isp nband q=   289     1    37      0.000000   0.382626   0.382626 geig sumcheck= -0.272536D+01 0.327430D+01
+ikp isp nband q=   290     1    37      0.166667   0.549292   0.382626 geig sumcheck=  0.328611D-03 0.558107D+01
+ikp isp nband q=   291     1    37      0.333333   0.715959   0.382626 geig sumcheck=  0.150873D-03-0.693250D+01
+ikp isp nband q=   292     1    37      0.500000   0.882626   0.382626 geig sumcheck= -0.213185D-02-0.204769D+01
+ikp isp nband q=   293     1    37      0.666667   1.049292   0.382626 geig sumcheck=  0.107989D-02-0.365408D+01
+ikp isp nband q=   294     1    37      0.833333   1.215959   0.382626 geig sumcheck=  0.134096D-03-0.203364D+01
+ikp isp nband q=   295     1    37      0.166667   0.382626   0.549292 geig sumcheck=  0.323462D-03 0.276655D+01
+ikp isp nband q=   296     1    37      0.333333   0.549292   0.549292 geig sumcheck=  0.661884D-04 0.848898D+01
+ikp isp nband q=   297     1    37      0.500000   0.715959   0.549292 geig sumcheck=  0.634451D-02 0.888894D+01
+ikp isp nband q=   298     1    37      0.666667   0.882626   0.549292 geig sumcheck=  0.624050D-04-0.722047D+01
+ikp isp nband q=   299     1    37      0.833333   1.049292   0.549292 geig sumcheck=  0.158242D-03-0.265406D+01
+ikp isp nband q=   300     1    37      1.000000   1.215959   0.549292 geig sumcheck=  0.128906D+01 0.617878D+01
+ikp isp nband q=   301     1    37      0.333333   0.382626   0.715959 geig sumcheck=  0.339026D-03-0.465795D+01
+ikp isp nband q=   302     1    37      0.500000   0.549292   0.715959 geig sumcheck= -0.537927D-02 0.942346D+01
+ikp isp nband q=   303     1    37      0.666667   0.715959   0.715959 geig sumcheck=  0.302805D-03 0.596462D+01
+ikp isp nband q=   304     1    37      0.833333   0.882626   0.715959 geig sumcheck= -0.158450D-03 0.108245D+02
+ikp isp nband q=   305     1    37      1.000000   1.049292   0.715959 geig sumcheck= -0.835606D+00 0.473413D+01
+ikp isp nband q=   306     1    37      1.166667   1.215959   0.715959 geig sumcheck= -0.255935D-03 0.922232D+01
+ikp isp nband q=   307     1    37      0.500000   0.382626   0.882626 geig sumcheck= -0.126656D-02-0.630990D+01
+ikp isp nband q=   308     1    37      0.666667   0.549292   0.882626 geig sumcheck= -0.111206D-03-0.437564D+01
+ikp isp nband q=   309     1    37      0.833333   0.715959   0.882626 geig sumcheck=  0.219223D-03 0.108364D+02
+ikp isp nband q=   310     1    37      1.000000   0.882626   0.882626 geig sumcheck= -0.132420D+01-0.972416D+00
+ikp isp nband q=   311     1    37      1.166667   1.049292   0.882626 geig sumcheck= -0.140813D-03-0.274774D+01
+ikp isp nband q=   312     1    37      1.333333   1.215959   0.882626 geig sumcheck=  0.602981D-04-0.794543D+01
+ikp isp nband q=   313     1    37      0.666667   0.382626   1.049292 geig sumcheck= -0.924386D-02-0.365404D+01
+ikp isp nband q=   314     1    37      0.833333   0.549292   1.049292 geig sumcheck= -0.666374D-04-0.535594D+00
+ikp isp nband q=   315     1    37      1.000000   0.715959   1.049292 geig sumcheck= -0.298347D+01 0.219608D+01
+ikp isp nband q=   316     1    37      1.166667   0.882626   1.049292 geig sumcheck= -0.311186D-03-0.409103D+01
+ikp isp nband q=   317     1    37      1.333333   1.049292   1.049292 geig sumcheck=  0.874057D-04-0.165620D+01
+ikp isp nband q=   318     1    37      1.500000   1.215959   1.049292 geig sumcheck=  0.549603D-03-0.520463D+01
+ikp isp nband q=   319     1    37      0.833333   0.382626   1.215959 geig sumcheck=  0.278687D-04-0.236089D+01
+ikp isp nband q=   320     1    37      1.000000   0.549292   1.215959 geig sumcheck=  0.167215D+01-0.131166D+01
+ikp isp nband q=   321     1    37      1.166667   0.715959   1.215959 geig sumcheck=  0.172843D-04-0.317920D+01
+ikp isp nband q=   322     1    37      1.333333   0.882626   1.215959 geig sumcheck=  0.192864D-04 0.272745D+01
+ikp isp nband q=   323     1    37      1.500000   1.049292   1.215959 geig sumcheck= -0.231871D-03 0.486133D+01
+ikp isp nband q=   324     1    37      1.666667   1.215959   1.215959 geig sumcheck= -0.234814D-03 0.129221D+01
+ikp isp nband q=   325     1    37      0.000000   0.549292   0.549292 geig sumcheck= -0.702321D+00-0.485227D+01
+ikp isp nband q=   326     1    37      0.166667   0.715959   0.549292 geig sumcheck=  0.443380D-04-0.188905D+01
+ikp isp nband q=   327     1    37      0.333333   0.882626   0.549292 geig sumcheck=  0.157449D-04-0.580045D+01
+ikp isp nband q=   328     1    37      0.500000   1.049292   0.549292 geig sumcheck=  0.966797D-04-0.437600D+01
+ikp isp nband q=   329     1    37      0.666667   1.215959   0.549292 geig sumcheck= -0.386003D-04 0.491798D+01
+ikp isp nband q=   330     1    37      0.833333   1.382626   0.549292 geig sumcheck= -0.316202D-03-0.549946D+01
+ikp isp nband q=   331     1    37      0.166667   0.549292   0.715959 geig sumcheck=  0.375876D-02-0.189704D+01
+ikp isp nband q=   332     1    37      0.333333   0.715959   0.715959 geig sumcheck= -0.209120D-03 0.290588D+01
+ikp isp nband q=   333     1    37      0.500000   0.882626   0.715959 geig sumcheck= -0.103833D-03 0.634803D+01
+ikp isp nband q=   334     1    37      0.666667   1.049292   0.715959 geig sumcheck=  0.186901D-03 0.705467D+01
+ikp isp nband q=   335     1    37      0.833333   1.215959   0.715959 geig sumcheck= -0.193518D-03 0.808744D+01
+ikp isp nband q=   336     1    37      1.000000   1.382626   0.715959 geig sumcheck= -0.384824D+00-0.512864D+01
+ikp isp nband q=   337     1    37      0.333333   0.549292   0.882626 geig sumcheck=  0.319722D-03-0.622732D+01
+ikp isp nband q=   338     1    37      0.500000   0.715959   0.882626 geig sumcheck= -0.928066D-04-0.445386D+01
+ikp isp nband q=   339     1    37      0.666667   0.882626   0.882626 geig sumcheck= -0.613391D-04 0.328433D+01
+ikp isp nband q=   340     1    37      0.833333   1.049292   0.882626 geig sumcheck= -0.127830D-03-0.237798D+01
+ikp isp nband q=   341     1    37      1.000000   1.215959   0.882626 geig sumcheck=  0.911945D+00 0.357038D+01
+ikp isp nband q=   342     1    37      1.166667   1.382626   0.882626 geig sumcheck=  0.350041D-03 0.133140D+01
+ikp isp nband q=   343     1    37      0.500000   0.549292   1.049292 geig sumcheck= -0.785693D-04-0.437621D+01
+ikp isp nband q=   344     1    37      0.666667   0.715959   1.049292 geig sumcheck=  0.476794D-04 0.928521D+01
+ikp isp nband q=   345     1    37      0.833333   0.882626   1.049292 geig sumcheck= -0.125931D-03-0.116225D+01
+ikp isp nband q=   346     1    37      1.000000   1.049292   1.049292 geig sumcheck=  0.349489D+01 0.388809D+01
+ikp isp nband q=   347     1    37      1.166667   1.215959   1.049292 geig sumcheck= -0.493415D-04-0.241054D+01
+ikp isp nband q=   348     1    37      1.333333   1.382626   1.049292 geig sumcheck=  0.126965D-03 0.822735D+01
+ikp isp nband q=   349     1    37      0.666667   0.549292   1.215959 geig sumcheck=  0.128262D-03 0.234014D+01
+ikp isp nband q=   350     1    37      0.833333   0.715959   1.215959 geig sumcheck= -0.373907D-03-0.157910D+01
+ikp isp nband q=   351     1    37      1.000000   0.882626   1.215959 geig sumcheck=  0.187770D+01-0.134348D+01
+ikp isp nband q=   352     1    37      1.166667   1.049292   1.215959 geig sumcheck=  0.106625D-04 0.454357D+01
+ikp isp nband q=   353     1    37      1.333333   1.215959   1.215959 geig sumcheck=  0.382988D-04-0.124326D+01
+ikp isp nband q=   354     1    37      1.500000   1.382626   1.215959 geig sumcheck=  0.512289D-03 0.515675D+01
+ikp isp nband q=   355     1    37      0.833333   0.549292   1.382626 geig sumcheck= -0.190088D-03-0.284853D+01
+ikp isp nband q=   356     1    37      1.000000   0.715959   1.382626 geig sumcheck= -0.386297D+01 0.587376D+01
+ikp isp nband q=   357     1    37      1.166667   0.882626   1.382626 geig sumcheck=  0.278357D-03-0.127730D+01
+ikp isp nband q=   358     1    37      1.333333   1.049292   1.382626 geig sumcheck= -0.516049D-03 0.822711D+01
+ikp isp nband q=   359     1    37      1.500000   1.215959   1.382626 geig sumcheck= -0.689187D-03 0.512857D+01
+ikp isp nband q=   360     1    37      1.666667   1.382626   1.382626 geig sumcheck=  0.118288D-03-0.217025D+01
+ikp isp nband q=   361     1    37      0.000000   0.715959   0.715959 geig sumcheck=  0.294556D+01 0.811938D+00
+ikp isp nband q=   362     1    37      0.166667   0.882626   0.715959 geig sumcheck=  0.295001D-03-0.607427D+01
+ikp isp nband q=   363     1    37      0.333333   1.049292   0.715959 geig sumcheck=  0.171480D-02-0.291988D+01
+ikp isp nband q=   364     1    37      0.500000   1.215959   0.715959 geig sumcheck=  0.155630D-03 0.368746D+01
+ikp isp nband q=   365     1    37      0.666667   1.382626   0.715959 geig sumcheck= -0.113528D-03 0.693250D+01
+ikp isp nband q=   366     1    37      0.833333   1.549292   0.715959 geig sumcheck=  0.577944D-02-0.158507D+01
+ikp isp nband q=   367     1    37      0.166667   0.715959   0.882626 geig sumcheck=  0.479106D-03 0.492642D+01
+ikp isp nband q=   368     1    37      0.333333   0.882626   0.882626 geig sumcheck=  0.552651D-04-0.886619D+01
+ikp isp nband q=   369     1    37      0.500000   1.049292   0.882626 geig sumcheck=  0.207505D-03-0.135581D+01
+ikp isp nband q=   370     1    37      0.666667   1.215959   0.882626 geig sumcheck=  0.419272D-04-0.720771D+01
+ikp isp nband q=   371     1    37      0.833333   1.382626   0.882626 geig sumcheck=  0.266105D-03-0.682536D+01
+ikp isp nband q=   372     1    37      1.000000   1.549292   0.882626 geig sumcheck=  0.219118D+01 0.296530D+01
+ikp isp nband q=   373     1    37      0.333333   0.715959   1.049292 geig sumcheck=  0.106845D-02-0.645547D+01
+ikp isp nband q=   374     1    37      0.500000   0.882626   1.049292 geig sumcheck=  0.129668D-03-0.211627D+01
+ikp isp nband q=   375     1    37      0.666667   1.049292   1.049292 geig sumcheck= -0.249105D-03-0.344655D+01
+ikp isp nband q=   376     1    37      0.833333   1.215959   1.049292 geig sumcheck=  0.285013D-03-0.171429D+01
+ikp isp nband q=   377     1    37      1.000000   1.382626   1.049292 geig sumcheck=  0.636913D+00-0.284969D+01
+ikp isp nband q=   378     1    37      1.166667   1.549292   1.049292 geig sumcheck=  0.617998D-04-0.419701D+01
+ikp isp nband q=   379     1    37      0.500000   0.715959   1.215959 geig sumcheck=  0.121952D-03-0.200206D+01
+ikp isp nband q=   380     1    37      0.666667   0.882626   1.215959 geig sumcheck=  0.225376D-04 0.213236D+01
+ikp isp nband q=   381     1    37      0.833333   1.049292   1.215959 geig sumcheck=  0.102582D-03 0.792594D+01
+ikp isp nband q=   382     1    37      1.000000   1.215959   1.215959 geig sumcheck= -0.207311D+01-0.299435D+01
+ikp isp nband q=   383     1    37      1.166667   1.382626   1.215959 geig sumcheck= -0.134613D-03 0.847429D+00
+ikp isp nband q=   384     1    37      1.333333   1.549292   1.215959 geig sumcheck= -0.560013D-03-0.412667D+01
+ikp isp nband q=   385     1    37      0.666667   0.715959   1.382626 geig sumcheck= -0.510504D-03 0.482720D+01
+ikp isp nband q=   386     1    37      0.833333   0.882626   1.382626 geig sumcheck= -0.495374D-03 0.108486D+02
+ikp isp nband q=   387     1    37      1.000000   1.049292   1.382626 geig sumcheck=  0.436235D+01-0.133581D+01
+ikp isp nband q=   388     1    37      1.166667   1.215959   1.382626 geig sumcheck=  0.820214D-05-0.524438D+01
+ikp isp nband q=   389     1    37      1.333333   1.382626   1.382626 geig sumcheck=  0.255438D-03 0.594855D+01
+ikp isp nband q=   390     1    37      1.500000   1.549292   1.382626 geig sumcheck=  0.402090D-04 0.649996D+01
+ikp isp nband q=   391     1    37      0.833333   0.715959   1.549292 geig sumcheck= -0.583098D-02-0.922464D+01
+ikp isp nband q=   392     1    37      1.000000   0.882626   1.549292 geig sumcheck= -0.552470D+00-0.122905D+01
+ikp isp nband q=   393     1    37      1.166667   1.049292   1.549292 geig sumcheck=  0.107357D-03 0.126877D+01
+ikp isp nband q=   394     1    37      1.333333   1.215959   1.549292 geig sumcheck= -0.516115D-03-0.230821D+01
+ikp isp nband q=   395     1    37      1.500000   1.382626   1.549292 geig sumcheck=  0.795705D-04 0.106102D+00
+ikp isp nband q=   396     1    37      1.666667   1.549292   1.549292 geig sumcheck= -0.158369D-04-0.301277D+01
+ikp isp nband q=   397     1    37      0.000000   0.882626   0.882626 geig sumcheck= -0.481496D+00-0.144375D+01
+ikp isp nband q=   398     1    37      0.166667   1.049292   0.882626 geig sumcheck=  0.690411D-04-0.115856D+01
+ikp isp nband q=   399     1    37      0.333333   1.215959   0.882626 geig sumcheck=  0.234373D-02-0.519957D+01
+ikp isp nband q=   400     1    37      0.500000   1.382626   0.882626 geig sumcheck= -0.165492D-02 0.184139D+01
+ikp isp nband q=   401     1    37      0.666667   1.549292   0.882626 geig sumcheck= -0.515005D-03 0.649846D+00
+ikp isp nband q=   402     1    37      0.833333   1.715959   0.882626 geig sumcheck=  0.730147D-03 0.631478D+01
+ikp isp nband q=   403     1    37      0.166667   0.882626   1.049292 geig sumcheck= -0.110379D-03 0.248913D+01
+ikp isp nband q=   404     1    37      0.333333   1.049292   1.049292 geig sumcheck=  0.458379D-03 0.414601D+01
+ikp isp nband q=   405     1    37      0.500000   1.215959   1.049292 geig sumcheck= -0.666153D-04-0.597125D+01
+ikp isp nband q=   406     1    37      0.666667   1.382626   1.049292 geig sumcheck=  0.620956D-03-0.767639D+01
+ikp isp nband q=   407     1    37      0.833333   1.549292   1.049292 geig sumcheck=  0.101815D-04 0.227295D+01
+ikp isp nband q=   408     1    37      1.000000   1.715959   1.049292 geig sumcheck= -0.227567D+01-0.424882D+01
+ikp isp nband q=   409     1    37      0.333333   0.882626   1.215959 geig sumcheck=  0.422032D-02 0.195759D+01
+ikp isp nband q=   410     1    37      0.500000   1.049292   1.215959 geig sumcheck=  0.997918D-04 0.700083D+01
+ikp isp nband q=   411     1    37      0.666667   1.215959   1.215959 geig sumcheck=  0.100745D-03-0.519725D+01
+ikp isp nband q=   412     1    37      0.833333   1.382626   1.215959 geig sumcheck= -0.187177D-04 0.157733D+01
+ikp isp nband q=   413     1    37      1.000000   1.549292   1.215959 geig sumcheck=  0.411856D+00 0.336736D+01
+ikp isp nband q=   414     1    37      1.166667   1.715959   1.215959 geig sumcheck= -0.151356D-03-0.452542D+01
+ikp isp nband q=   415     1    37      0.500000   0.882626   1.382626 geig sumcheck= -0.115951D-02 0.667732D+01
+ikp isp nband q=   416     1    37      0.666667   1.049292   1.382626 geig sumcheck=  0.191559D-03-0.767633D+01
+ikp isp nband q=   417     1    37      0.833333   1.215959   1.382626 geig sumcheck=  0.299695D-04-0.141588D+01
+ikp isp nband q=   418     1    37      1.000000   1.382626   1.382626 geig sumcheck= -0.551053D+01-0.342480D+01
+ikp isp nband q=   419     1    37      1.166667   1.549292   1.382626 geig sumcheck=  0.120977D-03 0.883762D+01
+ikp isp nband q=   420     1    37      1.333333   1.715959   1.382626 geig sumcheck=  0.825814D-04-0.425703D+00
+ikp isp nband q=   421     1    37      0.666667   0.882626   1.549292 geig sumcheck=  0.132249D-02 0.957863D+00
+ikp isp nband q=   422     1    37      0.833333   1.049292   1.549292 geig sumcheck=  0.843277D-04-0.397843D+01
+ikp isp nband q=   423     1    37      1.000000   1.215959   1.549292 geig sumcheck= -0.423330D+01-0.331390D+01
+ikp isp nband q=   424     1    37      1.166667   1.382626   1.549292 geig sumcheck= -0.627193D-04 0.650870D+01
+ikp isp nband q=   425     1    37      1.333333   1.549292   1.549292 geig sumcheck= -0.142514D-03-0.855915D+01
+ikp isp nband q=   426     1    37      1.500000   1.715959   1.549292 geig sumcheck=  0.364454D-02-0.592810D+00
+ikp isp nband q=   427     1    37      0.833333   0.882626   1.715959 geig sumcheck= -0.105655D-03 0.716329D+00
+ikp isp nband q=   428     1    37      1.000000   1.049292   1.715959 geig sumcheck= -0.425123D+00-0.173490D+01
+ikp isp nband q=   429     1    37      1.166667   1.215959   1.715959 geig sumcheck=  0.504883D-03-0.406756D+01
+ikp isp nband q=   430     1    37      1.333333   1.382626   1.715959 geig sumcheck=  0.174242D-03-0.615032D+01
+ikp isp nband q=   431     1    37      1.500000   1.549292   1.715959 geig sumcheck= -0.136082D-02-0.112730D+01
+ikp isp nband q=   432     1    37      1.666667   1.715959   1.715959 geig sumcheck= -0.632344D-03 0.469448D+01
+
+ File gwa: reading atom data
+ site  1  z= 11.0  rmax= 3.13700  lmax=4  konf=3*345
+  l    g(rmax)    gp(rmax)    <g g>         <gp gp>         <g gp>
+  0    0.99107   -0.50053   0.9999787177   0.0870368340   -0.000008
+  1    1.08692   -0.41717   0.9999699680   0.0654311750   -0.000003
+  gz(rmax); <gz gz> <gz g> <gz gp> =  0.00000   1.0026257983  -0.1323195   0.0603094
+  2    1.34406   -0.31260   0.9999836102   0.0330468005    0.000002
+  3    1.60306   -0.19491   0.9999668810   0.0099603581    0.000003
+  4    1.72850   -0.15537   0.9999481920   0.0054875075    0.000003
+  l  k isp       ecore      gc(rmax)     <gc gc>
+  0  1  1     -75.393915    0.000000   0.9985152928  1  1
+  0  2  1      -3.987145    0.019643   0.9998194246  2  2
+ 
+  *** DATA4GW_V2 size=           1           1           1         343
+           2
+                  =           4          92          37          53         432
+                  =          53           3
+
+ ----  OK! lmf2gw: end --- DATA4GW_V2 is written 

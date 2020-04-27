@@ -1,0 +1,13 @@
+#! /bin/tcsh -f
+# returns the directory for a given pathname
+
+if ($#argv == 0) exit
+if (-d $1) then
+  echo $1
+  exit
+endif
+
+echo $1:h
+
+
+

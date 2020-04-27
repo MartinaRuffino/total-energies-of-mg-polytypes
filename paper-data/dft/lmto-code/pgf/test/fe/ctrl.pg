@@ -1,0 +1,313 @@
+# --- bcc (001) and (110) metal superlattice or trilayer ---
+% const na=8 nb=6 fm=t dble=fm?((na+nb)%2+1):2 dbxy=f
+% const pgf=0 sparse=0 rel=1 so=0 nclead=0 declead=0
+% char me fe se fe
+% const ss=0 qss=0 nc=f theta=0 beta=90 sdyn=0 pad=0 scr=0 twoc=f gamma=twoc 
+% const nca=(na+1)/2 ncb=(nb+1)/2 nk1=4 nk2=8 nz=10 vfe=0 dvfe=0
+% const sc=f bulkm=0 nsp=1 nit=1 xclas=0 ordalloy=f
+% var dble=ordalloy?2:dble
+% var nk2=dble==2?nk2+nk2%4:nk2
+% stop ~fm&(dble==1) : case fm={fm} and dble={dble} not allowed
+% stop (na+nb)%2==1&dble==1 : na+nb={na+nb} and dble={dble} not allowed
+% stop dbxy&na%2==0 dbxy=t requires that na be odd
+% const asa=t lmxf=4 lmxb=221 ef0=0 lmh=f
+% const ksdw=1-1/(nb+1)*(((fm&nb%2)|(~fm&(1-nb%2)))?0:1)
+% const xv=0 vesi=0 nl=3
+% save vesi
+#
+# --- Magnetic element use sbbcm=1 for m bcc, sqrt(2) for m fcc ---
+% ifdef me=='fe'
+% var Za=26 abccm=5.44 sbccm=1
+% elseifd me=='co'
+% var Za=27 abccm=6.71/sqrt(2) sbccm=sqrt(2)
+% endif
+# ---
+% ifdef se=='al'
+% var Zb=13 abccs=7.40/sqrt(2) sbccs=sqrt(2)
+% elseifd se=='v'
+% var Zb=23 abccs=5.72 sbccs=1
+% elseifd se=='cr'
+% var Zb=24 abccs=5.44 sbccs=1
+% elseifd se=='mn'
+% var Zb=25 abccs=5.44 sbccs=1
+% elseifd se=='fe'
+% var Zb=26 abccs=5.44 sbccs=1
+% elseifd se=='cu'
+% var Zb=29 abccs=6.82/sqrt(2) sbccs=sqrt(2)
+% elseifd se=='ag'
+% var Zb=47 abccs=7.73/sqrt(2) sbccs=sqrt(2)
+% endif
+% char strn "{me}/{se}"
+% ifdef ss<>0|qss<>0
+% char strn2 "{strn} qss={qss} b={beta}"  strn {strn2}
+% endif
+% ifdef nc<>0
+% char strn "{strn} theta={theta}"
+% endif
+% echo n={na},{nb} fm={fm}({dble}) nk={nk1},{nk2} {strn}
+
+# --- End of definitions ---
+% ifdef dir==110
+% stop 1 check this platl, dir=110'
+PGF     {pgf} SPARSE={sparse} PLATL=2*hm -2*hm 0 PLATR=2*hm -2*hm 0
+% else
+PGF     MODE={pgf} SPARSE={sparse} PLATL=0 0 2*ha PLATR=0 0 2*ha
+# build up gfopts. If already passed from command line, use that
+% ifndef gfopts
+% char gfopts "pdos;{padtol=pgf==2?.1:.03}{?~twoc==0~;p3~};bigemb"
+% endif
+        GFOPTS= {gfopts};{?;nclead;nclead;};{?;declead;declead;}
+% endif
+GF      MODE=1 GFOPTS=p3
+VERS    LMASA-6 LM:7 ASA:7
+IO      SHOW=f HELP=F VERBOS=31 20 WKP=f IACTIV=t TIM=f
+% ifdef asa
+% ifdef pgf==2
+ITER    MIX=B6 NIT={nit} CONVC=5D-6 CONV=0
+MIX     MODE=B6
+ITER    MIX=B6,w=2,1,b=.2,n=4;A6,w=1,2,n=4 XIPMX=f BETV=.03 NIT={nit} CONVC=5D-6 CONV=0
+MIX     MODE=B6,w=2,1,b=.2,n=4;A6,w=1,2,n=4 XIPMX=f BETV=.03
+% endif
+ITER    MIX=A3,b=.25 NIT={nit} CONVC=5D-6 CONV=0
+MIX     MODE=A3,b=.25
+ITER    MIX=A3,w=2,1,b=.5;B5,w=1,2,b=.5 NIT={nit} CONVC=5D-6 CONV=0
+MIX     MODE=A3,w=2,1,b=.5;B5,w=1,2,b=.5
+ITER    MIX=A2,w=1,2,n=4,b=.05 XIPMX=f BETV=.03 NIT={nit} CONVC=5D-6 CONV=0
+MIX     MODE=A2,w=1,2,n=4,b=.05 XIPMX=f BETV=.03
+        AMODE=A,w=0,0,wa=1,fn=ma,n=2,b=1
+ITER    MIX=B6,w=2,1,b=.2,n=4;A6,w=1,2,n=4 XIPMX=f BETV=.03 NIT={nit} CONVC=5D-6 CONV=0
+MIX     MODE=B6,w=2,1,b=.2,n=4;A6,w=1,2,n=4 XIPMX=f BETV=.03
+# use this one for fine convergence of rho
+# ITER    MIX=B6,w=2,1,b=.2,k=4+2 XIPMX={sc} BETV=.05 NIT={nit} CONVC=5D-6 CONV=0
+# MIX     MODE=B6,w=2,1,b=.2,k=4+2 XIPMX={sc} BETV=.05
+# ITER    MIX=B6,w=2,1,b=.2,k=3 XIPMX={sc} BETV=.05 NIT={nit} CONVC=5D-6 CONV=0
+# MIX     MODE=B6,w=2,1,b=.2,k=3 XIPMX={sc} BETV=.05
+# use this one for simultaneous convergence of rho, EA
+ITER    MIX=B6,w=2,1,wa=1,b=.2,k=4 XIPMX={sc} NIT={nit} CONVC=5D-6 CONV=0
+        AMIX=A,w=0,0,wa=1,fn=ma,n=2,b=1
+MIX     MODE=B6,w=2,1,wa=1,b=.2,k=4 XIPMX={sc} BETV=.05
+        AMODE=A,w=0,0,wa=1,fn=ma,n=2,b=1
+% else
+ITER    AMIX=t BETA=0.1 BETSW=F CONV=.000001 NIT={nit} CONVC=5D-6 CONV=0
+MIX     AMIX=t BETA=0.1 BETSW=F CONV=.000001 
+        XIPMX=t BETAX=.003 20.3 .1 NIPMX=0 2 8
+% endif
+SOLVE   SMODE=0 TOL=.01 H=.01 EEPS=1d-5 VAR=hi
+CONST   a={abccs} nb={nb} fm={fm}
+        pi4b3=4*pi/3
+        nit=200 beta=.3 betv=.015 nv1=1 nv2=-6
+
+        hb={sbccs/2} ha={sbccm/2}*{abccm/abccs}^3 hi=(ha+hb)/2
+        hc=2*hi+({na+(pad?2:0)}-1)*ha+hb*({nb+(pad?2:0)}-1) nplane={na+nb} hi=(ha+hb)/2
+
+        vola=a^3*ha                   volb=a^3*hb
+        Ra=(vola/pi4b3)^(1/3)         Rb=(volb/pi4b3)^(1/3)
+        delV=(2*hi-ha-hb)*a^3/4/pi4b3 hend=hc-hi
+        Rai=(delV+Ra^3)^(1/3)         Rbi=(delV+Rb^3)^(1/3)
+
+    bzj=11 rwa={asa?1:.86} rwb={asa?1:.88} nsp={nsp}
+    zb0=ha*{na-1}+hi-hb
+
+HAM     NSPIN=nsp NONCOL={nc} QASA=0 REL={rel} SO={so|rel==2} ELIND=-1
+OPTIONS NSPIN=nsp REL=t ASA[ TWOC={twoc} GAMMA={gamma} ELIN=-.10 CCOR=f ] SCR={scr}
+% if ~sc
+        Q=BAND
+% endif
+        XCN=11 TPAN=t
+        NONCOL={nc}
+EWALD   TOL=1d-12 NKDMX=1500 NKRMX=1500
+% ifdef dir==110
+SYMGRP  M(-1,1,0) R2Z I
+% else
+SYMGRP  find
+SYMGRP  R4Z MX MY I:(-1/2,-1/2,-1/2)
+% endif
+
+% ifdef pgf
+BZ      NKABC={nk1} {nk1} 1 BZJOB=bzj NKABC2=3 BZJOB2=0
+# uncomment the following line for s orbitals only
+#       DOS=-1 1 ZVAL=2
+        TETRA=f METAL=1 DOS=-.8 1 EF0={ef0} DELEF=.001
+        NEVMX=-1 GETQP=F
+% if pgf
+%if pgf==5|pgf==7 
+        EMESH=31 2 {ef0-4/13.6} {ef0+3/13.6} 1e-5 0
+%endif
+# for integrated properties, PGF
+         EMESH={nz} 10 -1 {ef0} .5 0
+# for bands, PGF
+#        EMESH=400 0 -.8 1 0
+# for DOS by pade PGF
+        EMESH={nz} 10 -.8 .8 .9 -.8
+# for straight DOS, PGF, to compare with band program
+         EMESH=501 0 -.8 1 -.002
+% endif
+% endif
+#BZ      NKABC=16 16 16 BZJOB=0 DOS=-.8 1 NPTS=301 SAVDOS=t
+#        EFMAX=1.2 NEVMX=18
+BZ      NKABC={nk1} {nk1} {nk2/dble} BZJOB=bzj NKABC2=3 BZJOB2=0
+        TETRA=t METAL=1 DOS=-.8 1 EF0={ef0} DELEF=.001 INVIT=f
+        SAVDOS=t EFMAX=2
+        EMESH={nz} 10 -1 {ef0} .5 0
+% if ~sc
+        NEVMX=-1
+% endif
+STR     RMAX=3.2 MODE=0 SHOW=f EQUIV={pgf}
+STR     RMAX=4 MODE=0 SHOW=T EQUIV={pgf}
+
+# ---------------- Maps --------
+%ifdef map==0 ... bulk moments
+%  echo  ... map=0: bulk moments
+MAP  F *b*:  1: 1          a.{se}
+        a*:  1: {fm?1:11}  a.{me}
+       xa*:  1: {fm?1:01}  a.{me}
+% elseifd map==-1
+% echo  ... map=-1: copy moments to files
+MAP   T  *:  1: 1 .
+% elseifd map==1 ... Spin-flip classes [ab]* when fm=0 (for eg bulkm=12)
+% echo  ... map=1: Spin-flip classes [ab]* when fm=0
+MAP   T  [ab]*:  1: {fm?1:11}  x\h\t
+% endif
+
+# ---------------- CLASS ----------------
+% var nclass=(flor(nca)+flor(ncb))*dble
+STRUC   NBAS=nplane*{dble*(dbxy?2:1)}+{pad?4:0} NSPEC={nclass}+{pad?2:0} NL={nl} TET=1
+% ifdef dir==110
+        ALAT=a PLAT= -.5 .5 .5   .5 -.5 .5  hc*{dble} hc*{dble} 0
+% else
+        ALAT=a PLAT= 1 0 0   0 1 0   0 0 hc*{dble}
+% endif
+% includo eref.dat
+% const erefa=lmh?ereflm(Za):erefbh(Za) erefb=lmh?ereflm(Zb):erefbh(Zb)
+CLASS
+% repeat id= 1:dble
+% cchar x  id==1       X
+% char inf i
+% repeat k= {pad?0:1}:nca
+ ATOM={x}A{k} Z={Za} IDMOD=0 0 0 EREF={erefa} GROUP={k}
+  R=Ra{inf}*rwa LMXB={lmxb} LMXF={lmxf} NR=601 A=.02 GRP2!=1*{?~fm&id==2~-~}{k}
+% char inf
+% end
+% char inf i
+% repeat k= {pad?0:1}:ncb
+ ATOM={x}B{k} Z={Zb} IDMOD=0 0 0 EREF={erefb} GROUP=-{k}
+  R=Rb{inf}*rwb LMXB={lmxb} LMXF={lmxf} NR=601 A=.02 GRP2!=1*{?~fm&id==2~-~}{nca+k}
+% char inf
+% end  loop over k
+% end  loop over dble
+
+# ---------------- SITE -----------------
+% var npl=(flor(na/2)+flor(nb/2))*dble
+% const plv=1
+SITE
+# ... Variables:   n: toggles between 0,1 as the planes are built up.
+# ... k2 marks the evolution of the classes which ascend to the center
+# ... of the magnetic layers and descend away from the center.
+# ... x is string X for first na contigous planes of magnet;
+# ... x is blank for the second (only present if cell doubled).
+# ... ipl is the principal-layer index
+% var n=1 ipl=npl-1-flor(na/4)
+# ... Loop over cell doubling
+% repeat id=1:dble
+% cchar x  id==1  X
+% repeat k= 1:na
+% var n=(n+1)%2 k2=(k<nca)?k:2*nca-k ipl+=(n+1)%2 ipl=ipl%npl
+% ifdef dir==110
+ ATOM={x}A{k2} POS=hc*{id-1}+ha*{k-1} hc*{id-1}+ha*{k-1} {n}/2 PL={ipl}
+% else
+ ATOM={x}A{k2}  POS= {n}/2 {n}/2 hc*{id-1}+ha*{k-1} PL={ipl}
+% endif dir
+% ifdef nc
+        ROT=y:pi*{k/7+2/7+1}
+% endif nc
+% end   loop over k=1:na
+
+# ... Loop over planes of the spacer: vars n and k2 as in the magnetic
+# ... planes.  Now char variable x is X for the ascending classes,
+# ... and blank for the descending when dble is 2 or X when dble is 1.
+% repeat k= 1:nb
+% var n=(n+1)%2 k2=(k<ncb)?k:2*ncb-k ipl+=(n+1)%2
+% cchar xx  dble==1|id==1&k2==k|id==2&(k2<>k|(k==ncb)&~xclas) X
+# this line undoes site equivalence for spin dynamics
+% cchar x  dble==1&sdyn&k>=ncb "" t {xx}
+% ifdef dir==110
+ ATOM={x}B{k2} POS= hc*{id-1}+hb*{k-1}+ha*{na-1}+hi
+                    hc*{id-1}+hb*{k-1}+ha*{na-1}+hi {n}/2 PL={ipl}
+% else
+% char cpos hc*{id-1}+hb*{k-1}+ha*{na-1}+hi
+ ATOM={x}B{k2} POS= {n}/2 {n}/2 {cpos} PL={ipl} PLV=0
+% ifdef nc
+        ROT=y:pi*{k/7+2/7+1}
+% endif
+% endif dir
+% end   loop over k
+% end   loop over id
+
+# ... Padding layers
+%ifdef PAD
+% echo '... padding layers ...'
+% cchar x  id==1  X
+% repeat k= -1:0
+% var n=(n+1)%2 k2=(k<nca)?k:2*nca-k ipl=-101
+% ifdef dir==110
+ ATOM={x}A0 POS=hc*{id-1}+ha*{k-1} hc*{id-1}+ha*{k-1} {n}/2 PL={ipl}
+% else
+ ATOM={x}A0  POS= {n}/2 {n}/2 hc*{id-1}+ha*{k-1} PL={ipl}
+% endif dir
+% ifdef nc
+        ROT=y:pi*{k/7+2/7+1}
+% endif nc
+% end   loop over k
+
+% repeat k= nb+1:nb+2
+% var n=(n+1)%2 k2=(k<ncb)?k:2*ncb-k ipl=101
+% cchar xx  dble==1|id==1&k2==k|id==2&(k2<>k|(k==ncb)&~xclas) X
+# this line undoes site equivalence for spin dynamics
+% cchar x  dble==1&sdyn&k>=ncb "" t {xx}
+% ifdef dir==110
+ ATOM={x}B0 POS= hc*{id-1}+hb*{k-1}+ha*{na-1}+hi
+                    hc*{id-1}+hb*{k-1}+ha*{na-1}+hi {n}/2 PL={ipl}
+% else
+% char cpos hc*{id-1}+hb*{k-1}+ha*{na-1}+hi
+ ATOM={x}B0 POS= {n}/2 {n}/2 {cpos} PL={ipl} PLV=0
+% ifdef nc
+        ROT=y:pi*{k/7+2/7+1}
+% endif
+% endif dir
+% end   loop over k
+% endif
+
+# ---------------- START (self-consistent solutions) ------------
+% ifdef bulkm==3
+START NIT={nit} BEGMOM=t CNTROL={nit==0} CNVG=1D-5 RDVES=T
+% endif
+# --------------- START (bulk moments) --------------
+%ifdef bulkm==1
+% echo reading START bulk moments (bulkm==1) ...
+START NIT={nit} BEGMOM=t CNTROL={nit==0} CNVG=1D-5 RDVES=T
+% repeat id= 1:dble
+% cchar x   id==1  X
+% var z=Za
+% repeat k= 1:nca
+% char nam {x}A{k}
+% includo q.bulk
+% end  loop over k
+#
+% var z=Zb
+% repeat k= 1:ncb
+% char nam {x}B{k}
+% includo q.bulk
+% end  loop over k
+% end  loop over id
+% endif bulkm==1
+# --------------- START (potentials only bulkm==2) --------------
+% ifdef bulkm==2
+% echo reading START to shift V (bulkm==2) ...  dvfe={dvfe}
+START NIT={nit} BEGMOM=t CNTROL={nit} CNVG=1D-5 RDVES=T
+% stop 1 'not put in yet'
+% endif bulkm==2
+# ---------------- START (in the absence of any other) ------------
+START   BEGMOM={nit<0?2:nit==0} CNTROL={nit==0} RDVES=T
+% repeat k= 1:ncb
+        ATOM=XB{k} V={vesi}
+% end

@@ -1,0 +1,35 @@
+ hqpe_sc: VerNum= xxx: mode=  4
+ hqpe_sc: files vxc.si2 and evec.si2 made for   7 qp by   1 thread(s)
+ sigma calculated with iSigMode = 3 for   3  k-points and 1 spins
+ Maximum hamiltonian rank    =   26
+ Maximum rank of <i|sigma|j> =   26
+ reading v_xc, evec ...
+  iq  is  ndimh
+   1   1    26
+   2   1    26
+   3   1    26
+ reading XCU, SEXU, SEXcoreU, SECU data
+  eshift is so as to be zero for UP of (it iq)=            4           1
+ qp    1 spin   1 sigma calculated from    9 to   20 of   26 eseavr(1:2) =    0.141566    0.147048
+ qp    2 spin   1 sigma calculated from    8 to   21 of   26 eseavr(1:2) =    0.129413    0.136963
+ qp    3 spin   1 sigma calculated from    7 to   24 of   26 eseavr(1:2) =    0.140519    0.147358
+ average number of unocc states used for eseavr     14.66667
+
+ read_bzdata: 48 symops
+     3,     2 qp, tetrahedra in the irreducible BZ
+     8,    48 qp, tetrahedra in the full BZ
+ read from bzdata : nqibz2 nqibz nqsig   3   3   3
+ k-averaged eseavr =     0.135097 calculated from  14.667 states per qp on average
+ 
+ ========= Mix Sigma with prior iterations read from mixsigma file =======
+  rwsigma: Reading sigm (Binary)
+ 
+ mixsigma: Anderson mixing sigma with mixing beta =    1.000000
+ ... No file mixsigma
+ sum sss=   1.41813557649131     
+ AMIX: nmix=0 mmix=3  nelts=  4056  beta=1.00000  tm= 5.00000  rmsdel=1.58D-03
+
+  rwsigma  Writing sigm (Binary)
+ 
+
+ ----  OK! hqpe_sc 

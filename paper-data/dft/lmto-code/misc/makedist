@@ -1,0 +1,71 @@
+#!/bin/csh
+
+# --- Defaults ---
+defaults:
+set cmprss = gzip  cnam = gz
+set cmprss = bzip2  cnam = bz2
+set thisfile = $0
+set thisdir = $thisfile:h
+if ($thisdir == $thisfile) set thisdir = `pwd`
+
+# --- Start reading switches here ---
+options:
+
+if ( "$1" == "-compress" ) then
+  set cmprss = compress  cnam = Z; shift; goto options
+endif
+
+if ( "$1" == "-bz" ) then
+  set cmprss = bzip2  cnam = bz2; shift; goto options
+endif
+
+if ( "$1" == "-gz" ) then
+  set cmprss = gzip  cnam = gz; shift; goto options
+endif
+
+if ( "$1" == "-v" ) then
+  shift; set vn = $1; shift; goto options
+endif
+
+if ($?vn != 1) then
+  echo invoke as:  makdist -v strn ...
+  exit -1
+endif
+
+echo updating version number in directories  . subs sx gwd gw dmft nc gf pgf optics fp misc utils ..
+set config_vn = `grep -E ^version= configure | sed s/version=//`
+if ($vn != "$config_vn") echo warning: mismatch with version in configure file "($config_vn)"
+foreach i ( . subs/ v7input sx/ gwd/ gw/ dmft/ nc/ mol/ gf/ pgf/ optics/ fp/ tb/ misc/)
+  echo $config_vn > $i/VERSION
+end
+
+echo coping version number in directories  subs v7input sx gwd gw dmft nc mol gf pgf optics fp tb misc utils ...
+rm lm-$vn
+ln -s dist lm-$vn
+cp -p VERSION README.md configure MakeMainMakefile lm-$vn/
+foreach i (subs/ v7input/ sx/ gwd/ gw/ dmft/ nc/ mol/ gf/ pgf/ optics/ fp/ tb/ misc/)
+  chmod 640 lm-$vn/$i/*.f
+  cp $i/VERSION lm-$vn/$i/VERSION
+  rm -f lm-$vn/$i/test/zdiff lm-$vn/$i/test/add0
+end
+echo $config_vn > lm-$vn/testing/VERSION
+rm dist/dist
+
+if (-x $thisdir/makedist.special) $thisdir/makedist.special
+
+# --- Create and compress tar file ---
+tar cvf - lm-$vn/{configure,README.md,MakeMainMakefile,./{lmv7.f,lm67.f,blm.f,lmf2gw_2.f,lmf2gw_0.f,spectral.f,{structures,structures77,interfaces77,interfaces90}.h,rdcmd.f,catdos.f},doc,misc,utils,subs,testing,v7input} | $cmprss >lm-$vn/ASA.$vn.tar.$cnam
+tar cvf - lm-$vn/sx | $cmprss >lm-$vn/SX.$vn.tar.$cnam
+tar cvf - lm-$vn/tb | $cmprss >lm-$vn/TB.$vn.tar.$cnam
+tar cvf - lm-$vn/gwd | $cmprss >lm-$vn/GWD.$vn.tar.$cnam
+tar cvf - lm-$vn/gw | $cmprss >lm-$vn/GW.$vn.tar.$cnam
+tar cvf - lm-$vn/dmft | $cmprss >lm-$vn/DMFT.$vn.tar.$cnam
+tar cvf - lm-$vn/nc | $cmprss >lm-$vn/NC.$vn.tar.$cnam
+tar cvf - lm-$vn/mol| $cmprss >lm-$vn/MOL.$vn.tar.$cnam
+tar cvf - lm-$vn/gf | $cmprss >lm-$vn/GF.$vn.tar.$cnam
+tar cvf - lm-$vn/pgf| $cmprss >lm-$vn/PGF.$vn.tar.$cnam
+tar cvf - lm-$vn/optics | $cmprss >lm-$vn/OPTICS.$vn.tar.$cnam
+tar cvf - lm-$vn/fp | $cmprss >lm-$vn/FP.$vn.tar.$cnam
+tar cvf - lm-$vn/tb | $cmprss >lm-$vn/TB.$vn.tar.$cnam
+
+alias cpdir '(if (! -e \!\!:1) mkdir \!\!:1 ; tar cf - . | ( cd \!\!:1 ; tar xvf - ) )'

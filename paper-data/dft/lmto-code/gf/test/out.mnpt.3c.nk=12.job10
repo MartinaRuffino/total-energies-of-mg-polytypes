@@ -1,0 +1,106 @@
+         /home/ms4/lm/lmgf mnpt -vnk=12 -vbzj=0 -vccor=f -vnit=1 -vidx=2 -vidxp=1 --pr40 -vgamrep=2 -vgfmod=10 --no-iactiv -ef=-0.107449+.000
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 4  nspec = 2  verb 40
+ special:  transverse J
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gamma-bar-rep, Q2:Power-moments
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 7.413673  Cell vol = 407.474337
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 7.41367   awald= 0.270   lmax=6
+         r1=  2.567   nkd= 81       q1=  2.995   nkg= 93
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH: 84 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 854 inequivalent ones found
+
+ EXASA: (gamma-bar repsn) make transverse exchange J (LW)
+
+ Override file fermi level, use ef= -0.107449, delef= -0.001981
+
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 57 7 0 0
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   -      57     7     0    64    64       0
+ SUHAM : 2nd generation ASA; potential functions P3
+  
+ ZMESH: nz=12 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.002,-0.1074
+
+ done iz=1  z = (-1.001623,0.008949)
+ done iz=6  z = (-0.522349,0.223047)
+ done iz=11  z = (-0.109967,0.023694)
+
+ Sum rule: ib  1   pTpT =  -30.7552, 153.0124; -p(T+ - T-) =  -30.7552, 153.0124
+
+ Sum rule: ib  1   lifetime (mRy) =  516.9026,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =   9.359149436321252E-017 Re Sum7  0.516902612067720     
+
+ Sum rule: ib  2   pTpT =    0.4451,   0.2956; -p(T+ - T-) =    0.4451,   0.2956
+
+ Sum rule: ib  2   lifetime (mRy) =   72.5680,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =   6.666529630155302E-016 Re Sum7  7.256802352581590E-002
+
+ Sum rule: ib  3   pTpT =    0.4451,   0.2956; -p(T+ - T-) =    0.4451,   0.2956
+
+ Sum rule: ib  3   lifetime (mRy) =   72.5680,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =   6.666531163516876E-016 Re Sum7  7.256800683452383E-002
+
+ Sum rule: ib  4   pTpT =    0.4451,   0.2956; -p(T+ - T-) =    0.4451,   0.2956
+
+ Sum rule: ib  4   lifetime (mRy) =   72.5680,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =   6.666529589990081E-016 Re Sum7  7.256802396303150E-002
+ done iz=12  z = (-0.10754,0.004504)
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         153.012     149.356       3.656       3.656     384.7
+   2           0.296      -0.055       0.350       0.350      36.8
+   3           0.296      -0.055       0.350       0.350      36.8
+   4           0.296      -0.055       0.350       0.350      36.8
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1       -0.314  0.032  0.032  0.032  0.454  0.454  1.256  0.454  1.256  0.000  0.000  0.000  0.000  0.000  0.000  0.000
+   2       -0.011 -0.001  0.000 -0.001  0.074  0.073  0.039  0.073  0.108 -0.001  0.000 -0.001  0.000 -0.001  0.000 -0.001
+   3       -0.011 -0.001 -0.001  0.000  0.073  0.074  0.091  0.073  0.056  0.000  0.000 -0.001  0.000  0.000 -0.002  0.000
+   4       -0.011  0.000 -0.001 -0.001  0.073  0.073  0.091  0.074  0.056  0.000  0.000  0.000  0.000 -0.001 -0.002  0.000
+
+ Moments and charges for ef=-0.107449:
+        ATOM=Mn       P=  4.5960541  4.3391774  3.4047693  4.1206241
+                          4.6289583  4.3723870  3.8784642  4.1224696
+                      Q=  0.2771792  0.0001370  0.0066921
+                          0.3502340  0.0005524  0.0060100
+                          0.8578673 -0.0029546  0.0136883
+                          0.0653644  0.0002081  0.0008471
+                          0.2959476  0.0000816  0.0054536
+                          0.3917440  0.0003267  0.0071722
+                          4.5903212  0.0009639  0.0562371
+                          0.0627290  0.0003830  0.0009586
+        ATOM=Pt       P=  6.7331627  6.3918937  5.8637499  5.1287235
+                          6.7192606  6.3718956  5.8782744  5.1287248
+                      Q=  0.4100668 -0.0016258  0.0085328
+                          0.4501975  0.0000305  0.0095911
+                          4.0071158 -0.0151532  0.0595950
+                          0.0740114  0.0003889  0.0009491
+                          0.3928024 -0.0010861  0.0074998
+                          0.4174285 -0.0002293  0.0075553
+                          4.1732547 -0.0285676  0.0776849
+                          0.0861249  0.0004541  0.0011853
+
+ Class   dq     amom      Class   dq     amom
+   1  -0.1086 -3.7901  |    2   0.0110 -0.1282  |
+ Sum of sphere charges = -0.075607
+ Exit 0 LMGF 
+ CPU time:  17.280s   Wall clock 17.316s  at  19:13:09 21.07.2018  on  ellery

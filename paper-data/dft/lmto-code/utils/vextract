@@ -1,0 +1,133 @@
+#!/bin/tcsh -f
+# vextract is a shell script to extract strings associated with variable names
+# from stdin.
+#
+# Each line of stdin is assumed to the following syntax :
+#   key-string name1=string1 [ name2=string2 ...]
+#
+#  vextract has command line arguments
+#    key namea [nameb ...]
+#
+# For each line matching 'key' from stdin, vextract finds tokens
+# `namea=', `nameb=', etc in the line, and prints in tabular form
+# the strings associated with each token (i.e. whatever follows `token=')
+#
+# 'key' is a regular expression matched against the first word in each line.
+# Lines which don't match 'key' are ignored.
+#
+# Example:
+#   echo h hf=1 nk=6 ngd=12 rsm=1.8 ehf=-.295 ehk=-.250 | vextract h rsm ehf
+# would produce
+#   1.8 -.295
+# while
+#   echo h hf=1 nk=6 ngd=12 rsm=1.8 ehf=-.295 ehk=-.250 | vextract . ehf rsm
+# would produce
+#   -.295 1.8
+#
+# Switches
+#   --strict causes vextract to abort if it failes to find any of the tokens `namea', `nameb', ...
+
+if ($#argv < 2) goto usage
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+  set arg1 = $1; shift
+
+  switch ($arg1)
+    case "--strict":
+      set strict
+      breaksw
+
+    case "--strict=no":
+      set strict
+      unset strict
+      breaksw
+
+    case "--line":
+      set lineno
+      breaksw
+
+    case "--l":
+      set lineno
+      breaksw
+
+    case "--v":
+      set verb
+      breaksw
+
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+end
+
+set key = $1
+shift
+set varlst = "$argv"
+
+#  echo 1 $key
+#  echo 2 "$varlst"
+
+# --- awk BEGIN block ---
+# ... count number of variables
+set astrn = 'BEGIN {'
+set bstrn = 'nv=split(varlst,vars);'
+#  echo 3 "$bstrn"
+set astrn = "$astrn $bstrn"
+set bstrn = '} ; {'
+set astrn = "$astrn $bstrn"
+#  echo 4 "$astrn"
+
+# --- code to check for key ---
+set bstrn = 'if (! match($0,key)) next ;'
+#set bstrn = 'print key;'
+set astrn = "$astrn $bstrn"
+
+# --- extract '#' from each name=# for each `name' ---
+set bstrn = 'outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1;'
+set astrn = "$astrn $bstrn"
+if ($?strict) then
+  set bstrn = 'if (! match($0,vari)) {printf("vextract aborting : missing variable \"%s\" in line %i:\n%s\n",vars[i],NR,$0) ; exit -1} ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))}'
+else
+  set bstrn = 'if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))}'
+endif
+#  echo 5 "$bstrn"
+set astrn = "$astrn $bstrn"
+#  echo 6 "$astrn"
+if ($?lineno) then
+  set astrn = "$astrn print NR, outstr"
+else
+  set astrn = "$astrn print outstr"
+endif
+set astrn = "$astrn }"
+#  echo astrn :
+#  echo astrn = "$astrn"
+
+if ($?verb) then
+  echo awk -v varlst=\""$varlst"\" -v key=$key \'"$astrn"\'
+endif
+awk -v varlst="$varlst" -v 'key=^'$key "$astrn"
+
+exit
+usage:
+echo "usage: vextract [--switches] key varnam [varnam ...]"
+echo "       Extracts values associated with variables from a list of lines"
+echo " "
+echo "       The latter (read from stdin) are of the type"
+echo '         `'"key' namea=# [nameb=# ...]"
+echo " "
+echo '         `'"key' is a regular expression matched against the first word"
+echo "               in the line.  For those lines which match 'key', data"
+echo "               '#' are extracted in tabular form for each namea, nameb, ..."
+echo "             Example:"
+echo "               echo h hf=1 nk=6 ngd=12 rsm=1.8 ehf=-.295 ehk=-.250 | \"
+echo "               vextract h rsm ehf"
+echo "             would produce"
+echo "               1.8 -.295 "
+echo "             "
+echo "       Switches:"
+echo "       --strict    vextract aborts if any of varnam is missing"
+echo "       --strict=no vextract skips over lines if any of varnam is missing (default)"
+echo "       --line      "
+echo "       --l         vextract prints line number at start of line"
+echo "             "
+exit
+

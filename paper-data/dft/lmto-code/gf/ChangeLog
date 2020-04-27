@@ -1,0 +1,184 @@
+2018-07-21  Mark Schilfgaarde  
+
+	* Redesign of noncollinear magnetism
+
+2018-06-30  Mark Schilfgaarde  
+
+	* Revamped spherical harmonics
+	
+	* fully relativistic reconciled with L.S
+
+2018-06-30  Kirill Belashchenko
+
+	* Added SO contribution to sqrt(d/dz(z-C))
+
+2017-07-25  Alena Vishina
+
+	* First attempt at calculating spin lifetime 
+
+2016-08-11  Mark Schilfgaarde  
+
+	* Additional fixes mainly in the exchange branch
+          Slight incompatibility when -ef=# is used
+	
+2016-08-10  Alena Vishina, Mark Schilfgaarde
+
+	* (7.11i) Redesign of Dirac solver, first cut at self-consistent Dirac
+
+2015-09-05  Alena Vishina
+
+	* Alpha version of relativistic exchange interactions
+
+2015-08-12  Alena Vishina
+
+	* Alpha version of exchange interactions with SO coupling included
+
+2015-05-12  Mark Schilfgaarde  
+
+	* Proper treatment of symmetry in lmgf-CPA for noncollinear case
+
+2015-04-08  Alena Vishina
+
+	* Some changes towards completing the relativistic GF code
+
+2015-04-07  Mark Schilfgaarde  
+
+	* Bug fix in noncollinear case with downfolding
+
+2014-08-20  Kirill Belashchenko
+
+	* Addition of SO coupling, and modifications to CPA 
+          Some redesign of how diagonal parts of GF are stored.
+	  This version is intermediate, while relativistic GF is being made.
+	
+2014-08-20  Mark Schilfgaarde  
+
+	* Spinor part of noncollinear Green's function is symmetrized
+
+2014-02-23  Kirill Belashchenko
+	
+	* Complete implementation of CPA
+
+2013-08-15  Kirill Belashchenko, Mark van Schilfgaarde
+
+	* Some cleaning of code, preparation for relativistic CPA
+
+2013-07-15  Mark Schilfgaarde  
+
+	* f77 pointers have been superseded by f90 pointers for all sources codes in this directory
+
+2013-04-05  Mark Schilfgaarde  
+
+	* working code for CPA exchange interactions 
+	  Note: This version of CPA code has a bug when downfolding is used in Gamma repsn
+	
+2013-01-23  Mark Schilfgaarde
+
+	* First attempt at extending exchange interactions to CPA case
+
+2012-04-29  Kirill Belashchenko
+
+	* New chemical CPA option
+
+2012-02-18  Kirill Belashchenko
+
+	* New magnetic CPA option, disordered local moments theory
+
+2011-09-06  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* Begun migration to standard f90 structures
+
+	* (K. Beleshenko and P. Larson) code for disordered local moments
+
+2010-08-12  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* The exchange branch can read PP shifts from the vext file
+
+	* The RPA formula for Tc was implemented, and works 
+	  Both MF and RPA formulas are implemented for the many-site case.
+	
+2008-08-12  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* "Longitudinal" exchange parameters
+
+2007-11-28  Jialei Xu and Mark van Schilfgaarde
+
+	* First attempt at LDA+U in lmgf
+
+2005-05-28  Titus Sandu
+
+	* Self-consistent screened exchange in lmgf
+
+2005-04-14  Titus Sandu
+
+	* First attempt at self-consistent screened exchange in lmgf
+
+2005-03-06  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* METAL=0 and EMESH mode 3xx implemented
+
+2004-09-17  Titus Sandu
+
+	* Screened exchange in lmgf (not self-consistent)
+
+2004-09-17  Sergey Faleev
+
+	* Changes for nonequilibrium Green's function in lmpg
+
+2004-06-24  A. Chantis
+
+	* Working implementation of GF with Dirac equation (lrel=2)
+
+2003-06-24  A. Chantis
+
+	* First attempt at implementation of GF with Dirac equation (lrel=2)
+
+2003-03-18  A. Chantis
+
+	* Start on fully relativistic Dirac equation
+	
+2002-11-24  Mark van Schilfgaarde  <markv@waldo.eas.asu.edu>
+
+	* New ability to write heisenberg and also mean-field
+	   hamiltonians in exchange mode GF MODE=11
+
+2002-03-01  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* Numerous small changes were made in the library to accomodate
+	  revisions of the layer GF code.
+
+2001-12-22  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* First attempt at generating exact potential function
+
+2001-08-31  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* exchange branch now shifts potential as read from file
+	  vshft, consistent with the normal branch.
+
+2001-06-05  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* On-site exchange interactions are resolved by L
+
+2001-02-27  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* Added mode=2 to zmesh, and small modifications to how
+	  input Fermi level is set.
+
+2001-02-06  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* Added inversion symmetry to GF package
+
+	* Added --nosym switch to exchange (GF mode 11)
+
+	* Exchange branch no longer reads the Fermi level from the moments file
+	  It follows the same convention as gfasa.
+
+2001-01-22  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* Small modifications to exchange printout
+
+2000-09-06  mark van schilfgaarde  <markv@waldo.ran.sandia.gov>
+
+	* Fixed symmetry operations for exchange calculations
+

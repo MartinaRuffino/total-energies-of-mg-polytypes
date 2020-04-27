@@ -1,0 +1,108 @@
+ ----------------------  START BLM  -----------------------
+
+ ... Reading lattice data ... read plat ... no group generators
+
+ LATPAR:     A= 11.71017     B=  4.08212      C=  8.28747
+         ALPHA=  90.0000  BETA=  90.0000  GAMMA=  90.0000
+
+ ... Reading site data ...  12 sites, 3 species found
+     scaling alat, inverse plat by factor 7.344411
+
+ ... Reading species data ... species data read for 0 species
+
+ ... Complete basis for supplied symmetry
+ SGROUP: 1 symmetry operations from 1 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=0.01
+ FIXPOS: shifted site positions by average 7.43e-5
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=0.01
+ GROUPG: 3 generator(s) were added to complete the group:
+         i*i i r2z:(0,0,0.2779066) r2y:(-0.5642027,-0.7972161,0)
+         i*i i r2z::(0,0,1/2) r2y::(-1/2,-1/2,0)
+
+ Lattice vectors : alat = 13.8789 a.u.  vol=2673.43 a.u.
+
+                 Plat                     Conventional unit cell          As multiples of Plat
+   1.1284054  0.0000000  0.0000000    8.2874732  0.0000000  0.0000000    7.3444  0.0000  0.0000
+   0.0000000  1.5944321  0.0000000    0.0000000 11.7101652  0.0000000    0.0000  7.3444  0.0000
+   0.0000000  0.0000000  0.5558131    0.0000000  0.0000000  4.0821202    0.0000  0.0000  7.3444
+
+ Basis vectors after sorting and shortening:
+ site spec        pos (Cartesian coordinates)         pos (multiples of plat)
+   1  Sb        0.099392  -0.586586   0.138953    0.088082  -0.367896   0.250000
+   2  Sb       -0.099392   0.586586  -0.138953   -0.088081   0.367896  -0.250000
+   3  Sb        0.464811   0.210631  -0.138953    0.411918   0.132104  -0.250000
+   4  Sb       -0.464811  -0.210631   0.138953   -0.411919  -0.132104   0.250000
+   5  Se        0.150915   0.653581   0.138953    0.133742   0.409914   0.250000
+   6  Se       -0.150915  -0.653581  -0.138953   -0.133742  -0.409914  -0.250000
+   7  Se        0.413288  -0.143635  -0.138953    0.366258  -0.090086  -0.250000
+   8  Se       -0.413288   0.143635   0.138953   -0.366258   0.090086   0.250000
+   9  I        -0.420250   0.611192   0.138953   -0.372428   0.383329   0.250000
+  10  I         0.420250  -0.611192  -0.138953    0.372428  -0.383329  -0.250000
+  11  I        -0.143952  -0.186024  -0.138953   -0.127572  -0.116671  -0.250000
+  12  I         0.143952   0.186024   0.138953    0.127572   0.116671   0.250000
+
+ ... Make sphere radii
+
+ pairc, ib=  1:  45 neighbors in range  0.951*alat =  13.20
+ pairc:  45 pairs total  45 is max cluster size
+
+ pairc, ib=  2:  45 neighbors in range  0.951*alat =  13.20
+ pairc:  45 pairs total  45 is max cluster size
+
+ pairc, ib=  3:  45 neighbors in range  0.951*alat =  13.20
+ pairc:  45 pairs total  45 is max cluster size
+
+ pairc, ib=  4:  45 neighbors in range  0.951*alat =  13.20
+ pairc:  45 pairs total  45 is max cluster size
+
+ pairc, ib=  5:  30 neighbors in range  0.847*alat =  11.76
+ pairc:  30 pairs total  30 is max cluster size
+
+ pairc, ib=  6:  30 neighbors in range  0.847*alat =  11.76
+ pairc:  30 pairs total  30 is max cluster size
+
+ pairc, ib=  7:  30 neighbors in range  0.847*alat =  11.76
+ pairc:  30 pairs total  30 is max cluster size
+
+ pairc, ib=  8:  30 neighbors in range  0.847*alat =  11.76
+ pairc:  30 pairs total  30 is max cluster size
+
+ pairc, ib=  9:  52 neighbors in range  1.009*alat =  14.00
+ pairc:  52 pairs total  52 is max cluster size
+
+ pairc, ib= 10:  52 neighbors in range  1.009*alat =  14.00
+ pairc:  52 pairs total  52 is max cluster size
+
+ pairc, ib= 11:  52 neighbors in range  1.009*alat =  14.00
+ pairc:  52 pairs total  52 is max cluster size
+
+ pairc, ib= 12:  52 neighbors in range  1.009*alat =  14.00
+ pairc:  52 pairs total  52 is max cluster size
+
+ makrm0: initial MT radii from first estat potential maximum
+  site   spec            rmt       rmt-       rmt-       rold   lock
+                                  <spec avg>  spec-min
+    1    1:Sb           2.5848     0.0000     0.0000     0.0000
+    2    1:Sb           2.5848     0.0000     0.0000     0.0000
+    3    1:Sb           2.5848     0.0000     0.0000     0.0000
+    4    1:Sb           2.5848     0.0000     0.0000     0.0000
+    5    2:Se           2.3832     0.0000     0.0000     0.0000
+    6    2:Se           2.3832     0.0000     0.0000     0.0000
+    7    2:Se           2.3832     0.0000     0.0000     0.0000
+    8    2:Se           2.3832     0.0000     0.0000     0.0000
+    9    3:I            2.9282     0.0000     0.0000     0.0000
+   10    3:I            2.9282     0.0000     0.0000     0.0000
+   11    3:I            2.9282     0.0000     0.0000     0.0000
+   12    3:I            2.9282     0.0000     0.0000     0.0000
+ SCLWSR:  mode = 100  vol = 2673.43 a.u.   Initial sphere packing = 35%  scaled to 41.8%
+ constr omax1=   0.0   0.0   0.0 %    omax2= 100.0 100.0 100.0 %
+ actual omax1=   0.0   0.0   0.0 %    omax2=   0.0   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Sb          2.584784    2.585097    1.000121
+   2   Se          2.383175    2.383464    1.000121
+   3   I           2.928177    3.300000    1.126981
+
+ ... Create input file ctrl.sbsei (express mode 3)
+ IOSITE: wrote to file 'site', 12 sites

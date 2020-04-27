@@ -1,0 +1,12 @@
+# Data generate by integration on elliptical at successive endpoints
+# Integrals subtract off starting point ef=-0.116282
+#    E-Ef     q-q(ef) J(Mn)-J(ef)  J(Pt)-J(ef)
+     0.000    0.0000     .000       .000 
+     0.002    0.0764     .134       .004 
+     0.004    0.1600     .208       .009 
+     0.006    0.2635     .260       .021 
+     0.008    0.3690     .292       .033 
+     0.010    0.4637     .259       .043 
+     0.012    0.5463     .121       .053 
+     0.014    0.6235    -.102       .065 
+     0.016    0.7066    -.426       .081 

@@ -1,0 +1,628 @@
+#!/bin/tcsh -f
+# Shell script for self-consistent GW calculation.
+# Required inputs are:
+#  ctrl.ext rst.ext used or created by lmf
+#  GWinput
+#  ... or
+#  GWIN0 GWIN_V2
+#  You can create the GWinput file using lmfgw, job -1.
+#  NB: you should edit these files.
+#
+#  Updates
+#    30 Jun 05  Added --version switch
+#    13 Feb 05  Added --sym switch
+#    23 Aug 04  Added --save switch
+#    28 Mar 04  Added --multitet switch
+
+##ifdef# OCOTILLO
+##set thisdir = $HOME/bin
+##else
+set thisdir = $0:h
+##endif
+set thisjob = ($thisdir/lmgwsc $*)
+set lmgw = $thisdir/lmgw_MPI
+set thishost = `echo $HOST | awk -F . '{print $1}'`
+set metal
+set nfpgw = --sc
+set noexec = 0
+set varlst
+set maxit = 999
+set sigtol = 1e-5
+
+alias findcmd  'set retcall = \!\!:1 ; set prognam = \!\!:2 ; set prog_cmd = \!\!:3 ; set path_name = \!\!:4 ; set make_path = \!\!:5 ; goto findcmd'
+alias walltime  'set retcall = \!\!:1; set time_var = \!\!:2 ; set time_start = \!\!:3; goto walltime'
+# alias pdtime  'set retcall = \!\!:1; set time_start = \!\!:2; goto pdtime'
+
+echo "lmgwsc_MPI script started"
+
+set vsn
+
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+  set arg1 = $1; shift
+
+  switch ($arg1)
+
+    case "--metal":
+      set metal = "--metal"
+      breaksw
+
+    case "--insul=*":
+      set metal="$arg1"
+      breaksw
+
+    case "--no-scrho":
+      set noscrho
+      breaksw
+
+    case "--bin=*":
+    case "-bin=*":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--code2":
+      set code2
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--bin=*":
+    case "-bin=*":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--band*":
+      set bnds
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--sym":
+      set nfpgw=(--sc:sym $nfpgw)
+      breaksw
+
+    case "--big":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--exonly=no":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--exonly":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--wt":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--mixsig=*":
+    case "-mixsig=*":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--openmp=*":
+    case "--openmp":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--gwbin=*":
+    case "-gwbin=*":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--start=*":
+    case "-start=*":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--stop=*":
+    case "-stop=*":
+      set nfpgw=($nfpgw $arg1)
+      set lstop
+      breaksw
+
+    case "--lmbin=*":
+    case "-lmbin=*":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "-v*=*":
+      set varlst=($varlst $arg1)
+      breaksw
+
+    case "--maxit=*":
+      set maxit = `echo $arg1 | sed s/--maxit=//`
+      breaksw
+
+    case "-maxit=*":
+      set maxit = `echo $arg1 | sed s/-maxit=//`
+      breaksw
+
+    case "--tol=*":
+      set sigtol = `echo $arg1 | sed s/--tol=//`
+      breaksw
+
+    case "-tol=*":
+      set sigtol = `echo $arg1 | sed s/-tol=//`
+      breaksw
+
+    case "--iter=*":
+      set ix = `echo $arg1 | sed s/--iter=//`
+      breaksw
+
+    case "-iter=*":
+      set ix = `echo $arg1 | sed s/-iter=//`
+      breaksw
+
+    case "--version":
+      set vsn
+      breaksw
+
+    case "--lmv6=no":
+      set lmv6
+      unset lmv6
+      breaksw
+
+    case "--lmv6":
+      set lmv6
+      breaksw
+
+    case "--help":
+    case "--h":
+      goto usage
+
+    case "--getsigp":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--multitet=no":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--multitet":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--getesig":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--erange":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--getnk":
+      set nfpgw=($nfpgw $arg1)
+      breaksw
+
+    case "--noexec":
+      set noexec = 1
+      breaksw
+
+    case "--save=":
+      set savedir = "$1"; shift
+      breaksw
+
+    case "--save=*":
+      set savedir = `echo $arg1 | sed s/--save=//`
+      breaksw
+
+    default:
+      echo "unrecognized switch '$arg1' ... aborting"
+      goto usage
+
+  endsw
+end
+if ($#argv < 1) goto usage
+
+# Ask for version 6 style sugw
+if ($?lmv6) then
+  set nfpgw=($nfpgw --lmv6)
+else
+  set nfpgw=($nfpgw --lmv6=no)
+endif
+
+echo "Start iteration independent setup:"
+
+# --- Iteration-independent setup before GW call ---
+# Check for existence of necessary files
+set ext = $1
+
+echo "test1"
+
+set list = "GWinput ctrl.$ext"
+if (! -e GWinput) then
+  set list = "GWIN0 GWIN_V2 ctrl.$ext"
+endif
+foreach i ($list)
+if (! -e $i) then
+  echo "lmgwsc: missing or empty file $i ... aborting"
+  exit -1
+endif
+end
+# switch whether self-consistency in charge, or not
+if (! $?noscrho) then
+  set nfpgw=(--scrho $nfpgw)
+endif
+
+echo "test2"
+
+# --- Handle --version switch ---
+if ($?vsn && $noexec == 0) then
+  echo "test2b"
+  if ($?code2) then
+    echo "test2b1:" $lmgw
+#    echo `$lmgw --code2 --version` >version
+    echo "test2b1 done " 
+    cat version
+    echo test `cat version`
+  else
+    echo "test2b2"
+    echo `$lmgw --version` >version
+  endif
+  cat version
+  echo lmgwsc:  starting job `date`, running version `cat version`
+endif
+ 
+echo "test3"
+
+findcmd chk00a have_dval dval "$path" "no"
+chk00a:
+findcmd chk00b have_bc bc "$path" "no"
+chk00b:
+if ($?have_bc) then
+$have_bc -v > /dev/null
+if ($status == 0) then
+else
+unset have_bc
+endif
+
+
+echo "before walltime w00x:"
+
+walltime w00x tstart 0
+w00x:
+
+# --- Start of iteration loop ---
+if (! $?ix) then
+  set ix = 0
+  if (-e sigm.$argv[1]) set ix = 1
+endif
+@ ix = $ix - 1
+if ($ix >= $maxit) then
+  echo "    lmgwsc : starting iteration exceeds maxit = $maxit"
+  exit 0
+endif
+while ($ix < $maxit)
+@ ix = $ix + 1
+echo "    lmgwsc : starting iteration $ix of $maxit"
+
+# --- Iteration-dependent setup ---
+if (-e sigm.$argv[1]) set havesigm
+
+# --- GW call ---
+echo "    lmgwsc : invoking $lmgw $varlst $nfpgw $metal $ext"
+if ($noexec == 0) then
+                  if (! $?vsn) rm -f version
+                  $lmgw $varlst $nfpgw $metal $ext
+                  if ($status) then
+                    echo "    lmscgw: oops! $lmgw returned with nonzero exit status ... aborting "
+                    exit -1
+                  endif
+else
+                  $lmgw --noexec $varlst $nfpgw $metal $ext
+                  if ($status) then
+                    echo "    lmscgw: oops! $lmgw returned with nonzero exit status ... aborting "
+                    exit -1
+                  endif
+endif
+
+if ($?lstop) then
+   echo "    lmgwsc : $lmgw completed with --stop ... stopping execution"
+   exit 0
+endif
+
+set nfpgw = (`echo $nfpgw | sed 's/--start=[a-z0-9]*//'`)
+
+# --- Cleanup before next iteration ---
+echo "           cp evec.$argv[1] evec_prev_iter"
+if ($noexec == 0) then
+                 cp evec.$argv[1] evec_prev_iter
+endif
+# this is used by hqpe_sc when isigma_en==5
+if (! $?havesigm) then
+echo "           cp evec.$argv[1] evec0"
+  if ($noexec == 0) then
+                 cp evec.$argv[1] evec0
+  endif
+endif
+
+echo "           ln -s -f sigm sigm.$argv[1]"
+if ($noexec == 0) then
+                 ln -s -f sigm sigm.$argv[1]
+endif
+
+rm -f dat
+if (-e QPU) infgw --qpu --sc > dat
+foreach file (sigm QPU QPD TOTE.UP TOTE.DN lqpe lsc lsx llmfgw01 evecfix.chk llmf dat)
+if (! -d ${ix}run) mkdir ${ix}run
+if (-e $file) cp $file ${ix}run
+end
+if ($?bnds && $noexec == 0) then
+ cp bnds.$argv[1] ${ix}run
+endif
+if (-e lsc) then
+  grep -vE 'before|after|irot|readqg|after.*Cpu|ntqxx=|drvmelp2:' lsc  >${ix}run/lsc
+endif
+if (-e lqpe) then
+ grep -Ev 'S1nn|S2nn' lqpe >${ix}run/lqpe
+endif
+if (-e lx0) then
+  cat lx0  | awk '{if ($1 == "goto" && $2 == "histrange=") {getline} else print }' | grep -vE 'end Cpu|begin Cpu|elements Cpu|cycle Cpu|begin x0kf|readqg|begin dispersion' >${ix}run/lx0
+endif
+if (-e lsx) then
+  grep -vE 'before|after|irot|readqg|after.*Cpu|ntqxx=|drvmelp2:' lsx  >${ix}run/lsx
+endif
+
+if ($noexec == 1) then
+  goto cleanup
+endif
+
+# check whether to continue iterations
+if (! -e sigm.$argv[1]) then
+  echo "    Exit -1 lmgwsc : missing file sigm.$ext"
+  exit -1
+endif
+
+# Reset maxit if file maxit exists
+if (-r maxit) then
+set maxit = `head -1 maxit`
+echo "    lmgwsc : found file maxit ... resetting maxit to $maxit"
+rm maxit
+endif
+
+# Wall clock time elapsed since beginning of execution
+# Can't do this: breaks loop
+# walltime w00y tnow $tstart
+# w00y:
+# if ($tnow == 0) then
+#   set tnow
+# else
+#   set tnow = "elapsed wall time {$tnow}m"
+# endif
+set tnow   # not evaluated unless dval available
+if ($?have_bc) then
+  echo `date  +%d`'*24*60'+`date  +%H`'*60'+`date  +%M`+`date  +%S`/60   | $have_bc -l | awk '{printf("%.1f",$1)}' >datenow~; set datenow = `cat datenow~`
+  set datenow = `cat datenow~`
+  set x = `echo $datenow-$tstart | bc -l`
+  set tnow = (elapsed wall time `echo $x | awk '{printf("%.1f",$1)}'`m '('`echo $x/60 | bc -l | awk '{printf("%.1f",$1)}'`'h)')
+else if ($?have_dval) then
+  dval -fd3 d=`date  +%d` h=`date  +%H` m=`date  +%M` s=`date  +%S` '(d*24+h)*60+m+s/60' >datenow~; set datenow = `cat datenow~`
+  set tnow = (elapsed wall time `dval -a "%;1dm (%;2dh)"  x=$datenow-$tstart x x/60 ` )
+else
+  set $time_var = 0
+  goto $retcall
+endif
+
+
+
+if ($?havesigm && `echo $sigtol 0 | awk '{if (($1-$2) > 0) {print 1} else {print 0}}'` == 1) then
+  set rmssig = `grep rmsdel lqpe | tail -1 | awk '{sub(".*rmsdel=",""); print $0}' | sed s/D/E/`
+  if ($ix >= $maxit) then
+    echo "    lmgwsc : iter $ix of $maxit  RMS change in sigma = $rmssig  Tolerance = $sigtol  more=F" `date` $tnow $thishost
+    goto cleanup
+  else if (`echo $rmssig $sigtol | awk '{if (($1-$2) > 0) {print 1} else {print 0}}'` == 1) then
+    echo "    lmgwsc : iter $ix of $maxit  RMS change in sigma = $rmssig  Tolerance = $sigtol  more=T" `date` $tnow $thishost
+  else
+    echo "    lmgwsc : iter $ix of $maxit  RMS change in sigma = $rmssig  Tolerance = $sigtol  more=F" `date` $tnow $thishost
+    goto cleanup
+  endif
+else if ($ix >= $maxit) then
+  echo "    lmgwsc : completed iteration $ix of $maxit  more=F"  `date` $tnow $thishost
+  goto cleanup
+else
+  echo "    lmgwsc : completed iteration $ix of $maxit  more=T"  `date` $tnow $thishost
+endif
+
+set havesigm
+
+end
+
+exit
+
+# --- normal exit: possibly save files in save directory -----
+cleanup:
+if ($?savedir) then
+  echo "    savegwfiles" --job=\"$thisjob\" --mkdir $ext $savedir
+  echo "    gw-extract-prodbas-and-time-from-output > $savedir/timings"
+  if ($noexec == 0) then
+            savegwfiles  --job="$thisjob"   --mkdir $ext $savedir
+            gw-extract-prodbas-and-time-from-output > $savedir/timings
+  endif
+endif
+
+exit
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label program-name executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prognam = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+# if (! $?quiet) then
+#   if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+#   if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+# endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir $maindir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- walltime --------------
+exit
+# Returns wall-clock time.
+# Usage: walltime return_label time_var time_start
+# have_bc or have_dval should be set.
+exit
+walltime:
+if ($?have_bc) then
+  echo `date  +%d`'*24*60'+`date  +%H`'*60'+`date  +%M`+`date  +%S`/60   | $have_bc -l >datenow~; set datenow = `cat datenow~`
+else if ($?have_dval) then
+  dval -fd3 d=`date  +%d` h=`date  +%H` m=`date  +%M` s=`date  +%S` '(d*24+h)*60+m+s/60' >datenow~; set datenow = `cat datenow~`
+else
+  set $time_var = 0
+  goto $retcall
+endif
+#cat datenow~
+if ($time_start == 0) then
+  set $time_var = $datenow
+  goto $retcall
+else
+  if ($?have_bc) then
+   set $time_var = `echo $datenow-$time_start | bc -l | awk '{printf("%.1f",$1)}'`
+  else if ($?have_dval) then
+    set $time_var = `dval -fd1 $datenow-$time_start`
+  endif
+endif
+goto $retcall
+
+exit
+usage:
+echo 'usage : lmgwsc [--switches] extension'
+echo '        switches:'
+echo '          --help'
+echo '          --h'
+echo '            show this message'
+echo ' '
+echo '          --version'
+echo '            Writes fpgw and lmf version numbers to file "version"'
+echo ' '
+echo '          --metal'
+echo ' '
+echo '          --insul=# insulator, with # occupied bands (only affects QP* file)'
+echo ' '
+echo '          --no-scrho'
+echo  '             self-consistency limited to self-consistency in sigma ---'
+echo  '             no self-consistency in the charge density'
+echo ' '
+echo '          --tol=#'
+echo '           -tol=#'
+echo  '             # is tolerance for RMS change in sigma (default=1e-6).'
+echo  '             lmgwsc iterate until RMS change in sigma falls below tolerance'
+echo  '             or until the maximum number of iterations is exceeded'
+echo ' '
+echo '          --maxit=#'
+echo '           -maxit=#'
+echo  '             # is maximum number of iterations to attempt.'
+echo  '             lmgwsc iterate until RMS change in sigma falls below tolerance'
+echo  '             or until the maximum number of iterations is exceeded'
+echo ' '
+echo '          --iter=#'
+echo '           -iter=#'
+echo  '             Set starting iteration counter to #.'
+echo ' '
+echo '          --code2'
+echo  '             Use sep12 version for GW, or compatible'
+echo ' '
+echo '          --bin=dir'
+echo '           -bin=dir'
+echo  '             combination of switches --lmbin and --gwbin'
+echo ' '
+echo '          --lmbin=dir'
+echo '           -lmbin=dir'
+echo  '             take LDA binaries lmf, lmfgwd, and lmf2gw from directory "dir".'
+echo  '             Default is directory containing this script ('"$0:h)"
+echo ' '
+echo '          --gwbin=dir'
+echo '           -gwbin=dir'
+echo  '             take GW binaries from directory "dir".'
+echo  '             Default is directory containing this script ('"$0:h)"
+echo ' '
+echo '          --start=x0'
+echo '          --stop=x0'
+echo  '             start (stop) execution at (before) hx0fp0'
+echo ' '
+echo '          --start=sig'
+echo '          --stop=sig'
+echo  '             start (stop) execution at (before) hsfp0'
+echo ' '
+echo '          -vVAR=VAL'
+echo  '             assign VAR to VAL, and pass to LDA programs lmf, lmfgwd'
+echo ' '
+echo '          --band[:args]'
+echo  '             generate energy bands after GW pass'
+echo ' '
+echo '          --getsigp'
+echo  '             (only used in conjunction with the --sc switch)'
+echo  '             Get some parameters for GWinput or GWIN0 file.'
+echo  '             Equivalent to --getesig and --getnk and,'
+echo  '             (if --multitet not specified) --multitet=no'
+echo ' '
+echo '          --getesig'
+echo  '             Before execution, alter esigcut in file GWINput or GWIN0 to the following:'
+echo  '             Extract the contents of SIGP:emax and add 0.5 Ry.'
+echo  '             NB: only used in conjunction with the --sc switch'
+echo ' '
+echo '          --getnk'
+echo  '             Before execution, alter nk in file GWINput or GWIN0 to the following:'
+echo  '             Extract the contents of SIGP:emax and add 0.5 Ry.'
+echo  '             NB: only used in conjunction with the --sc switch'
+echo ' '
+echo '          --multitet'
+echo  '             Before execution, uncomment multitet line in file GWinput'
+echo  '             NB: only used in conjunction with the --sc switch'
+echo ' '
+echo '          --erange'
+echo  '             Generate file erange, to set bounds for dielectric fn screening'
+echo ' '
+echo '          --big'
+echo  '             Use lmf-big and lmfgwd-big in place of lmf and lmfgwd'
+echo ' '
+echo '          --openmp=#'
+echo '          --openmp'
+echo  '             Use binaries linked with openmp libraries'
+echo ' '
+echo '          --sym'
+echo  '             Use lmf to symmetrize sigma file'
+echo ' '
+echo '          --exonly (--exonly=no)'
+echo  '             Exchange only calculation'
+echo  '             Before execution, uncomment (comment) EXonly line in file GWinput'
+echo ' '
+echo '          --mixsig=#'
+echo  '             scale sigma-vxc by # when evaluating eigenfunctions (lmf,lmfgwd)'
+echo ' '
+echo '          --lmv6'
+echo  '             lmf uses lmv6-compatible binaries'
+echo ' '
+echo '          --noexec'
+echo  '             show what codes would execute without executing them'
+echo ' '
+echo '          --save=dir'
+echo  '             save minimum data in directory "dir".  Invokes script'
+echo  '                savegwfiles --job=(current job) --mkdir extension dir'
+echo  '             Invoke "savegwfiles" without arguments to see script function and arguments'
+echo
+echo '          --wt'
+echo  '             For some programs print wall clock time (requires dval be installed)'
+echo ' '
+
+exit -1

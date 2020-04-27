@@ -1,0 +1,309 @@
+EXPRESS
+  ftmesh=36,36,44 
+  file=site
+HEADER  Ba3ZnTa2O9
+# ...  typical jobs for different programs
+TSTWDEN
+ lmfa bzt -vcd=f -vnit=30 -vbeta=.6 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5
+ lmf  bzt -vcd=f -vnit=30 -vbeta=.6 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5
+ lmf bzt -vcd=f --rs=0 -vnit=0 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5 --wden:atpos
+ lmf bzt -vcd=f --rs=0 -vnit=0 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5 --wden:core=2:l1=1,0,0,37:l2=0,1,0,37:fn=atrho
+ lmf bzt -vcd=f -vbeta=.6 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5 --wden:core=2:l1=1,0,0,37:l2=0,1,0,37
+TWDENMK
+ lmfa bzt -vcd=f -vnit=30 -vbeta=.6 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5
+ mpirun -n 5 lmf bzt -vcd=f -vnit=30 -vbeta=.6 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5
+ lmf bzt -vcd=f --rs=0 -vnit=0 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5 --wden:atpos
+ lmf bzt -vcd=f --rs=0 -vnit=0 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5 --wden:core=2:l1=1,0,0,37:l2=0,1,0,37:fn=atrho
+ mpirun -n 5 lmf bzt -vcd=f -vbeta=.6 -vbigbas=2 -vnk=4 -vnk2=nk -vnkgw=3 -vemaxs=2.5 -vrelax=f -vfrzwf=f -vfile=t -vehmax=-.5 --wden:core=2:l1=1,0,0,37:l2=0,1,0,37
+FPJOB  lmfp -vvmx=1 -vnk=3 -big -vtetra=0 -vmetal=0 -job=1 -map -vofp=t bzt
+FPDOS  lmfp -vvmx=1 -vnk=6 -big -vtetra=1 -vmetal=1 -job=1 -map -vofp=t bzt
+LMJOB  lm -vnit=1 -vnk=6 -vmetal=1 -vtetra=1 -vnsph=f -vvmx=f -vnl=4
+LMFJOB lmf -vcd=f -vnit=30 -vbeta=.6 -vbigbas=2 -vnk=2 -vnk2=nk -vrelax=f -vfrzwf=f --rs=11,1,1 -vfile=t bzt
+PLDOS echo '70 5 -1 1' | pldos -fplot -lst='1:4,1+4*4:5*4,5:4*4,1+5*4:6*4' dos.nate
+PLDOS echo 70 5 -1 .6 | ~/plot/pldos -fplot '-lst=0+2:4+1;8+2:12+1;12+2:16+1;16+2:20+1;20+2:24+1' pdos.bzt
+PLBND echo -8 8 5 10 | plbnds -lbl=A,L,M,G,A,H,K,G -ef=0 -scl=13.6 -fplot -tl=' ' bzt
+      fplot -disp -pr10 -f plot.plbnds
+VERS    LM:7 FP:7
+% const a=10.926401 da=0 cbya=1.22743 metal=f tetra=0 nit=1 nl=4 nsph=0 cd=f
+% const tpan=2 hf=0 xcn=0 lmh=0 link=0 twoc=0 scr=0 vmx=f ccor=t lmf=t asa=f ofp=f
+OPTIONS FRZ=F NPAN={tpan+1} HF={hf} XCN={xcn} LMH={lmh}
+        LINK={link} TWOC={twoc} CCOR={ccor} GAMMA={twoc} ADNF=f SCR={scr}
+        NSPH={nsph}
+%ifdef relax
+DYN     MSTAT: 5,t,.000,0.005,.005,0 NIT={relax}
+DYN     MSTAT: 6,t,.000,0.005,.005,0 NIT={relax}
+%endif
+% const frzwf=f
+HAM     QASA=3 FTMESH=36,36,44 TOL=1e-5 ELIND=-1 XCFUN=1 FORCES=1 FRZWF={frzwf}
+# HAM     QASA=3 GMAX=10 TOL=1e-5 ELIND=-1 XCFUN=1 FORCES=1 FRZWF={frzwf}
+        NSPIN=1 REL=t AUTOBAS[PFLOAT=0,0]
+% const sig=12 modsgp=3 nmins=0 emins=0 nmaxs=0 emaxs=3 asig=0.14 bsig=0.05 efits=0
+        RDSIG={sig} # SIGP:{modsgp},{nmins},{emins},{nmaxs},{emaxs},{asig},{bsig},{efits}
+        SIGP[MODE={modsgp} NMIN={nmins} EMIN={emins} NMAX={nmaxs} EMAX={emaxs} A={asig} B={bsig} EFIT={efits}]
+% const modsig=3 ecuts=2.5 pwb=2.7 pwc=2.2 nkgw=nk
+GW      NKABC={nkgw} GCUTB={pwb} GCUTX={pwc} MKSIG={modsig} ECUTS={ecuts}
+OPTICS  MODE=0 NPTS=601 WINDOW=0 2
+EWALD   TOL=1d-12
+% const beta=.5 elind=-.7
+# MIX     MODE=A0,b=.5,n=3,elind={elind} XIPMX={vmx} BETV=.5 BETA={beta} CONVC=1e-5
+# MIX     MODE=A0,b={beta},bv=.3,elind={elind} XIPMX={vmx} BETV=.5 BETA={beta} CONVC=2e-6
+# MIX     MODE=A1,b={beta},bv=.3,elind={elind},n=1;A0,b={beta},bv=.3,elind={elind},n=2  XIPMX={vmx} BETV=.5 BETA={beta} CONVC=2e-6
+# MIX     MODE=A2,b={beta},bv=.3,elind={elind},k=4 XIPMX={vmx} BETV=.5 BETA={beta} CONVC=2e-6
+# MIX     MODE=A4,b={beta},bv=.3,elind={elind} XIPMX={vmx} BETV=.5 BETA={beta} CONVC=2e-6
+ITER    MIX=A4,b={beta},elind={elind} CONVC={relax?2e-6:2e-6}
+        XIPMX={vmx} BETV=.5 BETA={beta} NIT={nit}
+STR     RMAX=3.2
+MAP     F  *: \h\t:g
+BZ      NKABC=nk nk nk2 BZJOB=0 0 1 EFMAX=1.5 INVIT=t TETRA={tetra} N=1 W=.01
+#         NEVMX=999 EMAX=99 SAVDOS=T DOS=-2 2 NPTS=4001 METAL=2
+        DOS={asa?-1:-9} 2 EF0=.0 DEF=.1 METAL={metal} NPTS=5001
+#       NEVMX=-1
+IO     SHOW=f HELP=F VERBOS=31 20 WKP=F IACTIV=f TIM=f
+CONST  fsr3=sqrt(3)*4 nk=4 nk2=nk tet=1
+CMD    -sfill=1,5
+%ifdef asa
+CLASS  ATOM=Ba  R/W=1.199 Z=56  IDMOD=0 0 1 1 IDXDN=1 1 1 2
+       ATOM=Ba2 R/W=1.199 Z=56  IDMOD=0 0 1 1 IDXDN=1 1 1 2
+       ATOM=Zn  R/W=.65 Z={cd?48:30} IDXDN=1 1 1 2
+       ATOM=Ta  R/W=.65 Z=73 IDMOD=1 1 0 1 IDXDN=1 1 1 1
+       ATOM=O1  R/W=1   Z=8  IDMOD=0 0 0 0 IDXDN=1 1 2 2
+       ATOM=O2  R/W=1   Z=8  IDMOD=0 0 0 0 IDXDN=1 1 2 2
+%elseifd lmf
+# MT radii
+% ifndef cd
+% const rmtba=3.30 rmtzn=2.52 rmto1=1.81 rmto2=1.55
+% else
+% const rmtba=3.30 rmtzn=2.65 rmto1=1.72 rmto2=1.50
+% endif
+% const ehmax=-.4
+# Ba p state always included as local orbital. (Include with RSMH)  FA rsm=5,1.4,2.1         e=-0.7,-1,0
+# Ta p state always included as local orbital. (include with RSMH). FA rsm=3.5,0.84,1.25     e=-1.1,-2,0
+# Zn                                                                FA rsm=2.1,2.5,0.95      e=-0.4,0,-.4
+% char pzta "PZ=0,15.93,0,4.9*0"
+%ifdef pzta
+%  const rsba=2.1 rspba=1.1 rszn=1.5 rsdzn=cd?.85:.8 rsta=2.0 rspta=0.80 rsdta=1.1 rsso=.93 rspo=rmto2/2 rsdo=1.6
+% cconst bigbas>2 epba=-.9
+%  const          epba=-.7           edzn=cd?-.1:-.2 epta=-2                       eso=-1.1
+%else
+%  const rsba=2.1 rspba=1.1 rszn=1.5 rsdzn=cd?.85:.8 rsta=2.0 rspta=rsta rsdta=1.1 rsso=.93 rspo=rmto2/2 rsdo=1.6
+%  const          epba=-.7           edzn=cd?-.1:-.2 epta=-.1                      eso=-1.1
+% char pzta "RFOCA=.8"
+%endif
+CLASS
+       SCLWSR=0 OMAX1=.04 WSRMAX=3.30
+       ATOM=Ba  Z=56 R={rmtba} IDXDN=1,1,1,1 KMXA=5 LMXA=4 EREF=-16258.6334 A=.02 P=6.5,6.4,5.3,4.15,5.10
+       RSMH={rsba},{rspba},{rsba},{rsba} EH={ehmax},{ehmax},{ehmax},{ehmax} PZ=0,15.93 P=6.5,6.4,5.3,4.1
+%ifdef bigbas>2
+       RSMH2={rsba},{rspba},{bigbas>3?rsba:0} EH2=-1,-.1,-1
+%endif
+       CSTRMX=0 FRZWF=f
+
+       ATOM=Ba2 Z=56 R={rmtba} IDXDN=1,1,1,1 KMXA=5 LMXA=4 EREF=-16258.6334 A=.02 P=6.5,6.4,5.3,4.15,5.10
+       RSMH={rsba},{rspba},{rsba},{rsba} EH={ehmax},{ehmax},{ehmax},{ehmax} PZ=0,15.93 P=6.5,6.4,5.3,4.1
+%ifdef bigbas>2
+       RSMH2={rsba},{rspba},{rsba} EH2=-1,-.1,-1
+%endif
+       CSTRMX=0 FRZWF=f
+
+       ATOM=Zn  Z={cd?48:30} R={rmtzn} IDXDN=1,1,1,2 KMXA=5 LMXA=4 EREF={cd?-11179.2487:-3586.6642} A=.03
+       P=0,0,{cd?4.90:3.90},4.13,5.10
+       RSMH={rszn},{rszn},{rsdzn},{bigbas>2?rszn:0} EH={ehmax},{ehmax},{ehmax},{ehmax}
+%ifdef bigbas>1
+       RSMH2={rszn},0,{rsdzn} EH2=-1,-1,-1
+%elseifd bigbas
+       RSMH2=0,0,{rsdzn} EH2=-1,-1,-1
+%endif
+       CSTRMX=0 FRZWF=f
+
+       ATOM=Ta  Z=73 R=2.20         IDXDN=1,1,1,2 KMXA=5 LMXA=4 A=.02 EREF=-31190.6709
+%ifdef bigbas==0
+       RSMH={rsta},1,{rsdta},{bigbas>2?1.5:0} EH={ehmax},{ehmax},{ehmax},{ehmax} {pzta} 
+       IDMOD=0,0,1,1 P=6.62,6.5,5.68,5.15,5.10
+%elseifd bigbas==1
+       RSMH={rsta},1,{rsdta},{bigbas>2?1.5:0} EH={ehmax},{ehmax},{ehmax},{ehmax} {pzta} 
+       IDMOD=0,0,1,1 P=6.62,6.5,5.68,5.15,5.10
+       RSMH2=0,{rsta},{rsdta} EH2=-1,{epta},-1
+%elseifd bigbas>1
+       RSMH={rsta},1,{rsdta},{bigbas>2?1.5:0} EH={ehmax},{ehmax},{ehmax},{ehmax} {pzta} 
+       IDMOD=0,0,1,1 P=6.62,6.5,5.68,5.15,5.10
+       RSMH2={rsta},{rsta},{rsdta} EH2=-1,-1,-1
+%endif
+       CSTRMX=1 FRZWF=f
+
+       ATOM=O1  Z= 8 R={rmto1}      IDXDN=1,1,1,2 KMXA=3 EREF=-149.1664 A=.03 P=2.9,2.85
+       LMXA=4
+       RSMH={rsso},{rspo},{rsdo} EH={eso},{ehmax},{ehmax},{ehmax}
+%ifdef bigbas
+       RSMH2={rsso},{rspo},0 EH2={ehmax},-.8,-1
+%endif
+
+       ATOM=O2  Z= 8 R={rmto2}      IDXDN=1,1,1,2 KMXA=3 EREF=-149.1664 A=.03 P=2.9,2.85
+       LMXA=4
+       RSMH={rsso},{rspo},{rsdo} EH={eso},{ehmax},{ehmax},{ehmax}
+%ifdef bigbas
+       RSMH2={rsso},{rspo},0 EH2={ehmax},-.8,-1
+%endif
+%endif
+STRUC  NBAS=15 NSPEC={6} NL={nl} TET=tet SHEAR=0 0 1 tet
+% ifdef file
+       FILE=site
+% endif
+       ALAT={a} DALAT={da} PLAT= 0 -1 0  6/fsr3 1/2 0   0 0 {cbya}
+STRUC
+  NSPEC=6  NBAS=15  NL={nl}
+  ALAT={a}  PLAT= 0.8660254  -0.5  0  0  1  0  0  0  1.22743
+
+# positions for Ba3Ta2ZnO9 taken from:
+# A.~J. Jacobson, B.~M. Collins, and B.~E.~F Fender,
+# Acta Cryst {\bf B}32, 1083 (1976)
+# LATTICE
+#   UNITS=A A=5.782 C=7.097
+#   SPCGRP=164
+# % const zba=0.688  zta=0.169  yo=0.328  zo=0.347
+# SITE  ATOM=Ba2  X=0 0 0
+#       ATOM=Ba   X=1/3 2/3 {zba}
+#       ATOM=Ta   X=1/3 2/3 {zta}
+#       ATOM=Zn   X=0.0 0.0 -.5
+#       ATOM=O1   X=1/2 0   0
+#       ATOM=O2   X={yo}/2 {yo} {zo}
+.SITE  ATOM=Ba2        POS=  0.0000000   0.0000000   0.0000000
+      ATOM=Ba         POS=  0.2886751  -0.5000000  -0.3829581
+      ATOM=Ba         POS= -0.2886751   0.5000000   0.3829581
+      ATOM=Ta         POS=  0.2886751  -0.5000000   0.2074357
+      ATOM=Ta         POS= -0.2886751   0.5000000  -0.2074357
+      ATOM=Zn         POS=  0.0000000   0.0000000  -0.6137150
+      ATOM=O1         POS= -0.4330127   0.2500000   0.0000000
+      ATOM=O1         POS=  0.0000000  -0.5000000   0.0000000
+      ATOM=O1         POS=  0.4330127   0.2500000   0.0000000
+      ATOM=O2         POS=  0.1420282   0.2460000   0.4259182
+      ATOM=O2         POS= -0.1420282  -0.2460000  -0.4259182
+      ATOM=O2         POS= -0.2840563   0.0000000   0.4259182
+      ATOM=O2         POS=  0.2840563   0.0000000  -0.4259182
+      ATOM=O2         POS=  0.1420282  -0.2460000   0.4259182
+      ATOM=O2         POS= -0.1420282   0.2460000  -0.4259182
+
+% ifdef file
+SITE    FILE=site
+% endif
+
+# relaxed, bigbas=3
+SITE  ATOM=Ba2      POS=  0.00000000    0.00000000    0.00000000 RELAX= 1 1 1
+      ATOM=Ba       POS= -0.28867510   -0.50000000    0.41693570 RELAX= 1 1 1
+      ATOM=Ba       POS=  0.28867510    0.50000000   -0.41693570 RELAX= 1 1 1
+      ATOM=Ta       POS= -0.28867510   -0.50000000   -0.21453674 RELAX= 1 1 1
+      ATOM=Ta       POS=  0.28867510    0.50000000    0.21453674 RELAX= 1 1 1
+      ATOM=Zn       POS=  0.00000000    0.00000000    0.61371500 RELAX= 1 1 1
+      ATOM=O1       POS= -0.43301270   -0.25000000    0.00000000 RELAX= 1 1 1
+      ATOM=O1       POS= -0.43301270    0.25000000    0.00000000 RELAX= 1 1 1
+      ATOM=O1       POS=  0.00000000    0.50000000    0.00000000 RELAX= 1 1 1
+      ATOM=O2       POS=  0.29636869    0.00000000   -0.39855358 RELAX= 1 1 1
+      ATOM=O2       POS= -0.29636869    0.00000000    0.39855358 RELAX= 1 1 1
+      ATOM=O2       POS=  0.14818430    0.25666282    0.39855358 RELAX= 1 1 1
+      ATOM=O2       POS=  0.14818430   -0.25666282    0.39855358 RELAX= 1 1 1
+      ATOM=O2       POS= -0.14818430    0.25666282   -0.39855358 RELAX= 1 1 1
+      ATOM=O2       POS= -0.14818430   -0.25666282   -0.39855358 RELAX= 1 1 1
+
+# oleg?
+# STRUC  ALAT=10.93 NBAS=15 NSPEC=6 NL={nl} TET=tet
+#        PLAT=0.8660254 -.5000000 0.0000000
+#             0.0000000 1.0000000 0.0000000
+#             0.0000000 0.0000000 1.2274474
+# SITE   ATOM=Ba  POS=-.28867513 0.50000000 0.39486983
+#        ATOM=Ba  POS=0.28867513 -.50000000 -.39486983
+#        ATOM=Ba2 POS=0.00000000 0.00000000 0.00000000
+#        ATOM=Ta  POS=-.28867513 0.50000000 -.19749629
+#        ATOM=Ta  POS=0.28867513 -.50000000 0.19749629
+#        ATOM=Zn  POS=0.00000000 0.00000000 0.61372370
+#        ATOM=O1  POS=0.43301270 0.25000000 0.00000000
+#        ATOM=O1  POS=0.43301270 -.25000000 0.00000000
+#        ATOM=O1  POS=0.00000000 0.50000000 0.00000000
+#        ATOM=O2  POS=0.28405633 0.00000000 -.42432856
+#        ATOM=O2  POS=-.28405633 0.00000000 0.42432856
+#        ATOM=O2  POS=0.14202817 0.24600000 0.42432856
+#        ATOM=O2  POS=0.14202817 -.24600000 0.42432856
+#        ATOM=O2  POS=-.14202817 0.24600000 -.42432856
+#        ATOM=O2  POS=-.14202817 -.24600000 -.42432856
+STRUC  NBAS=15 NSPEC={asa?4:6} NL={nl} TET=tet
+       ALAT={a} PLAT= 0 -1 0  6/fsr3 1/2 0   0 0 q
+
+START  CNTROL={nit==0} BEGMOM={nit<=0} FREE=f RDVES=t
+.
+%ifdef ofp
+#      ATOM=Ba  P=0.68 0.31 0.43 0.11 5.07 6.05 7.05
+#      TPAN=2 2 1 1 Q=2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+#      ATOM=Ba2 P=0.68 0.31 0.43 0.11 5.07 6.05 7.05
+#      TPAN=2 2 1 1 Q=2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+      ATOM=Ba  P=0.68 5.90 0.43 0.3 5.07 6.05 7.05
+      TPAN=2 2 1 1 Q=2 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+      ATOM=Ba2 P=0.68 5.90 0.43 0.11 5.07 6.05 7.05
+      TPAN=2 2 1 1 Q=2 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+      ATOM=Ta  P=0.60 5.9  0.72 4.8 0.08 .07 .06
+      TPAN=2 2 1 1 Q=2 0 0 6 0 0 3 0 0 14 0 0 0 0 0 0 0 0 0 0 0
+#      ATOM=Ta  P=0.60 0.24 0.72 4.93 0.08 .07 .06
+#      TPAN=2 2 1 1 Q=2 0 0 0 0 0 3 0 0 14 0 0 0 0 0 0 0 0 0 0 0
+      ATOM=Zn  P=4.77 4.47 3.90 4.11 5.08 6.07 7.06
+      TPAN=1 2 1 1 Q=2 0 0 0 0 0 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+      ATOM=O1  P=2.8 2.8 3.19 0.11
+      TPAN=1 1 1 1 Q=2 0 0  4 0 0  0 0 0  0 0 0  0 0 0 0 0 0  0 0 0
+      ATOM=O2  P=2.8 2.8 3.19 0.11
+      TPAN=1 1 1 1 Q=2 0 0  4 0 0  0 0 0  0 0 0  0 0 0 0 0 0  0 0 0
+%elseifd asa
+        ATOM=Ba    P=  6.5000000  5.9251149  5.2       4.4
+                   Q=  0.1953753 -0.1402546  0.1425202
+                       5.9310026  0.0000000  0.1434514
+                       0.3980663  0.0000000  0.0435272
+                       0.0        0.0        0.0
+        ATOM=Ba2   P=  6.1313906  5.9269499  5.2       4.4
+                   Q=  0.1011287  0.0000372  0.0226341
+                       5.9204191  0.0000000  0.1377262
+                       0.4000510  0.0000000  0.0399821
+                       0.0        0.0        0.0
+        ATOM=Zn    P=  4.4686446  4.2574739  3.8926771 4.2
+                   Q=  0.1224586  0.0000000  0.0137256
+                       0.1200536  0.0000000  0.0181128
+                       9.5319803  0.0000000  0.1353121
+                       0.0        0.0        0.0
+        ATOM=Ta    P=  6.5000000  6.3        5.8201514 5.3
+                   Q=  0.0851684 -0.0953789  0.1276817
+                       0.0000000  0.0000000  0.5895254
+                       3.1477103  0.0000000  0.1010797
+                        0.0       0.0        0.0
+        ATOM=O1    P=  2.9200430  2.8370575  3.15      4.2
+                   Q=  2.0155713  0.0000000  0.1405049
+                       5.5425970  0.0000000  0.7179327
+                       0.2019614  0.0000000  0.3366266
+                       0.0        0.0        0.0
+        ATOM=O2    P=  2.9160673  2.8378923  3.1068323 4.2
+                   Q=  2.0373875  0.0000000  0.2035606
+                       5.7542534  0.0000000  1.2084755
+                       0.2611142  0.0000000  0.4034384
+                       0.0        0.0        0.0
+
+        ATOM=Ba       P=  6.2044267  5.9148034  5.2000000
+                      Q=  0.1610334 -0.0000034  0.0371858
+                          5.8021742  0.0000000  0.1365783
+                          0.5907820  0.0333055  0.0732435
+        ATOM=Ba2      P=  6.2309417  5.9112093  5.2000000
+                      Q=  0.1727484  0.0000000  0.0465930
+                          5.8187266  0.0000000  0.1320560
+                          0.6861564  0.1363956  0.1286146
+        ATOM=Zn       P=  4.4320036  4.2349376  3.9003091
+                      Q=  0.1409895  0.0000000  0.0240080
+                          0.1553356  0.0000000  0.0229746
+                          9.3921797  0.0000000  0.2028843
+        ATOM=Ta       P=  6.5000000  6.3000000  5.7773627
+                      Q=  0.0515254 -0.1050501  0.2533338
+                          0.0639767 -0.1925286  0.7045666
+                          0.7333701  0.0000000  0.1168672
+        ATOM=O1       P=  2.9278401  2.9031929  3.2152147
+                      Q=  1.9823660  0.0000000  0.0227392
+                          5.5553568  0.0000000  0.0867424
+                          0.2153012  0.0000000  0.0314729
+        ATOM=O2       P=  2.9173393  2.8834754  3.1725475
+                      Q=  1.9964226  0.0000000  0.0271500
+                          5.3731303  0.0000000  0.0982238
+                          0.2254496  0.0000000  0.0312451
+
+
+% endif
+JOB    1  50

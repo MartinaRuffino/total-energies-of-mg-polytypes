@@ -1,0 +1,4 @@
+sfit in.sfit | tee out
+echo --- difference in output to out.sfit
+diff out out.sfit | head
+echo --- completed difference in output to out.sfit

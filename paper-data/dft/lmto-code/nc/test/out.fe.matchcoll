@@ -1,0 +1,162 @@
+         lm fe --no-iactiv -vfile=2 -vnk=8 -vnl=3 -vnc=0 -vbf=0 --quit=band
+ -----------------------  START LM -----------------------
+ HEADER Study of iron
+
+ LM:       nbas = 2  nspec = 1  vn 7.11.j  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      Q2:Power-moments
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 5.42  Cell vol = 159.220088
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.42000   awald= 0.369
+         r1=  3.015   nkd= 123      q1=  3.598   nkg= 179
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ SPLCLS:  1 species split into 2 classes
+ Species  Class      Sites...
+ FE       1:FE       1
+          2:FE2      2
+ BZMESH:  35 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 250 inequivalent ones found
+
+ GETZV:  16 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ FE         0.000000   0.000000   0.000000   0.000000  -0.764631
+ FE2        0.000000   0.000000   0.000000   0.000000  -0.764631
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764631 (up-dn=0.017068)
+ cpudel    ...   Time this iter:  time(s):  0.0971   total:  0.0971s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+
+ --- BNDASA : iteration 1 (KKR-qout) ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.6967 -0.4036 -0.4036 -0.2218 -0.2218 -0.2218 -0.1217 -0.1217 -0.0532
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.6686 -0.2908 -0.2908 -0.0653 -0.0653 -0.0653  0.0449  0.0449  0.1240
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.054165;  16.000000 electrons;  D(Ef):   23.143
+         Sum occ. bands:   -3.4723911  incl. Bloechl correction:   -0.002244
+         Mag. moment:       4.581959
+
+ Saved qp weights ...
+
+ LM: ehf=-0.9269263  ehk=-0.9269526  sumev=-3.4723911  delsev=-0.0000919
+h file=2 nk=8 nl=3 nc=0 bf=0 mmom=4.5819592 ehf=-.9269263 ehk=-.9269526
+ Exit 0 LM      : quit after bands 
+ CPU time:  0.124s   Wall clock 0.161s  at  14:42:49 16.06.2017  on  phpdl1.ph.kcl.ac.uk
+         lm fe --no-iactiv -vfile=2 -vnk=8 -vnl=3 -vnc=1 -vbf=0 --quit=band
+ -----------------------  START LM -----------------------
+ HEADER Study of iron
+
+ LM:       nbas = 2  nspec = 1  vn 7.11.j  verb 31,20
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll
+ asa:      Q2:Power-moments
+ bz:       metal, tetra 
+ IOEULA:   reading l-independent Euler angles (file 11)
+
+ Automatic symmetry finder turned off.  Use: I*I
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 5.42  Cell vol = 159.220088
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.42000   awald= 0.369
+         r1=  3.015   nkd= 123      q1=  3.598   nkg= 179
+
+ Generator 1 already in group as element 1
+ SGROUP: 1 symmetry operations from 1 generators
+ MKSYM:  found 1 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  1 species split into 2 classes
+ Species  Class      Sites...
+ FE       1:FE       1
+          2:FE2      2
+ BZMESH:  512 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 3072 inequivalent ones found
+
+ GETZV:  16 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ FE         0.000000   0.000000   0.000000   0.000000  -0.764631
+ FE2        0.000000   0.000000   0.000000   0.000000  -0.764631
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764631 (up-dn=0.017068)
+ cpudel    ...   Time this iter:  time(s):  0.0934   total:  0.0934s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+          Euler angles:
+   ib   alpha      beta     gamma     class           z axis rotated to:
+    1  0.100000  0.200000  0.300000   FE         0.197677  0.019834  0.980067
+    2  0.100000  0.200000  0.300000   FE2        0.197677  0.019834  0.980067
+
+ --- BNDASA : iteration 1 (KKR-qout, noncol) ---
+
+ AMAGNC: magnetic moments from Euler angles and sphere charges:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.450811  0.045232  2.235086    0.000000  0.000000  2.280545  2.280545
+    2   *  0.450811  0.045232  2.235086    0.000000  0.000000  2.280545  2.280545
+ <Mx>=0.450811  <My>=0.045232  <Mz>=2.235086  <M>=2.280545  <|M|>=2.280545
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 512, k=  0.00000  0.00000  0.00000
+ -0.6967 -0.6686 -0.4036 -0.4036 -0.2908 -0.2908 -0.2218 -0.2218 -0.2218
+ SECMAT:  kpt 101 of 512, k=  0.50000  0.50000  0.12500
+ -0.4007 -0.4007 -0.3019 -0.3019 -0.3008 -0.3008 -0.1625 -0.1625 -0.1340
+ SECMAT:  kpt 201 of 512, k=  0.00000  0.12500  0.37500
+ -0.4939 -0.4581 -0.3603 -0.3109 -0.2752 -0.2369 -0.2326 -0.1876 -0.1855
+ SECMAT:  kpt 301 of 512, k=  0.50000  0.62500  0.50000
+ -0.3139 -0.3139 -0.3058 -0.3058 -0.2628 -0.2628 -0.1997 -0.1997 -0.1792
+ SECMAT:  kpt 401 of 512, k=  0.00000  0.25000  0.75000
+ -0.5304 -0.4964 -0.3590 -0.3201 -0.2612 -0.2461 -0.2302 -0.2101 -0.1929
+ SECMAT:  kpt 501 of 512, k=  0.50000  0.75000  0.87500
+ -0.3851 -0.3851 -0.3101 -0.3101 -0.2783 -0.2783 -0.2401 -0.2401 -0.1485
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.054165;  16.000000 electrons;  D(Ef):   23.143
+         Sum occ. bands:   -3.4723911  incl. Bloechl correction:   -0.002244
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+
+ IORBTM:  orbital moments :
+ class spec        spin   Moment decomposed by l ...
+    1    FE           1    0.000000   -0.000041    0.103028
+    1    FE           2    0.000000    0.000031   -0.269622
+    1  L+ - L-  -0.166605
+    2    FE           1    0.000000    0.000041    0.102834
+    2    FE           2    0.000000   -0.000041   -0.271128
+    2  L+ - L-  -0.168294
+
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  0.452864  0.045438  2.245267    0.000000  0.000000  2.290933  2.290933
+    2   *  0.452883  0.045440  2.245358    0.000000  0.000000  2.291026  2.291026
+ <Mx>=0.452874  <My>=0.045439  <Mz>=2.245313  <M>=2.290980  <|M|>=2.290980
+
+ LM: ehf=-0.9269263  ehk=-0.9269526  sumev=-3.4723911  delsev=-0.0000919
+h file=2 nk=8 nl=3 nc=1 bf=0 mmom=4.5819592 ehf=-.9269263 ehk=-.9269526
+ Exit 0 LM      : quit after bands 
+ CPU time:  0.525s   Wall clock 0.570s  at  14:42:50 16.06.2017  on  phpdl1.ph.kcl.ac.uk

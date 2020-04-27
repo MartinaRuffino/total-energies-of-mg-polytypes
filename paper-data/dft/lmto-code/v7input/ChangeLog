@@ -1,0 +1,15 @@
+2016-10-26  Mark Schilfgaarde
+
+	* Change default values for ITER_CONV from 1d-4->1d-5 and ITER_CONVC from 1d-4->3d-5
+
+2016-04-19  Mark Schilfgaarde
+
+	* Redesign for Express mode input
+	  Note: a few defaults changed in the input system; see m_rdctrl.f
+	
+2015-08-03  Mark Schilfgaarde
+
+	* New ability to read NSPEC and species labels from site file
+	
+
+

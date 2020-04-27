@@ -1,0 +1,1961 @@
+ ----------------------  START LMPG  ----------------------
+ HEADER CoPt (file)
+
+ LMPG:     nbas = 24  nspec = 2  verb 31,20
+ special:  scr-rho-out(model eps)
+ pot:      spin-pol, XC:BH
+ asa:      Q2:Power-moments
+ bz:       metal, tetra, invit 
+ pgf:      self-consistent leads  via LU decmpsn
+
+ PGFSET: 5 principal layers, 24+4+4 sites.  Normal: 1 0 0
+   PL |   0   1   2   3   4
+ size |   4   4   6   6   4
+  PLV |   0   0   0   0   0
+   PL  1  1  1  1  2  2  2  2  3  3  3  3  3  3  4  4  4  4
+ Site  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+   PL  4  4  5  5  5  5
+ Site 19 20 21 22 23 24
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   6.000000   0.000000   0.000000 Plat(3) as input
+   1.000000   0.000000   0.000000 PlatL:  angle (deg) with Plat(3) = 0
+   1.000000   0.000000   0.000000 PlatR:  angle (deg) with Plat(3) = 0
+  10.000000   0.000000   0.000000 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   0.975000        0.000000   0.000000   1.025641
+  10.000000   0.000000   0.000000        0.100000   0.000000   0.000000
+   alat = 7.1866  Cell vol = 3618.887104
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   5.405  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.18660   awald= 0.130   lmax=6
+         r1=  5.405   nkd= 291      q1=  1.378   nkg= 103
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1/2,0,-0.4875) r2x r2z:(-1/2,0,0.4875)
+         i::(0,1/2,-1/20) r2x r2z::(0,1/2,-1/20)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  2 species split into 12 classes
+ Species  Class      Sites...
+ Co       1:Co       2 21
+          3:Co2      4 23
+          5:Co3      6 17
+          7:Co4      8 19
+          9:Co5      9 12
+         11:Co6      14 16
+ Pt       2:Pt       1 22
+          4:Pt2      3 24
+          6:Pt3      5 18
+          8:Pt4      7 20
+         10:Pt5      10 13
+         12:Pt6      11 15
+         12 classes for embedding region + 4 for padding layers
+  2D-reciprocal vectors:
+    0.000000    1.000000    0.000000
+    0.000000    0.000000    1.025641
+ BZMESH: 9 irreducible QP from 36 ( 6 6 1 )  shift= T T F
+  
+ ZMESH: nz=10 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,0.00
+
+ GETZV:  304 valence electrons
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.206697  -0.023227  -0.801409
+ Co7        0.320157   0.000000  -0.206697   0.023227  -0.733669
+ Pt8       -0.320157   0.000000   0.206697  -0.023227  -0.801409
+ Co8        0.320157   0.000000  -0.206697   0.023227  -0.733669
+ Sum Q=0.000000  Emad=0.029745(-0.264702)  Vmtz=-0.767539 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.206697  -0.023227  -0.801409
+ Co7        0.320157   0.000000  -0.206697   0.023227  -0.733669
+ Pt8       -0.320157   0.000000   0.206697  -0.023227  -0.801409
+ Co8        0.320157   0.000000  -0.206697   0.023227  -0.733669
+ Sum Q=0.000000  Emad=0.029745(-0.264702)  Vmtz=-0.767539 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.000000   vconst(R)=0.000000
+ cpudel    ...   Time this iter:  time(s):  0.154    total:  0.154s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+
+ --- PGFASA ( bigemb, refine gs ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0000000 vconst(R)=0.0000000
+ 
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    9.341657   21.697208   -6.217958    2.268774    2.697208
+ spin 2   65.665496   19.735288   -4.812600    1.766276    0.735288
+  total   75.007152   41.432497  -11.030558    4.035050    3.432497
+      5    9.341657   21.697208   -6.217958    2.268774    2.697208
+ spin 2   65.665496   19.735288   -4.812600    1.766276    0.735288
+  total   75.007152   41.432497  -11.030558    4.035050    3.432497
+ All PL   18.683313   43.394416  -12.435917                5.394416
+ spin 2  131.330991   39.470577   -9.625199                1.470577
+ PL tot  150.014305   82.864993  -22.061116                6.864993
+ Deviations from charge neutrality:
+   Left end layer       3.432497
+   Right end layer      3.432497
+   Embedded layers      0.000000
+   Sum of all layers    6.864993
+ 
+ gfzerq: ef=0  dq=3.43  vold=0  dv=0.0458  vnew= 0.045762  layer -1
+ gfzerq: ef=0  dq=3.43  vold=0  dv=0.0458  vnew= 0.045762  layer 5
+         average <dq>=3.43  <dv>=0.0458 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.0614  vold=0.0458  dv=8.33e-4  vnew= 0.046595  layer -1
+ gfzerq: ef=0  dq=0.0614  vold=0.0458  dv=8.33e-4  vnew= 0.046595  layer 5
+         average <dq>=0.0614  <dv>=8.33e-4 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00829  vold=0.0466  dv=1.3e-4  vnew= 0.046725  layer -1
+ gfzerq: ef=0  dq=0.00829  vold=0.0466  dv=1.3e-4  vnew= 0.046725  layer 5
+         average <dq>=0.00829  <dv>=1.3e-4 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-5.71e-5  vold=0.0467  dv=8.9e-7  vnew= 0.046724  layer -1
+ gfzerq: ef=0  dq=-5.71e-5  vold=0.0467  dv=8.9e-7  vnew= 0.046724  layer 5
+         average <dq>=5.71e-5  <dv>=8.9e-7 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=6.17e-10  vold=0.0467  dv=9.61e-12  vnew= 0.046724  layer -1
+ gfzerq: ef=0  dq=6.17e-10  vold=0.0467  dv=9.61e-12  vnew= 0.046724  layer 5
+         average <dq>=6.17e-10  <dv>=9.61e-12 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   13.621097   21.239478   -5.158504    2.263319    2.239478
+ spin 2   52.153000   16.760522   -3.966761    1.763697   -2.239478
+  total   65.774097   38.000000   -9.125265    4.027016    0.000000
+      5   13.621097   21.239478   -5.158504    2.263319    2.239478
+ spin 2   52.153000   16.760522   -3.966761    1.763697   -2.239478
+  total   65.774096   38.000000   -9.125265    4.027016    0.000000
+ All PL   27.242193   42.478956  -10.317008                4.478956
+ spin 2  104.306000   33.521044   -7.933522               -4.478956
+ PL tot  131.548193   76.000000  -18.250530                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=-4.26e-14  vold=0.0467  dv=6.45e-16  vnew= 0.046724  layer -1
+ gfzerq: ef=0  dq=9.95e-14  vold=0.0467  dv=1.51e-15  vnew= 0.046724  layer 5
+         average <dq>=7.65e-14  <dv>=1.16e-15 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL =  0.046724 > padtol.  Cumulative shift =  0.046724
+ potential shift R PL =  0.046724 > padtol.  Cumulative shift =  0.046724
+ shift (0.047) exceeded Pade tolerance (1e-4) ... redo GF pass
+
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   16.190286   21.162603   -5.144573    1.731996    2.162603
+ spin 2   52.262840   16.766735   -3.952335    1.353173   -2.233265
+  total   68.453126   37.929338   -9.096908    3.085169   -0.070662
+      5   16.190286   21.162603   -5.144573    1.731996    2.162603
+ spin 2   52.262840   16.766735   -3.952335    1.353173   -2.233265
+  total   68.453126   37.929338   -9.096908    3.085169   -0.070662
+ All PL   32.380571   42.325206  -10.289146                4.325206
+ spin 2  104.525680   33.533469   -7.904669               -4.466531
+ PL tot  136.906252   75.858675  -18.193815               -0.141325
+ Deviations from charge neutrality:
+   Left end layer      -0.070662
+   Right end layer     -0.070662
+   Embedded layers      0.000000
+   Sum of all layers   -0.141325
+ 
+ gfzerq: ef=0  dq=-0.0707  vold=0  dv=0.00103  vnew= -0.001032  layer -1
+ gfzerq: ef=0  dq=-0.0707  vold=0  dv=0.00103  vnew= -0.001032  layer 5
+         average <dq>=0.0707  <dv>=0.00103 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-1.31e-5  vold=-0.00103  dv=1.91e-7  vnew= -0.001032  layer -1
+ gfzerq: ef=0  dq=-1.31e-5  vold=-0.00103  dv=1.91e-7  vnew= -0.001032  layer 5
+         average <dq>=1.31e-5  <dv>=1.91e-7 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=3.67e-8  vold=-0.00103  dv=5.35e-10  vnew= -0.001032  layer -1
+ gfzerq: ef=0  dq=3.67e-8  vold=-0.00103  dv=5.35e-10  vnew= -0.001032  layer 5
+         average <dq>=3.67e-8  <dv>=5.35e-10 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   11.983998   21.175021   -5.167266    1.732260    2.175021
+ spin 2   58.673894   16.824979   -3.969614    1.353334   -2.175021
+  total   70.657891   38.000000   -9.136880    3.085594    0.000000
+      5   11.983998   21.175021   -5.167266    1.732260    2.175021
+ spin 2   58.673894   16.824979   -3.969614    1.353334   -2.175021
+  total   70.657891   38.000000   -9.136880    3.085594    0.000000
+ All PL   23.967995   42.350043  -10.334532                4.350043
+ spin 2  117.347787   33.649957   -7.939228               -4.350043
+ PL tot  141.315782   76.000000  -18.273761                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=-3.55e-14  vold=-0.00103  dv=5.03e-16  vnew= -0.001032  layer -1
+ gfzerq: ef=0  dq=-2.84e-14  vold=-0.00103  dv=4.02e-16  vnew= -0.001032  layer 5
+         average <dq>=3.22e-14  <dv>=4.55e-16 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL = -0.001032 > padtol.  Cumulative shift =  0.045692
+ potential shift R PL = -0.001032 > padtol.  Cumulative shift =  0.045692
+ shift (1e-3) exceeded Pade tolerance (1e-4) ... redo GF pass
+
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   15.816934   21.176597   -5.167696    1.742978    2.176597
+ spin 2   52.791718   16.827788   -3.969792    1.361451   -2.172212
+  total   68.608653   38.004386   -9.137489    3.104429    0.004386
+      5   15.816934   21.176597   -5.167696    1.742978    2.176597
+ spin 2   52.791718   16.827788   -3.969792    1.361451   -2.172212
+  total   68.608653   38.004386   -9.137489    3.104429    0.004386
+ All PL   31.633869   42.353195  -10.335393                4.353195
+ spin 2  105.583437   33.655577   -7.939585               -4.344423
+ PL tot  137.217306   76.008772  -18.274978                0.008772
+ Deviations from charge neutrality:
+   Left end layer       0.004386
+   Right end layer      0.004386
+   Embedded layers      0.000000
+   Sum of all layers    0.008772
+ 
+ gfzerq: ef=0  dq=0.00439  vold=0  dv=6.39e-5  vnew= 0.000064  layer -1
+ gfzerq: ef=0  dq=0.00439  vold=0  dv=6.39e-5  vnew= 0.000064  layer 5
+         average <dq>=0.00439  <dv>=6.39e-5 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-3.42e-5  vold=6.39e-5  dv=4.94e-7  vnew= 0.000063  layer -1
+ gfzerq: ef=0  dq=-3.42e-5  vold=6.39e-5  dv=4.94e-7  vnew= 0.000063  layer 5
+         average <dq>=3.42e-5  <dv>=4.94e-7 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-5.01e-9  vold=6.34e-5  dv=7.24e-11  vnew= 0.000063  layer -1
+ gfzerq: ef=0  dq=-5.01e-9  vold=6.34e-5  dv=7.24e-11  vnew= 0.000063  layer 5
+         average <dq>=5.01e-9  <dv>=7.24e-11 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   11.966505   21.175840   -5.166301    1.742962    2.175840
+ spin 2   59.072922   16.824160   -3.968730    1.361442   -2.175840
+  total   71.039427   38.000000   -9.135031    3.104403    0.000000
+      5   11.966505   21.175840   -5.166301    1.742962    2.175840
+ spin 2   59.072922   16.824160   -3.968730    1.361442   -2.175840
+  total   71.039427   38.000000   -9.135031    3.104403    0.000000
+ All PL   23.933010   42.351679  -10.332602                4.351679
+ spin 2  118.145843   33.648321   -7.937460               -4.351679
+ PL tot  142.078854   76.000000  -18.270062                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=2.84e-14  vold=6.34e-5  dv=4e-16  vnew= 0.000063  layer -1
+ gfzerq: ef=0  dq=-3.55e-14  vold=6.34e-5  dv=5e-16  vnew= 0.000063  layer 5
+         average <dq>=3.22e-14  <dv>=4.53e-16 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL =  0.000063  Cumulative shift =  0.045755
+ potential shift R PL =  0.000063  Cumulative shift =  0.045755
+
+ shift (6.3e-5) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = 0.045755, 0.045755 adds d.c. term vbar * zval = 3.477408
+
+ pgfasa (exit): vconst updated from 0.000000(L), 0.000000(R) to 0.045755(L), 0.045755(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=14.4054757  ehk=14.4051161  sumev=0.0000000  delsev=21.7474000
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=B  beta=.5
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=6.71e-6
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.5  tm=10  rmsdel=6.71e-6
+
+ GETZV:  304 valence electrons
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320154  mom=0.42621  a=0.03  nr=405
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320153  mom=1.74961  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320154  mom=0.42621  a=0.03  nr=405
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320154  mom=1.74961  a=0.03  nr=335
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320154   0.000000   0.252450   0.022529  -0.755654
+ Co7        0.320153   0.000000  -0.160940   0.068982  -0.687913
+ Pt8       -0.320154   0.000000   0.252450   0.022529  -0.755654
+ Co8        0.320154   0.000000  -0.160940   0.068982  -0.687913
+ Sum Q=0.000000  Emad=0.029744(-0.264697) Vconst=0.045755  Vmtz=-0.721784 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320154   0.000000   0.252450   0.022529  -0.755654
+ Co7        0.320153   0.000000  -0.160940   0.068982  -0.687913
+ Pt8       -0.320154   0.000000   0.252450   0.022529  -0.755654
+ Co8        0.320154   0.000000  -0.160940   0.068982  -0.687913
+ Sum Q=0.000000  Emad=0.029744(-0.264697) Vconst=0.045755  Vmtz=-0.721784 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045755   vconst(R)=0.045755
+ Magnetization from sphere program: 8.703286  from output rho: 8.703358
+ SV:   1  6.714e-6 0.5000  6.505e-6      14.40511613 8.703358 L
+
+   it  1  of 30    ehf=      14.405476   ehk=      14.405116
+                rms dq=  0.000007    tol= 0.000003  more=T
+i pgf=2 lmf=0 nk1=6 nit=30 gamma=0 sparse=1 scr=4 mmom=8.703358 ehf=14.4054757 ehk=14.4051161
+ cpudel    ...   Time this iter:  time(s):  6.32     total:  6.47s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+
+ --- PGFASA ( bigemb, refine gs ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0457554 vconst(R)=0.0457554
+ 
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   15.838993   21.175771   -5.166310    1.742313    2.175771
+ spin 2   52.761014   16.824050   -3.968726    1.360942   -2.175950
+  total   68.600007   37.999822   -9.135036    3.103255   -0.000178
+      5   15.838993   21.175771   -5.166310    1.742313    2.175771
+ spin 2   52.761014   16.824050   -3.968726    1.360942   -2.175950
+  total   68.600007   37.999822   -9.135036    3.103255   -0.000178
+ All PL   31.677986   42.351542  -10.332620                4.351542
+ spin 2  105.522029   33.648101   -7.937451               -4.351899
+ PL tot  137.200015   75.999643  -18.270072               -0.000357
+ Deviations from charge neutrality:
+   Left end layer      -0.000178
+   Right end layer     -0.000178
+   Embedded layers      0.000000
+   Sum of all layers   -0.000357
+ 
+ gfzerq: ef=0  dq=-1.78e-4  vold=0  dv=2.6e-6  vnew= -0.000003  layer -1
+ gfzerq: ef=0  dq=-1.78e-4  vold=0  dv=2.6e-6  vnew= -0.000003  layer 5
+         average <dq>=1.78e-4  <dv>=2.6e-6 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.31e-6  vold=-2.6e-6  dv=1.9e-8  vnew= -0.000003  layer -1
+ gfzerq: ef=0  dq=1.31e-6  vold=-2.6e-6  dv=1.9e-8  vnew= -0.000003  layer 5
+         average <dq>=1.31e-6  <dv>=1.9e-8 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   11.967548   21.175802   -5.166367    1.742314    2.175802
+ spin 2   59.049120   16.824198   -3.968769    1.360943   -2.175802
+  total   71.016668   38.000000   -9.135136    3.103256    0.000000
+      5   11.967548   21.175802   -5.166367    1.742314    2.175802
+ spin 2   59.049120   16.824198   -3.968769    1.360943   -2.175802
+  total   71.016668   38.000000   -9.135136    3.103256    0.000000
+ All PL   23.935095   42.351604  -10.332734                4.351604
+ spin 2  118.098240   33.648396   -7.937538               -4.351604
+ PL tot  142.033335   76.000000  -18.270272                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=-7.92e-12  vold=-2.58e-6  dv=1.15e-13  vnew= -0.000003  layer -1
+ gfzerq: ef=0  dq=-7.94e-12  vold=-2.58e-6  dv=1.15e-13  vnew= -0.000003  layer 5
+         average <dq>=7.93e-12  <dv>=1.15e-13 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL = -0.000003  Cumulative shift = -0.000003
+ potential shift R PL = -0.000003  Cumulative shift = -0.000003
+
+ shift (2.6e-6) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = -0.000003, -0.000003 adds d.c. term vbar * zval = -0.000196
+
+ pgfasa (exit): vconst updated from 0.045755(L), 0.045755(R) to 0.045753(L), 0.045753(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=14.4053841  ehk=14.4053842  sumev=0.0000000  delsev=18.2700996
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=B  beta=.5
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=4.86e-6  last it=6.71e-6
+ broyj:  start  beta=0.5  w0=0.01  isw=0  gmax=2.8e-5
+
+ GETZV:  304 valence electrons
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320165  mom=0.42622  a=0.03  nr=405
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320168  mom=1.74959  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320165  mom=0.42622  a=0.03  nr=405
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320162  mom=1.74959  a=0.03  nr=335
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320165   0.000000   0.252455   0.022526  -0.755657
+ Co7        0.320168   0.000000  -0.160952   0.068980  -0.687915
+ Pt8       -0.320165   0.000000   0.252455   0.022526  -0.755657
+ Co8        0.320162   0.000000  -0.160948   0.068980  -0.687916
+ Sum Q=0.000000  Emad=0.029746(-0.264715) Vconst=0.045753  Vmtz=-0.721786 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320165   0.000000   0.252455   0.022526  -0.755657
+ Co7        0.320168   0.000000  -0.160952   0.068980  -0.687915
+ Pt8       -0.320165   0.000000   0.252455   0.022526  -0.755657
+ Co8        0.320162   0.000000  -0.160948   0.068980  -0.687916
+ Sum Q=0.000000  Emad=0.029746(-0.264715) Vconst=0.045753  Vmtz=-0.721786 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045753   vconst(R)=0.045753
+ Magnetization from sphere program: 8.703247  from output rho: 8.703208
+ SV:   2  4.860e-6 1.0000  4.765e-6      14.40538420 8.703208 B 0.0100
+
+   it  2  of 30    ehf=      14.405384   ehk=      14.405384
+ From last iter    ehf=      14.405476   ehk=      14.405116
+ diffe(q)= -0.000092 (0.000005)    tol= 0.000000 (0.000003)   more=T
+i pgf=2 lmf=0 nk1=6 nit=30 gamma=0 sparse=1 scr=4 mmom=8.7032084 ehf=14.4053841 ehk=14.4053842
+ cpudel    ...   Time this iter:  time(s):  2.19     total:  8.66s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+
+ --- PGFASA ( bigemb, refine gs ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0457528 vconst(R)=0.0457528
+ 
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   15.838709   21.175782   -5.166323    1.742329    2.175782
+ spin 2   52.760506   16.823949   -3.968761    1.360968   -2.176051
+  total   68.599215   37.999731   -9.135084    3.103297   -0.000269
+      5   15.838709   21.175782   -5.166323    1.742329    2.175782
+ spin 2   52.760506   16.823949   -3.968761    1.360968   -2.176051
+  total   68.599215   37.999731   -9.135084    3.103297   -0.000269
+ All PL   31.677417   42.351564  -10.332646                4.351564
+ spin 2  105.521012   33.647898   -7.937522               -4.352102
+ PL tot  137.198430   75.999463  -18.270168               -0.000537
+ Deviations from charge neutrality:
+   Left end layer      -0.000269
+   Right end layer     -0.000269
+   Embedded layers      0.000000
+   Sum of all layers   -0.000537
+ 
+ gfzerq: ef=0  dq=-2.69e-4  vold=0  dv=3.92e-6  vnew= -0.000004  layer -1
+ gfzerq: ef=0  dq=-2.69e-4  vold=0  dv=3.92e-6  vnew= -0.000004  layer 5
+         average <dq>=2.69e-4  <dv>=3.92e-6 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.97e-6  vold=-3.92e-6  dv=2.85e-8  vnew= -0.000004  layer -1
+ gfzerq: ef=0  dq=1.97e-6  vold=-3.92e-6  dv=2.85e-8  vnew= -0.000004  layer 5
+         average <dq>=1.97e-6  <dv>=2.85e-8 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   11.966849   21.175829   -5.166409    1.742330    2.175829
+ spin 2   59.048232   16.824171   -3.968826    1.360969   -2.175829
+  total   71.015081   38.000000   -9.135235    3.103299    0.000000
+      5   11.966849   21.175829   -5.166409    1.742330    2.175829
+ spin 2   59.048232   16.824171   -3.968826    1.360969   -2.175829
+  total   71.015081   38.000000   -9.135235    3.103299    0.000000
+ All PL   23.933697   42.351657  -10.332817                4.351657
+ spin 2  118.096464   33.648343   -7.937652               -4.351657
+ PL tot  142.030162   76.000000  -18.270469                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=-1.8e-11  vold=-3.89e-6  dv=2.61e-13  vnew= -0.000004  layer -1
+ gfzerq: ef=0  dq=-1.8e-11  vold=-3.89e-6  dv=2.6e-13  vnew= -0.000004  layer 5
+         average <dq>=1.8e-11  <dv>=2.6e-13 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL = -0.000004  Cumulative shift = -0.000004
+ potential shift R PL = -0.000004  Cumulative shift = -0.000004
+
+ shift (3.9e-6) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = -0.000004, -0.000004 adds d.c. term vbar * zval = -0.000296
+
+ pgfasa (exit): vconst updated from 0.045753(L), 0.045753(R) to 0.045749(L), 0.045749(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=14.4055932  ehk=14.4055932  sumev=0.0000000  delsev=18.2701936
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=B  beta=.5
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=9.64e-6  last it=4.86e-6
+ broyj:  ir=2  dxmax=1.1e-5  gmax=6.9e-5  wc=110
+
+ GETZV:  304 valence electrons
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42622  a=0.03  nr=405
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320152  mom=1.7496  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42622  a=0.03  nr=405
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320162  mom=1.74959  a=0.03  nr=335
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252446   0.022522  -0.755661
+ Co7        0.320152   0.000000  -0.160946   0.068975  -0.687920
+ Pt8       -0.320157   0.000000   0.252446   0.022522  -0.755661
+ Co8        0.320162   0.000000  -0.160952   0.068976  -0.687919
+ Sum Q=0.000000  Emad=0.029745(-0.264703) Vconst=0.045749  Vmtz=-0.721790 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252446   0.022522  -0.755661
+ Co7        0.320152   0.000000  -0.160946   0.068975  -0.687920
+ Pt8       -0.320157   0.000000   0.252446   0.022522  -0.755661
+ Co8        0.320162   0.000000  -0.160952   0.068976  -0.687919
+ Sum Q=0.000000  Emad=0.029745(-0.264703) Vconst=0.045749  Vmtz=-0.721790 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045749   vconst(R)=0.045749
+ Magnetization from sphere program: 8.703258  from output rho: 8.703315
+ SV:   3  9.638e-6 1.0000  2.986e-6      14.40559320 8.703315 B 106
+
+   it  3  of 30    ehf=      14.405593   ehk=      14.405593
+ From last iter    ehf=      14.405384   ehk=      14.405384
+ diffe(q)=  0.000209 (0.000010)    tol= 0.000000 (0.000003)   more=T
+i pgf=2 lmf=0 nk1=6 nit=30 gamma=0 sparse=1 scr=4 mmom=8.7033147 ehf=14.4055932 ehk=14.4055932
+ cpudel    ...   Time this iter:  time(s):  2.19     total:  10.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+
+ --- PGFASA ( bigemb, refine gs ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0457489 vconst(R)=0.0457489
+ 
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   15.837072   21.175844   -5.166431    1.742375    2.175844
+ spin 2   52.763496   16.824340   -3.968829    1.360994   -2.175660
+  total   68.600567   38.000184   -9.135259    3.103369    0.000184
+      5   15.837072   21.175844   -5.166431    1.742375    2.175844
+ spin 2   52.763496   16.824340   -3.968829    1.360994   -2.175660
+  total   68.600567   38.000184   -9.135259    3.103369    0.000184
+ All PL   31.674143   42.351688  -10.332861                4.351688
+ spin 2  105.526991   33.648680   -7.937657               -4.351320
+ PL tot  137.201134   76.000368  -18.270518                0.000368
+ Deviations from charge neutrality:
+   Left end layer       0.000184
+   Right end layer      0.000184
+   Embedded layers      0.000000
+   Sum of all layers    0.000368
+ 
+ gfzerq: ef=0  dq=1.84e-4  vold=0  dv=2.68e-6  vnew= 0.000003  layer -1
+ gfzerq: ef=0  dq=1.84e-4  vold=0  dv=2.68e-6  vnew= 0.000003  layer 5
+         average <dq>=1.84e-4  <dv>=2.68e-6 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-1.36e-6  vold=2.68e-6  dv=1.96e-8  vnew= 0.000003  layer -1
+ gfzerq: ef=0  dq=-1.36e-6  vold=2.68e-6  dv=1.96e-8  vnew= 0.000003  layer 5
+         average <dq>=1.36e-6  <dv>=1.96e-8 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   11.967284   21.175812   -5.166372    1.742374    2.175812
+ spin 2   59.050906   16.824188   -3.968784    1.360994   -2.175812
+  total   71.018190   38.000000   -9.135156    3.103368    0.000000
+      5   11.967284   21.175812   -5.166372    1.742374    2.175812
+ spin 2   59.050906   16.824188   -3.968784    1.360994   -2.175812
+  total   71.018190   38.000000   -9.135156    3.103368    0.000000
+ All PL   23.934567   42.351624  -10.332744                4.351624
+ spin 2  118.101813   33.648376   -7.937568               -4.351624
+ PL tot  142.036380   76.000000  -18.270312                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=-8.48e-12  vold=2.66e-6  dv=2.46e-13  vnew= 0.000003  layer -1
+ gfzerq: ef=0  dq=-8.34e-12  vold=2.66e-6  dv=2.41e-13  vnew= 0.000003  layer 5
+         average <dq>=8.41e-12  <dv>=2.43e-13 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL =  0.000003  Cumulative shift =  0.000003
+ potential shift R PL =  0.000003  Cumulative shift =  0.000003
+
+ shift (2.7e-6) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = 0.000003, 0.000003 adds d.c. term vbar * zval = 0.000202
+
+ pgfasa (exit): vconst updated from 0.045749(L), 0.045749(R) to 0.045752(L), 0.045752(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=14.4054241  ehk=14.4054243  sumev=0.0000000  delsev=18.2705204
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=B  beta=.5
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=1.04e-5  last it=9.64e-6
+ broyj:  ir=3  dxmax=5.1e-6  gmax=5.7e-5  wc=98
+
+ GETZV:  304 valence electrons
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320155  mom=0.42622  a=0.03  nr=405
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320156  mom=1.74959  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320155  mom=0.42622  a=0.03  nr=405
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320155  mom=1.74959  a=0.03  nr=335
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320155   0.000000   0.252448   0.022525  -0.755658
+ Co7        0.320156   0.000000  -0.160945   0.068978  -0.687917
+ Pt8       -0.320155   0.000000   0.252448   0.022525  -0.755658
+ Co8        0.320155   0.000000  -0.160944   0.068978  -0.687917
+ Sum Q=0.000000  Emad=0.029744(-0.264699) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320155   0.000000   0.252448   0.022525  -0.755658
+ Co7        0.320156   0.000000  -0.160945   0.068978  -0.687917
+ Pt8       -0.320155   0.000000   0.252448   0.022525  -0.755658
+ Co8        0.320155   0.000000  -0.160944   0.068978  -0.687917
+ Sum Q=0.000000  Emad=0.029744(-0.264699) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045752   vconst(R)=0.045752
+ Magnetization from sphere program: 8.703260  from output rho: 8.703249
+ SV:   4  1.038e-5 1.0000  1.461e-6      14.40542434 8.703249 B 98.4
+
+   it  4  of 30    ehf=      14.405424   ehk=      14.405424
+ From last iter    ehf=      14.405593   ehk=      14.405593
+ diffe(q)= -0.000169 (0.000010)    tol= 0.000000 (0.000003)   more=T
+i pgf=2 lmf=0 nk1=6 nit=30 gamma=0 sparse=1 scr=4 mmom=8.7032486 ehf=14.4054241 ehk=14.4054243
+ cpudel    ...   Time this iter:  time(s):  2.16     total:  13.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+
+ --- PGFASA ( bigemb, refine gs ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0457516 vconst(R)=0.0457516
+ 
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=2  q= 0 0.083333 0.08547
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   15.837960   21.175811   -5.166376    1.742347    2.175811
+ spin 2   52.762466   16.824222   -3.968784    1.360972   -2.175778
+  total   68.600425   38.000033   -9.135160    3.103319    0.000033
+      5   15.837960   21.175811   -5.166376    1.742347    2.175811
+ spin 2   52.762466   16.824222   -3.968784    1.360972   -2.175778
+  total   68.600425   38.000033   -9.135160    3.103319    0.000033
+ All PL   31.675919   42.351622  -10.332752                4.351622
+ spin 2  105.524931   33.648444   -7.937568               -4.351556
+ PL tot  137.200851   76.000066  -18.270321                0.000066
+ Deviations from charge neutrality:
+   Left end layer       0.000033
+   Right end layer      0.000033
+   Embedded layers      0.000000
+   Sum of all layers    0.000066
+ 
+ gfzerq: ef=0  dq=3.31e-5  vold=0  dv=4.82e-7  vnew= 0  layer -1
+ gfzerq: ef=0  dq=3.31e-5  vold=0  dv=4.82e-7  vnew= 0  layer 5
+         average <dq>=3.31e-5  <dv>=4.82e-7 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-2.44e-7  vold=4.82e-7  dv=3.53e-9  vnew= 0  layer -1
+ gfzerq: ef=0  dq=-2.44e-7  vold=4.82e-7  dv=3.53e-9  vnew= 0  layer 5
+         average <dq>=2.44e-7  <dv>=3.53e-9 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   11.967467   21.175805   -5.166366    1.742347    2.175805
+ spin 2   59.050208   16.824195   -3.968776    1.360972   -2.175805
+  total   71.017675   38.000000   -9.135142    3.103319    0.000000
+      5   11.967467   21.175805   -5.166366    1.742347    2.175805
+ spin 2   59.050207   16.824195   -3.968776    1.360972   -2.175805
+  total   71.017675   38.000000   -9.135142    3.103319    0.000000
+ All PL   23.934935   42.351610  -10.332731                4.351610
+ spin 2  118.100415   33.648390   -7.937552               -4.351610
+ PL tot  142.035350   76.000000  -18.270283                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=-1.99e-13  vold=4.79e-7  dv=5.76e-15  vnew= 0  layer -1
+ gfzerq: ef=0  dq=-3.27e-13  vold=4.79e-7  dv=9.46e-15  vnew= 0  layer 5
+         average <dq>=2.71e-13  <dv>=7.83e-15 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL =  0.000000  Cumulative shift =  0.000000
+ potential shift R PL =  0.000000  Cumulative shift =  0.000000
+
+ shift (4.8e-7) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = 0.000000, 0.000000 adds d.c. term vbar * zval = 0.000036
+
+ pgfasa (exit): vconst updated from 0.045752(L), 0.045752(R) to 0.045752(L), 0.045752(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=14.4053965  ehk=14.4053966  sumev=0.0000000  delsev=18.2703256
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=B  beta=.5
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=2.36e-6  last it=1.04e-5
+ broyj:  ir=4  dxmax=6e-6  gmax=1.5e-5  wc=430
+
+ GETZV:  304 valence electrons
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42622  a=0.03  nr=405
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320157  mom=1.74959  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42622  a=0.03  nr=405
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320157  mom=1.74959  a=0.03  nr=335
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045752   vconst(R)=0.045752
+ Magnetization from sphere program: 8.703240  from output rho: 8.703221
+ SV:   5  2.355e-6 1.0000  1.792e-6      14.40539658 8.703221 B 433
+
+   it  5  of 30    ehf=      14.405396   ehk=      14.405397
+ From last iter    ehf=      14.405424   ehk=      14.405424
+ diffe(q)= -0.000028 (0.000002)    tol= 0.000000 (0.000003)   more=F
+c pgf=2 lmf=0 nk1=6 nit=30 gamma=0 sparse=1 scr=4 mmom=8.7032209 ehf=14.4053965 ehk=14.4053966
+ cpudel    ...   Time this iter:  time(s):  2.16     total:  15.2s
+
+ Jolly good show !  You converged to rms DQ=  0.000002
+ Exit 0 LMPG 
+ CPU time:  15.180s   Wall clock 15.230s  at  09:08:49 23.06.2018  on  localhost.localdomai
+     calls      === cpu time ===  depth 5
+                per call   total
+        1      15.18      15.18   main
+       35       0.00       0.03   |--madmat
+       44       0.01       0.52   |--atscpp
+        5       2.90      14.48   `--pgfasa
+     2520       0.01      14.09      `--pgsif
+     2520       0.01      14.09         `--pgbevl
+     2520       0.00       0.09            |--plham
+     7560       0.00       0.07            |  `--bloch
+     2520       0.01      12.69            |--pgblkk
+     2520       0.00      12.18            |  `--zgeevs
+     2520       0.00       1.28            `--pgbulk
+ ----------------------  START LMPG  ----------------------
+ HEADER CoPt (file)
+
+ LMPG:     nbas = 24  nspec = 2  verb 31,20
+ special:  sharm(m=-l:l), scr-rho-out(model eps)
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll, L.S coupling
+ asa:      Q2:Power-moments
+ bz:       metal, tetra, invit 
+ pgf:      self-consistent leads  via LU decmpsn
+
+ PGFSET: 5 principal layers, 24+4+4 sites.  Normal: 1 0 0
+   PL |   0   1   2   3   4
+ size |   4   4   6   6   4
+  PLV |   0   0   0   0   0
+   PL  1  1  1  1  2  2  2  2  3  3  3  3  3  3  4  4  4  4
+ Site  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+   PL  4  4  5  5  5  5
+ Site 19 20 21 22 23 24
+ IOEULA:   reading l-independent Euler angles (file 11)
+
+ Automatic symmetry finder turned off.  Use: i::(0,1/2,-1/20) r2x r2z::(0,-1/2,-1/20)
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   6.000000   0.000000   0.000000 Plat(3) as input
+   1.000000   0.000000   0.000000 PlatL:  angle (deg) with Plat(3) = 0
+   1.000000   0.000000   0.000000 PlatR:  angle (deg) with Plat(3) = 0
+  10.000000   0.000000   0.000000 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   0.975000        0.000000   0.000000   1.025641
+  10.000000   0.000000   0.000000        0.100000   0.000000   0.000000
+   alat = 7.1866  Cell vol = 3618.887104
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   5.405  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.18660   awald= 0.130   lmax=6
+         r1=  5.405   nkd= 291      q1=  1.378   nkg= 103
+
+ SGROUP: 8 symmetry operations from 3 generators
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  2 species split into 12 classes
+ Species  Class      Sites...
+ Co       1:Co       2 21
+          3:Co2      4 23
+          5:Co3      6 17
+          7:Co4      8 19
+          9:Co5      9 12
+         11:Co6      14 16
+ Pt       2:Pt       1 22
+          4:Pt2      3 24
+          6:Pt3      5 18
+          8:Pt4      7 20
+         10:Pt5      10 13
+         12:Pt6      11 15
+         12 classes for embedding region + 4 for padding layers
+  2D-reciprocal vectors:
+    0.000000    1.000000    0.000000
+    0.000000    0.000000    1.025641
+ BZMESH: 9 irreducible QP from 36 ( 6 6 1 )  shift= T T F
+ DLM with coupled spins: IN DEVELOPMENT
+
+ ioextf:   reading site-dependent, lm-dependent file "SO scaling from socscl", 1 components
+ SOC coefficients scaled by: 
+ Class scale    Class scale    Class scale    Class scale    Class scale    Class scale
+    1  0.000 |     4  0.000 |     7  0.000 |    10  0.000 |    13  0.000 |    16  0.000 |
+    2  0.000 |     5  0.000 |     8  0.000 |    11  0.000 |    14  0.000 |
+    3  0.000 |     6  0.000 |     9  0.000 |    12  0.000 |    15  0.000 |
+
+ IOVSHF: read file vshft: ef=0  vconst=0
+  
+ ZMESH: nz=10 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,0.00
+
+ GETZV:  304 valence electrons
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045752   vconst(R)=0.045752
+ cpudel    ...   Time this iter:  time(s):  0.164    total:  0.164s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+          Euler angles:
+   ib   alpha      beta     gamma     class           z axis rotated to:
+    1  0.000000  1.570796  0.000000   Pt         1.000000  0.000000  0.000000
+    2  0.000000  1.570796  0.000000   Co         1.000000  0.000000  0.000000
+    3  0.000000  1.570796  0.000000   Pt2        1.000000  0.000000  0.000000
+    4  0.000000  1.570796  0.000000   Co2        1.000000  0.000000  0.000000
+    5  0.000000  1.570796  0.000000   Pt3        1.000000  0.000000  0.000000
+    6  0.000000  1.570796  0.000000   Co3        1.000000  0.000000  0.000000
+    7  0.000000  1.570796  0.000000   Pt4        1.000000  0.000000  0.000000
+    8  0.000000  1.570796  0.000000   Co4        1.000000  0.000000  0.000000
+    9  0.000000  1.570796  0.000000   Co5        1.000000  0.000000  0.000000
+   10  0.000000  1.570796  0.000000   Pt5        1.000000  0.000000  0.000000
+   11  0.000000  1.570796  0.000000   Pt6        1.000000  0.000000  0.000000
+   12  0.000000  1.570796  0.000000   Co5        1.000000  0.000000  0.000000
+   13  0.000000  1.570796  0.000000   Pt5        1.000000  0.000000  0.000000
+   14  0.000000  1.570796  0.000000   Co6        1.000000  0.000000  0.000000
+   15  0.000000  1.570796  0.000000   Pt6        1.000000  0.000000  0.000000
+   16  0.000000  1.570796  0.000000   Co6        1.000000  0.000000  0.000000
+   17  0.000000  1.570796  0.000000   Co3        1.000000  0.000000  0.000000
+   18  0.000000  1.570796  0.000000   Pt3        1.000000  0.000000  0.000000
+   19  0.000000  1.570796  0.000000   Co4        1.000000  0.000000  0.000000
+   20  0.000000  1.570796  0.000000   Pt4        1.000000  0.000000  0.000000
+   21  0.000000  1.570796  0.000000   Co         1.000000  0.000000  0.000000
+   22  0.000000  1.570796  0.000000   Pt         1.000000  0.000000  0.000000
+   23  0.000000  1.570796  0.000000   Co2        1.000000  0.000000  0.000000
+   24  0.000000  1.570796  0.000000   Pt2        1.000000  0.000000  0.000000
+   25  0.000000  1.570796  0.000000   Pt7        1.000000  0.000000  0.000000
+   26  0.000000  1.570796  0.000000   Co7        1.000000  0.000000  0.000000
+   27  0.000000  1.570796  0.000000   Pt8        1.000000  0.000000  0.000000
+   28  0.000000  1.570796  0.000000   Co8        1.000000  0.000000  0.000000
+   29  0.000000  1.570796  0.000000   Co7        1.000000  0.000000  0.000000
+   30  0.000000  1.570796  0.000000   Pt7        1.000000  0.000000  0.000000
+   31  0.000000  1.570796  0.000000   Co8        1.000000  0.000000  0.000000
+   32  0.000000  1.570796  0.000000   Pt8        1.000000  0.000000  0.000000
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+
+ --- PGFASA ( bigemb, nc leads, refine gs ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0457520 vconst(R)=0.0457520
+ 
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+pgsif (warning) pgbevl not designed for SO coupling
+
+ MAGCPA: spin and orbital moments, SOC (mRy) and torques (Ry) from density matrices
+                        global coordinates                  local coordinates
+   ib  ic          x           y           z             x           y           z
+    1   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    2   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    3   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    4   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    5   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    6   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    7   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    8   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+    9   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   10   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   11   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   12   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   13   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   14   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   15   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   16   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   17   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   18   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   19   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   20   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   21   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   22   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   23   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+   24   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          orb   0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          Torq  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+          SOC  11:  0.000000 12:  0.000000 21:  0.000000 22:  0.000000 total:  0.000000
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   15.838295   21.175803   -5.166357    1.742341    2.175803
+ spin 2   52.762022   16.824155   -3.968774    1.360968   -2.175845
+  total   68.600316   37.999958   -9.135131    3.103308   -0.000042
+      5   15.838327   21.175813   -5.166362    1.742342    2.175813
+ spin 2   52.761954   16.824144   -3.968770    1.360967   -2.175856
+  total   68.600281   37.999957   -9.135132    3.103309   -0.000043
+ All PL   31.676622   42.351616  -10.332719                4.351616
+ spin 2  105.523975   33.648298   -7.937544               -4.351702
+ PL tot  137.200597   75.999915  -18.270262               -0.000085
+ Deviations from charge neutrality:
+   Left end layer      -0.000042
+   Right end layer     -0.000043
+   Embedded layers      0.000000
+   Sum of all layers   -0.000085
+ 
+ gfzerq: ef=0  dq=-4.24e-5  vold=0  dv=6.18e-7  vnew= -0.000001  layer -1
+ gfzerq: ef=0  dq=-4.3e-5  vold=0  dv=6.26e-7  vnew= -0.000001  layer 5
+         average <dq>=4.27e-5  <dv>=6.22e-7 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.74e-6  vold=-6.18e-7  dv=2.43e-8  vnew= -0.000001  layer -1
+ gfzerq: ef=0  dq=1.75e-6  vold=-6.26e-7  dv=2.45e-8  vnew= -0.000001  layer 5
+         average <dq>=1.75e-6  <dv>=2.44e-8 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1   12.273280   21.175810   -5.166370    1.742341    2.175810
+ spin 2   59.560193   16.824190   -3.968784    1.360968   -2.175810
+  total   71.833473   38.000000   -9.135154    3.103308    0.000000
+      5   12.273281   21.175821   -5.166375    1.742342    2.175821
+ spin 2   59.554310   16.824179   -3.968780    1.360967   -2.175821
+  total   71.827591   38.000000   -9.135155    3.103309    0.000000
+ All PL   24.546561   42.351631  -10.332745                4.351631
+ spin 2  119.114503   33.648369   -7.937564               -4.351631
+ PL tot  143.661064   76.000000  -18.270309                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=2.09e-12  vold=-5.94e-7  dv=5.85e-14  vnew= -0.000001  layer -1
+ gfzerq: ef=0  dq=2.1e-12  vold=-6.02e-7  dv=5.89e-14  vnew= -0.000001  layer 5
+         average <dq>=2.1e-12  <dv>=5.87e-14 
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift L PL = -0.000001  Cumulative shift = -0.000001
+ potential shift R PL = -0.000001  Cumulative shift = -0.000001
+
+ shift (6e-7) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = -0.000001, -0.000001 adds d.c. term vbar * zval = -0.000045
+
+ pgfasa (exit): vconst updated from 0.045752(L), 0.045752(R) to 0.045751(L), 0.045751(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=14.4054310  ehk=14.4054252  sumev=0.0000000  delsev=18.2702673
+ S = 0.000000  free energy = 14.4054252
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=B  beta=.5
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=9.04e-7
+ broyj:  ir=5  dxmax=1.2e-7  gmax=3.7e-6  wc=1100
+
+ GETZV:  304 valence electrons
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42622  a=0.03  nr=405
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320157  mom=1.74959  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42622  a=0.03  nr=405
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320157  mom=1.74959  a=0.03  nr=335
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755658
+ Co7        0.320157   0.000000  -0.160946   0.068978  -0.687917
+ Pt8       -0.320157   0.000000   0.252448   0.022525  -0.755658
+ Co8        0.320157   0.000000  -0.160946   0.068978  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045751  Vmtz=-0.721788 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755658
+ Co7        0.320157   0.000000  -0.160946   0.068978  -0.687917
+ Pt8       -0.320157   0.000000   0.252448   0.022525  -0.755658
+ Co8        0.320157   0.000000  -0.160946   0.068978  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045751  Vmtz=-0.721788 (up-dn=0.006603)
+
+ shifts added to bulk ES potential:  vconst(L)=0.045751   vconst(R)=0.045751
+ Magnetization from sphere program: 8.703240  from output rho: 8.703261
+ SV:   1  9.039e-7 1.0000  5.844e-8      14.40542516 8.703261 B 1130
+
+   it  1  of 30    ehf=      14.405431   ehk=      14.405425
+                rms dq=  0.000001    tol= 0.000003  more=F
+c pgf=2 lmf=0 nk1=6 nit=30 gamma=0 sparse=1 scr=4 nclead=1 nc=1 so=1 soscl=0 ang=90 mmom=8.7032612 ehf=14.405431 ehk=14.4054252
+ cpudel    ...   Time this iter:  time(s):  5.79     total:  5.95s
+
+ Jolly good show !  You converged to rms DQ=  0.000000
+ Exit 0 LMPG 
+ CPU time:  5.952s   Wall clock 6.000s  at  09:08:56 23.06.2018  on  localhost.localdomai

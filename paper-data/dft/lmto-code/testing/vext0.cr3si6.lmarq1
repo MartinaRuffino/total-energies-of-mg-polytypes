@@ -1,0 +1,8 @@
+% contents=1 format=0 nsp=1
+PPAR: ASA2
+# class         l isp   shft C    shft Delta  frz
+   1  Cr        0  1    0.000000    0.177474  1  0
+   1  Cr        1  1    0.000000    0.000000  1  1
+   1  Cr        2  1    0.005359   -0.000025  0  0
+   2  Si        0  1    0.021296    0.004351  0  0
+   2  Si        1  1   -0.006004   -0.001411  0  0

@@ -1,0 +1,333 @@
+--- Type numbers #1 #2 #3 [#2 and #3 are options] ---
+ #1:run mode
+    1   : normal
+    2   : epsNolfc
+    3   : eps
+    22  : chi^+- NoLFC
+    23  : chi^+- 
+    101 : total energy Miyake
+    11  : normal    Sergey
+    202 : epsNoLFC  Sergey
+    203 : eps       Sergey
+    222 : chi^+- NoLFC Sergey
+    223 : chi^+- Sergey
+    12  : total energy Miyake Sergey
+    -9999: just show version num
+ #2=iqxini   #3=iqxend
+-------------------------------------------------------
+hx0fp0: VerNum= 033a6: 20Nov2009
+ ixc =    1
+  OK ixc=1. normal mode
+  ### readin BZDATA ###
+  read_bzdata           8           3          27          48           2
+          48
+i qbz=  1  0.0000  0.0000  0.0000
+i qbz=  2  0.5000  0.5000 -0.5000
+i qbz=  3  0.5000 -0.5000  0.5000
+i qbz=  4  1.0000  0.0000  0.0000
+i qbz=  5 -0.5000  0.5000  0.5000
+i qbz=  6  0.0000  1.0000  0.0000
+i qbz=  7  0.0000  0.0000  1.0000
+i qbz=  8  0.5000  0.5000  0.5000
+  nqbz nqibz =           8           3
+ ScaledGapX0=1.000
+  symgrp=
+   UseSYMOPSfile                                                                
+                                          
+  alat natom=   10.2600000000000                2
+  nspin nl nnv nnc =           1           5           2           2
+  divisions along reciprocal base vectors G1 G2 G3=           2           2
+           2
+  --- READIN ef from EFERMI. ef=  0.208064138889313     
+  --- READIN nw from NW. nw=          10
+ readin nout=           1
+ readin nout=           1
+ readin nout=           1
+ readin nout=           1
+ readin nout=           1
+  --- Freq ---
+     dw   =  2.000000000000000E-002
+     niw  =           6
+     delta= -1.000000000000000E-004
+     esmr =  3.000000000000000E-003
+  goto prod
+ readin nout=           1
+ readin nout=           1
+ <... > 
+ lx=  0 readin tolerance=  0.100D-04
+ lx=  1 readin tolerance=  0.100D-04
+ lx=  2 readin tolerance=  0.100D-04
+ lx=  3 readin tolerance=  0.100D-04
+ lx=  4 readin tolerance=  0.100D-04
+ lx=  5 readin tolerance=  0.100D-04
+ lx=  6 readin tolerance=  0.100D-04
+ lx=  7 readin tolerance=  0.100D-04
+ lx=  8 readin tolerance=  0.100D-04
+  --- prod section: tolbas lcutmx=  1.000000000000000E-005
+  1.000000000000000E-005  1.000000000000000E-005  1.000000000000000E-005
+  1.000000000000000E-005  1.000000000000000E-005  1.000000000000000E-005
+  1.000000000000000E-005  1.000000000000000E-005           4
+  --- valence product basis section
+  1  0  1  1  1
+  1  0  2  0  0
+  1  1  1  1  1
+  1  1  2  0  0
+  1  2  1  1  1
+  1  2  2  0  0
+  1  3  1  0  1
+  1  3  2  0  0
+  1  4  1  0  0
+  1  4  2  0  0
+  2  0  1  1  1
+  2  0  2  0  0
+  2  1  1  1  1
+  2  1  2  0  0
+  2  2  1  1  1
+  2  2  2  0  0
+  2  3  1  0  1
+  2  3  2  0  0
+  2  4  1  0  0
+  2  4  2  0  0
+  --- core product basis section
+  1  0  1  0  0  0  0
+  1  0  2  0  0  0  0
+  1  1  1  0  0  0  0
+  2  0  1  0  0  0  0
+  2  0  2  0  0  0  0
+  2  1  1  0  0  0  0
+  ### Use unocc occ ForX0 for core
+  nw from rgwinaf=          10
+  rcore2 : ic=           1
+  rcore : goto loop over l n
+  rcore2 : ic=           2
+  rcore : goto loop over l n
+  symgrp==UseSYMOPSfile
+ CPU=       0.0000 secs    0.0 mins
+ genallcf_v3
+  ncore=           0           0
+  iclass=           1           2
+ nw delta=          10 -1.000000000000000E-004
+  hx0fp0: tetrahedron mode delta=  1.000000000000000E-004
+  *** nqibz nq0i=           3           1
+  num of zero weight q0p=           0
+  1      1.000000       -0.152442      0.152442      0.152442
+  ngcmx ngpmx=          74          92
+  rdpp_v3: 
+  ppbrd size           5           4           4           2           1
+  rdpp mdimx=          72
+  rotcg:
+ 
+  ROTDLMM:
+  goto do 23
+  end of rotdlmm
+  rotcg end:
+  rdpp_v3:end 
+  nqibz nqibze=           3           4
+ init_readeigen:
+ read(ifiqg)          16          92   2.70000000000000                8
+  mrelc /= 0 file=
+ EVU                                                                       52
+  KeepEigen=T; readin geig and cphi into m_readeigen
+  mrelc /= 0 file=
+ GEIG                                                                    9568
+  mrelc /= 0 file=
+ CPHI                                                                   10400
+  ifgeig ifcphi=          12          13
+  freqimg: niw =           6
+  writeemesh: ifi=          12
+  mrelc /= 0 file=
+ WVR                                                                   190096
+  mrelc /= 0 file=
+ WVI                                                                   190096
+  ANFcond exist? = F
+ nbcut nbcutlowto=    0    0
+ CPU=       0.0100 secs    0.0 mins
+  init_readqg ifi=           2
+do 1001: iq q=    2  -0.5000   0.5000   0.5000 qq=  -0.5000   0.5000   0.5000
+ ***    2   1 out of nqibz+n0qi nsp=   4   1 *** 
+ tetra mode niw nw nwhis=    6   10    0
+ -- First tetwt5 is to get size of array --
+  tetwt5_dtet3:init job efermi:= 0 0.208064D+00
+  tetwt5_dtet3: maxval(nwgt(1:nqbz,1:npm)) sum(nwgt)=      88     704 count(iwgt) =       704
+  rsvwwk: kx nbnbmax=           9          88
+  Tetra mode: nctot noccxv=            0           4
+ *** iw on imag=   1 omega(Ry)=   0.000000D+00   0.572325D+02
+ *** iw on imag=   2 omega(Ry)=   0.000000D+00   0.980670D+01
+ *** iw on imag=   3 omega(Ry)=   0.000000D+00   0.325361D+01
+ *** iw on imag=   4 omega(Ry)=   0.000000D+00   0.122940D+01
+ *** iw on imag=   5 omega(Ry)=   0.000000D+00   0.407884D+00
+ *** iw on imag=   6 omega(Ry)=   0.000000D+00   0.698904D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000 57.2325     88    704 sum(wgt)=-0.196341D+00 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  9.8067     88    704 sum(wgt)=-0.632872D+01 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  3.2536     88    704 sum(wgt)=-0.413691D+02 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  1.2294     88    704 sum(wgt)=-0.120132D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.4079     88    704 sum(wgt)=-0.212795D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.0699     88    704 sum(wgt)=-0.286190D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.0002     88    704 sum(wgt)=-0.294317D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0400  0.0002     88    704 sum(wgt)=-0.297471D+03-0.330855D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0800  0.0002     88    704 sum(wgt)=-0.309312D+03-0.956439D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.1200  0.0002     88    704 sum(wgt)=-0.354418D+03-0.136318D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.1600  0.0002     88    704 sum(wgt)=-0.342271D+03-0.832268D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2000  0.0002     88    704 sum(wgt)=-0.311627D+03-0.118411D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2400  0.0002     88    704 sum(wgt)=-0.270790D+03-0.139554D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2800  0.0002     88    704 sum(wgt)=-0.213601D+03-0.137972D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.3200  0.0002     88    704 sum(wgt)=-0.197900D+03-0.684722D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.3600  0.0002     88    704 sum(wgt)=-0.217241D+03-0.646982D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.4000  0.0002     88    704 sum(wgt)=-0.224087D+03-0.603043D+02
+ end of 1010 loop
+  --- goto x0kf_v2z
+  nbmx ebmx from GWinput=     99999 0.100000D+11
+  ecut ecuts=   10000000000.0000        10000000000.0000     
+ x0kf: k rk=   1    0.0000    0.0000    0.0000 CPU=       0.1300 secs    0.0 mins
+  init_readqg ifi=           1
+  KeepPPOVL=T; keep PPOVL in m_read_ppovl
+x0kf: tetrahedron+blas3 mode, ngbblk/ngb ngbdiv=      7/    214     31     88
+ x0kf: k rk=   2    0.5000    0.5000   -0.5000 CPU=       0.2600 secs    0.0 mins
+ x0kf: k rk=   3    0.5000   -0.5000    0.5000 CPU=       0.3900 secs    0.0 mins
+ x0kf: k rk=   4    1.0000    0.0000    0.0000 CPU=       0.5200 secs    0.0 mins
+ x0kf: k rk=   5   -0.5000    0.5000    0.5000 CPU=       0.6500 secs    0.0 mins
+ x0kf: k rk=   8    0.5000    0.5000    0.5000
+  trace check for W-V
+freq_r iq iw realomg trwv=    0.0000    2    0 -0.50419501054432D+02  0.21084520337573D-13 -0.14305251970841D+05  0.37988441305731D-11
+freq_r iq iw realomg trwv=    0.0200    2    1 -0.50639619247319D+02 -0.22854341776452D-02 -0.14377597572069D+05 -0.74994159189748D+00
+freq_r iq iw realomg trwv=    0.0400    2    2 -0.51427510408695D+02 -0.61301841990422D-02 -0.14634411469671D+05 -0.19831463370394D+01
+freq_r iq iw realomg trwv=    0.0600    2    3 -0.53990736571000D+02 -0.65674531209132D+00 -0.15440817495716D+05 -0.19111582124458D+03
+freq_r iq iw realomg trwv=    0.0800    2    4 -0.54323810842367D+02 -0.42551861399566D+01 -0.15665493645853D+05 -0.13165961780315D+04
+freq_r iq iw realomg trwv=    0.1000    2    5 -0.53793161058279D+02 -0.67091522348245D+01 -0.15571312817418D+05 -0.21724204373705D+04
+freq_r iq iw realomg trwv=    0.1200    2    6 -0.52716474958771D+02 -0.91807157723049D+01 -0.15296630986917D+05 -0.30697316212390D+04
+freq_r iq iw realomg trwv=    0.1400    2    7 -0.50104750735112D+02 -0.12154522279771D+02 -0.14477982872360D+05 -0.42152759801007D+04
+freq_r iq iw realomg trwv=    0.1600    2    8 -0.44221915481458D+02 -0.75349742183066D+01 -0.12440154101909D+05 -0.29063963487374D+04
+freq_r iq iw realomg trwv=    0.1800    2    9 -0.46702689755671D+02 -0.65827116308764D+01 -0.13106879638987D+05 -0.26323135928284D+04
+freq_r iq iw realomg trwv=    0.2000    2   10 -0.47462328813722D+02 -0.62707484729679D+01 -0.13239022147323D+05 -0.25503856321062D+04
+  goto imag omega
+freq_i iq iw imgomg  trwv=   28.6163    2    1 -0.40665492790033D-01  0.19363504455424D-17 -0.93020715252811D+01  0.37024061508763D-15
+freq_i iq iw imgomg  trwv=    4.9034    2    2 -0.13247656315018D+01  0.28019306555448D-16 -0.30540654143949D+03  0.24010934678685D-13
+freq_i iq iw imgomg  trwv=    1.6268    2    3 -0.90669189144060D+01 -0.85986570384659D-17 -0.21831336520364D+04  0.20927997208393D-12
+freq_i iq iw imgomg  trwv=    0.6147    2    4 -0.26758527049289D+02  0.31242175584832D-13 -0.69516088284836D+04 -0.66363858245935D-11
+freq_i iq iw imgomg  trwv=    0.2039    2    5 -0.42587653246723D+02 -0.26413501473557D-13 -0.11712571159559D+05  0.25128923247926D-11
+freq_i iq iw imgomg  trwv=    0.0349    2    6 -0.49830856849253D+02  0.10652569286090D-13 -0.14110774840490D+05  0.93597333616956D-11
+ CPU=       1.7200 secs    0.0 mins
+do 1001: iq q=    3   0.0000   0.0000   1.0000 qq=   0.0000   0.0000   1.0000
+ ***    3   1 out of nqibz+n0qi nsp=   4   1 *** 
+ tetra mode niw nw nwhis=    6   10    0
+ -- First tetwt5 is to get size of array --
+  tetwt5_dtet3:init job efermi:= 0 0.208064D+00
+  tetwt5_dtet3: maxval(nwgt(1:nqbz,1:npm)) sum(nwgt)=      88     704 count(iwgt) =       704
+  rsvwwk: kx nbnbmax=           9          88
+  Tetra mode: nctot noccxv=            0           4
+ *** iw on imag=   1 omega(Ry)=   0.000000D+00   0.572325D+02
+ *** iw on imag=   2 omega(Ry)=   0.000000D+00   0.980670D+01
+ *** iw on imag=   3 omega(Ry)=   0.000000D+00   0.325361D+01
+ *** iw on imag=   4 omega(Ry)=   0.000000D+00   0.122940D+01
+ *** iw on imag=   5 omega(Ry)=   0.000000D+00   0.407884D+00
+ *** iw on imag=   6 omega(Ry)=   0.000000D+00   0.698904D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000 57.2325     88    704 sum(wgt)=-0.196340D+00 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  9.8067     88    704 sum(wgt)=-0.632861D+01 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  3.2536     88    704 sum(wgt)=-0.413675D+02 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  1.2294     88    704 sum(wgt)=-0.120155D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.4079     88    704 sum(wgt)=-0.212808D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.0699     88    704 sum(wgt)=-0.286014D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.0002     88    704 sum(wgt)=-0.294718D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0400  0.0002     88    704 sum(wgt)=-0.298447D+03-0.415531D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0800  0.0002     88    704 sum(wgt)=-0.312826D+03-0.540870D+01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.1200  0.0002     88    704 sum(wgt)=-0.329625D+03-0.250738D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.1600  0.0002     88    704 sum(wgt)=-0.340345D+03-0.592048D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2000  0.0002     88    704 sum(wgt)=-0.341325D+03-0.118298D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2400  0.0002     88    704 sum(wgt)=-0.247427D+03-0.137728D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2800  0.0002     88    704 sum(wgt)=-0.257609D+03-0.125072D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.3200  0.0002     88    704 sum(wgt)=-0.208963D+03-0.133445D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.3600  0.0002     88    704 sum(wgt)=-0.175274D+03-0.758587D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.4000  0.0002     88    704 sum(wgt)=-0.209118D+03-0.479954D+02
+ end of 1010 loop
+  --- goto x0kf_v2z
+  nbmx ebmx from GWinput=     99999 0.100000D+11
+  ecut ecuts=   10000000000.0000        10000000000.0000     
+ x0kf: k rk=   1    0.0000    0.0000    0.0000 CPU=       1.8300 secs    0.0 mins
+x0kf: tetrahedron+blas3 mode, ngbblk/ngb ngbdiv=      7/    208     30     88
+ x0kf: k rk=   2    0.5000    0.5000   -0.5000 CPU=       1.9600 secs    0.0 mins
+ x0kf: k rk=   3    0.5000   -0.5000    0.5000 CPU=       2.0800 secs    0.0 mins
+ x0kf: k rk=   4    1.0000    0.0000    0.0000 CPU=       2.2000 secs    0.0 mins
+ x0kf: k rk=   5   -0.5000    0.5000    0.5000 CPU=       2.3200 secs    0.0 mins
+ x0kf: k rk=   8    0.5000    0.5000    0.5000
+  trace check for W-V
+freq_r iq iw realomg trwv=    0.0000    3    0 -0.48956999065007D+02  0.66620174602389D-14 -0.13196766213927D+05 -0.10608122281101D-11
+freq_r iq iw realomg trwv=    0.0200    3    1 -0.49226585499244D+02 -0.29614068636508D-02 -0.13287151340172D+05 -0.99000403731195D+00
+freq_r iq iw realomg trwv=    0.0400    3    2 -0.50214349519224D+02 -0.34132945124466D+00 -0.13616604677357D+05 -0.11029528279505D+03
+freq_r iq iw realomg trwv=    0.0600    3    3 -0.51390796643122D+02 -0.14445896087629D+01 -0.14014865605414D+05 -0.46584511541839D+03
+freq_r iq iw realomg trwv=    0.0800    3    4 -0.52493215080271D+02 -0.31780069848734D+01 -0.14401198890450D+05 -0.10154988371619D+04
+freq_r iq iw realomg trwv=    0.1000    3    5 -0.54137843719772D+02 -0.59541375739431D+01 -0.15051755646366D+05 -0.18945709955980D+04
+freq_r iq iw realomg trwv=    0.1200    3    6 -0.51102262983288D+02 -0.11630548585430D+02 -0.14179588550290D+05 -0.36775479484790D+04
+freq_r iq iw realomg trwv=    0.1400    3    7 -0.49435389484234D+02 -0.96880137316208D+01 -0.14147440426840D+05 -0.34989083764137D+04
+freq_r iq iw realomg trwv=    0.1600    3    8 -0.48465198661646D+02 -0.12547731294040D+02 -0.13714792951383D+05 -0.52124344705411D+04
+freq_r iq iw realomg trwv=    0.1800    3    9 -0.41269142869312D+02 -0.13129927840742D+02 -0.10019145460571D+05 -0.59109345093932D+04
+freq_r iq iw realomg trwv=    0.2000    3   10 -0.42225479059712D+02 -0.68459168651831D+01 -0.10151382613210D+05 -0.28145503367030D+04
+  goto imag omega
+freq_i iq iw imgomg  trwv=   28.6163    3    1 -0.38879495446570D-01  0.37560322208208D-18 -0.80559590989486D+01  0.29229240240132D-15
+freq_i iq iw imgomg  trwv=    4.9034    3    2 -0.12659138579127D+01  0.79437641306737D-18 -0.26414050202647D+03 -0.55443621740566D-14
+freq_i iq iw imgomg  trwv=    1.6268    3    3 -0.86454714806824D+01  0.81476988718472D-17 -0.18792213552390D+04 -0.25652040739784D-13
+freq_i iq iw imgomg  trwv=    0.6147    3    4 -0.25510000223839D+02  0.47684647262622D-14 -0.60342457750857D+04  0.86478018666943D-12
+freq_i iq iw imgomg  trwv=    0.2039    3    5 -0.40872477405087D+02  0.15356124857949D-14 -0.10482988868702D+05 -0.96054855191764D-13
+freq_i iq iw imgomg  trwv=    0.0349    3    6 -0.48299103157543D+02 -0.24816377324587D-14 -0.12974670471278D+05 -0.16990687413163D-11
+ CPU=       3.3000 secs    0.1 mins
+do 1001: iq q=    4  -0.1524   0.1524   0.1524 qq=   0.0000   0.0000   0.0000
+ ***    4   1 out of nqibz+n0qi nsp=   4   1 *** 
+ tetra mode niw nw nwhis=    6   10    0
+ -- First tetwt5 is to get size of array --
+  tetwt5_dtet3:init job efermi:= 0 0.208064D+00
+  tetwt5_dtet3: maxval(nwgt(1:nqbz,1:npm)) sum(nwgt)=      88     704 count(iwgt) =       704
+  rsvwwk: kx nbnbmax=           9          88
+  Tetra mode: nctot noccxv=            0           4
+ *** iw on imag=   1 omega(Ry)=   0.000000D+00   0.572325D+02
+ *** iw on imag=   2 omega(Ry)=   0.000000D+00   0.980670D+01
+ *** iw on imag=   3 omega(Ry)=   0.000000D+00   0.325361D+01
+ *** iw on imag=   4 omega(Ry)=   0.000000D+00   0.122940D+01
+ *** iw on imag=   5 omega(Ry)=   0.000000D+00   0.407884D+00
+ *** iw on imag=   6 omega(Ry)=   0.000000D+00   0.698904D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000 57.2325     88    704 sum(wgt)=-0.196882D+00 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  9.8067     88    704 sum(wgt)=-0.634235D+01 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  3.2536     88    704 sum(wgt)=-0.414194D+02 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  1.2294     88    704 sum(wgt)=-0.120405D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.4079     88    704 sum(wgt)=-0.214250D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.0699     88    704 sum(wgt)=-0.277291D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0000  0.0002     88    704 sum(wgt)=-0.282028D+03 0.000000D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0400  0.0002     88    704 sum(wgt)=-0.283709D+03-0.171672D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.0800  0.0002     88    704 sum(wgt)=-0.289219D+03-0.393614D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.1200  0.0002     88    704 sum(wgt)=-0.300496D+03-0.780330D-01
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.1600  0.0002     88    704 sum(wgt)=-0.324719D+03-0.190726D+00
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2000  0.0002     88    704 sum(wgt)=-0.396840D+03-0.416575D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2400  0.0002     88    704 sum(wgt)=-0.370361D+03-0.199476D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.2800  0.0002     88    704 sum(wgt)=-0.174370D+03-0.224628D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.3200  0.0002     88    704 sum(wgt)=-0.297533D+03-0.641246D+02
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.3600  0.0002     88    704 sum(wgt)=-0.347603D+03-0.152772D+03
+ tetwt4_dev: omega maxval(nwgt(1:nqbz)) sum(nwgt)=  0.4000  0.0002     88    704 sum(wgt)=-0.122632D+03-0.390931D+02
+ end of 1010 loop
+  --- goto x0kf_v2z
+  nbmx ebmx from GWinput=     99999 0.100000D+11
+  ecut ecuts=   10000000000.0000        10000000000.0000     
+ x0kf: k rk=   1    0.0000    0.0000    0.0000 CPU=       3.4200 secs    0.1 mins
+x0kf: tetrahedron+blas3 mode, ngbblk/ngb ngbdiv=      7/    209     30     88
+ x0kf: k rk=   2    0.5000    0.5000   -0.5000 CPU=       3.5400 secs    0.1 mins
+ x0kf: k rk=   3    0.5000   -0.5000    0.5000 CPU=       3.6700 secs    0.1 mins
+ x0kf: k rk=   4    1.0000    0.0000    0.0000 CPU=       3.7900 secs    0.1 mins
+ x0kf: k rk=   5   -0.5000    0.5000    0.5000 CPU=       3.9200 secs    0.1 mins
+ x0kf: k rk=   8    0.5000    0.5000    0.5000
+  trace check for W-V
+freq_r iq iw realomg trwv=    0.0000    4    0 -0.18066742116066D+03 -0.45882612200197D-13 -0.75884409380259D+05  0.12228715145564D-10
+freq_r iq iw realomg trwv=    0.0200    4    1 -0.18090353197945D+03 -0.23815287783387D-02 -0.75978789880353D+05 -0.95112291128301D+00
+freq_r iq iw realomg trwv=    0.0400    4    2 -0.18163821308955D+03 -0.50431286093828D-02 -0.76271351945656D+05 -0.20021951142203D+01
+freq_r iq iw realomg trwv=    0.0600    4    3 -0.18297484578746D+03 -0.85518112319285D-02 -0.76798767213491D+05 -0.33521693213545D+01
+freq_r iq iw realomg trwv=    0.0800    4    4 -0.18525576994447D+03 -0.15414225367629D-01 -0.77680494914709D+05 -0.58625431256823D+01
+freq_r iq iw realomg trwv=    0.1000    4    5 -0.18981797361295D+03 -0.16290226307043D+01 -0.79376551549586D+05 -0.55238891489833D+03
+freq_r iq iw realomg trwv=    0.1200    4    6 -0.19284652145881D+03 -0.70945125033580D+01 -0.80669670312854D+05 -0.23496783232472D+04
+freq_r iq iw realomg trwv=    0.1400    4    7 -0.17298638723280D+03 -0.53272894583143D+01 -0.73774293845296D+05 -0.19637299309500D+04
+freq_r iq iw realomg trwv=    0.1600    4    8 -0.19088416871251D+03 -0.50535771729889D+01 -0.80212405245107D+05 -0.18073827481184D+04
+freq_r iq iw realomg trwv=    0.1800    4    9 -0.19581538721966D+03 -0.74131583982018D+01 -0.82263891783520D+05 -0.24049038235204D+04
+freq_r iq iw realomg trwv=    0.2000    4   10 -0.18971658879398D+03 -0.39774258613902D+01 -0.80864053888389D+05 -0.11051527789892D+04
+  goto imag omega
+freq_i iq iw imgomg  trwv=   28.6163    4    1 -0.14355160493210D+00  0.12323007388538D-15 -0.57699188283185D+02  0.39588536161172D-13
+freq_i iq iw imgomg  trwv=    4.9034    4    2 -0.47293237231904D+01  0.92475931838262D-16 -0.19069563628101D+04  0.38663991221253D-11
+freq_i iq iw imgomg  trwv=    1.6268    4    3 -0.34175701141262D+02  0.89598665623430D-12 -0.14004731584342D+05 -0.16038121080786D-10
+freq_i iq iw imgomg  trwv=    0.6147    4    4 -0.10620602542280D+03  0.54458853216324D-13 -0.44451335626646D+05 -0.40006083029594D-11
+freq_i iq iw imgomg  trwv=    0.2039    4    5 -0.16399487980516D+03  0.53248543620598D-13 -0.68996977322930D+05  0.13091407684255D-10
+freq_i iq iw imgomg  trwv=    0.0349    4    6 -0.17996976079889D+03  0.38855431390150D-13 -0.75604598925361D+05 -0.10007234671822D-10
+ CPU=       4.9300 secs    0.1 mins

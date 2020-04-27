@@ -1,0 +1,746 @@
+#!/bin/tcsh -f
+
+# This file is a shell script testing operation of Rucker's screened exchange
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias runrdcmd 'set retcall = \!\!:1; set rdcmdfmt = \!\!:2 ; set outfile = \!\!:3 ; set callarg = \!\!:4 ; goto runrdcmd'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias get_resf 'set retcall = \!\!:1; set testvar = \!\!:2 ; set refvar = \!\!:3 ; set keyword = \!\!:4  ; set arg_number = \!\!:5 ; set occur_number = \!\!:6 ; set sed_strn = \!\!:7 ; goto get_resf'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias zcmpmfiles_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 ; goto zcmpmfiles_res_0 '
+alias cnvt_d_fmt  'set retcall = \!\!:1; set testvar = \!\!:2 ; set testval = \!\!:3 ; goto cnvt_d_fmt'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set extract = $topdir/extract-lines
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.gf: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--add0":
+      set add0 = ./add0
+      if (! -e $add0) set add0 = $topdir/add0
+#      echo "$space" using add0 : $add0
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.sx (abort): missing poszer"
+        exit
+      endif
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--noplot*":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+    case "--verb*":
+      set verb = 1
+      breaksw
+    case "--all":
+      set mater_lst = (cdte gan)
+      set joblist
+      while (`echo $1 | sed -e 's/\([0-9][0-9]*\)/-/'`  ==  "-")
+        set joblist = ($joblist $1)
+        shift
+      end
+      set pass
+      set failed
+      foreach i ($mater_lst)
+        $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g' | sed -e 's/-add/-add0/g'` $i $joblist
+        set retval = $status
+        if ($retval != 0) then
+          unset pass
+          set failed = ($failed $i)
+#  	  echo " $testfile : failed test $i ... aborting"
+#            exit -1
+        endif
+      end
+      if ($?clean) then
+        exit
+      else if ($?pass) then
+        echo "$space $testfile : all tests PASSED ($mater_lst)"
+        exit
+      else
+        echo "$space $testfile : checks FAILED for the following materials:  $failed"
+        exit -1
+      endif
+
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+
+end
+
+echo ' '
+echo "         ---- test.sx: test ASA screened exchange correction to LDA ---"
+
+# --- Use cdte as default in the absence of specific choice ---
+if ($#argv == 0) then
+  set ext = cdte
+  echo "$space .... no file extension specified; use test case " $ext
+else
+  set ext = $argv[1]
+  shift
+endif
+
+if (! -e $testdir/ctrl.$ext) then
+   echo ' '
+   echo " test.sx aborting ... missing file $testdir/ctrl.$ext"
+   goto usage
+endif
+
+if ($ext == "cdte") then
+  set lmargs1 = (-vso=f -vbzj=0 -vccor=t -vtwoc=0 -vnk=6 -vnk2=nk -vsx=11 -vsig=1 -vgamma=sx%10 -vadnf=f -vnl=4 -vlmxb=3 $ext)
+  set lmargs2 = (-vso=t -vbzj=0 -vccor=t -vtwoc=0 -vnk=6 -vnk2=nk -vsx=0  -vsig=1 -vgamma=sx%10 -vadnf=f -vnl=4 -vlmxb=3 $ext)
+  set ncv = 1
+else if ($ext == "gan") then
+  set lmargs1 = (-vso=f -csxopts='nit=1' -vbzj=0 -vccor=t -vtwoc=0 -vnk=6 -vnk2=nk -vsx=11 -vsig=2 -vgamma=sx%10 -vadnf=f -vlae2=1 -vtpdc=1 $ext)
+  set ncv = 2
+else if ($ext == "winn") then
+  set lmargs1 = (-vso=f -csxopts='nit=1' -vbzj=0 -vccor=t -vtwoc=0 -vnk=6 -vnk2=nk -vsx=11 -vsig=2 -vgamma=sx%10 -vadnf=f -vlae2=1 -vtpdc=1 -vrwc=1.1 -vrwa=.92 $ext)
+  set ncv = 2
+endif
+
+set joblist = ($argv)
+if ($#joblist == 0 ) set joblist = (1 2 3 4 5 6 7)
+
+
+echo $joblist | grep 1 >/dev/null
+if ($status) goto chk1e
+
+cat <<EOF
+
+         --- Test case 1 ($testdir/ctrl.$ext) ---
+EOF
+set pass
+set refout=$testdir/out.$ext testout=out.$ext
+
+#  echo 'HHH'
+#  goto xxxx
+
+query chk11 chk1e 'run this test'
+chk11:
+# ... Look for executables
+findcmd chk11a rdcmd "$path" "$topdir"
+chk11a:
+findcmd chk11b lm "$path" "$topdir"
+chk11b:
+findcmd chk11c lmstr "$path" "$topdir"
+chk11c:
+echo "$space ... set up ASA strux and starting potential"
+touch ctrl.$ext
+echo "$space rm -f *.$ext specialh specialspecc specialspeca semi.mater qasa"
+             rm -f *.$ext specialh specialspecc specialspeca semi.mater qasa
+if ($?clean) then
+  goto chk1e
+endif
+echo "$space cp $testdir/{ctrl.$ext,semi.mater} .;cp $testdir/asasc.$ext qasa"
+             cp $testdir/{ctrl.$ext,semi.mater} .;cp $testdir/asasc.$ext qasa
+
+runjob chk12 /dev/null "lmstr $lmargs1"
+chk12:
+runjob chk13a $testout "lm -vnit=0 $lmargs1 --iactiv=no"
+chk13a:
+runjob chk13b '>>'$testout "lm -vnit=1 $lmargs1 --iactiv=no"
+chk13b:
+runjob chk13c '>>'$testout "lm -vnit=1 $lmargs1 --iactiv=no"
+chk13c:
+# runjob chk13ca '>>'$testout "lm -vnit=1 $lmargs1 --iactiv=no --wsig:ascii"
+# chk13ca:
+# runjob chk13cb '>>'$testout "lm -vnit=1 $lmargs1 --iactiv=no --rsig:ascii"
+# chk13cb:
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+if ($?quiet) goto chk1p
+
+echo ' '
+echo "$space ... Compare QP pert correction at Gamma to file $refout":
+cat $testout | awk '{if ($1 == "QP") {print;getline;print;getline;print}}' | sed -n 1,3p
+echo ---
+zcat  $refout | awk '{if ($1 == "QP") {print;getline;print;getline;print}}' | sed -n 1,3p
+
+#  xxxx:
+
+
+echo ' '
+echo "$space ... Compare evals at Gamma, second iteration to file $refout":
+cat $testout | awk -v ncnt=0 '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {print;getline;print;getline;print;getline;print}}}'
+echo ---
+zcat  $refout | awk -v ncnt=0 '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {print;getline;print;getline;print;getline;print}}}'
+
+call showout chk1c1 CPU
+chk1c1:
+
+call zdiffiles chk1c2 "$testout $refout"
+chk1c2:
+
+chk1p:
+echo ' '
+call qprint chk1pa "$space ... automatic pass checks :"
+chk1pa:
+
+set testvb = `cat $testout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;print}}}'`
+set testcb = `cat $testout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;getline;print}}}'`
+
+set refvb = `zcat $refout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;print}}}'`
+set refcb = `zcat $refout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;getline;print}}}'`
+
+ echo "$space last iter valence bands : $testvb"
+ echo "$space               reference : $refvb"
+ echo -n "$space last iter valence bands identical to reference ?..."
+ if ("$testvb" == "$refvb") then
+   echo yes
+ else
+   echo -n no ...
+   if ($?quiet) then
+   else
+     echo " "
+     echo "$space $testvb"
+     echo "$space $refvb"
+     echo -n "$space ... are they"
+   endif
+   echo -n " equal to 3 decimals?..."
+   set digits = 3
+   set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+   set testvb = `cat $testout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;'"$a}}}"`
+   set refvb = `zcat  $refout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;'"$a}}}"`
+   if ("$testvb" == "$refvb") then
+     echo ok
+   else
+     echo no
+     unset pass
+   endif
+ endif
+
+ echo -n "$space last iteration conduction bands identical to reference?..."
+ if ("$testcb" == "$refcb") then
+   echo yes
+ else
+   echo -n no ...
+   if ($?quiet) then
+   else
+     echo " "
+     echo "$space $testcb"
+     echo "$space $refcb"
+     echo -n "$space ... are they"
+   endif
+   echo -n " equal to 3 decimals?..."
+   set digits = 3
+   set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+   set testcb = `cat $testout  | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;getline;'"$a}}}"`
+   set refcb = `zcat  $refout | awk -v ncnt=0 -v ncv=$ncv '{if ($1 == "SECMAT:" && $3 == "1") {ncnt += 1; if (ncnt==4) {j=0 ; while (j++ < ncv) getline;getline;'"$a}}}"`
+   if ("$testcb" == "$refcb") then
+     echo ok
+   else
+     echo no
+     unset pass
+   endif
+
+ endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED"
+else
+    echo "$space test 1 FAILED"
+    set failed = ($failed 1)
+endif
+
+chk1e:
+
+echo $joblist | grep 2 >/dev/null
+if ($status) goto chk2e
+if (! -d $testdir/../../nc) goto chk2e
+cat <<EOF
+
+         --- Test case 2 ($testdir/ctrl.$ext) ---
+         This test takes the SX potential of test 1 and
+         adds the spin-orbit (L.S) perturbation.
+         You must run test 1 before doing this test.
+
+EOF
+#        Also, the noncollinear package must be installed to run this test.
+set pass
+set refout=$testdir/out.so.$ext testout=out.$ext
+
+if ($?clean) then
+   goto chk2e
+endif
+if (! -e ctrl.$ext) then
+   echo ' '
+   echo "$space ... missing file ctrl.$ext (maybe test 1 wasn't run?) ... skipping this test"
+   goto chk2e
+endif
+if (! -e sigm.$ext) then
+   echo ' '
+   echo "$space ... missing file sigm.$ext (maybe test 1 wasn't run?) ... skipping this test"
+   goto chk2e
+endif
+if (! -e $refout) then
+   echo ' '
+   echo "$space ... missing file $refout ... skipping this test"
+   goto chk2e
+endif
+if (! -e $testdir/syml.$ext) then
+   echo ' '
+   echo "$space ... missing file $testdir/syml.$ext ... skipping this test"
+   goto chk2e
+endif
+
+query chk21 chk2e 'run this test'
+chk21:
+# ... Look for executables
+findcmd chk21a rdcmd "$path" "$topdir"
+chk21a:
+findcmd chk21b lm "$path" "$topdir"
+chk21b:
+#  findcmd chk21c lmstr "$path" "$topdir"
+#  chk21c:
+#  echo "$space ... set up ASA strux and starting potential"
+#  echo "$space rm -f *.$ext"
+#               rm -f *.$ext
+if ($?clean) then
+  goto chk2e
+endif
+echo "$space cp $testdir/{syml.$ext} ."
+             cp $testdir/{syml.$ext} .
+
+#  runjob chk22 /dev/null "lmstr $lmargs2"
+#  chk22:
+
+runjob chk23a $testout "lm -vnit=0 $lmargs2 --iactiv=no"
+chk23a:
+runjob chk23b '>>'$testout "lm -vnit=1 --band:fn=syml $lmargs2 --iactiv=no"
+chk23b:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+if ($?quiet) goto chk2p
+
+echo ' '
+echo "$space ... Compare evals at Gamma to file $refout":
+#  $testdir/extract-level-from-bands-file -mode=-1 -k=0,0,0 -nl=3 out.$ext
+
+cat      $testout | awk -v ncnt=0 '{if ($1 == "SECMAT:" && $7 == 0 && $8 == 0 && $9 == 0) {ncnt += 1; if (ncnt==1) {print;getline;print;getline;print;getline;print}}}'
+echo ---
+zcat $refout | awk -v ncnt=0 '{if ($1 == "SECMAT:" && $7 == 0 && $8 == 0 && $9 == 0) {ncnt += 1; if (ncnt==1) {print;getline;print;getline;print;getline;print}}}'
+
+call zdiffiles chk2c2 "$testout $refout"
+chk2c2:
+
+chk2p:
+echo ' '
+call qprint chk2pa "$space ... automatic pass checks :"
+chk2pa:
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 bnds.$ext
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer bnds.$ext
+endif
+set ndig = 4
+call zcmpnfiles chk2ci "$ndig bnds.$ext $testdir/bnds.so.$ext"
+chk2ci:
+echo -n "$space ... files bnds.$ext and $testdir/bnds.so.$ext equivalent to $ndig digits? ... "
+if ($retval == 0) then
+  echo  yes
+else
+  if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot < 1.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) remaining of $ncharfile)"
+    unset pass
+  endif
+endif
+endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 2 PASSED"
+else
+    echo "$space test 2 FAILED"
+    set failed = ($failed 2)
+endif
+
+chk2e:
+
+echo ' '
+if ($?clean) then
+    exit 0
+else if ($#failed <= 1) then
+    echo "$space all tests PASSED"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit -1
+endif
+
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+    if ($retval != 0) goto cleanup
+    goto $quitjob
+  endif
+
+  if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+    set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+    echo "$space $callarg  >> $appfile"
+    $callarg >> $appfile
+    set retval = $status
+#     if ($?add0) then
+#       echo -n "         ..." ; $add0 $appfile
+#     else if ($?poszer) then
+#       echo -n "         ..." ; $poszer $appfile
+#     endif
+  else
+    echo "$space $callarg  > $outfile"
+    $callarg > $outfile
+    set retval = $status
+#     if ($?add0) then
+#       echo -n "         ..." ; $add0 $outfile
+#     else if ($?poszer) then
+#       echo -n "         ..." ; $poszer $outfile
+#     endif
+  endif
+  set appfile = `echo $outfile | sed 's/>//g' `
+  if ($retval == 0) echo "$space Job(s) completed successfully; output in $appfile"
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: n test-file reference-file
+# |n| = number of digits which numbers are truncated to.
+# If n<0, sort files before comparing them
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = number of differences in reduced files
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+  if ($digits < 0) then
+    @ digits = - $digits
+    set lsort
+  endif
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+# set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; print "" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  if ($?lsort) then
+    $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+    $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+  else
+    $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+    $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+  endif
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) rm -f $fn1 $fn2
+  if ($retval == 0) goto $quitjob
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- zcmpmfiles --------------
+# Compares two files, treating each field as a number.
+# Call arguments should contain 3 strings: no-digits test-file reference-file
+# files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = max numerical difference
+# Example :  call zcmpmfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpmfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+
+  set retval = `diff -y --width=300 $fn1 $fn2 | grep '|' | awk -v top=0 '{n=split($0,a,"|"); n1=split(a[1],b1); n2=split(a[2],b2); { j=0; while (j++ < n1) if (j <= n1 && j<=n2) {x = (b1[j]-b2[j])>0?(b1[j]-b2[j]):(b2[j]-b1[j]); top = (top-x)>0?top:x; }}} END {printf "%12.4e\n", top}'`
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- runrdcmd --------------
+exit
+runrdcmd:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    $rdcmd -f:$rdcmdfmt $callarg
+    set retval = $status
+    echo ' '
+    if ($retval == 0) then
+      echo "$space Job(s) completed successfully"
+      goto $quitjob
+    endif
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      exit
+#      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space ... the following job(s) will be executed by invoking "\""rdcmd $callarg"\"
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      echo "$space ... starting invocation of rdcmd:"
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg  >& $outfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >& $outfile
+      set retval = $status
+    endif
+  endif
+
+  if ($retval == 0) then
+    echo "$space Job(s) completed successfully; output in $outfile"
+    if ($?poszer) then
+      echo -n "         ..." ; $poszer $outfile
+    else if ($?add0) then
+      echo -n "         ..." ; $add0 $outfile
+    endif
+    goto $quitjob
+  else
+    echo "$space ...oops... the following command returned with nonzero exit status:"
+    echo -n "$space   "
+    grep $rdcmd:t{:} $outfile | tail -1 | sed 's/rdcmd:  //'
+    goto cleanup
+  endif
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space job returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting"
+  exit $retval
+
+# ---------------- diffiles --------------
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = "$callarg"
+  query diff11 $quitjob "compare $files"
+diff11:
+  echo diff $files | sed -n 1,50p
+  diff $files
+  diff $files | sed -n 1,50p
+exit
+  goto $quitjob
+
+# ---------------- zdiffiles --------------
+exit
+zdiffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = "$callarg"
+  if ( $?slow == 0 ) echo "$space ... compare $files"
+  query zdiff11 $quitjob "compare $files"
+zdiff11:
+  zdiff -Icpudel -Iwritten $files | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg to line(s) in file $refout":
+  grep $callarg $testout
+  if (`cat $testout | grep $callarg | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep $callarg
+  goto $quitjob
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+# ---------------- List tests --------------
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] material-name job-list
+
+   Material:    tests
+       cdte:    Basic test of SX hamiltonian, ZB structure
+        gan:    Basic test of SX hamiltonian, wurtzite structure
+
+  jobs:   1: Basic check of lm with SX potential added
+          2: Additional check with SO coupling included
+
+EOF
+exit
+
+# ---------------- usage: --------------
+usage:
+cat <<EOF
+ usage: test.sx [switches] file-extension [testcase-list | --all]
+        e.g., "test.sx gan 1 2"
+        File-extension is one of gan or cdte
+        switches:
+        --list       lists the tests you can run
+        --no-iactive runs tests without prompting user
+        --quiet      minimal output and without prompting user
+        --clean runs cleanup
+        --all        run through a default list of test cases
+        --poszer     strips (-) sign from numbers represented as 0
+EOF
+exit -1

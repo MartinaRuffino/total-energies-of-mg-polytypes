@@ -1,0 +1,23 @@
+# generate rho001.* from lmf, add switches
+# lmf ctrl.zbgan -vgmax=24 --wden~q=0,0,0.001~core=-1~o=10,10,10~lst=7~l1=1,0,0,41~l2=0,1,0,41
+# mc -f1p8e14.6 smrho.zbgan -roll:20,20 > rho001
+
+fplot 
+
+# ... for (1/2,1/2,0), (0,0,1)
+  # -frme:theta=pi/3 -.4,.8-.4,0,.8
+  -frme: 0,1,0,1
+  -x 0,1 -y 0,1
+#   -xl rs(Ga) -yl rs(N)
+#   -tmx .2,1 -tmy .2,1
+
+# for color, total density
+  -lt 3,col=.0,.0,0.,fill=0 -con .005/100 -qr rho001
+  -lt 1,col=.0,.5,1.,fill=0 -con .005/10 -qr rho001
+  -lt 1,col=.2,.4,.8,fill=0 -con .01/10 -qr rho001
+  -lt 1,col=.4,.3,.6,fill=0 -con .02/10 -qr rho001
+  -lt 1,col=.5,.2,.5,fill=0 -con .03/10 -qr rho001
+  -lt 1,col=.6,.1,.4,fill=0 -con .05/10 -qr rho001
+  -lt 1,col=.8,.1,.2,fill=2 -con .10 -qr rho001
+  -lt 1,col=1.,.1,0.,fill=2 -con .20 -qr rho001
+

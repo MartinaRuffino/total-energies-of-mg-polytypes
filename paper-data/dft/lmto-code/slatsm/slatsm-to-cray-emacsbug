@@ -1,0 +1,40 @@
+echo --- slatsm-to-cray: ccomp to CRAY-specific ---
+
+rm -f xx.f ; ccomp -uCRAY cpudel.f xx.f
+ccomp -uAIX -uAPOLLO -uCONVEX -dCRAY -uDEC -uHP -uLINUX -uSGI -uSUN xx.f cpudel.f
+
+foreach i (?1mach.f)
+  rm -f xx.f ; ccomp -uIEEE -uRIEEE -uCRAY $i xx.f
+  ccomp -dCRAY xx.f $i
+end
+
+rm -f xx.f
+foreach i ( ` egrep -l '^C#(ifndef|ifdefC|elseifC) *CRAY *' *.f ` )
+  rm -f xx.f ; ccomp -uCRAY $i xx.f
+  ccomp -dCRAY xx.f $i
+end
+
+#foreach i (dampy.f yaxcpy.f yaxpy.f yhmul.f zhmpy.f hcinv.f yhchd.f)
+foreach i (zhmpy.f)
+  rm -f xx.f ; ccomp -uBLAS $i xx.f
+  ccomp -dBLAS xx.f $i
+end
+
+foreach i (dampy.f zampy.f yhmpy.f)
+  rm -f xx.f ; ccomp -uBLAS3 $i xx.f
+  ccomp -dBLAS3 xx.f $i
+end
+
+if (-e fmain.f) mv -f fmain.f fmain.fortran
+rm -f xx.f
+
+echo --- slatsm-to-cray: convert files with complex arithmetic: ---
+rm -f cnam
+egrep -l -i '^[^cC][ 	]*complex' *.f >cnam
+echo `cat cnam`
+#foreach i (`cat cnam`)
+#  echo emacs -batch -l startup/fortran.el -l startup/ftnemacs.el $i -f f77-to-cray -f save-buffer -kill ...
+#  emacs -batch -l startup/fortran.el -l startup/ftnemacs.el $i -f f77-to-cray -f save-buffer -kill
+#  rm -f $i~
+#end
+rm -f cnam

@@ -1,0 +1,52 @@
+ tfft: check fft for 2x2x4 matrix 1
+ compare fftz3 ... arrays have the same results
+ tfft: check fft for 2x2x4 matrix 2
+ compare fftz3 ... arrays have the same results
+
+ Checks of fftzv
+
+ call fftzv, iset= 0+1,  0+2, 4
+ tfft: check fft for 2x2x4 matrix 1
+ compare fftz3 ... arrays have the same results
+ tfft: check fft for 2x2x4 matrix 2
+ compare fftz3 ... arrays have the same results
+
+ call fftzv, iset=10+1, 10+2, 4
+ tfft: check fft for 2x2x4 matrix 1
+ compare fftz3 ... arrays have the same results
+ tfft: check fft for 2x2x4 matrix 2
+ compare fftz3 ... arrays have the same results
+
+ call fftzv, iset=20+1, 20+2, 4
+ tfft: check fft for 2x2x4 matrix 1
+ compare fftz3 ... arrays have the same results
+ tfft: check fft for 2x2x4 matrix 2
+ compare fftz3 ... arrays have the same results
+
+ call fftzv, iset = 03
+ tfft: check fft for 2x2x4 matrix 1
+ compare fftz3 ... arrays have the same results
+ tfft: check fft for 2x2x4 matrix 2
+ compare fftz3 ... arrays have the same results
+
+ Demonstrate fftzv with mutiple plans
+
+ Assign plan for reverse FT; do it
+ Check for inverse FT, number 1
+ compare fftz3 ... arrays have the same results
+ Check for inverse FT, number 2
+ compare fftz3 ... arrays have the same results
+
+ Assign plan for forward FT; do it
+ Check for inverse FT, number 1
+ compare fftz3 ... arrays have the same results
+ Check for inverse FT, number 2
+ compare fftz3 ... arrays have the same results
+
+ Compare some brute force 1D convolutions to equivalent computed by FFT
+ Use --show to print arrays out.dat as they are generated
+ rms difference convolution h(-x) = int[ du f(u) g(u+x) ] : h(2)=(7.7637e-4,2.0046e-5)  diff*1e16 = 0.015
+ rms difference convolution h(x)  = int[ du f(u) g(u-x) ] : h(2)=(7.7637e-4,2.0046e-5)  diff*1e16 = 0.016
+ [Note: previous two tests should be identical since the first array holds discretized h(-x)]
+ rms difference convolution h(x)  = int[ du f(u) g(x-u) ] : h(2)=(6.8641e-4,1.1920e-5)  diff*1e16 = 0.015
+ Direct and FFT convolutions are equivalent

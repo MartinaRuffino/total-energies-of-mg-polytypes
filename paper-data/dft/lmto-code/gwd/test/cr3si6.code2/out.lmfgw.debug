@@ -1,0 +1,877 @@
+ ---------------------  START LMFGW  ----------------------
+
+ rdctrl: reset global max nl from 4 to 5
+
+ rdctrl: reading basis parameters from file basp
+ ioorbp: read species Cr        RSMH,EH RSMH2,EH2 P PZ
+ ioorbp: read species Si        RSMH,EH RSMH2,EH2 P
+         reset nkaph from 2 to 3
+
+ LMFGW:    nbas = 9  nspec = 2  verb 35
+ special:  forces
+ pot:      XC:BH, read Sigma
+ float:    float P GW-style
+ autoread: mto basis(4), pz(1), pnu(1)
+ bz:       metal(5), tetra, invit 
+
+                Plat                                  Qlat
+   0.866025  -0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.577350   1.000000   0.000000
+   0.000000   0.000000   1.433692        0.000000   0.000000   0.697500
+   alat = 8.37  Cell vol = 728.052680
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 8.37000   awald= 0.222   lmax=6
+         r1=  3.004   nkd= 77       q1=  3.076   nkg= 147
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r6z:(0,0,0.4778974) r2(1/2,sqrt(3)/2,0)
+         r6z::(0,0,1/2.999999) r2(1/2,sqrt(3)/2,0)
+ MKSYM:  found 12 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Cr       2.337  0.935    4    3         4  0.584  1.168    15    1   0.935
+ Si       2.337  0.935    4    3         4  0.584  1.168    15    1   0.935
+
+ MSHSIZ: mesh has 24 x 24 x 35 divisions; length 0.349, 0.349, 0.343
+         generated from gmax = 9.2 a.u. : 9635 vectors of 20160 (47%)
+
+ GVLIST: gmax = 9.2 a.u. created 9635 vectors of 20160 (47%)
+         mesh has 24 x 24 x 35 divisions; length 0.349, 0.349, 0.343
+ SGVSYM: 826 symmetry stars found for 9635 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 249 0 225 201
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1     144     0    81   144   225       0
+   2      81     0   144    81   225       0
+   3      24     0     0    24    24     201
+  all    249     0   225   249   474     201
+ suham :  225 augmentation channels, 225 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Cr       0*   1.56  -0.30   4.771    1.01E-06    1327 
+  Cr       1    1.56  -0.30   5.043    1.00E-06    1579 
+  Cr       2    1.19  -0.30   7.077    1.02E-06    4395 
+  Cr       3    1.56  -0.30   5.593    1.03E-06    2151 
+  Cr       0*   1.56  -1.10   4.771    1.01E-06    1327 
+  Cr       1    1.56  -1.10   5.043    1.00E-06    1579 
+  Cr       2    1.19  -1.10   7.077    1.02E-06    4395 
+  Si       0*   1.56  -0.30   4.771    1.01E-06    1327 
+  Si       1*   1.56  -0.30   5.043    1.00E-06    1579 
+  Si       2*   1.56  -0.30   5.317    1.06E-06    1875 
+  Si       3    1.56  -0.30   5.593    1.03E-06    2151 
+  Si       0*   1.56  -1.10   4.771    1.01E-06    1327 
+  Si       1*   1.56  -1.10   5.043    1.00E-06    1579 
+  Si       2    1.56  -1.10   5.317    1.06E-06    1875 
+ 
+
+ iors  : read restart file (binary, mesh density)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ bndfp (warning): no sigm file found ... DFT calculation only
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ Average es pot at rmt = 0.688766  avg sphere pot = 0.356151   vconst = -0.688766
+ smooth rhoves    121.882890   charge    40.556285
+
+ elocp:
+
+ Fit local orbitals to sm hankels, species Cr, rmt=2.336561
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  1  low    3.940   -2.963665   -2.160367   1.02462  -4.60353   0.01988   -2.160367 
+
+ locpot:
+
+ site  1  z= 24.0  rmt= 2.33656  nr=379   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.191943 (sphere) + 0.003583 (spillout) = 0.195526
+ potential shift to crystal energy zero:    0.000119
+
+ site  2  z= 24.0  rmt= 2.33656  nr=379   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.191943 (sphere) + 0.003583 (spillout) = 0.195526
+ potential shift to crystal energy zero:    0.000119
+
+ site  3  z= 24.0  rmt= 2.33656  nr=379   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.191943 (sphere) + 0.003583 (spillout) = 0.195526
+ potential shift to crystal energy zero:    0.000118
+
+ site  4  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  5  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  6  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  7  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  8  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000174
+
+ site  9  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000174
+
+ Energy terms:             smooth           local            total
+   rhoval*vef            -40.917784      -527.851523      -568.769306
+   rhoval*ves           -182.704987      -324.638921      -507.343909
+   psnuc*ves             426.470767    -38078.188104    -37651.717338
+   utot                  121.882890    -19201.413513    -19079.530623
+   rho*exc                 0.000000      -491.059088      -491.059088
+   rho*vxc                 0.000000      -649.592084      -649.592084
+   valence chg            40.556285        19.443715        60.000000
+   core charge            96.000000         0.000000        96.000000
+
+ Charges:  valence    60.00000   cores    96.00000   nucleii  -156.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ Average es pot at rmt = 0.688766  avg sphere pot = 0.356151   vconst = -0.688766
+ smooth rhoves    121.882890   charge    40.556285
+ smooth rhoeps =  -28.541228   rhomu =  -37.148899  avg vxc =   -0.866628 
+
+ elocp:
+
+ Fit local orbitals to sm hankels, species Cr, rmt=2.336561
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  1  low    3.940   -2.963698   -2.160402   1.02461  -4.60339   0.01988   -2.160402 
+
+ locpot:
+
+ site  1  z= 24.0  rmt= 2.33656  nr=379   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.1 ...
+ sm core charge = 0.191943 (sphere) + 0.003583 (spillout) = 0.195526
+ potential shift to crystal energy zero:    0.000119
+
+ site  2  z= 24.0  rmt= 2.33656  nr=379   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.2 ...
+ sm core charge = 0.191943 (sphere) + 0.003583 (spillout) = 0.195526
+ potential shift to crystal energy zero:    0.000119
+
+ site  3  z= 24.0  rmt= 2.33656  nr=379   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.3 ...
+ sm core charge = 0.191943 (sphere) + 0.003583 (spillout) = 0.195526
+ potential shift to crystal energy zero:    0.000118
+
+ site  4  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.4 ...
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  5  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.5 ...
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  6  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.6 ...
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  7  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.7 ...
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000175
+
+ site  8  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.8 ...
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000174
+
+ site  9  z= 14.0  rmt= 2.33656  nr=339   a=0.025  nlml=25  rg=0.584  Vfloat=T
+ writing sphere density to file rhoMT.9 ...
+ sm core charge = 0.046192 (sphere) + 0.000644 (spillout) = 0.046836
+ potential shift to crystal energy zero:    0.000174
+
+ Energy terms:             smooth           local            total
+   rhoval*vef            -77.180501      -527.851523      -605.032024
+   rhoval*ves           -182.704987      -324.638921      -507.343909
+   psnuc*ves             426.470767    -38078.188104    -37651.717338
+   utot                  121.882890    -19201.413513    -19079.530623
+   rho*exc               -28.541228      -491.059088      -519.600317
+   rho*vxc               -37.148899      -649.592084      -686.740984
+   valence chg            40.556285        19.443715        60.000000
+   core charge            96.000000         0.000000        96.000000
+
+ Charges:  valence    60.00000   cores    96.00000   nucleii  -156.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ sugcut:  make orbital-dependent cutoffs for local orbitals, tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Cr       1    1.02  -4.60   7.775    1.02E-06    5759 
+ 
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ ... Generate radial valence and core partial waves
+
+ getcor:  qcore= 12.00  qsc= 18.00  konf = 4  3* 3  4  5 
+ sum q=12.00  sum ec= -1213.79167223  sum tc=  1962.01273664  rho(rmax) 0.00023
+ getcor:  qcore= 12.00  qsc= 18.00  konf = 4  3* 3  4  5 
+ sum q=12.00  sum ec= -1213.79167212  sum tc=  1962.01273659  rho(rmax) 0.00023
+ getcor:  qcore= 12.00  qsc= 18.00  konf = 4  3* 3  4  5 
+ sum q=12.00  sum ec= -1213.79167092  sum tc=  1962.01273641  rho(rmax) 0.00023
+ getcor:  qcore= 10.00  qsc= 10.00  konf = 3  3  3  4  5 
+ sum q=10.00  sum ec=  -318.40770135  sum tc=   567.67506607  rho(rmax) 0.00005
+ getcor:  qcore= 10.00  qsc= 10.00  konf = 3  3  3  4  5 
+ sum q=10.00  sum ec=  -318.40770135  sum tc=   567.67506607  rho(rmax) 0.00005
+ getcor:  qcore= 10.00  qsc= 10.00  konf = 3  3  3  4  5 
+ sum q=10.00  sum ec=  -318.40770128  sum tc=   567.67506619  rho(rmax) 0.00005
+ getcor:  qcore= 10.00  qsc= 10.00  konf = 3  3  3  4  5 
+ sum q=10.00  sum ec=  -318.40770129  sum tc=   567.67506620  rho(rmax) 0.00005
+ getcor:  qcore= 10.00  qsc= 10.00  konf = 3  3  3  4  5 
+ sum q=10.00  sum ec=  -318.40770039  sum tc=   567.67506592  rho(rmax) 0.00005
+ getcor:  qcore= 10.00  qsc= 10.00  konf = 3  3  3  4  5 
+ sum q=10.00  sum ec=  -318.40770039  sum tc=   567.67506593  rho(rmax) 0.00005
+
+ ... reading product basis specs from GWinput.  nphimx=3  nat=9
+     eigenvalue cutoff to reduce rank (by l):  3e-4 3e-4 1e-3 1e-3 1e-2
+     lmax (by site):  4 4 4 4 4 4 4 4 4
+
+ rprodbasa: product basis + gradients for 9 sites  nphi=5  lmax=4  tol=3e-4,3e-4,1e-3,1e-3,1e-2
+            make (grad phi2) phi1;  grad=dg/dr +/- fac*g/r;  rotate using evecs of PB
+ site raw nrad ntot  reduced nrad ntot  nrad by l
+   1       34   152           23   105  5,5,6,4,3
+   2       34   152           23   105  5,5,6,4,3
+   3       34   152           23   105  5,5,6,4,3
+   4       19    79           15    59  4,4,4,2,1
+   5       19    79           15    59  4,4,4,2,1
+   6       19    79           15    59  4,4,4,2,1
+   7       19    79           15    59  4,4,4,2,1
+   8       19    79           15    59  4,4,4,2,1
+   9       19    79           15    59  4,4,4,2,1
+
+ System has 159 (radial) 669 (total) B functions
+
+debugging printout
+ 0 5 10 16 20 23 23 23 23 23 28 33 39 43 46 46 46 46 46 51 56 62 66 69 69 69 69 69 73 77 81 83 84 84 84 84 84 88 92 96 98 99 99 99 99 99 103 107 111 113 114 114 114 114 114 118 122 126 128 129 129 129 129 129 133 137 141 143 144 144 144 144 144
+ 105 105 105 105 59 59 59 59 59 59
+
+
+ gworthphi: orthogonalize partial waves by diagonalizing overlap (Kotani scaling)
+
+ rprodbas:  radial matrix elements of partial waves and product basis, 9 sites  nphi=5  lmax=4
+ sumcheck prbasr 4.4140697623
+ sumcheck prbasr 4.4140754547
+ sumcheck prbasr 4.4140698372
+ sumcheck prbasr 16.319356071
+ sumcheck prbasr 16.319356073
+ sumcheck prbasr 16.319356551
+ sumcheck prbasr 16.319356652
+ sumcheck prbasr 16.319357166
+ sumcheck prbasr 16.319357272
+ sumcheck prbasr, all sites 111.15835484
+
+ iopbme writing file PPBRD_V2_01 site  1  ntpbi=105  nblr=5,5,6,4,3,0,0,0  max=6
+ iopbme writing file PPBRD_V2_02 site  2  ntpbi=105  nblr=5,5,6,4,3,0,0,0  max=6
+ iopbme writing file PPBRD_V2_03 site  3  ntpbi=105  nblr=5,5,6,4,3,0,0,0  max=6
+ iopbme writing file PPBRD_V2_04 site  4  ntpbi= 59  nblr=4,4,4,2,1,0,0,0  max=4
+ iopbme writing file PPBRD_V2_05 site  5  ntpbi= 59  nblr=4,4,4,2,1,0,0,0  max=4
+ iopbme writing file PPBRD_V2_06 site  6  ntpbi= 59  nblr=4,4,4,2,1,0,0,0  max=4
+ iopbme writing file PPBRD_V2_07 site  7  ntpbi= 59  nblr=4,4,4,2,1,0,0,0  max=4
+ iopbme writing file PPBRD_V2_08 site  8  ntpbi= 59  nblr=4,4,4,2,1,0,0,0  max=4
+ iopbme writing file PPBRD_V2_09 site  9  ntpbi= 59  nblr=4,4,4,2,1,0,0,0  max=4
+
+ prodbas:  make prbas = (phi phi | full PB) for 9 sites   group op 9   dimen (64,64,105x9)
+ sumcheck prodbas    1 5.31988013
+ sumcheck prodbas    2 5.31988158
+ sumcheck prodbas    3 5.31987982
+ sumcheck prodbas    4 -1.1720136
+ sumcheck prodbas    5 -1.1720136
+ sumcheck prodbas    6 -1.1720133
+ sumcheck prodbas    7 -1.1720134
+ sumcheck prodbas    8 -1.1720128
+ sumcheck prodbas    9 -1.1720129
+
+ onsitecoul : iat = 1  z = 24  qcore = 11.996417 scaled to 12.000000
+ onsitecoul : iat = 2  z = 24  qcore = 11.996417 scaled to 12.000000
+ onsitecoul : iat = 3  z = 24  qcore = 11.996417 scaled to 12.000000
+ onsitecoul : iat = 4  z = 14  qcore = 9.999356 scaled to 10.000000
+ onsitecoul : iat = 5  z = 14  qcore = 9.999356 scaled to 10.000000
+ onsitecoul : iat = 6  z = 14  qcore = 9.999356 scaled to 10.000000
+ onsitecoul : iat = 7  z = 14  qcore = 9.999356 scaled to 10.000000
+ onsitecoul : iat = 8  z = 14  qcore = 9.999356 scaled to 10.000000
+ onsitecoul : iat = 9  z = 14  qcore = 9.999356 scaled to 10.000000
+
+ sumcheck sgbc 29.777156703
+
+ sumcheck rojb 40.848109890  sgbb 283.53445710
+
+ sugw: make matrices and strux for vcoul, E=-1e-4
+
+                Plat                                  Qlat
+   0.866025  -0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.577350   1.000000   0.000000
+   0.000000   0.000000   1.433692        0.000000   0.000000   0.697500
+   alat = 8.37  Cell vol = 728.052680
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 8.37000   awald= 0.222   lmax=16
+         r1=  3.559   nkd= 155      q1=  3.657   nkg= 251
+
+ sumcheck pjyl site 1      -97701.601000          0.000000
+ sumcheck rojp site 1          -9.161120          0.000000
+ sumcheck jg site 1          67.848671
+ sumcheck sgpb site 1          -9.838713          0.000000
+ sumcheck fouvb/10 site 1       82439.938344          0.000000
+ sumcheck pjyl site 2     -158606.289685          0.000000
+ sumcheck rojp site 2         -14.090950          0.000000
+ sumcheck jg site 2          67.848671
+ sumcheck sgpb site 2         -28.388536          0.000000
+ sumcheck fouvb/10 site 2       82380.154522          0.000000
+ sumcheck pjyl site 3      113610.277348          0.000000
+ sumcheck rojp site 3          -8.215879          0.000000
+ sumcheck jg site 3          67.848671
+ sumcheck sgpb site 3         -78.634317          0.000000
+ sumcheck fouvb/10 site 3       82362.428066          0.000000
+ sumcheck pjyl site 4      -34601.067314          0.000000
+ sumcheck rojp site 4           6.620479          0.000000
+ sumcheck jg site 4          67.848671
+ sumcheck sgpb site 4         105.704073          0.000000
+ sumcheck fouvb/10 site 4       66575.277305          0.000000
+ sumcheck pjyl site 5       21410.555318          0.000000
+ sumcheck rojp site 5          12.703703          0.000000
+ sumcheck jg site 5          67.848671
+ sumcheck sgpb site 5         107.317538          0.000000
+ sumcheck fouvb/10 site 5       66597.672455          0.000000
+ sumcheck pjyl site 6      126903.343840          0.000000
+ sumcheck rojp site 6         -16.023545          0.000000
+ sumcheck jg site 6          67.848671
+ sumcheck sgpb site 6        -209.059573          0.000000
+ sumcheck fouvb/10 site 6       66508.914873          0.000000
+ sumcheck pjyl site 7       46481.719264          0.000000
+ sumcheck rojp site 7           9.211715          0.000000
+ sumcheck jg site 7          67.848671
+ sumcheck sgpb site 7          53.386072          0.000000
+ sumcheck fouvb/10 site 7       66610.433922          0.000000
+ sumcheck pjyl site 8       24950.145836          0.000000
+ sumcheck rojp site 8           5.709646          0.000000
+ sumcheck jg site 8          67.848671
+ sumcheck sgpb site 8          14.505684          0.000000
+ sumcheck fouvb/10 site 8       66549.269549          0.000000
+ sumcheck pjyl site 9      -42209.313247          0.000000
+ sumcheck rojp site 9         -19.465045          0.000000
+ sumcheck jg site 9          67.848671
+ sumcheck sgpb site 9        -135.844608          0.000000
+ sumcheck fouvb/10 site 9       66546.571921          0.000000
+ sumcheck onsite vcoul(PW-PW)/1000      -61947.353275          0.000000
+ sumcheck strx/1e6 iq=1          84.361171          0.000000
+ sumcheck vcoulq(bb)  q=0,0,0      457662.163978          0.000000
+ sumcheck vcoulq(pb)  q=0,0,0     6382742.203267          0.000000
+ sumcheck vcoulq/1000 q=0,0,0      102740.033759          0.000000
+ sumcheck ppovl iq=1       72899.499217          0.000000
+
+ evals of vcoul for iq = 1 of 10  q =  0.00000  0.00000  0.00000  rank 816
+ Write coulomb integrals to file Vcoud.00001
+
+ sumcheck pjyl site 1      -31118.066668     -71460.101058
+ sumcheck rojp site 1           3.987229         -1.452803
+ sumcheck jg site 1          68.196161
+ sumcheck sgpb site 1          21.334887        -40.403171
+ sumcheck fouvb/10 site 1          76.848862       -176.089854
+ sumcheck pjyl site 2     -139094.659642      33722.705712
+ sumcheck rojp site 2           7.152444         -0.302832
+ sumcheck jg site 2          68.196161
+ sumcheck sgpb site 2         132.490486        -15.836648
+ sumcheck fouvb/10 site 2         145.789728        -38.536863
+ sumcheck pjyl site 3       20715.866098      38465.932657
+ sumcheck rojp site 3          -3.505293         -0.728626
+ sumcheck jg site 3          68.196161
+ sumcheck sgpb site 3         -34.036846         32.105524
+ sumcheck fouvb/10 site 3          69.336003       -117.891142
+ sumcheck pjyl site 4       13444.448483     -51689.713868
+ sumcheck rojp site 4          21.575579        -10.866862
+ sumcheck jg site 4          68.196161
+ sumcheck sgpb site 4         205.815634         91.570137
+ sumcheck fouvb/10 site 4         107.806399        -78.503120
+ sumcheck pjyl site 5       28509.379923     -14776.076892
+ sumcheck rojp site 5          15.733351         11.646776
+ sumcheck jg site 5          68.196161
+ sumcheck sgpb site 5         192.082786       -144.530520
+ sumcheck fouvb/10 site 5         167.235523         17.786854
+ sumcheck pjyl site 6      102337.389683     -20421.910130
+ sumcheck rojp site 6         -27.617636          0.920811
+ sumcheck jg site 6          68.196161
+ sumcheck sgpb site 6        -304.084794        -24.486294
+ sumcheck fouvb/10 site 6          66.446853         -2.099048
+ sumcheck pjyl site 7       33699.178335      38853.439682
+ sumcheck rojp site 7           6.393346         -3.893419
+ sumcheck jg site 7          68.196161
+ sumcheck sgpb site 7           8.050045         47.567502
+ sumcheck fouvb/10 site 7         151.788955        -58.111413
+ sumcheck pjyl site 8       71039.191599     -57121.396540
+ sumcheck rojp site 8          -4.818836          5.447064
+ sumcheck jg site 8          68.196161
+ sumcheck sgpb site 8         -63.365701        -88.895655
+ sumcheck fouvb/10 site 8          95.434112        -61.840178
+ sumcheck pjyl site 9       21144.491918      58191.730291
+ sumcheck rojp site 9         -12.438505         -6.762003
+ sumcheck jg site 9          68.196161
+ sumcheck sgpb site 9         -90.740456         55.738233
+ sumcheck fouvb/10 site 9         121.175593          0.665699
+ sumcheck onsite vcoul(PW-PW)/1000        -477.499947          0.000000
+ sumcheck strx/1e6 iq=2        -515.510873          0.000000
+ sumcheck vcoulq(bb)  q=0.288675,0,0        1352.556338          0.000000
+ sumcheck vcoulq(pb)  q=0.288675,0,0        9509.719949      -4747.951623
+ sumcheck vcoulq/1000 q=0.288675,0,0         553.483677          0.000000
+ sumcheck ppovl iq=2       70890.014165          0.000000
+
+ evals of vcoul for iq = 2 of 10  q =  0.28868  0.00000  0.00000  rank 814
+ Write coulomb integrals to file Vcoud.00002
+
+ sumcheck pjyl site 1       58520.079387          0.000000
+ sumcheck rojp site 1           2.502222          0.000000
+ sumcheck jg site 1          64.294340
+ sumcheck sgpb site 1         -22.507938          0.000000
+ sumcheck fouvb/10 site 1         -62.474652          0.000000
+ sumcheck pjyl site 2     -145583.009348          0.000000
+ sumcheck rojp site 2           0.494076          0.000000
+ sumcheck jg site 2          64.294340
+ sumcheck sgpb site 2          83.563851          0.000000
+ sumcheck fouvb/10 site 2          35.186011          0.000000
+ sumcheck pjyl site 3      -10295.229879          0.000000
+ sumcheck rojp site 3          -3.678780          0.000000
+ sumcheck jg site 3          64.294340
+ sumcheck sgpb site 3          36.784384          0.000000
+ sumcheck fouvb/10 site 3         -10.435454          0.000000
+ sumcheck pjyl site 4       35825.444658          0.000000
+ sumcheck rojp site 4          18.692830          0.000000
+ sumcheck jg site 4          64.294340
+ sumcheck sgpb site 4         148.319575          0.000000
+ sumcheck fouvb/10 site 4          22.335026          0.000000
+ sumcheck pjyl site 5       48685.739710          0.000000
+ sumcheck rojp site 5          16.959439          0.000000
+ sumcheck jg site 5          64.294340
+ sumcheck sgpb site 5         198.791167          0.000000
+ sumcheck fouvb/10 site 5          83.264914          0.000000
+ sumcheck pjyl site 6      109572.626133          0.000000
+ sumcheck rojp site 6         -22.618937          0.000000
+ sumcheck jg site 6          64.294340
+ sumcheck sgpb site 6        -283.464760          0.000000
+ sumcheck fouvb/10 site 6         -28.549643          0.000000
+ sumcheck pjyl site 7      -32190.176224          0.000000
+ sumcheck rojp site 7          14.832324          0.000000
+ sumcheck jg site 7          64.294340
+ sumcheck sgpb site 7          88.396130          0.000000
+ sumcheck fouvb/10 site 7          64.956274          0.000000
+ sumcheck pjyl site 8       66120.070336          0.000000
+ sumcheck rojp site 8          -6.760443          0.000000
+ sumcheck jg site 8          64.294340
+ sumcheck sgpb site 8        -128.155434          0.000000
+ sumcheck fouvb/10 site 8           6.017814          0.000000
+ sumcheck pjyl site 9       57543.702957          0.000000
+ sumcheck rojp site 9         -19.231269          0.000000
+ sumcheck jg site 9          64.294340
+ sumcheck sgpb site 9        -137.505293          0.000000
+ sumcheck fouvb/10 site 9          37.084329          0.000000
+ sumcheck onsite vcoul(PW-PW)/1000        -388.607984          0.000000
+ sumcheck strx/1e6 iq=3       -1115.205537          0.000000
+ sumcheck vcoulq(bb)  q=0.57735,0,0         769.026925          0.000000
+ sumcheck vcoulq(pb)  q=0.57735,0,0        1600.378615          0.000000
+ sumcheck vcoulq/1000 q=0.57735,0,0         452.678780          0.000000
+ sumcheck ppovl iq=3       76419.153195          0.000000
+
+ evals of vcoul for iq = 3 of 10  q =  0.57735  0.00000  0.00000  rank 823
+ Write coulomb integrals to file Vcoud.00003
+
+ sumcheck pjyl site 1       85205.160354      42870.942690
+ sumcheck rojp site 1           5.103921         -0.146569
+ sumcheck jg site 1          66.372766
+ sumcheck sgpb site 1         -11.989020          2.084827
+ sumcheck fouvb/10 site 1         -68.609869        -21.519669
+ sumcheck pjyl site 2      -11638.958464      39155.523889
+ sumcheck rojp site 2           4.376390         12.404738
+ sumcheck jg site 2          66.372766
+ sumcheck sgpb site 2          72.310760        -40.391978
+ sumcheck fouvb/10 site 2          47.036323         -2.528550
+ sumcheck pjyl site 3       22355.046886      32530.936965
+ sumcheck rojp site 3          11.105420          0.789201
+ sumcheck jg site 3          66.372766
+ sumcheck sgpb site 3          67.985825         -9.483953
+ sumcheck fouvb/10 site 3          10.696614        -31.811766
+ sumcheck pjyl site 4       30812.658643      29627.992845
+ sumcheck rojp site 4          14.255836         -0.607869
+ sumcheck jg site 4          66.372766
+ sumcheck sgpb site 4         130.553953          7.146475
+ sumcheck fouvb/10 site 4          25.461204        -15.159478
+ sumcheck pjyl site 5        8896.603133       9281.879538
+ sumcheck rojp site 5          15.490392         -6.253455
+ sumcheck jg site 5          66.372766
+ sumcheck sgpb site 5         186.441838         17.979722
+ sumcheck fouvb/10 site 5          87.819115          3.874258
+ sumcheck pjyl site 6       22545.434844      65605.355640
+ sumcheck rojp site 6          -9.975929         -4.295219
+ sumcheck jg site 6          66.372766
+ sumcheck sgpb site 6        -169.171016         13.213292
+ sumcheck fouvb/10 site 6         -25.765720        -14.767553
+ sumcheck pjyl site 7       37710.598615      42971.513610
+ sumcheck rojp site 7          12.009090         -8.843314
+ sumcheck jg site 7          66.372766
+ sumcheck sgpb site 7          89.918816         53.513690
+ sumcheck fouvb/10 site 7          81.679762        -15.580619
+ sumcheck pjyl site 8      -19820.661150      15537.918473
+ sumcheck rojp site 8          -8.902222         -4.447524
+ sumcheck jg site 8          66.372766
+ sumcheck sgpb site 8         -90.795262         26.368506
+ sumcheck fouvb/10 site 8           3.118126        -14.117249
+ sumcheck pjyl site 9      -50344.157920      -9108.709419
+ sumcheck rojp site 9          -8.027355          2.030657
+ sumcheck jg site 9          66.372766
+ sumcheck sgpb site 9         -43.969545        -14.302773
+ sumcheck fouvb/10 site 9          46.648310          0.144111
+ sumcheck onsite vcoul(PW-PW)/1000        -395.985859          0.000000
+ sumcheck strx/1e6 iq=4       -1029.203348          0.000000
+ sumcheck vcoulq(bb)  q=0.433013,0.25,0         801.767302          0.000000
+ sumcheck vcoulq(pb)  q=0.433013,0.25,0        1813.495088       -947.351243
+ sumcheck vcoulq/1000 q=0.433013,0.25,0         432.025536          0.000000
+ sumcheck ppovl iq=4       72603.604000          0.000000
+
+ evals of vcoul for iq = 4 of 10  q =  0.43301  0.25000  0.00000  rank 818
+ Write coulomb integrals to file Vcoud.00004
+
+ sumcheck pjyl site 1     -150932.744172      38041.926218
+ sumcheck rojp site 1           1.401065         -5.157557
+ sumcheck jg site 1          70.203842
+ sumcheck sgpb site 1          66.722953         52.016164
+ sumcheck fouvb/10 site 1         317.051838         24.943257
+ sumcheck pjyl site 2     -103955.454154     -33730.363073
+ sumcheck rojp site 2           0.598849          3.184689
+ sumcheck jg site 2          70.203842
+ sumcheck sgpb site 2         114.096031        -45.022802
+ sumcheck fouvb/10 site 2         223.421599        -94.448567
+ sumcheck pjyl site 3       30641.861248      39989.385725
+ sumcheck rojp site 3          -1.049715          0.427410
+ sumcheck jg site 3          70.203842
+ sumcheck sgpb site 3          -9.579976         -6.540590
+ sumcheck fouvb/10 site 3          36.894113       -200.039004
+ sumcheck pjyl site 4       -9410.130330      -7896.648013
+ sumcheck rojp site 4           9.609036          2.782079
+ sumcheck jg site 4          70.203842
+ sumcheck sgpb site 4         107.816843        -22.419404
+ sumcheck fouvb/10 site 4         196.280552        -76.208379
+ sumcheck pjyl site 5       57839.309062       4751.368390
+ sumcheck rojp site 5          10.076081         -1.439908
+ sumcheck jg site 5          70.203842
+ sumcheck sgpb site 5          68.741202         -0.903213
+ sumcheck fouvb/10 site 5         216.343430        -75.310037
+ sumcheck pjyl site 6      129058.716192      14912.681508
+ sumcheck rojp site 6         -21.465465         -2.258204
+ sumcheck jg site 6          70.203842
+ sumcheck sgpb site 6        -238.334839         13.765551
+ sumcheck fouvb/10 site 6         164.772824         19.405069
+ sumcheck pjyl site 7       51947.510951     -27244.797483
+ sumcheck rojp site 7           3.465802         -1.481851
+ sumcheck jg site 7          70.203842
+ sumcheck sgpb site 7           7.309326          7.138552
+ sumcheck fouvb/10 site 7         262.821528         18.621682
+ sumcheck pjyl site 8        3728.758143      14043.907498
+ sumcheck rojp site 8           1.686427          5.000841
+ sumcheck jg site 8          70.203842
+ sumcheck sgpb site 8         -42.256225         -5.904567
+ sumcheck fouvb/10 site 8          26.818448       -164.515428
+ sumcheck pjyl site 9      -23834.020568     -10347.585142
+ sumcheck rojp site 9           1.965295        -17.010634
+ sumcheck jg site 9          70.203842
+ sumcheck sgpb site 9         -10.989752         97.170723
+ sumcheck fouvb/10 site 9          26.225484       -168.379140
+ sumcheck onsite vcoul(PW-PW)/1000        -582.914376          0.000000
+ sumcheck strx/1e6 iq=5          -6.865035          0.000000
+ sumcheck vcoulq(bb)  q=0,0,0.2325        1639.980163          0.000000
+ sumcheck vcoulq(pb)  q=0,0,0.2325       13527.627752      -6497.769352
+ sumcheck vcoulq/1000 q=0,0,0.2325         652.954103          0.000000
+ sumcheck ppovl iq=5       69381.653784          0.000000
+
+ evals of vcoul for iq = 5 of 10  q =  0.00000  0.00000  0.23250  rank 810
+ Write coulomb integrals to file Vcoud.00005
+
+ sumcheck pjyl site 1      -21170.522738    -105735.492101
+ sumcheck rojp site 1           6.331660         -6.868758
+ sumcheck jg site 1          68.180363
+ sumcheck sgpb site 1           0.697540         13.406037
+ sumcheck fouvb/10 site 1          48.109649       -125.178527
+ sumcheck pjyl site 2     -103349.448425       6604.531756
+ sumcheck rojp site 2          -3.018947          3.045754
+ sumcheck jg site 2          68.180363
+ sumcheck sgpb site 2          55.977428        -28.879991
+ sumcheck fouvb/10 site 2          73.604603        -44.235672
+ sumcheck pjyl site 3        2481.371295     -40778.414370
+ sumcheck rojp site 3           2.263252         -3.366304
+ sumcheck jg site 3          68.180363
+ sumcheck sgpb site 3          28.711886         50.933413
+ sumcheck fouvb/10 site 3         -49.941018        -34.907132
+ sumcheck pjyl site 4        1272.728612     -65447.800816
+ sumcheck rojp site 4          10.934561          1.681830
+ sumcheck jg site 4          68.180363
+ sumcheck sgpb site 4         117.138405         12.997845
+ sumcheck fouvb/10 site 4          51.530469        -49.528435
+ sumcheck pjyl site 5       91177.468301     -22750.649627
+ sumcheck rojp site 5           9.710672          5.506735
+ sumcheck jg site 5          68.180363
+ sumcheck sgpb site 5         114.884118        -79.301090
+ sumcheck fouvb/10 site 5         112.110719         -8.649349
+ sumcheck pjyl site 6      115433.420298     -41809.265731
+ sumcheck rojp site 6         -19.743959          0.348040
+ sumcheck jg site 6          68.180363
+ sumcheck sgpb site 6        -228.150145        -23.108366
+ sumcheck fouvb/10 site 6          24.402006         -0.012234
+ sumcheck pjyl site 7      -29863.601556     112149.756507
+ sumcheck rojp site 7           7.537309         -8.479217
+ sumcheck jg site 7          68.180363
+ sumcheck sgpb site 7          36.914988         28.087541
+ sumcheck fouvb/10 site 7         113.620984        -38.909900
+ sumcheck pjyl site 8        9165.032472      42353.830658
+ sumcheck rojp site 8          -4.835117         -2.896393
+ sumcheck jg site 8          68.180363
+ sumcheck sgpb site 8         -83.763004         -4.420767
+ sumcheck fouvb/10 site 8         -27.793443        -45.868462
+ sumcheck pjyl site 9       22936.854764      16222.936160
+ sumcheck rojp site 9           9.399791         -8.898149
+ sumcheck jg site 9          68.180363
+ sumcheck sgpb site 9          79.466674         41.750164
+ sumcheck fouvb/10 site 9           4.456825        -59.573077
+ sumcheck onsite vcoul(PW-PW)/1000        -433.914349          2.321309
+ sumcheck strx/1e6 iq=6        -603.565587          0.000000
+ sumcheck vcoulq(bb)  q=0.288675,0,0.2325         942.860656          0.000000
+ sumcheck vcoulq(pb)  q=0.288675,0,0.2325        3450.497050      -3787.103927
+ sumcheck vcoulq/1000 q=0.288675,0,0.2325         489.920503          0.000000
+ sumcheck ppovl iq=6       71022.517782          0.000000
+
+ evals of vcoul for iq = 6 of 10  q =  0.28868  0.00000  0.23250  rank 814
+ Write coulomb integrals to file Vcoud.00006
+
+ sumcheck pjyl site 1       95842.519414      -7671.104409
+ sumcheck rojp site 1           3.443442          0.147922
+ sumcheck jg site 1          66.774844
+ sumcheck sgpb site 1         -73.857036        -25.693226
+ sumcheck fouvb/10 site 1         -68.389974         -2.418354
+ sumcheck pjyl site 2     -110222.581394      21625.820309
+ sumcheck rojp site 2         -16.606875          9.024067
+ sumcheck jg site 2          66.774844
+ sumcheck sgpb site 2         -80.410282        -44.281090
+ sumcheck fouvb/10 site 2          24.607848         -2.510804
+ sumcheck pjyl site 3      104794.225665     -70079.717001
+ sumcheck rojp site 3          -4.026579          4.559115
+ sumcheck jg site 3          66.774844
+ sumcheck sgpb site 3          -7.086757        -33.262537
+ sumcheck fouvb/10 site 3          -0.476584          7.227775
+ sumcheck pjyl site 4        4764.471329      -1359.874474
+ sumcheck rojp site 4           8.914451         -4.513435
+ sumcheck jg site 4          66.774844
+ sumcheck sgpb site 4         108.996940         65.620086
+ sumcheck fouvb/10 site 4          25.566196          6.368496
+ sumcheck pjyl site 5       69977.357987      15226.170024
+ sumcheck rojp site 5           8.612783         -0.068378
+ sumcheck jg site 5          66.774844
+ sumcheck sgpb site 5         171.401388         20.702605
+ sumcheck fouvb/10 site 5          81.068383         -0.548382
+ sumcheck pjyl site 6       83257.807421       8278.017732
+ sumcheck rojp site 6         -15.573801         -4.275386
+ sumcheck jg site 6          66.774844
+ sumcheck sgpb site 6        -208.801980         30.626659
+ sumcheck fouvb/10 site 6         -26.519994          2.205187
+ sumcheck pjyl site 7      -76161.488710     -14039.989918
+ sumcheck rojp site 7          15.553452          2.863694
+ sumcheck jg site 7          66.774844
+ sumcheck sgpb site 7          96.339768        -10.699891
+ sumcheck fouvb/10 site 7          61.352194          0.603496
+ sumcheck pjyl site 8      -59002.487824      37311.993084
+ sumcheck rojp site 8           4.203243         -4.379900
+ sumcheck jg site 8          66.774844
+ sumcheck sgpb site 8          -0.580399         61.665236
+ sumcheck fouvb/10 site 8          -1.016101         -1.943884
+ sumcheck pjyl site 9       57442.614072     -24495.508758
+ sumcheck rojp site 9           5.680053         -6.950092
+ sumcheck jg site 9          66.774844
+ sumcheck sgpb site 9           6.565428         15.813768
+ sumcheck fouvb/10 site 9          -7.721908        -30.325237
+ sumcheck onsite vcoul(PW-PW)/1000        -385.166731         -0.000003
+ sumcheck strx/1e6 iq=7       -1152.162849          0.000000
+ sumcheck vcoulq(bb)  q=0.57735,0,0.2325         721.138573          0.000000
+ sumcheck vcoulq(pb)  q=0.57735,0,0.2325        1113.102905       -181.370044
+ sumcheck vcoulq/1000 q=0.57735,0,0.2325         433.411713          0.000000
+ sumcheck ppovl iq=7       72739.543273          0.000000
+
+ evals of vcoul for iq = 7 of 10  q =  0.57735  0.00000  0.23250  rank 817
+ Write coulomb integrals to file Vcoud.00007
+
+ sumcheck pjyl site 1       74843.428388      32423.138859
+ sumcheck rojp site 1           5.823141          4.905884
+ sumcheck jg site 1          64.366949
+ sumcheck sgpb site 1         -22.310599          8.612403
+ sumcheck fouvb/10 site 1         -68.764542        -15.299227
+ sumcheck pjyl site 2      -37745.134245      54710.590311
+ sumcheck rojp site 2           2.279916         15.214353
+ sumcheck jg site 2          64.366949
+ sumcheck sgpb site 2          84.232985        -69.323714
+ sumcheck fouvb/10 site 2          40.805036        -14.224361
+ sumcheck pjyl site 3        3770.133329      -8281.122307
+ sumcheck rojp site 3          -4.061450          9.979980
+ sumcheck jg site 3          64.366949
+ sumcheck sgpb site 3         -27.286265        -44.588234
+ sumcheck fouvb/10 site 3         -19.090131         -4.939778
+ sumcheck pjyl site 4       -4850.381482      31452.636947
+ sumcheck rojp site 4           4.547525          3.519291
+ sumcheck jg site 4          64.366949
+ sumcheck sgpb site 4          72.466666        -17.105495
+ sumcheck fouvb/10 site 4          21.909307        -11.332489
+ sumcheck pjyl site 5       13523.433342       7569.539190
+ sumcheck rojp site 5           7.594662         -0.651189
+ sumcheck jg site 5          64.366949
+ sumcheck sgpb site 5         137.261955        -28.732360
+ sumcheck fouvb/10 site 5          79.353863         -4.867975
+ sumcheck pjyl site 6       84343.585006      75292.378296
+ sumcheck rojp site 6         -10.971045         -0.444658
+ sumcheck jg site 6          64.366949
+ sumcheck sgpb site 6        -180.045573        -16.626147
+ sumcheck fouvb/10 site 6         -29.816555        -13.881714
+ sumcheck pjyl site 7        3664.357042      40939.520933
+ sumcheck rojp site 7          12.603686         -5.709646
+ sumcheck jg site 7          64.366949
+ sumcheck sgpb site 7          73.301865         30.290071
+ sumcheck fouvb/10 site 7          75.018749        -13.841211
+ sumcheck pjyl site 8       31936.610325      13516.750869
+ sumcheck rojp site 8           8.008054         -2.351210
+ sumcheck jg site 8          64.366949
+ sumcheck sgpb site 8          65.670703         38.442200
+ sumcheck fouvb/10 site 8          -3.922125          1.347751
+ sumcheck pjyl site 9       19548.272694       6846.995869
+ sumcheck rojp site 9           1.214866         -3.590275
+ sumcheck jg site 9          64.366949
+ sumcheck sgpb site 9         -11.619126         -6.872026
+ sumcheck fouvb/10 site 9          -6.667046        -30.189167
+ sumcheck onsite vcoul(PW-PW)/1000        -395.332432          4.839508
+ sumcheck strx/1e6 iq=8       -1149.651647          0.000000
+ sumcheck vcoulq(bb)  q=0.433013,0.25,0.2325         740.422055          0.000000
+ sumcheck vcoulq(pb)  q=0.433013,0.25,0.2325         977.988932       -882.700945
+ sumcheck vcoulq/1000 q=0.433013,0.25,0.2325         434.473448          0.000000
+ sumcheck ppovl iq=8       76264.829530          0.000000
+
+ evals of vcoul for iq = 8 of 10  q =  0.43301  0.25000  0.23250  rank 823
+ Write coulomb integrals to file Vcoud.00008
+
+ sumcheck pjyl site 1      -97556.714867      -5290.881930
+ sumcheck rojp site 1          -9.138168         -0.689071
+ sumcheck jg site 1          67.849096
+ sumcheck sgpb site 1          -9.774465          1.465974
+ sumcheck fouvb/10 site 1       37883.641244      -1993.598120
+ sumcheck pjyl site 2     -158600.974993        188.129309
+ sumcheck rojp site 2         -14.089505         -0.104983
+ sumcheck jg site 2          67.849096
+ sumcheck sgpb site 2         -28.383009         -0.147641
+ sumcheck fouvb/10 site 2       37872.973557       -503.043073
+ sumcheck pjyl site 3      113526.704151       4153.359933
+ sumcheck rojp site 3          -8.211284         -0.302221
+ sumcheck jg site 3          67.849096
+ sumcheck sgpb site 3         -78.555875          3.619244
+ sumcheck fouvb/10 site 3       37806.340026      -1988.389098
+ sumcheck pjyl site 4      -34573.562754      -2094.165335
+ sumcheck rojp site 4           6.620869          0.138532
+ sumcheck jg site 4          67.849096
+ sumcheck sgpb site 4         105.713127         -0.788443
+ sumcheck fouvb/10 site 4       30598.244994      -1204.727184
+ sumcheck pjyl site 5       21438.279317       1414.945194
+ sumcheck rojp site 5          12.700171         -0.231472
+ sumcheck jg site 5          67.849096
+ sumcheck sgpb site 5         107.313732          0.842196
+ sumcheck fouvb/10 site 5       30641.797833        396.915704
+ sumcheck pjyl site 6      126904.868271       1118.817269
+ sumcheck rojp site 6         -16.022259          0.077952
+ sumcheck jg site 6          67.849096
+ sumcheck sgpb site 6        -209.051228         -1.002773
+ sumcheck fouvb/10 site 6       30555.602675         -3.794379
+ sumcheck pjyl site 7       46479.982444        486.344159
+ sumcheck rojp site 7           9.213260         -0.165907
+ sumcheck jg site 7          67.849096
+ sumcheck sgpb site 7          53.395458          0.676463
+ sumcheck fouvb/10 site 7       30646.529700       -804.849434
+ sumcheck pjyl site 8       24952.074048        934.698589
+ sumcheck rojp site 8           5.708411          0.150702
+ sumcheck jg site 8          67.849096
+ sumcheck sgpb site 8          14.496202         -0.972024
+ sumcheck fouvb/10 site 8       30585.396483       -804.309721
+ sumcheck pjyl site 9      -42204.567779       -562.529139
+ sumcheck rojp site 9         -19.464697          0.057013
+ sumcheck jg site 9          67.849096
+ sumcheck sgpb site 9        -135.843900         -0.195451
+ sumcheck fouvb/10 site 9       30593.279765         -3.475615
+ sumcheck onsite vcoul(PW-PW)/1000      -28676.075447          0.000000
+ sumcheck strx/1e6 iq=9          82.417601          0.000000
+ sumcheck vcoulq(bb)  q=0.014434,0,0      210698.885482          0.000000
+ sumcheck vcoulq(pb)  q=0.014434,0,0     2933884.693021     -68207.134464
+ sumcheck vcoulq/1000 q=0.014434,0,0       47453.986865          0.000000
+ sumcheck ppovl iq=9       72899.499217          0.000000
+
+ evals of vcoul for iq = 9 of 10  q =  0.01443  0.00000  0.00000  rank 816
+ Write coulomb integrals to file Vcoud.00009
+
+ sumcheck pjyl site 1      -97720.476535       -654.797806
+ sumcheck rojp site 1          -9.161389          0.003121
+ sumcheck jg site 1          67.849701
+ sumcheck sgpb site 1          -9.835738          0.132173
+ sumcheck fouvb/10 site 1       46809.860026        315.647624
+ sumcheck pjyl site 2     -158588.598462      -3423.595973
+ sumcheck rojp site 2         -14.081112         -0.559124
+ sumcheck jg site 2          67.849701
+ sumcheck sgpb site 2         -28.347069          1.850083
+ sumcheck fouvb/10 site 2       46732.610220      -1314.469039
+ sumcheck pjyl site 3      113486.968267       5590.770624
+ sumcheck rojp site 3          -8.193793         -0.601692
+ sumcheck jg site 3          67.849701
+ sumcheck sgpb site 3         -78.479582          4.755596
+ sumcheck fouvb/10 site 3       46640.392658      -2945.821975
+ sumcheck pjyl site 4      -34600.818728       -902.903979
+ sumcheck rojp site 4           6.614914          0.318091
+ sumcheck jg site 4          67.849701
+ sumcheck sgpb site 4         105.676075         -1.656810
+ sumcheck fouvb/10 site 4       37775.945919      -1059.671013
+ sumcheck pjyl site 5       21345.727952       2661.552096
+ sumcheck rojp site 5          12.700159          0.174880
+ sumcheck jg site 5          67.849701
+ sumcheck sgpb site 5         107.297316         -1.348531
+ sumcheck fouvb/10 site 5       37798.341792      -1059.695002
+ sumcheck pjyl site 6      126924.634145        745.473184
+ sumcheck rojp site 6         -16.024293          0.046077
+ sumcheck jg site 6          67.849701
+ sumcheck sgpb site 6        -209.066810         -0.795923
+ sumcheck fouvb/10 site 6       37723.618984        256.925525
+ sumcheck pjyl site 7       46481.713438        331.005053
+ sumcheck rojp site 7           9.211156         -0.027102
+ sumcheck jg site 7          67.849701
+ sumcheck sgpb site 7          53.368418          1.092720
+ sumcheck fouvb/10 site 7       37825.136021        257.239465
+ sumcheck pjyl site 8       24810.069772       3587.231899
+ sumcheck rojp site 8           5.697068          0.369684
+ sumcheck jg site 8          67.849701
+ sumcheck sgpb site 8          14.422554         -1.898199
+ sumcheck fouvb/10 site 8       37689.819162      -2378.230121
+ sumcheck pjyl site 9      -41987.494647      -5183.255488
+ sumcheck rojp site 9         -19.426107         -1.214288
+ sumcheck jg site 9          67.849701
+ sumcheck sgpb site 9        -135.582149          8.366490
+ sumcheck fouvb/10 site 9       37687.104743      -2378.286097
+ sumcheck onsite vcoul(PW-PW)/1000      -35311.800297          0.000000
+ sumcheck strx/1e6 iq=10          83.952601          0.000000
+ sumcheck vcoulq(bb)  q=0,0,0.011625      259808.490185          0.000000
+ sumcheck vcoulq(pb)  q=0,0,0.011625     3619921.260731    -101747.990154
+ sumcheck vcoulq/1000 q=0,0,0.011625       58476.614091          0.000000
+ sumcheck ppovl iq=10       72899.499217          0.000000
+
+ evals of vcoul for iq = 10 of 10  q =  0.00000  0.00000  0.01162  rank 816
+ Write coulomb integrals to file Vcoud.00010
+ Exit 0 finished making bare coulomb integrals 
+ CPU time:  55.129s   Wall clock 55.168s  at  17:22:23 26.08.2018  on  ellery

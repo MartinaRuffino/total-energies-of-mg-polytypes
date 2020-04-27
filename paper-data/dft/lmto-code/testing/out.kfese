@@ -1,0 +1,3854 @@
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:PW91+PBE(gga), read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.162397  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=2.53261  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=-2.53261  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.609835  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.580336  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418033  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.357749
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.806351
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.806351
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.789282
+ E          0.580336   0.000000  -0.502527   0.045710  -0.585813
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.436716
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.578376 (up-dn=0.000003)
+ LM: it 0 of 0  ehk0=-32031.538185  pv=0.5582  mmom=-0.0004  seref=0
+ cpudel    ...   Time this iter:  time(s):  0.449    total:  0.449s
+ Exit 0 LM 
+ CPU time:  0.449s   Wall clock 0.489s  at  14:46:34 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:PW91+PBE(gga), read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.357749
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.806351
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.806351
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.789282
+ E          0.580336   0.000000  -0.502527   0.045710  -0.585813
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.436716
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.578376 (up-dn=0.000003)
+ cpudel    ...   Time this iter:  time(s):  0.208    total:  0.208s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1201 -1.0689 -1.0579 -1.0483 -0.5040 -0.5016 -0.4811 -0.3979 -0.3828
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1201 -1.0689 -1.0579 -1.0483 -0.5040 -0.5016 -0.4811 -0.3979 -0.3828
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1118 -1.0793 -1.0579 -1.0483 -0.5047 -0.5002 -0.4502 -0.4187 -0.3876
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1118 -1.0793 -1.0579 -1.0483 -0.5047 -0.5002 -0.4502 -0.4187 -0.3876
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.030924;  58.000000 electrons;  D(Ef):  114.886
+         Sum occ. bands:  -22.1185897  incl. Bloechl correction:   -0.000854
+         Mag. moment:      -0.001647
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4497939  ehk=-32031.4498172  sumev=-22.1185897  delsev=0.0883669
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.739283
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.34e-7
+ AMIX: nmix=0 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.31e-7
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.162397  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=2.53261  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=-2.53261  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.609835  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.580336  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418033  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.357749
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.806352
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.806351
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.789282
+ E          0.580336   0.000000  -0.502527   0.045710  -0.585813
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.436716
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.578376 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000431  from output rho: -0.001647
+ SV:   1  1.340e-7 0.3000  6.871e-8  -32031.44981720-0.001647 L
+
+   it  1  of  1    ehf=  -32031.449794   ehk=  -32031.449817
+x convc=1e-6 nit=1 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.001647 ehf=-32031.4497939 ehk=-32031.4498172
+ cpudel    ...   Time this iter:  time(s):  4.26     total:  4.47s
+ Exit 0 LM 
+ CPU time:  4.465s   Wall clock 4.520s  at  14:46:39 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:PW91+PBE(gga), read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.162397  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=2.53261  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=-2.53261  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.609835  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.580336  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418033  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.357749
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.806277
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.806276
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.789282
+ E          0.580336   0.000000  -0.502527   0.045710  -0.585813
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.436716
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.578360 (up-dn=0.000003)
+ LM: it 0 of 0  ehk0=-32031.536566  pv=0.5656  mmom=-0.0004  seref=0
+ cpudel    ...   Time this iter:  time(s):  0.313    total:  0.313s
+ Exit 0 LM 
+ CPU time:  0.313s   Wall clock 0.368s  at  14:46:39 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:PW91+PBE(gga), read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.357749
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.806277
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.806276
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.789282
+ E          0.580336   0.000000  -0.502527   0.045710  -0.585813
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.436716
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.578360 (up-dn=0.000003)
+ cpudel    ...   Time this iter:  time(s):  0.209    total:  0.209s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1200 -1.0689 -1.0579 -1.0482 -0.5036 -0.5011 -0.4808 -0.3959 -0.3825
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1200 -1.0689 -1.0579 -1.0482 -0.5036 -0.5011 -0.4808 -0.3959 -0.3825
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1118 -1.0793 -1.0579 -1.0482 -0.5042 -0.4999 -0.4496 -0.4169 -0.3873
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1118 -1.0793 -1.0579 -1.0482 -0.5042 -0.4999 -0.4496 -0.4169 -0.3873
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.035504;  58.000000 electrons;  D(Ef):  109.008
+         Sum occ. bands:  -22.0295433  incl. Bloechl correction:   -0.000868
+         Mag. moment:      -0.001410
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4511141  ehk=-32031.4469407  sumev=-22.0295433  delsev=0.0854491
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.760371
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=9.78e-3
+ AMIX: nmix=0 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=9.78e-3
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160296  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.25439  mom=2.49639  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.25439  mom=-2.49639  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.615142  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.580634  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.417499  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160296   0.000000   0.036399   0.114402  -0.359118
+ Fe1       -0.254390   0.000000   0.121271  -0.069999  -0.803796
+ Fe2       -0.254390   0.000000   0.121271  -0.069999  -0.803796
+ Se1       -0.615142   0.000000   0.383269  -0.079244  -0.788718
+ E          0.580634   0.000000  -0.500324   0.048194  -0.583443
+ E2         0.417499   0.000000  -0.254648   0.139759  -0.439392
+ Sum Q=0.000001  Emad=0.265760(-1.214721)  Vmtz=-0.578134 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000421  from output rho: -0.001410
+ SV:   1  9.785e-3 0.3000  5.836e-3  -32031.44694069-0.001410 L
+
+   it  1  of 40    ehf=  -32031.451114   ehk=  -32031.446941
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0014095 ehf=-32031.4511141 ehk=-32031.4469407
+ cpudel    ...   Time this iter:  time(s):  3.05     total:  3.26s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 2 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1202 -1.0693 -1.0582 -1.0486 -0.5025 -0.4999 -0.4799 -0.3945 -0.3822
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1202 -1.0693 -1.0582 -1.0486 -0.5025 -0.4999 -0.4799 -0.3945 -0.3822
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1119 -1.0797 -1.0582 -1.0486 -0.5031 -0.4988 -0.4484 -0.4154 -0.3871
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1119 -1.0797 -1.0582 -1.0486 -0.5031 -0.4988 -0.4484 -0.4154 -0.3871
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.032462;  58.000000 electrons;  D(Ef):  109.410
+         Sum occ. bands:  -21.8991160  incl. Bloechl correction:   -0.000872
+         Mag. moment:      -0.001439
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4499770  ehk=-32031.4474594  sumev=-21.8991160  delsev=0.0861020
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.743867
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=6.97e-3  last it=9.78e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=6.97e-3
+   tj:-1.72942
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.16269  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.255817  mom=2.42376  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.255817  mom=-2.42376  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.616307  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581431  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418696  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162690   0.000000   0.035952   0.115120  -0.358650
+ Fe1       -0.255817   0.000000   0.121250  -0.071094  -0.804813
+ Fe2       -0.255817   0.000000   0.121250  -0.071094  -0.804813
+ Se1       -0.616307   0.000000   0.383701  -0.079688  -0.789253
+ E          0.581431   0.000000  -0.501777   0.047494  -0.584380
+ E2         0.418696   0.000000  -0.254588   0.140949  -0.438596
+ Sum Q=0.000000  Emad=0.267571(-1.219234)  Vmtz=-0.578343 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000406  from output rho: -0.001439
+ SV:   2  6.966e-3 0.3000  1.132e-2  -32031.44745936-0.001439 A -1.73
+
+   it  2  of 40    ehf=  -32031.449977   ehk=  -32031.447459
+ From last iter    ehf=  -32031.451114   ehk=  -32031.446941
+ diffe(q)=  0.001137 (0.006966)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0014385 ehf=-32031.449977 ehk=-32031.4474594
+ cpudel    ...   Time this iter:  time(s):  3.20     total:  6.46s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 3 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0700 -1.0590 -1.0494 -0.5035 -0.5008 -0.4809 -0.3952 -0.3829
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0700 -1.0590 -1.0494 -0.5035 -0.5008 -0.4809 -0.3952 -0.3829
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0804 -1.0590 -1.0494 -0.5040 -0.4997 -0.4494 -0.4162 -0.3878
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0804 -1.0591 -1.0494 -0.5040 -0.4997 -0.4494 -0.4162 -0.3878
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.035945;  58.000000 electrons;  D(Ef):  107.295
+         Sum occ. bands:  -21.9752916  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001373
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4484157  ehk=-32031.4462004  sumev=-21.9752916  delsev=0.0863747
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.757425
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=4.52e-3  last it=6.97e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.52e-3
+   tj:-1.20594
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160004  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.248144  mom=2.33187  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.248144  mom=-2.33187  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.622773  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581625  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418579  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160004   0.000000   0.035434   0.113295  -0.360176
+ Fe1       -0.248144   0.000000   0.118568  -0.068007  -0.801849
+ Fe2       -0.248144   0.000000   0.118568  -0.068007  -0.801849
+ Se1       -0.622773   0.000000   0.388939  -0.079311  -0.788663
+ E          0.581625   0.000000  -0.499086   0.050369  -0.581612
+ E2         0.418579   0.000000  -0.257751   0.137675  -0.441728
+ Sum Q=0.000000  Emad=0.266884(-1.226067)  Vmtz=-0.578050 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000384  from output rho: -0.001373
+ SV:   3  4.524e-3 0.3000  1.448e-2  -32031.44620039-0.001373 A -1.21
+
+   it  3  of 40    ehf=  -32031.448416   ehk=  -32031.446200
+ From last iter    ehf=  -32031.449977   ehk=  -32031.447459
+ diffe(q)=  0.001561 (0.004524)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0013731 ehf=-32031.4484157 ehk=-32031.4462004
+ cpudel    ...   Time this iter:  time(s):  3.39     total:  9.85s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 4 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1212 -1.0706 -1.0596 -1.0499 -0.5022 -0.4994 -0.4799 -0.3936 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1212 -1.0706 -1.0596 -1.0499 -0.5022 -0.4994 -0.4799 -0.3936 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1129 -1.0810 -1.0596 -1.0499 -0.5027 -0.4984 -0.4479 -0.4143 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1129 -1.0810 -1.0596 -1.0499 -0.5027 -0.4984 -0.4479 -0.4143 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.033395;  58.000000 electrons;  D(Ef):  107.684
+         Sum occ. bands:  -21.8210029  incl. Bloechl correction:   -0.000882
+         Mag. moment:      -0.001415
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4453193  ehk=-32031.4451471  sumev=-21.8210029  delsev=0.0895061
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.741540
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=9.73e-4  last it=4.52e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=9.73e-4
+   tj: 0.14210
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160975  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.251325  mom=2.34379  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.251325  mom=-2.34379  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620132  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581505  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418928  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160975   0.000000   0.035776   0.114109  -0.359473
+ Fe1       -0.251325   0.000000   0.119632  -0.069334  -0.803097
+ Fe2       -0.251325   0.000000   0.119632  -0.069334  -0.803097
+ Se1       -0.620132   0.000000   0.386802  -0.079463  -0.788954
+ E          0.581505   0.000000  -0.500211   0.049130  -0.582801
+ E2         0.418928   0.000000  -0.256591   0.139165  -0.440397
+ Sum Q=0.000000  Emad=0.267213(-1.223355)  Vmtz=-0.578160 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000391  from output rho: -0.001415
+ SV:   4  9.729e-4 0.3000  1.984e-3  -32031.44514709-0.001415 A 0.142
+
+   it  4  of 40    ehf=  -32031.445319   ehk=  -32031.445147
+ From last iter    ehf=  -32031.448416   ehk=  -32031.446200
+ diffe(q)=  0.003096 (0.000973)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0014146 ehf=-32031.4453193 ehk=-32031.4451471
+ cpudel    ...   Time this iter:  time(s):  3.03     total:  12.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 5 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1212 -1.0704 -1.0594 -1.0497 -0.5028 -0.5000 -0.4804 -0.3942 -0.3828
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1212 -1.0704 -1.0594 -1.0497 -0.5028 -0.5000 -0.4804 -0.3942 -0.3828
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1129 -1.0808 -1.0594 -1.0497 -0.5033 -0.4990 -0.4486 -0.4151 -0.3876
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1129 -1.0808 -1.0594 -1.0497 -0.5033 -0.4990 -0.4486 -0.4151 -0.3876
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.035171;  58.000000 electrons;  D(Ef):  106.937
+         Sum occ. bands:  -21.8892875  incl. Bloechl correction:   -0.000882
+         Mag. moment:      -0.001379
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4457566  ehk=-32031.4454165  sumev=-21.8892875  delsev=0.0900222
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.751820
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=6.07e-4  last it=9.73e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=6.07e-4
+   tj: 0.37109
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160596  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.2507  mom=2.33861  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.2507  mom=-2.33861  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620439  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581397  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418886  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160596   0.000000   0.035798   0.113947  -0.359594
+ Fe1       -0.250700   0.000000   0.119428  -0.069068  -0.802839
+ Fe2       -0.250700   0.000000   0.119428  -0.069068  -0.802838
+ Se1       -0.620439   0.000000   0.387094  -0.079401  -0.788883
+ E          0.581397   0.000000  -0.499894   0.049346  -0.582560
+ E2         0.418886   0.000000  -0.256820   0.138897  -0.440645
+ Sum Q=0.000000  Emad=0.267018(-1.223321)  Vmtz=-0.578124 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000391  from output rho: -0.001379
+ SV:   5  6.065e-4 0.3000  8.156e-4  -32031.44541654-0.001379 A 0.371
+
+   it  5  of 40    ehf=  -32031.445757   ehk=  -32031.445417
+ From last iter    ehf=  -32031.445319   ehk=  -32031.445147
+ diffe(q)= -0.000437 (0.000607)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0013789 ehf=-32031.4457566 ehk=-32031.4454165
+ cpudel    ...   Time this iter:  time(s):  3.04     total:  15.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 6 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1211 -1.0704 -1.0594 -1.0497 -0.5027 -0.4999 -0.4803 -0.3940 -0.3827
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1211 -1.0704 -1.0594 -1.0497 -0.5027 -0.4999 -0.4803 -0.3940 -0.3827
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1128 -1.0808 -1.0594 -1.0497 -0.5031 -0.4989 -0.4484 -0.4149 -0.3876
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1128 -1.0808 -1.0594 -1.0497 -0.5031 -0.4989 -0.4484 -0.4149 -0.3876
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034867;  58.000000 electrons;  D(Ef):  107.021
+         Sum occ. bands:  -21.8740079  incl. Bloechl correction:   -0.000882
+         Mag. moment:      -0.001384
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4455368  ehk=-32031.4453694  sumev=-21.8740079  delsev=0.0906421
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.750382
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=2.64e-4  last it=6.07e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.64e-4
+   tj:-0.73677
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160303  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250371  mom=2.3347  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250371  mom=-2.3347  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620435  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581213  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418882  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160303   0.000000   0.035861   0.113868  -0.359644
+ Fe1       -0.250371   0.000000   0.119307  -0.068942  -0.802711
+ Fe2       -0.250371   0.000000   0.119307  -0.068942  -0.802710
+ Se1       -0.620435   0.000000   0.387143  -0.079349  -0.788841
+ E          0.581213   0.000000  -0.499644   0.049421  -0.582437
+ E2         0.418882   0.000000  -0.256925   0.138788  -0.440747
+ Sum Q=0.000000  Emad=0.266821(-1.222807)  Vmtz=-0.578099 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000393  from output rho: -0.001384
+ SV:   6  2.635e-4 0.3000  6.067e-4  -32031.44536941-0.001384 A -0.737
+
+   it  6  of 40    ehf=  -32031.445537   ehk=  -32031.445369
+ From last iter    ehf=  -32031.445757   ehk=  -32031.445417
+ diffe(q)=  0.000220 (0.000264)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0013839 ehf=-32031.4455368 ehk=-32031.4453694
+ cpudel    ...   Time this iter:  time(s):  3.02     total:  18.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 7 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1211 -1.0703 -1.0593 -1.0497 -0.5026 -0.4998 -0.4802 -0.3939 -0.3827
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1211 -1.0703 -1.0593 -1.0497 -0.5026 -0.4998 -0.4802 -0.3939 -0.3827
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1128 -1.0808 -1.0593 -1.0497 -0.5030 -0.4988 -0.4483 -0.4148 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1128 -1.0808 -1.0593 -1.0497 -0.5030 -0.4988 -0.4483 -0.4148 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034727;  58.000000 electrons;  D(Ef):  107.032
+         Sum occ. bands:  -21.8650028  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001386
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4453590  ehk=-32031.4453067  sumev=-21.8650028  delsev=0.0914924
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749871
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=6.17e-5  last it=2.64e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=6.17e-5
+   tj:-0.27505
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160211  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250277  mom=2.33363  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250277  mom=-2.33363  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620383  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581111  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418888  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160211   0.000000   0.035888   0.113850  -0.359652
+ Fe1       -0.250277   0.000000   0.119260  -0.068918  -0.802685
+ Fe2       -0.250277   0.000000   0.119260  -0.068918  -0.802685
+ Se1       -0.620383   0.000000   0.387122  -0.079331  -0.788829
+ E          0.581111   0.000000  -0.499546   0.049423  -0.582407
+ E2         0.418888   0.000000  -0.256944   0.138774  -0.440762
+ Sum Q=0.000000  Emad=0.266740(-1.222488)  Vmtz=-0.578092 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000394  from output rho: -0.001386
+ SV:   7  6.173e-5 0.3000  1.642e-4  -32031.44530669-0.001386 A -0.275
+
+   it  7  of 40    ehf=  -32031.445359   ehk=  -32031.445307
+ From last iter    ehf=  -32031.445537   ehk=  -32031.445369
+ diffe(q)=  0.000178 (0.000062)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0013858 ehf=-32031.445359 ehk=-32031.4453067
+ cpudel    ...   Time this iter:  time(s):  3.02     total:  22.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 8 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3939 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4148 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034691;  58.000000 electrons;  D(Ef):  107.030
+         Sum occ. bands:  -21.8624577  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001386
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4453027  ehk=-32031.4452865  sumev=-21.8624577  delsev=0.0919253
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749786
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=1.65e-5  last it=6.17e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.65e-5
+   tj:-0.14208
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160196  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250252  mom=2.33349  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250252  mom=-2.33349  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.62036  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581068  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418893  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160196   0.000000   0.035893   0.113848  -0.359653
+ Fe1       -0.250252   0.000000   0.119241  -0.068919  -0.802685
+ Fe2       -0.250252   0.000000   0.119241  -0.068919  -0.802685
+ Se1       -0.620360   0.000000   0.387109  -0.079327  -0.788827
+ E          0.581068   0.000000  -0.499513   0.049416  -0.582402
+ E2         0.418893   0.000000  -0.256945   0.138778  -0.440759
+ Sum Q=0.000000  Emad=0.266715(-1.222359)  Vmtz=-0.578091 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000395  from output rho: -0.001386
+ SV:   8  1.646e-5 0.3000  2.111e-5  -32031.44528646-0.001386 A -0.142
+
+   it  8  of 40    ehf=  -32031.445303   ehk=  -32031.445286
+ From last iter    ehf=  -32031.445359   ehk=  -32031.445307
+ diffe(q)=  0.000056 (0.000016)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0013862 ehf=-32031.4453027 ehk=-32031.4452865
+ cpudel    ...   Time this iter:  time(s):  2.99     total:  24.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 9 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034684;  58.000000 electrons;  D(Ef):  107.029
+         Sum occ. bands:  -21.8619809  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001180
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452911  ehk=-32031.4452836  sumev=-21.8619809  delsev=0.0920974
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749779
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=9.83e-6  last it=1.65e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=9.83e-6
+   tj:-0.53565
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160192  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250235  mom=2.33343  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250235  mom=-2.33343  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620345  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581035  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418898  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160192   0.000000   0.035895   0.113848  -0.359653
+ Fe1       -0.250235   0.000000   0.119224  -0.068922  -0.802688
+ Fe2       -0.250235   0.000000   0.119224  -0.068922  -0.802688
+ Se1       -0.620345   0.000000   0.387100  -0.079325  -0.788827
+ E          0.581035   0.000000  -0.499489   0.049408  -0.582401
+ E2         0.418898   0.000000  -0.256945   0.138783  -0.440755
+ Sum Q=0.000000  Emad=0.266700(-1.222265)  Vmtz=-0.578091 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000383  from output rho: -0.001180
+ SV:   9  9.830e-6 0.3000  8.965e-6  -32031.44528359-0.001180 A -0.536
+
+   it  9  of 40    ehf=  -32031.445291   ehk=  -32031.445284
+ From last iter    ehf=  -32031.445303   ehk=  -32031.445286
+ diffe(q)=  0.000012 (0.000010)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0011802 ehf=-32031.4452911 ehk=-32031.4452836
+ cpudel    ...   Time this iter:  time(s):  2.98     total:  27.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 10 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034681;  58.000000 electrons;  D(Ef):  107.028
+         Sum occ. bands:  -21.8617709  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001178
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452843  ehk=-32031.4452822  sumev=-21.8617709  delsev=0.0922292
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749778
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=5.90e-6  last it=9.83e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=5.9e-6
+   tj:-0.41889
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160194  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250226  mom=2.33342  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250226  mom=-2.33342  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620341  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.58102  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418901  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160194   0.000000   0.035895   0.113848  -0.359653
+ Fe1       -0.250226   0.000000   0.119215  -0.068924  -0.802690
+ Fe2       -0.250226   0.000000   0.119215  -0.068924  -0.802690
+ Se1       -0.620341   0.000000   0.387098  -0.079324  -0.788827
+ E          0.581020   0.000000  -0.499479   0.049404  -0.582400
+ E2         0.418901   0.000000  -0.256945   0.138786  -0.440753
+ Sum Q=0.000000  Emad=0.266694(-1.222225)  Vmtz=-0.578092 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000375  from output rho: -0.001178
+ SV:  10  5.903e-6 0.3000  3.166e-6  -32031.44528223-0.001178 A -0.419
+
+   it 10  of 40    ehf=  -32031.445284   ehk=  -32031.445282
+ From last iter    ehf=  -32031.445291   ehk=  -32031.445284
+ diffe(q)=  0.000007 (0.000006)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0011784 ehf=-32031.4452843 ehk=-32031.4452822
+ cpudel    ...   Time this iter:  time(s):  3.17     total:  31.1s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 11 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034680;  58.000000 electrons;  D(Ef):  107.028
+         Sum occ. bands:  -21.8617318  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001177
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452819  ehk=-32031.4452821  sumev=-21.8617318  delsev=0.0922905
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749778
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=4.28e-6  last it=5.90e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.28e-6
+   tj:-0.56515
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160197  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250221  mom=2.33343  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250221  mom=-2.33343  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620341  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581012  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418903  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160197   0.000000   0.035894   0.113848  -0.359653
+ Fe1       -0.250221   0.000000   0.119211  -0.068926  -0.802692
+ Fe2       -0.250221   0.000000   0.119211  -0.068926  -0.802692
+ Se1       -0.620341   0.000000   0.387097  -0.079324  -0.788828
+ E          0.581012   0.000000  -0.499474   0.049402  -0.582400
+ E2         0.418903   0.000000  -0.256944   0.138788  -0.440752
+ Sum Q=0.000000  Emad=0.266692(-1.222209)  Vmtz=-0.578092 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000369  from output rho: -0.001177
+ SV:  11  4.279e-6 0.3000  2.914e-6  -32031.44528207-0.001177 A -0.565
+
+   it 11  of 40    ehf=  -32031.445282   ehk=  -32031.445282
+ From last iter    ehf=  -32031.445284   ehk=  -32031.445282
+ diffe(q)=  0.000002 (0.000004)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0011772 ehf=-32031.4452819 ehk=-32031.4452821
+ cpudel    ...   Time this iter:  time(s):  3.05     total:  34.1s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 12 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034679;  58.000000 electrons;  D(Ef):  107.029
+         Sum occ. bands:  -21.8617429  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001176
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452812  ehk=-32031.4452823  sumev=-21.8617429  delsev=0.0923163
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749777
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=3.28e-6  last it=4.28e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.28e-6
+   tj:-0.96687
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160199  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250219  mom=2.33345  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250219  mom=-2.33345  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620341  mom=-0.00005  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581009  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418904  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160199   0.000000   0.035893   0.113848  -0.359653
+ Fe1       -0.250219   0.000000   0.119208  -0.068927  -0.802693
+ Fe2       -0.250219   0.000000   0.119208  -0.068927  -0.802693
+ Se1       -0.620341   0.000000   0.387098  -0.079324  -0.788828
+ E          0.581009   0.000000  -0.499472   0.049401  -0.582400
+ E2         0.418904   0.000000  -0.256944   0.138789  -0.440751
+ Sum Q=0.000000  Emad=0.266692(-1.222201)  Vmtz=-0.578093 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000364  from output rho: -0.001176
+ SV:  12  3.281e-6 0.3000  3.797e-6  -32031.44528228-0.001176 A -0.967
+
+   it 12  of 40    ehf=  -32031.445281   ehk=  -32031.445282
+ From last iter    ehf=  -32031.445282   ehk=  -32031.445282
+ diffe(q)=  0.000001 (0.000003)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0011763 ehf=-32031.4452812 ehk=-32031.4452823
+ cpudel    ...   Time this iter:  time(s):  2.96     total:  37.1s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 13 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034679;  58.000000 electrons;  D(Ef):  107.029
+         Sum occ. bands:  -21.8617693  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001175
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452812  ehk=-32031.4452827  sumev=-21.8617693  delsev=0.0923255
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749777
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=2.26e-6  last it=3.28e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.26e-6
+   tj:-0.85339
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.1602  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250219  mom=2.33347  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250219  mom=-2.33347  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620342  mom=-0.00005  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581009  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418903  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160200   0.000000   0.035892   0.113849  -0.359653
+ Fe1       -0.250219   0.000000   0.119208  -0.068927  -0.802693
+ Fe2       -0.250219   0.000000   0.119208  -0.068927  -0.802693
+ Se1       -0.620342   0.000000   0.387098  -0.079325  -0.788828
+ E          0.581009   0.000000  -0.499472   0.049401  -0.582400
+ E2         0.418903   0.000000  -0.256944   0.138789  -0.440751
+ Sum Q=0.000000  Emad=0.266692(-1.222203)  Vmtz=-0.578093 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000361  from output rho: -0.001175
+ SV:  13  2.263e-6 0.3000  3.650e-6  -32031.44528268-0.001175 A -0.853
+
+   it 13  of 40    ehf=  -32031.445281   ehk=  -32031.445283
+ From last iter    ehf=  -32031.445281   ehk=  -32031.445282
+ diffe(q)=  0.000000 (0.000002)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0011755 ehf=-32031.4452812 ehk=-32031.4452827
+ cpudel    ...   Time this iter:  time(s):  3.04     total:  40.1s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 14 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034679;  58.000000 electrons;  D(Ef):  107.029
+         Sum occ. bands:  -21.8617854  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001175
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452818  ehk=-32031.4452830  sumev=-21.8617854  delsev=0.0923194
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749776
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.44e-6  last it=2.26e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.44e-6
+   tj:-0.71239
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.1602  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250221  mom=2.33349  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250221  mom=-2.33349  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620342  mom=-0.00005  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581011  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418903  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160200   0.000000   0.035892   0.113849  -0.359653
+ Fe1       -0.250221   0.000000   0.119209  -0.068927  -0.802693
+ Fe2       -0.250221   0.000000   0.119209  -0.068927  -0.802693
+ Se1       -0.620342   0.000000   0.387098  -0.079325  -0.788828
+ E          0.581011   0.000000  -0.499474   0.049401  -0.582400
+ E2         0.418903   0.000000  -0.256944   0.138789  -0.440751
+ Sum Q=0.000000  Emad=0.266693(-1.222208)  Vmtz=-0.578093 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000360  from output rho: -0.001175
+ SV:  14  1.438e-6 0.3000  2.690e-6  -32031.44528303-0.001175 A -0.712
+
+   it 14  of 40    ehf=  -32031.445282   ehk=  -32031.445283
+ From last iter    ehf=  -32031.445281   ehk=  -32031.445283
+ diffe(q)= -0.000001 (0.000001)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.001175 ehf=-32031.4452818 ehk=-32031.445283
+ cpudel    ...   Time this iter:  time(s):  2.97     total:  43.1s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 15 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1210 -1.0703 -1.0593 -1.0496 -0.5025 -0.4997 -0.4801 -0.3938 -0.3826
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1127 -1.0807 -1.0593 -1.0496 -0.5030 -0.4987 -0.4483 -0.4147 -0.3875
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.034679;  58.000000 electrons;  D(Ef):  107.029
+         Sum occ. bands:  -21.8618017  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001175
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-32031.4452826  ehk=-32031.4452833  sumev=-21.8618017  delsev=0.0923067
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749776
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=7.92e-7  last it=1.44e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=7.93e-7
+   tj:-0.44534
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.160199  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.250222  mom=2.3335  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.250222  mom=-2.3335  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.620342  mom=-0.00005  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.581013  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418902  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.160199   0.000000   0.035893   0.113849  -0.359653
+ Fe1       -0.250222   0.000000   0.119211  -0.068926  -0.802692
+ Fe2       -0.250222   0.000000   0.119211  -0.068926  -0.802692
+ Se1       -0.620342   0.000000   0.387098  -0.079325  -0.788828
+ E          0.581013   0.000000  -0.499475   0.049401  -0.582400
+ E2         0.418902   0.000000  -0.256944   0.138788  -0.440751
+ Sum Q=0.000000  Emad=0.266694(-1.222212)  Vmtz=-0.578092 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000361  from output rho: -0.001175
+ SV:  15  7.917e-7 0.3000  1.149e-6  -32031.44528328-0.001175 A -0.445
+
+   it 15  of 40    ehf=  -32031.445283   ehk=  -32031.445283
+ From last iter    ehf=  -32031.445282   ehk=  -32031.445283
+ diffe(q)= -0.000001 (0.000001)    tol= 0.000001 (0.000001)   more=F
+c bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=3 gga=3 stripe=1 z4e=.3539 zes=.19 mmom=-.0011749 ehf=-32031.4452826 ehk=-32031.4452833
+ cpudel    ...   Time this iter:  time(s):  3.16     total:  46.3s
+
+ Jolly good show !  You converged to rms DQ=  0.000001
+ Exit 0 LM 
+ CPU time:  46.266s   Wall clock 46.319s  at  14:47:26 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:BH, read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.162397  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=2.53261  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=-2.53261  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.609835  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.580336  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418033  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.379890
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.811604
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.811604
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.806578
+ E          0.580336   0.000000  -0.502527   0.045710  -0.596600
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.457530
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.594476 (up-dn=0.000002)
+ LM: it 0 of 0  ehk0=-31981.541470  pv=-0.2005  mmom=-0.0004  seref=0
+ cpudel    ...   Time this iter:  time(s):  0.340    total:  0.340s
+ Exit 0 LM 
+ CPU time:  0.340s   Wall clock 0.394s  at  14:47:26 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:BH, read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.379890
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.811604
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.811604
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.806578
+ E          0.580336   0.000000  -0.502527   0.045710  -0.596600
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.457530
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.594476 (up-dn=0.000002)
+ cpudel    ...   Time this iter:  time(s):  0.207    total:  0.207s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1457 -1.0941 -1.0839 -1.0744 -0.5311 -0.5285 -0.5108 -0.4256 -0.4092
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1457 -1.0941 -1.0839 -1.0744 -0.5311 -0.5285 -0.5108 -0.4256 -0.4092
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1370 -1.1048 -1.0839 -1.0744 -0.5318 -0.5271 -0.4793 -0.4491 -0.4118
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1370 -1.1048 -1.0839 -1.0744 -0.5318 -0.5271 -0.4793 -0.4491 -0.4118
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.071249;  58.000000 electrons;  D(Ef):  104.281
+         Sum occ. bands:  -23.9435810  incl. Bloechl correction:   -0.000905
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4524145  ehk=-31981.4407507  sumev=-23.9435810  delsev=0.0890672
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.808965
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.12e-2
+ AMIX: nmix=0 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.12e-2
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.16543  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.239812  mom=2.49907  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.239812  mom=-2.49907  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.630334  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.578684  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.417493  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.165430   0.000000   0.031630   0.112132  -0.383647
+ Fe1       -0.239812   0.000000   0.113105  -0.067204  -0.806554
+ Fe2       -0.239812   0.000000   0.113105  -0.067204  -0.806554
+ Se1       -0.630334   0.000000   0.394121  -0.079814  -0.806346
+ E          0.578684   0.000000  -0.495470   0.051206  -0.590911
+ E2         0.417493   0.000000  -0.258590   0.135811  -0.463694
+ Sum Q=0.000001  Emad=0.267366(-1.227272)  Vmtz=-0.594549 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000424  from output rho: -0.001433
+ SV:   1  1.122e-2 0.3000  6.583e-3  -31981.44075068-0.001433 L
+
+   it  1  of 30    ehf=  -31981.452414   ehk=  -31981.440751
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014331 ehf=-31981.4524145 ehk=-31981.4407507
+ cpudel    ...   Time this iter:  time(s):  3.16     total:  3.37s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 2 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1482 -1.0975 -1.0872 -1.0777 -0.5293 -0.5266 -0.5094 -0.4222 -0.4072
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1482 -1.0975 -1.0872 -1.0777 -0.5293 -0.5266 -0.5094 -0.4222 -0.4072
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1395 -1.1082 -1.0872 -1.0777 -0.5299 -0.5253 -0.4770 -0.4456 -0.4125
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1395 -1.1082 -1.0872 -1.0777 -0.5299 -0.5253 -0.4770 -0.4456 -0.4125
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.061162;  58.000000 electrons;  D(Ef):  109.859
+         Sum occ. bands:  -23.6227438  incl. Bloechl correction:   -0.000891
+         Mag. moment:      -0.000703
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4503367  ehk=-31981.4496423  sumev=-23.6227438  delsev=0.0934457
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.748292
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=4.20e-3  last it=1.12e-2
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.2e-3
+   tj:-0.21277
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.176306  mom=-0.00002  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.24414  mom=2.48089  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.24414  mom=-2.48089  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.631769  mom=-0.00005  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577819  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.419875  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.176306   0.000000   0.028834   0.114628  -0.381769
+ Fe1       -0.244140   0.000000   0.111650  -0.071914  -0.810883
+ Fe2       -0.244140   0.000000   0.111650  -0.071914  -0.810883
+ Se1       -0.631769   0.000000   0.393614  -0.081400  -0.808061
+ E          0.577819   0.000000  -0.498362   0.047497  -0.594524
+ E2         0.419875   0.000000  -0.256322   0.140329  -0.459544
+ Sum Q=0.000000  Emad=0.271986(-1.230328)  Vmtz=-0.595278 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000352  from output rho: -0.000703
+ SV:   2  4.198e-3 0.3000  2.900e-3  -31981.44964233-0.000703 A -0.213
+
+   it  2  of 30    ehf=  -31981.450337   ehk=  -31981.449642
+ From last iter    ehf=  -31981.452414   ehk=  -31981.440751
+ diffe(q)=  0.002078 (0.004198)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0007025 ehf=-31981.4503367 ehk=-31981.4496423
+ cpudel    ...   Time this iter:  time(s):  3.02     total:  6.39s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 3 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1505 -1.0996 -1.0894 -1.0800 -0.5322 -0.5295 -0.5120 -0.4252 -0.4094
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1505 -1.0996 -1.0894 -1.0800 -0.5322 -0.5295 -0.5120 -0.4252 -0.4094
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1418 -1.1103 -1.0894 -1.0800 -0.5329 -0.5282 -0.4801 -0.4485 -0.4146
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1418 -1.1103 -1.0895 -1.0800 -0.5329 -0.5282 -0.4801 -0.4485 -0.4146
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.066671;  58.000000 electrons;  D(Ef):  107.661
+         Sum occ. bands:  -23.8454654  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001439
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4508076  ehk=-31981.4504972  sumev=-23.8454654  delsev=0.0915319
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.769737
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=4.35e-3  last it=4.20e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.35e-3
+   tj: 0.63005
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.175335  mom=-0.00002  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.242122  mom=2.47711  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.242122  mom=-2.47711  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.633013  mom=-0.00005  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577688  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.419559  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.175335   0.000000   0.028751   0.114072  -0.382229
+ Fe1       -0.242122   0.000000   0.111030  -0.071017  -0.810029
+ Fe2       -0.242122   0.000000   0.111030  -0.071017  -0.810029
+ Se1       -0.633013   0.000000   0.394712  -0.081238  -0.807861
+ E          0.577688   0.000000  -0.497462   0.048273  -0.593733
+ E2         0.419559   0.000000  -0.257003   0.139349  -0.460403
+ Sum Q=0.000000  Emad=0.271478(-1.231023)  Vmtz=-0.595193 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000365  from output rho: -0.001439
+ SV:   3  4.350e-3 0.3000  6.825e-4  -31981.45049723-0.001439 A 0.630
+
+   it  3  of 30    ehf=  -31981.450808   ehk=  -31981.450497
+ From last iter    ehf=  -31981.450337   ehk=  -31981.449642
+ diffe(q)= -0.000471 (0.004350)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014388 ehf=-31981.4508076 ehk=-31981.4504972
+ cpudel    ...   Time this iter:  time(s):  3.03     total:  9.42s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 4 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1504 -1.0996 -1.0894 -1.0800 -0.5318 -0.5291 -0.5116 -0.4246 -0.4092
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1504 -1.0996 -1.0894 -1.0800 -0.5318 -0.5291 -0.5116 -0.4246 -0.4092
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1417 -1.1103 -1.0894 -1.0799 -0.5324 -0.5277 -0.4796 -0.4479 -0.4144
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1417 -1.1103 -1.0894 -1.0800 -0.5324 -0.5277 -0.4796 -0.4479 -0.4144
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065376;  58.000000 electrons;  D(Ef):  108.295
+         Sum occ. bands:  -23.7961675  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001455
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4506745  ehk=-31981.4507142  sumev=-23.7961675  delsev=0.0915343
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.763322
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=3.68e-3  last it=4.35e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.68e-3
+   tj:-2.96067
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.178284  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.242002  mom=2.45791  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.242002  mom=-2.45791  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.634271  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577084  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420093  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.178284   0.000000   0.027739   0.114495  -0.381895
+ Fe1       -0.242002   0.000000   0.109996  -0.071960  -0.810805
+ Fe2       -0.242002   0.000000   0.109996  -0.071960  -0.810805
+ Se1       -0.634271   0.000000   0.395256  -0.081639  -0.808303
+ E          0.577084   0.000000  -0.497620   0.047545  -0.594394
+ E2         0.420093   0.000000  -0.256693   0.140164  -0.459545
+ Sum Q=0.000000  Emad=0.272562(-1.231864)  Vmtz=-0.595350 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000407  from output rho: -0.001455
+ SV:   4  3.677e-3 0.3000  2.949e-3  -31981.45071424-0.001455 A -2.96
+
+   it  4  of 30    ehf=  -31981.450674   ehk=  -31981.450714
+ From last iter    ehf=  -31981.450808   ehk=  -31981.450497
+ diffe(q)=  0.000133 (0.003677)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014552 ehf=-31981.4506745 ehk=-31981.4507142
+ cpudel    ...   Time this iter:  time(s):  3.01     total:  12.4s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 5 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1511 -1.1002 -1.0901 -1.0807 -0.5324 -0.5297 -0.5122 -0.4251 -0.4097
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1511 -1.1002 -1.0901 -1.0807 -0.5324 -0.5297 -0.5122 -0.4251 -0.4097
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1424 -1.1109 -1.0901 -1.0807 -0.5330 -0.5284 -0.4802 -0.4483 -0.4150
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1424 -1.1110 -1.0901 -1.0807 -0.5330 -0.5284 -0.4802 -0.4483 -0.4150
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.066410;  58.000000 electrons;  D(Ef):  107.904
+         Sum occ. bands:  -23.8302005  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001440
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4508420  ehk=-31981.4507405  sumev=-23.8302005  delsev=0.0893073
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.766694
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=2.98e-3  last it=3.68e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.98e-3
+   tj:-2.91325
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.181378  mom=-0.00004  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.236204  mom=2.39939  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.236204  mom=-2.39939  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.640177  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.575557  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420269  mom=-0.00002  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.181378   0.000000   0.025529   0.113791  -0.382489
+ Fe1       -0.236204   0.000000   0.106266  -0.071331  -0.809913
+ Fe2       -0.236204   0.000000   0.106266  -0.071331  -0.809913
+ Se1       -0.640177   0.000000   0.399359  -0.081977  -0.808615
+ E          0.575557   0.000000  -0.495456   0.048266  -0.593505
+ E2         0.420269   0.000000  -0.257970   0.139054  -0.460198
+ Sum Q=0.000000  Emad=0.273295(-1.235635)  Vmtz=-0.595400 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000492  from output rho: -0.001440
+ SV:   5  2.977e-3 0.3000  9.094e-3  -31981.45074051-0.001440 A -2.91
+
+   it  5  of 30    ehf=  -31981.450842   ehk=  -31981.450741
+ From last iter    ehf=  -31981.450674   ehk=  -31981.450714
+ diffe(q)= -0.000168 (0.002977)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014403 ehf=-31981.450842 ehk=-31981.4507405
+ cpudel    ...   Time this iter:  time(s):  3.02     total:  15.4s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 6 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1522 -1.1016 -1.0915 -1.0820 -0.5323 -0.5295 -0.5122 -0.4244 -0.4102
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1522 -1.1016 -1.0915 -1.0820 -0.5323 -0.5295 -0.5122 -0.4244 -0.4102
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1435 -1.1123 -1.0915 -1.0820 -0.5329 -0.5283 -0.4800 -0.4476 -0.4155
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1435 -1.1123 -1.0915 -1.0820 -0.5329 -0.5283 -0.4800 -0.4476 -0.4155
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065018;  58.000000 electrons;  D(Ef):  108.818
+         Sum occ. bands:  -23.7578120  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001455
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507812  ehk=-31981.4506326  sumev=-23.7578120  delsev=0.0827532
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.756422
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=8.33e-4  last it=2.98e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=8.33e-4
+   tj: 0.18901
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.180677  mom=-0.00004  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238601  mom=2.4096  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238601  mom=-2.4096  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.637943  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576053  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420304  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.180677   0.000000   0.026251   0.114172  -0.382149
+ Fe1       -0.238601   0.000000   0.107611  -0.071788  -0.810404
+ Fe2       -0.238601   0.000000   0.107611  -0.071788  -0.810404
+ Se1       -0.637943   0.000000   0.397741  -0.081915  -0.808579
+ E          0.576053   0.000000  -0.496380   0.047811  -0.594020
+ E2         0.420304   0.000000  -0.257369   0.139687  -0.459706
+ Sum Q=0.000000  Emad=0.273195(-1.234138)  Vmtz=-0.595392 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000458  from output rho: -0.001455
+ SV:   6  8.328e-4 0.3000  1.643e-3  -31981.45063263-0.001455 A 0.189
+
+   it  6  of 30    ehf=  -31981.450781   ehk=  -31981.450633
+ From last iter    ehf=  -31981.450842   ehk=  -31981.450741
+ diffe(q)=  0.000061 (0.000833)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014553 ehf=-31981.4507812 ehk=-31981.4506326
+ cpudel    ...   Time this iter:  time(s):  3.00     total:  18.4s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 7 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1519 -1.1012 -1.0911 -1.0816 -0.5325 -0.5297 -0.5123 -0.4247 -0.4101
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1519 -1.1012 -1.0911 -1.0816 -0.5325 -0.5297 -0.5123 -0.4248 -0.4101
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1432 -1.1119 -1.0911 -1.0816 -0.5331 -0.5284 -0.4802 -0.4479 -0.4154
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1432 -1.1119 -1.0911 -1.0816 -0.5331 -0.5284 -0.4802 -0.4479 -0.4154
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.066024;  58.000000 electrons;  D(Ef):  108.235
+         Sum occ. bands:  -23.7932124  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001436
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4508206  ehk=-31981.4508181  sumev=-23.7932124  delsev=0.0835798
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.762438
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=4.27e-4  last it=8.33e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.27e-4
+   tj: 0.28858
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.180431  mom=-0.00004  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238326  mom=2.40603  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238326  mom=-2.40603  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638092  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576077  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420252  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.180431   0.000000   0.026279   0.114080  -0.382220
+ Fe1       -0.238326   0.000000   0.107566  -0.071626  -0.810245
+ Fe2       -0.238326   0.000000   0.107566  -0.071626  -0.810245
+ Se1       -0.638092   0.000000   0.397890  -0.081879  -0.808535
+ E          0.576077   0.000000  -0.496262   0.047951  -0.593884
+ E2         0.420252   0.000000  -0.257486   0.139521  -0.459851
+ Sum Q=0.000000  Emad=0.273098(-1.234289)  Vmtz=-0.595370 (up-dn=0.000003)
+ Magnetization from sphere program: -0.000451  from output rho: -0.001436
+ SV:   7  4.266e-4 0.3000  5.573e-4  -31981.45081812-0.001436 A 0.289
+
+   it  7  of 30    ehf=  -31981.450821   ehk=  -31981.450818
+ From last iter    ehf=  -31981.450781   ehk=  -31981.450633
+ diffe(q)= -0.000039 (0.000427)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014364 ehf=-31981.4508206 ehk=-31981.4508181
+ cpudel    ...   Time this iter:  time(s):  2.99     total:  21.4s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 8 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1518 -1.1011 -1.0910 -1.0816 -0.5324 -0.5296 -0.5122 -0.4246 -0.4101
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1518 -1.1011 -1.0910 -1.0816 -0.5324 -0.5296 -0.5122 -0.4246 -0.4101
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1431 -1.1118 -1.0910 -1.0816 -0.5330 -0.5284 -0.4801 -0.4478 -0.4153
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1431 -1.1118 -1.0911 -1.0816 -0.5330 -0.5284 -0.4801 -0.4478 -0.4153
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065890;  58.000000 electrons;  D(Ef):  108.287
+         Sum occ. bands:  -23.7848376  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001436
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507999  ehk=-31981.4507992  sumev=-23.7848376  delsev=0.0831888
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761793
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=2.40e-4  last it=4.27e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.4e-4
+   tj:-0.91922
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.180036  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238291  mom=2.40268  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238291  mom=-2.40268  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638026  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576195  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420207  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.180036   0.000000   0.026408   0.114016  -0.382269
+ Fe1       -0.238291   0.000000   0.107685  -0.071481  -0.810115
+ Fe2       -0.238291   0.000000   0.107685  -0.071481  -0.810115
+ Se1       -0.638026   0.000000   0.397889  -0.081829  -0.808477
+ E          0.576195   0.000000  -0.496251   0.048074  -0.593777
+ E2         0.420207   0.000000  -0.257570   0.139395  -0.459976
+ Sum Q=0.000000  Emad=0.272987(-1.234401)  Vmtz=-0.595344 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000434  from output rho: -0.001436
+ SV:   8  2.401e-4 0.3000  5.264e-4  -31981.45079918-0.001436 A -0.919
+
+   it  8  of 30    ehf=  -31981.450800   ehk=  -31981.450799
+ From last iter    ehf=  -31981.450821   ehk=  -31981.450818
+ diffe(q)=  0.000021 (0.000240)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014364 ehf=-31981.4507999 ehk=-31981.4507992
+ cpudel    ...   Time this iter:  time(s):  3.17     total:  24.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 9 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1518 -1.1011 -1.0910 -1.0815 -0.5323 -0.5295 -0.5122 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1518 -1.1011 -1.0910 -1.0815 -0.5323 -0.5295 -0.5122 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1431 -1.1118 -1.0910 -1.0815 -0.5329 -0.5283 -0.4800 -0.4478 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1431 -1.1118 -1.0910 -1.0815 -0.5329 -0.5283 -0.4800 -0.4478 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065869;  58.000000 electrons;  D(Ef):  108.252
+         Sum occ. bands:  -23.7794942  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507851  ehk=-31981.4507849  sumev=-23.7794942  delsev=0.0829633
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761794
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.06e-4  last it=2.40e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.06e-4
+   tj:-0.46430
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179779  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238254  mom=2.40121  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238254  mom=-2.40121  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638016  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576286  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420191  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179779   0.000000   0.026490   0.113974  -0.382308
+ Fe1       -0.238254   0.000000   0.107757  -0.071382  -0.810035
+ Fe2       -0.238254   0.000000   0.107757  -0.071382  -0.810035
+ Se1       -0.638016   0.000000   0.397913  -0.081798  -0.808438
+ E          0.576286   0.000000  -0.496249   0.048162  -0.593701
+ E2         0.420191   0.000000  -0.257640   0.139310  -0.460072
+ Sum Q=0.000000  Emad=0.272927(-1.234555)  Vmtz=-0.595330 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000420  from output rho: -0.001433
+ SV:   9  1.062e-4 0.3000  2.382e-4  -31981.45078491-0.001433 A -0.464
+
+   it  9  of 30    ehf=  -31981.450785   ehk=  -31981.450785
+ From last iter    ehf=  -31981.450800   ehk=  -31981.450799
+ diffe(q)=  0.000015 (0.000106)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014332 ehf=-31981.4507851 ehk=-31981.4507849
+ cpudel    ...   Time this iter:  time(s):  2.99     total:  27.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 10 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0815 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0815 -0.5322 -0.5295 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0815 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065845;  58.000000 electrons;  D(Ef):  108.243
+         Sum occ. bands:  -23.7763610  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001431
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507795  ehk=-31981.4507793  sumev=-23.7763610  delsev=0.0831322
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761698
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=5.82e-5  last it=1.06e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=5.82e-5
+   tj:-0.08350
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179738  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238269  mom=2.40119  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238269  mom=-2.40119  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638013  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576312  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420201  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179738   0.000000   0.026509   0.113973  -0.382313
+ Fe1       -0.238269   0.000000   0.107777  -0.071373  -0.810035
+ Fe2       -0.238269   0.000000   0.107777  -0.071373  -0.810035
+ Se1       -0.638013   0.000000   0.397914  -0.081794  -0.808433
+ E          0.576312   0.000000  -0.496264   0.048171  -0.593694
+ E2         0.420201   0.000000  -0.257653   0.139306  -0.460086
+ Sum Q=0.000000  Emad=0.272929(-1.234615)  Vmtz=-0.595331 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000415  from output rho: -0.001431
+ SV:  10  5.821e-5 0.3000  1.482e-5  -31981.45077931-0.001431 A -0.0835
+
+   it 10  of 30    ehf=  -31981.450779   ehk=  -31981.450779
+ From last iter    ehf=  -31981.450785   ehk=  -31981.450785
+ diffe(q)=  0.000006 (0.000058)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014313 ehf=-31981.4507795 ehk=-31981.4507793
+ cpudel    ...   Time this iter:  time(s):  2.97     total:  30.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 11 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0815 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065858;  58.000000 electrons;  D(Ef):  108.235
+         Sum occ. bands:  -23.7766815  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001430
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507824  ehk=-31981.4507822  sumev=-23.7766815  delsev=0.0833863
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761745
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=4.21e-5  last it=5.82e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.21e-5
+   tj:-1.99804
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179654  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238257  mom=2.40121  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238257  mom=-2.40121  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638031  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576351  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420222  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179654   0.000000   0.026542   0.113965  -0.382328
+ Fe1       -0.238257   0.000000   0.107797  -0.071344  -0.810027
+ Fe2       -0.238257   0.000000   0.107797  -0.071344  -0.810027
+ Se1       -0.638031   0.000000   0.397936  -0.081786  -0.808423
+ E          0.576351   0.000000  -0.496273   0.048199  -0.593670
+ E2         0.420222   0.000000  -0.257691   0.139288  -0.460124
+ Sum Q=0.000000  Emad=0.272926(-1.234732)  Vmtz=-0.595333 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000404  from output rho: -0.001430
+ SV:  11  4.214e-5 0.3000  3.188e-5  -31981.45078219-0.001430 A -2.00
+
+   it 11  of 30    ehf=  -31981.450782   ehk=  -31981.450782
+ From last iter    ehf=  -31981.450779   ehk=  -31981.450779
+ diffe(q)= -0.000003 (0.000042)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014305 ehf=-31981.4507824 ehk=-31981.4507822
+ cpudel    ...   Time this iter:  time(s):  3.02     total:  33.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 12 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065864;  58.000000 electrons;  D(Ef):  108.232
+         Sum occ. bands:  -23.7766881  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507877  ehk=-31981.4507877  sumev=-23.7766881  delsev=0.0840244
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761721
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.94e-5  last it=4.21e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.94e-5
+   tj:-0.03293
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179666  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238264  mom=2.40129  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238264  mom=-2.40129  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638026  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576343  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420227  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179666   0.000000   0.026540   0.113969  -0.382325
+ Fe1       -0.238264   0.000000   0.107794  -0.071352  -0.810035
+ Fe2       -0.238264   0.000000   0.107794  -0.071352  -0.810035
+ Se1       -0.638026   0.000000   0.397931  -0.081788  -0.808425
+ E          0.576343   0.000000  -0.496274   0.048191  -0.593676
+ E2         0.420227   0.000000  -0.257687   0.139297  -0.460118
+ Sum Q=0.000000  Emad=0.272928(-1.234713)  Vmtz=-0.595334 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000404  from output rho: -0.001429
+ SV:  12  1.942e-5 0.3000  1.122e-5  -31981.45078765-0.001429 A -0.0329
+
+   it 12  of 30    ehf=  -31981.450788   ehk=  -31981.450788
+ From last iter    ehf=  -31981.450782   ehk=  -31981.450782
+ diffe(q)= -0.000005 (0.000019)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014291 ehf=-31981.4507877 ehk=-31981.4507877
+ cpudel    ...   Time this iter:  time(s):  2.96     total:  36.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 13 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065871;  58.000000 electrons;  D(Ef):  108.229
+         Sum occ. bands:  -23.7770602  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507890  ehk=-31981.4507891  sumev=-23.7770602  delsev=0.0841265
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761754
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.42e-5  last it=1.94e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.42e-5
+   tj:-1.77309
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.17967  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238249  mom=2.40143  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238249  mom=-2.40143  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638029  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576328  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.42023  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179670   0.000000   0.026537   0.113968  -0.382325
+ Fe1       -0.238249   0.000000   0.107781  -0.071353  -0.810038
+ Fe2       -0.238249   0.000000   0.107781  -0.071353  -0.810038
+ Se1       -0.638029   0.000000   0.397933  -0.081788  -0.808427
+ E          0.576328   0.000000  -0.496262   0.048189  -0.593676
+ E2         0.420230   0.000000  -0.257689   0.139298  -0.460118
+ Sum Q=0.000000  Emad=0.272924(-1.234683)  Vmtz=-0.595335 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  13  1.420e-5 0.3000  2.316e-5  -31981.45078905-0.001429 A -1.77
+
+   it 13  of 30    ehf=  -31981.450789   ehk=  -31981.450789
+ From last iter    ehf=  -31981.450788   ehk=  -31981.450788
+ diffe(q)= -0.000001 (0.000014)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001429 ehf=-31981.450789 ehk=-31981.4507891
+ cpudel    ...   Time this iter:  time(s):  3.19     total:  39.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 14 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0815 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065865;  58.000000 electrons;  D(Ef):  108.234
+         Sum occ. bands:  -23.7770295  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507900  ehk=-31981.4507900  sumev=-23.7770295  delsev=0.0843102
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761721
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=9.71e-6  last it=1.42e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=9.71e-6
+   tj:-0.31360
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179676  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238258  mom=2.40151  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238258  mom=-2.40151  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.63802  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576324  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420232  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179676   0.000000   0.026538   0.113971  -0.382322
+ Fe1       -0.238258   0.000000   0.107783  -0.071358  -0.810043
+ Fe2       -0.238258   0.000000   0.107783  -0.071358  -0.810043
+ Se1       -0.638020   0.000000   0.397926  -0.081788  -0.808428
+ E          0.576324   0.000000  -0.496263   0.048183  -0.593681
+ E2         0.420232   0.000000  -0.257684   0.139304  -0.460112
+ Sum Q=0.000000  Emad=0.272925(-1.234665)  Vmtz=-0.595336 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  14  9.710e-6 0.3000  1.167e-5  -31981.45078999-0.001429 A -0.314
+
+   it 14  of 30    ehf=  -31981.450790   ehk=  -31981.450790
+ From last iter    ehf=  -31981.450789   ehk=  -31981.450789
+ diffe(q)= -0.000001 (0.000010)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001429 ehf=-31981.45079 ehk=-31981.45079
+ cpudel    ...   Time this iter:  time(s):  2.97     total:  42.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 15 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0815 -0.5322 -0.5295 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065871;  58.000000 electrons;  D(Ef):  108.232
+         Sum occ. bands:  -23.7772790  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507906  ehk=-31981.4507906  sumev=-23.7772790  delsev=0.0843458
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761750
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=4.78e-6  last it=9.71e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=4.78e-6
+   tj:-0.58582
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179673  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238254  mom=2.40156  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238254  mom=-2.40156  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.63802  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576323  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.42023  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179673   0.000000   0.026538   0.113970  -0.382323
+ Fe1       -0.238254   0.000000   0.107782  -0.071357  -0.810041
+ Fe2       -0.238254   0.000000   0.107782  -0.071357  -0.810041
+ Se1       -0.638020   0.000000   0.397927  -0.081788  -0.808428
+ E          0.576323   0.000000  -0.496261   0.048185  -0.593680
+ E2         0.420230   0.000000  -0.257685   0.139302  -0.460114
+ Sum Q=0.000000  Emad=0.272922(-1.234660)  Vmtz=-0.595335 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  15  4.779e-6 0.3000  7.597e-6  -31981.45079060-0.001429 A -0.586
+
+   it 15  of 30    ehf=  -31981.450791   ehk=  -31981.450791
+ From last iter    ehf=  -31981.450790   ehk=  -31981.450790
+ diffe(q)= -0.000001 (0.000005)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014289 ehf=-31981.4507906 ehk=-31981.4507906
+ cpudel    ...   Time this iter:  time(s):  2.96     total:  45.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 16 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0815 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065866;  58.000000 electrons;  D(Ef):  108.234
+         Sum occ. bands:  -23.7771551  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507904  ehk=-31981.4507903  sumev=-23.7771551  delsev=0.0843443
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761732
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=3.86e-6  last it=4.78e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.86e-6
+   tj:-0.30172
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179675  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238259  mom=2.40158  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238259  mom=-2.40158  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638017  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576323  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.42023  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179675   0.000000   0.026538   0.113971  -0.382322
+ Fe1       -0.238259   0.000000   0.107784  -0.071358  -0.810042
+ Fe2       -0.238259   0.000000   0.107784  -0.071358  -0.810042
+ Se1       -0.638017   0.000000   0.397924  -0.081788  -0.808428
+ E          0.576323   0.000000  -0.496263   0.048183  -0.593681
+ E2         0.420230   0.000000  -0.257683   0.139303  -0.460112
+ Sum Q=0.000000  Emad=0.272923(-1.234658)  Vmtz=-0.595335 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  16  3.863e-6 0.3000  4.141e-6  -31981.45079033-0.001429 A -0.302
+
+   it 16  of 30    ehf=  -31981.450790   ehk=  -31981.450790
+ From last iter    ehf=  -31981.450791   ehk=  -31981.450791
+ diffe(q)=  0.000000 (0.000004)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001429 ehf=-31981.4507904 ehk=-31981.4507903
+ cpudel    ...   Time this iter:  time(s):  3.06     total:  48.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 17 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065868;  58.000000 electrons;  D(Ef):  108.233
+         Sum occ. bands:  -23.7772488  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507904  ehk=-31981.4507904  sumev=-23.7772488  delsev=0.0843258
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761744
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.67e-6  last it=3.86e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.67e-6
+   tj:-0.46457
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179674  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.238258  mom=2.40159  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.238258  mom=-2.40159  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638018  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576324  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420229  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179674   0.000000   0.026538   0.113970  -0.382323
+ Fe1       -0.238258   0.000000   0.107784  -0.071357  -0.810041
+ Fe2       -0.238258   0.000000   0.107784  -0.071357  -0.810041
+ Se1       -0.638018   0.000000   0.397925  -0.081788  -0.808428
+ E          0.576324   0.000000  -0.496263   0.048184  -0.593680
+ E2         0.420229   0.000000  -0.257683   0.139302  -0.460113
+ Sum Q=0.000000  Emad=0.272923(-1.234661)  Vmtz=-0.595335 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  17  1.666e-6 0.3000  2.087e-6  -31981.45079044-0.001429 A -0.465
+
+   it 17  of 30    ehf=  -31981.450790   ehk=  -31981.450790
+ From last iter    ehf=  -31981.450790   ehk=  -31981.450790
+ diffe(q)=  0.000000 (0.000002)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001429 ehf=-31981.4507904 ehk=-31981.4507904
+ cpudel    ...   Time this iter:  time(s):  2.95     total:  51.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 18 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065867;  58.000000 electrons;  D(Ef):  108.234
+         Sum occ. bands:  -23.7771940  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507902  ehk=-31981.4507901  sumev=-23.7771940  delsev=0.0843074
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761737
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.35e-6  last it=1.67e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.35e-6
+   tj:-0.19686
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179675  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.23826  mom=2.4016  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.23826  mom=-2.4016  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638017  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576325  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420229  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179675   0.000000   0.026538   0.113971  -0.382322
+ Fe1       -0.238260   0.000000   0.107785  -0.071358  -0.810042
+ Fe2       -0.238260   0.000000   0.107785  -0.071358  -0.810042
+ Se1       -0.638017   0.000000   0.397924  -0.081788  -0.808428
+ E          0.576325   0.000000  -0.496264   0.048184  -0.593681
+ E2         0.420229   0.000000  -0.257682   0.139303  -0.460112
+ Sum Q=0.000000  Emad=0.272923(-1.234661)  Vmtz=-0.595335 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  18  1.349e-6 0.3000  1.142e-6  -31981.45079013-0.001429 A -0.197
+
+   it 18  of 30    ehf=  -31981.450790   ehk=  -31981.450790
+ From last iter    ehf=  -31981.450790   ehk=  -31981.450790
+ diffe(q)=  0.000000 (0.000001)    tol= 0.000001 (0.000001)   more=T
+i convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001429 ehf=-31981.4507902 ehk=-31981.4507901
+ cpudel    ...   Time this iter:  time(s):  3.17     total:  54.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 19 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1010 -1.0909 -1.0814 -0.5322 -0.5294 -0.5121 -0.4245 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5328 -0.5282 -0.4800 -0.4477 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065868;  58.000000 electrons;  D(Ef):  108.233
+         Sum occ. bands:  -23.7772271  incl. Bloechl correction:   -0.000888
+         Mag. moment:      -0.001429
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507902  ehk=-31981.4507902  sumev=-23.7772271  delsev=0.0842974
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.761741
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=6.11e-7  last it=1.35e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=6.12e-7
+   tj:-0.53045
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179675  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.23826  mom=2.4016  a=0.025  nr=397
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.23826  mom=-2.4016  a=0.025  nr=397
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.638017  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.576325  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420228  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179675   0.000000   0.026538   0.113970  -0.382322
+ Fe1       -0.238260   0.000000   0.107785  -0.071358  -0.810041
+ Fe2       -0.238260   0.000000   0.107785  -0.071358  -0.810041
+ Se1       -0.638017   0.000000   0.397924  -0.081788  -0.808428
+ E          0.576325   0.000000  -0.496264   0.048184  -0.593681
+ E2         0.420228   0.000000  -0.257683   0.139302  -0.460113
+ Sum Q=0.000000  Emad=0.272924(-1.234663)  Vmtz=-0.595335 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000403  from output rho: -0.001429
+ SV:  19  6.109e-7 0.3000  6.879e-7  -31981.45079018-0.001429 A -0.530
+
+   it 19  of 30    ehf=  -31981.450790   ehk=  -31981.450790
+ From last iter    ehf=  -31981.450790   ehk=  -31981.450790
+ diffe(q)=  0.000000 (0.000001)    tol= 0.000001 (0.000001)   more=F
+c convc=1e-6 nit=30 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001429 ehf=-31981.4507902 ehk=-31981.4507902
+ cpudel    ...   Time this iter:  time(s):  2.96     total:  57.8s
+
+ Jolly good show !  You converged to rms DQ=  0.000001
+ Exit 0 LM 
+ CPU time:  57.813s   Wall clock 57.853s  at  14:48:24 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:BH, read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.162397  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=2.53261  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.260716  mom=-2.53261  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.609835  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.580336  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.418033  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.379890
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.811467
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.811467
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.806578
+ E          0.580336   0.000000  -0.502527   0.045710  -0.596600
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.457530
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.594446 (up-dn=0.000003)
+ LM: it 0 of 0  ehk0=-31981.540225  pv=-0.1941  mmom=-0.0004  seref=0
+ cpudel    ...   Time this iter:  time(s):  0.330    total:  0.330s
+ Exit 0 LM 
+ CPU time:  0.330s   Wall clock 0.383s  at  14:48:24 05.04.2018  on  localhost.localdomai
+ -----------------------  START LM  -----------------------
+ HEADER KFe2Se2, striped structure, space group I4/mmm (139)
+
+ LM:       nbas = 16  nspec = 5  verb 31,20,31
+ special:  forces
+ pot:      spin-pol, XC:BH, read Sigma
+ asa:      phidot:outward-intgr
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000  -1.000000   0.000000        0.500000  -0.500000   0.000000
+   1.000000   1.000000   0.000000        0.500000   0.500000  -0.278812
+   0.500000   0.500000   1.793323        0.000000   0.000000   0.557624
+   alat = 7.395632  Cell vol = 1450.823279
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.39563   awald= 0.177   lmax=6
+         r1=  4.565   nkd= 107      q1=  2.323   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1,0,0) r2z:(-1,0,0) r2(1,1,0):(-1,0,0)
+         i::(1/2,1/2,0) r2z::(1/2,1/2,0) r2(1,1,0)::(1/2,1/2,0)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  5 species split into 6 classes
+ Species  Class      Sites...
+ E        5:E        11 12 13 14
+          6:E2       15 16
+         special AFM symmetry: E::(1/2,1/2,0)
+ BZMESH: 105 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1312 inequivalent ones found
+
+ ioextf:   reading site-dependent, lm-dependent file "constraining fields from shfac", 3 components
+
+ GETZV:  58 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.162397   0.000000   0.036981   0.116006  -0.379890
+ Fe1       -0.260716   0.000000   0.123371  -0.072656  -0.811467
+ Fe2       -0.260716   0.000000   0.123371  -0.072656  -0.811467
+ Se1       -0.609835   0.000000   0.378967  -0.079555  -0.806578
+ E          0.580336   0.000000  -0.502527   0.045710  -0.596600
+ E2         0.418033   0.000000  -0.252222   0.142689  -0.457530
+ Sum Q=0.000001  Emad=0.266458(-1.209245)  Vmtz=-0.594446 (up-dn=0.000003)
+ cpudel    ...   Time this iter:  time(s):  0.207    total:  0.207s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1457 -1.0940 -1.0838 -1.0744 -0.5308 -0.5280 -0.5105 -0.4234 -0.4066
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1457 -1.0940 -1.0838 -1.0744 -0.5308 -0.5280 -0.5105 -0.4235 -0.4066
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1370 -1.1048 -1.0838 -1.0744 -0.5314 -0.5268 -0.4788 -0.4474 -0.4115
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1370 -1.1048 -1.0838 -1.0744 -0.5314 -0.5268 -0.4788 -0.4475 -0.4115
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.075349;  58.000000 electrons;  D(Ef):  101.020
+         Sum occ. bands:  -23.8658689  incl. Bloechl correction:   -0.000916
+         Mag. moment:      -0.001304
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4577618  ehk=-31981.4325703  sumev=-23.8658689  delsev=0.0824620
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.831919
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=2.09e-2
+ AMIX: nmix=0 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.09e-2
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.163141  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.232925  mom=2.46144  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.232925  mom=-2.46144  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.63606  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.578967  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.416895  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.163141   0.000000   0.030998   0.110385  -0.385186
+ Fe1       -0.232925   0.000000   0.110814  -0.064318  -0.803789
+ Fe2       -0.232925   0.000000   0.110814  -0.064318  -0.803788
+ Se1       -0.636060   0.000000   0.398770  -0.079471  -0.805817
+ E          0.578967   0.000000  -0.493046   0.053898  -0.588319
+ E2         0.416895   0.000000  -0.261211   0.132626  -0.466620
+ Sum Q=0.000001  Emad=0.266768(-1.233661)  Vmtz=-0.594325 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000418  from output rho: -0.001304
+ SV:   1  2.086e-2 0.3000  1.238e-2  -31981.43257032-0.001304 L
+
+   it  1  of 40    ehf=  -31981.457762   ehk=  -31981.432570
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0013042 ehf=-31981.4577618 ehk=-31981.4325703
+ cpudel    ...   Time this iter:  time(s):  3.02     total:  3.23s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 2 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1484 -1.0979 -1.0876 -1.0781 -0.5279 -0.5249 -0.5083 -0.4190 -0.4067
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1484 -1.0979 -1.0876 -1.0781 -0.5279 -0.5249 -0.5083 -0.4190 -0.4067
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1397 -1.1087 -1.0876 -1.0781 -0.5284 -0.5238 -0.4752 -0.4426 -0.4120
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1397 -1.1087 -1.0876 -1.0781 -0.5284 -0.5238 -0.4752 -0.4426 -0.4120
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.061762;  58.000000 electrons;  D(Ef):  106.687
+         Sum occ. bands:  -23.4035970  incl. Bloechl correction:   -0.000905
+         Mag. moment:      -0.001496
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4529554  ehk=-31981.4478337  sumev=-23.4035970  delsev=0.0896929
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.749433
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=1.11e-2  last it=2.09e-2
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.11e-2
+   tj:-0.51517
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.178834  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.240944  mom=2.39749  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.240944  mom=-2.39749  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.63727  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.578421  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420753  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.178834   0.000000   0.027356   0.114380  -0.382123
+ Fe1       -0.240944   0.000000   0.109576  -0.071585  -0.810537
+ Fe2       -0.240944   0.000000   0.109576  -0.071585  -0.810537
+ Se1       -0.637270   0.000000   0.397324  -0.081826  -0.808390
+ E          0.578421   0.000000  -0.498235   0.048193  -0.594051
+ E2         0.420753   0.000000  -0.257704   0.139777  -0.460143
+ Sum Q=0.000000  Emad=0.273805(-1.239124)  Vmtz=-0.595397 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000425  from output rho: -0.001496
+ SV:   2  1.109e-2 0.3000  9.939e-3  -31981.44783368-0.001496 A -0.515
+
+   it  2  of 40    ehf=  -31981.452955   ehk=  -31981.447834
+ From last iter    ehf=  -31981.457762   ehk=  -31981.432570
+ diffe(q)=  0.004806 (0.011089)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014964 ehf=-31981.4529554 ehk=-31981.4478337
+ cpudel    ...   Time this iter:  time(s):  3.01     total:  6.24s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 3 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1009 -1.0909 -1.0814 -0.5324 -0.5294 -0.5123 -0.4234 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1517 -1.1009 -1.0909 -1.0814 -0.5324 -0.5294 -0.5123 -0.4234 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1116 -1.0909 -1.0814 -0.5329 -0.5284 -0.4800 -0.4470 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1430 -1.1117 -1.0909 -1.0814 -0.5329 -0.5284 -0.4801 -0.4471 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.071630;  58.000000 electrons;  D(Ef):  103.724
+         Sum occ. bands:  -23.7687881  incl. Bloechl correction:   -0.000902
+         Mag. moment:      -0.001343
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4526681  ehk=-31981.4471666  sumev=-23.7687881  delsev=0.0877321
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.791001
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=1.07e-2  last it=1.11e-2
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.07e-2
+   tj: 0.24423
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.175253  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.233035  mom=2.37338  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.233035  mom=-2.37338  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.642446  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.578011  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.419688  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.175253   0.000000   0.026975   0.112256  -0.383901
+ Fe1       -0.233035   0.000000   0.107076  -0.068139  -0.807284
+ Fe2       -0.233035   0.000000   0.107076  -0.068139  -0.807284
+ Se1       -0.642446   0.000000   0.401804  -0.081238  -0.807643
+ E          0.578011   0.000000  -0.494833   0.051207  -0.590992
+ E2         0.419688   0.000000  -0.260454   0.136020  -0.463478
+ Sum Q=0.000000  Emad=0.272096(-1.242798)  Vmtz=-0.595088 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000418  from output rho: -0.001343
+ SV:   3  1.068e-2 0.3000  4.044e-3  -31981.44716664-0.001343 A 0.244
+
+   it  3  of 40    ehf=  -31981.452668   ehk=  -31981.447167
+ From last iter    ehf=  -31981.452955   ehk=  -31981.447834
+ diffe(q)=  0.000287 (0.010676)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0013426 ehf=-31981.4526681 ehk=-31981.4471666
+ cpudel    ...   Time this iter:  time(s):  3.00     total:  9.24s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 4 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1515 -1.1011 -1.0909 -1.0814 -0.5307 -0.5277 -0.5109 -0.4214 -0.4092
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1515 -1.1011 -1.0909 -1.0814 -0.5307 -0.5277 -0.5109 -0.4214 -0.4092
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1428 -1.1118 -1.0909 -1.0814 -0.5312 -0.5267 -0.4781 -0.4449 -0.4145
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1428 -1.1118 -1.0909 -1.0814 -0.5312 -0.5267 -0.4781 -0.4449 -0.4145
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.066822;  58.000000 electrons;  D(Ef):  104.936
+         Sum occ. bands:  -23.5822977  incl. Bloechl correction:   -0.000900
+         Mag. moment:      -0.001424
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4514570  ehk=-31981.4487907  sumev=-23.5822977  delsev=0.0888444
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.765220
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=7.95e-3  last it=1.07e-2
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=7.95e-3
+   tj:-1.37548
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.179109  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.236582  mom=2.32128  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.236582  mom=-2.32128  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.641314  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577868  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420948  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.179109   0.000000   0.026466   0.113623  -0.382721
+ Fe1       -0.236582   0.000000   0.107394  -0.070488  -0.809382
+ Fe2       -0.236582   0.000000   0.107394  -0.070488  -0.809382
+ Se1       -0.641314   0.000000   0.400355  -0.081837  -0.808388
+ E          0.577868   0.000000  -0.496647   0.049258  -0.592982
+ E2         0.420948   0.000000  -0.259169   0.138496  -0.461186
+ Sum Q=0.000000  Emad=0.273898(-1.242671)  Vmtz=-0.595325 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000420  from output rho: -0.001424
+ SV:   4  7.953e-3 0.3000  8.064e-3  -31981.44879074-0.001424 A -1.38
+
+   it  4  of 40    ehf=  -31981.451457   ehk=  -31981.448791
+ From last iter    ehf=  -31981.452668   ehk=  -31981.447167
+ diffe(q)=  0.001211 (0.007953)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014244 ehf=-31981.451457 ehk=-31981.4487907
+ cpudel    ...   Time this iter:  time(s):  3.00     total:  12.2s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 5 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1522 -1.1017 -1.0916 -1.0821 -0.5321 -0.5290 -0.5121 -0.4226 -0.4101
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1522 -1.1017 -1.0916 -1.0821 -0.5321 -0.5290 -0.5121 -0.4226 -0.4101
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1435 -1.1124 -1.0916 -1.0821 -0.5325 -0.5280 -0.4796 -0.4463 -0.4153
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1435 -1.1124 -1.0916 -1.0821 -0.5325 -0.5280 -0.4796 -0.4463 -0.4153
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.070899;  58.000000 electrons;  D(Ef):  103.647
+         Sum occ. bands:  -23.7021132  incl. Bloechl correction:   -0.000904
+         Mag. moment:      -0.001364
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4507197  ehk=-31981.4474465  sumev=-23.7021132  delsev=0.0874545
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.784622
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=7.06e-3  last it=7.95e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=7.06e-3
+   tj:-0.88548
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.176196  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.227266  mom=2.25369  a=0.025  nr=397  bscal=0.9
+
+ RSEQ warning!  sphere density not converged
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.227266  mom=-2.25369  a=0.025  nr=397  bscal=0.9
+
+ RSEQ warning!  sphere density not converged
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648287  mom=-0.00006  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577348  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420213  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.176196   0.000000   0.025625   0.111365  -0.384614
+ Fe1       -0.227266   0.000000   0.104005  -0.066872  -0.805906
+ Fe2       -0.227266   0.000000   0.104005  -0.066872  -0.805906
+ Se1       -0.648287   0.000000   0.406083  -0.081350  -0.807737
+ E          0.577348   0.000000  -0.492904   0.052510  -0.589706
+ E2         0.420213   0.000000  -0.262454   0.134516  -0.464704
+ Sum Q=0.000000  Emad=0.272653(-1.248716)  Vmtz=-0.595021 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000414  from output rho: -0.001364
+ SV:   5  7.056e-3 0.3000  1.072e-2  -31981.44744654-0.001364 A -0.885
+
+   it  5  of 40    ehf=  -31981.450720   ehk=  -31981.447447
+ From last iter    ehf=  -31981.451457   ehk=  -31981.448791
+ diffe(q)=  0.000737 (0.007056)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0013638 ehf=-31981.4507197 ehk=-31981.4474465
+ cpudel    ...   Time this iter:  time(s):  3.33     total:  15.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 6 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1524 -1.1022 -1.0921 -1.0826 -0.5305 -0.5273 -0.5108 -0.4207 -0.4096
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1524 -1.1022 -1.0921 -1.0826 -0.5305 -0.5273 -0.5108 -0.4207 -0.4096
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1437 -1.1129 -1.0921 -1.0826 -0.5309 -0.5264 -0.4778 -0.4441 -0.4149
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1437 -1.1129 -1.0921 -1.0826 -0.5309 -0.5264 -0.4778 -0.4441 -0.4149
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.066340;  58.000000 electrons;  D(Ef):  104.155
+         Sum occ. bands:  -23.5033160  incl. Bloechl correction:   -0.000880
+         Mag. moment:      -0.001460
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4485458  ehk=-31981.4470136  sumev=-23.5033160  delsev=0.0875690
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.759749
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=2.88e-3  last it=7.06e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.88e-3
+   tj:-0.31673
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.17878  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.231459  mom=2.22665  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.231459  mom=-2.22665  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.645946  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577454  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421121  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.178780   0.000000   0.025645   0.112642  -0.383516
+ Fe1       -0.231459   0.000000   0.105058  -0.068972  -0.807828
+ Fe2       -0.231459   0.000000   0.105058  -0.068972  -0.807828
+ Se1       -0.645946   0.000000   0.403904  -0.081769  -0.808276
+ E          0.577454   0.000000  -0.494807   0.050707  -0.591546
+ E2         0.421121   0.000000  -0.261026   0.136802  -0.462629
+ Sum Q=0.000000  Emad=0.273875(-1.247229)  Vmtz=-0.595204 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000420  from output rho: -0.001460
+ SV:   6  2.882e-3 0.3000  4.218e-3  -31981.44701356-0.001460 A -0.317
+
+   it  6  of 40    ehf=  -31981.448546   ehk=  -31981.447014
+ From last iter    ehf=  -31981.450720   ehk=  -31981.447447
+ diffe(q)=  0.002174 (0.002882)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.00146 ehf=-31981.4485458 ehk=-31981.4470136
+ cpudel    ...   Time this iter:  time(s):  3.00     total:  18.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 7 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1024 -1.0923 -1.0828 -0.5316 -0.5284 -0.5118 -0.4216 -0.4101
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1024 -1.0923 -1.0828 -0.5316 -0.5284 -0.5118 -0.4216 -0.4101
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1131 -1.0923 -1.0828 -0.5320 -0.5275 -0.4790 -0.4452 -0.4154
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1131 -1.0923 -1.0828 -0.5320 -0.5275 -0.4790 -0.4452 -0.4154
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.069894;  58.000000 electrons;  D(Ef):  103.219
+         Sum occ. bands:  -23.6141192  incl. Bloechl correction:   -0.000886
+         Mag. moment:      -0.001399
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4479860  ehk=-31981.4468772  sumev=-23.6141192  delsev=0.0866651
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.777693
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=2.71e-3  last it=2.88e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.71e-3
+   tj: 0.35755
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.17765  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.229589  mom=2.22635  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.229589  mom=-2.22635  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.647063  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577429  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420793  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177650   0.000000   0.025643   0.112091  -0.383987
+ Fe1       -0.229589   0.000000   0.104570  -0.068053  -0.806983
+ Fe2       -0.229589   0.000000   0.104570  -0.068053  -0.806983
+ Se1       -0.647063   0.000000   0.404922  -0.081591  -0.808049
+ E          0.577429   0.000000  -0.493988   0.051503  -0.590742
+ E2         0.420793   0.000000  -0.261703   0.135816  -0.463526
+ Sum Q=0.000000  Emad=0.273379(-1.248090)  Vmtz=-0.595120 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000419  from output rho: -0.001399
+ SV:   7  2.710e-3 0.3000  3.133e-4  -31981.44687725-0.001399 A 0.358
+
+   it  7  of 40    ehf=  -31981.447986   ehk=  -31981.446877
+ From last iter    ehf=  -31981.448546   ehk=  -31981.447014
+ diffe(q)=  0.000560 (0.002710)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001399 ehf=-31981.447986 ehk=-31981.4468772
+ cpudel    ...   Time this iter:  time(s):  2.99     total:  21.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 8 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1526 -1.1023 -1.0922 -1.0827 -0.5311 -0.5279 -0.5114 -0.4212 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1526 -1.1023 -1.0922 -1.0827 -0.5311 -0.5279 -0.5114 -0.4212 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1439 -1.1131 -1.0922 -1.0827 -0.5315 -0.5271 -0.4785 -0.4447 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1439 -1.1131 -1.0922 -1.0827 -0.5315 -0.5271 -0.4785 -0.4447 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068588;  58.000000 electrons;  D(Ef):  103.458
+         Sum occ. bands:  -23.5664570  incl. Bloechl correction:   -0.000882
+         Mag. moment:      -0.001422
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4478482  ehk=-31981.4470432  sumev=-23.5664570  delsev=0.0870793
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.771003
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=2.22e-3  last it=2.71e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.22e-3
+   tj:-1.37460
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177941  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.23037  mom=2.21929  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.23037  mom=-2.21929  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.646576  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577502  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420948  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177941   0.000000   0.025714   0.112303  -0.383809
+ Fe1       -0.230370   0.000000   0.104828  -0.068382  -0.807302
+ Fe2       -0.230370   0.000000   0.104828  -0.068382  -0.807302
+ Se1       -0.646576   0.000000   0.404502  -0.081645  -0.808122
+ E          0.577502   0.000000  -0.494341   0.051218  -0.591037
+ E2         0.420948   0.000000  -0.261473   0.136192  -0.463198
+ Sum Q=0.000000  Emad=0.273556(-1.247839)  Vmtz=-0.595148 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000421  from output rho: -0.001422
+ SV:   8  2.215e-3 0.3000  1.111e-3  -31981.44704322-0.001422 A -1.37
+
+   it  8  of 40    ehf=  -31981.447848   ehk=  -31981.447043
+ From last iter    ehf=  -31981.447986   ehk=  -31981.446877
+ diffe(q)=  0.000138 (0.002215)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014221 ehf=-31981.4478482 ehk=-31981.4470432
+ cpudel    ...   Time this iter:  time(s):  2.99     total:  24.6s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 9 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1023 -1.0922 -1.0827 -0.5313 -0.5281 -0.5115 -0.4213 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1023 -1.0922 -1.0827 -0.5313 -0.5281 -0.5115 -0.4213 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1131 -1.0922 -1.0827 -0.5317 -0.5272 -0.4787 -0.4449 -0.4153
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1131 -1.0922 -1.0827 -0.5317 -0.5272 -0.4787 -0.4449 -0.4153
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.069279;  58.000000 electrons;  D(Ef):  103.276
+         Sum occ. bands:  -23.5859402  incl. Bloechl correction:   -0.000883
+         Mag. moment:      -0.001412
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4476980  ehk=-31981.4468841  sumev=-23.5859402  delsev=0.0872543
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.774550
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=2.17e-3  last it=2.22e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.17e-3
+   tj:-0.19800
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177211  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228792  mom=2.20995  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228792  mom=-2.20995  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.647659  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577458  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420775  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177211   0.000000   0.025650   0.111884  -0.384165
+ Fe1       -0.228792   0.000000   0.104333  -0.067691  -0.806656
+ Fe2       -0.228792   0.000000   0.104333  -0.067691  -0.806656
+ Se1       -0.647659   0.000000   0.405432  -0.081530  -0.807974
+ E          0.577458   0.000000  -0.493688   0.051829  -0.590422
+ E2         0.420775   0.000000  -0.262054   0.135447  -0.463872
+ Sum Q=0.000000  Emad=0.273260(-1.248793)  Vmtz=-0.595088 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000421  from output rho: -0.001412
+ SV:   9  2.171e-3 0.3000  1.504e-3  -31981.44688412-0.001412 A -0.198
+
+   it  9  of 40    ehf=  -31981.447698   ehk=  -31981.446884
+ From last iter    ehf=  -31981.447848   ehk=  -31981.447043
+ diffe(q)=  0.000150 (0.002171)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014117 ehf=-31981.447698 ehk=-31981.4468841
+ cpudel    ...   Time this iter:  time(s):  3.13     total:  27.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 10 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1526 -1.1024 -1.0922 -1.0827 -0.5310 -0.5278 -0.5113 -0.4210 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1526 -1.1024 -1.0922 -1.0827 -0.5310 -0.5278 -0.5113 -0.4210 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1439 -1.1131 -1.0922 -1.0827 -0.5313 -0.5269 -0.4783 -0.4445 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1439 -1.1131 -1.0923 -1.0827 -0.5313 -0.5269 -0.4783 -0.4445 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068418;  58.000000 electrons;  D(Ef):  103.362
+         Sum occ. bands:  -23.5495543  incl. Bloechl correction:   -0.000879
+         Mag. moment:      -0.001430
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4473517  ehk=-31981.4467822  sumev=-23.5495543  delsev=0.0875994
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.769976
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.52e-3  last it=2.17e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.52e-3
+   tj:-1.37351
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177741  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.229529  mom=2.19441  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.229529  mom=-2.19441  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.64735  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577493  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.42103  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177741   0.000000   0.025644   0.112136  -0.383950
+ Fe1       -0.229529   0.000000   0.104481  -0.068097  -0.807031
+ Fe2       -0.229529   0.000000   0.104481  -0.068097  -0.807031
+ Se1       -0.647350   0.000000   0.405109  -0.081621  -0.808092
+ E          0.577493   0.000000  -0.494060   0.051491  -0.590774
+ E2         0.421030   0.000000  -0.261843   0.135900  -0.463470
+ Sum Q=0.000000  Emad=0.273555(-1.248775)  Vmtz=-0.595126 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000424  from output rho: -0.001430
+ SV:  10  1.515e-3 0.3000  2.427e-3  -31981.44678218-0.001430 A -1.37
+
+   it 10  of 40    ehf=  -31981.447352   ehk=  -31981.446782
+ From last iter    ehf=  -31981.447698   ehk=  -31981.446884
+ diffe(q)=  0.000346 (0.001515)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014299 ehf=-31981.4473517 ehk=-31981.4467822
+ cpudel    ...   Time this iter:  time(s):  3.00     total:  30.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 11 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1025 -1.0923 -1.0828 -0.5312 -0.5280 -0.5115 -0.4211 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1025 -1.0923 -1.0828 -0.5312 -0.5280 -0.5115 -0.4211 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1132 -1.0923 -1.0828 -0.5316 -0.5271 -0.4785 -0.4447 -0.4153
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1132 -1.0923 -1.0828 -0.5316 -0.5271 -0.4786 -0.4447 -0.4153
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.069307;  58.000000 electrons;  D(Ef):  103.090
+         Sum occ. bands:  -23.5719862  incl. Bloechl correction:   -0.000879
+         Mag. moment:      -0.001418
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4469527  ehk=-31981.4465029  sumev=-23.5719862  delsev=0.0878134
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.774381
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.20e-3  last it=1.52e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.2e-3
+   tj:-0.89146
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.176905  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.227638  mom=2.17756  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.227638  mom=-2.17756  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648694  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577443  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420873  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.176905   0.000000   0.025563   0.111648  -0.384362
+ Fe1       -0.227638   0.000000   0.103868  -0.067288  -0.806274
+ Fe2       -0.227638   0.000000   0.103868  -0.067288  -0.806274
+ Se1       -0.648694   0.000000   0.406249  -0.081491  -0.807929
+ E          0.577443   0.000000  -0.493294   0.052210  -0.590056
+ E2         0.420873   0.000000  -0.262557   0.135036  -0.464255
+ Sum Q=0.000000  Emad=0.273241(-1.250031)  Vmtz=-0.595055 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000425  from output rho: -0.001418
+ SV:  11  1.198e-3 0.3000  2.679e-3  -31981.44650293-0.001418 A -0.891
+
+   it 11  of 40    ehf=  -31981.446953   ehk=  -31981.446503
+ From last iter    ehf=  -31981.447352   ehk=  -31981.446782
+ diffe(q)=  0.000399 (0.001198)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014181 ehf=-31981.4469527 ehk=-31981.4465029
+ cpudel    ...   Time this iter:  time(s):  2.99     total:  33.7s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 12 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1025 -1.0924 -1.0829 -0.5308 -0.5276 -0.5112 -0.4207 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1527 -1.1025 -1.0924 -1.0829 -0.5308 -0.5276 -0.5112 -0.4207 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1132 -1.0924 -1.0829 -0.5312 -0.5268 -0.4781 -0.4443 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1440 -1.1133 -1.0924 -1.0829 -0.5312 -0.5268 -0.4781 -0.4443 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068405;  58.000000 electrons;  D(Ef):  103.083
+         Sum occ. bands:  -23.5297204  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001439
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4463653  ehk=-31981.4462424  sumev=-23.5297204  delsev=0.0884029
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.769515
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=3.35e-4  last it=1.20e-3
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.35e-4
+   tj:-0.07288
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177357  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228502  mom=2.17562  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228502  mom=-2.17562  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648166  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577475  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421028  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177357   0.000000   0.025591   0.111896  -0.384151
+ Fe1       -0.228502   0.000000   0.104114  -0.067692  -0.806650
+ Fe2       -0.228502   0.000000   0.104114  -0.067692  -0.806650
+ Se1       -0.648166   0.000000   0.405778  -0.081565  -0.808026
+ E          0.577475   0.000000  -0.493674   0.051860  -0.590413
+ E2         0.421028   0.000000  -0.262263   0.135477  -0.463859
+ Sum Q=0.000000  Emad=0.273452(-1.249654)  Vmtz=-0.595091 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000427  from output rho: -0.001439
+ SV:  12  3.354e-4 0.3000  3.257e-4  -31981.44624245-0.001439 A -0.0729
+
+   it 12  of 40    ehf=  -31981.446365   ehk=  -31981.446242
+ From last iter    ehf=  -31981.446953   ehk=  -31981.446503
+ diffe(q)=  0.000587 (0.000335)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014393 ehf=-31981.4463653 ehk=-31981.4462424
+ cpudel    ...   Time this iter:  time(s):  3.14     total:  36.8s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 13 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1025 -1.0924 -1.0829 -0.5310 -0.5278 -0.5114 -0.4209 -0.4100
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1025 -1.0924 -1.0829 -0.5310 -0.5278 -0.5114 -0.4209 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5314 -0.5270 -0.4784 -0.4445 -0.4153
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5314 -0.5270 -0.4784 -0.4445 -0.4153
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.069050;  58.000000 electrons;  D(Ef):  102.975
+         Sum occ. bands:  -23.5515179  incl. Bloechl correction:   -0.000876
+         Mag. moment:      -0.001428
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4463489  ehk=-31981.4462195  sumev=-23.5515179  delsev=0.0884016
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.772841
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=3.64e-4  last it=3.35e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.64e-4
+   tj: 0.57527
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177263  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228325  mom=2.17564  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228325  mom=-2.17564  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648276  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.57747  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.420999  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177263   0.000000   0.025586   0.111845  -0.384193
+ Fe1       -0.228325   0.000000   0.104064  -0.067609  -0.806574
+ Fe2       -0.228325   0.000000   0.104064  -0.067609  -0.806574
+ Se1       -0.648276   0.000000   0.405875  -0.081550  -0.808006
+ E          0.577470   0.000000  -0.493597   0.051932  -0.590341
+ E2         0.420999   0.000000  -0.262325   0.135388  -0.463940
+ Sum Q=0.000000  Emad=0.273410(-1.249737)  Vmtz=-0.595084 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000426  from output rho: -0.001428
+ SV:  13  3.640e-4 0.3000  2.826e-5  -31981.44621952-0.001428 A 0.575
+
+   it 13  of 40    ehf=  -31981.446349   ehk=  -31981.446220
+ From last iter    ehf=  -31981.446365   ehk=  -31981.446242
+ diffe(q)=  0.000016 (0.000364)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014281 ehf=-31981.4463489 ehk=-31981.4462195
+ cpudel    ...   Time this iter:  time(s):  3.17     total:  40.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 14 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1025 -1.0924 -1.0829 -0.5310 -0.5278 -0.5113 -0.4209 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1025 -1.0924 -1.0829 -0.5310 -0.5278 -0.5113 -0.4209 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5314 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5314 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068927;  58.000000 electrons;  D(Ef):  102.992
+         Sum occ. bands:  -23.5471577  incl. Bloechl correction:   -0.000875
+         Mag. moment:      -0.001430
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4463401  ehk=-31981.4462244  sumev=-23.5471577  delsev=0.0884329
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.772208
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=3.15e-4  last it=3.64e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.15e-4
+   tj:-2.41218
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177262  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228325  mom=2.17479  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228325  mom=-2.17479  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648281  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.57747  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421007  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177262   0.000000   0.025588   0.111847  -0.384191
+ Fe1       -0.228325   0.000000   0.104062  -0.067611  -0.806576
+ Fe2       -0.228325   0.000000   0.104062  -0.067611  -0.806576
+ Se1       -0.648281   0.000000   0.405879  -0.081550  -0.808008
+ E          0.577470   0.000000  -0.493599   0.051931  -0.590342
+ E2         0.421007   0.000000  -0.262329   0.135391  -0.463939
+ Sum Q=0.000000  Emad=0.273413(-1.249751)  Vmtz=-0.595084 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000427  from output rho: -0.001430
+ SV:  14  3.153e-4 0.3000  1.345e-4  -31981.44622440-0.001430 A -2.41
+
+   it 14  of 40    ehf=  -31981.446340   ehk=  -31981.446224
+ From last iter    ehf=  -31981.446349   ehk=  -31981.446220
+ diffe(q)=  0.000009 (0.000315)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014303 ehf=-31981.4463401 ehk=-31981.4462244
+ cpudel    ...   Time this iter:  time(s):  2.97     total:  43.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 15 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1025 -1.0924 -1.0829 -0.5310 -0.5278 -0.5113 -0.4209 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1025 -1.0924 -1.0829 -0.5310 -0.5278 -0.5113 -0.4209 -0.4100
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5314 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5314 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068949;  58.000000 electrons;  D(Ef):  102.982
+         Sum occ. bands:  -23.5474013  incl. Bloechl correction:   -0.000875
+         Mag. moment:      -0.001430
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4463154  ehk=-31981.4462098  sumev=-23.5474013  delsev=0.0884977
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.772317
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=2.90e-4  last it=3.15e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.9e-4
+   tj:-8.78632
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.17704  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.227843  mom=2.16715  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.227843  mom=-2.16715  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648637  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577457  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421005  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177040   0.000000   0.025580   0.111730  -0.384288
+ Fe1       -0.227843   0.000000   0.103899  -0.067412  -0.806396
+ Fe2       -0.227843   0.000000   0.103899  -0.067412  -0.806396
+ Se1       -0.648637   0.000000   0.406179  -0.081518  -0.807972
+ E          0.577457   0.000000  -0.493409   0.052109  -0.590168
+ E2         0.421005   0.000000  -0.262531   0.135188  -0.464134
+ Sum Q=0.000000  Emad=0.273347(-1.250114)  Vmtz=-0.595067 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001430
+ SV:  15  2.900e-4 0.3000  1.212e-3  -31981.44620979-0.001430 A -8.79
+
+   it 15  of 40    ehf=  -31981.446315   ehk=  -31981.446210
+ From last iter    ehf=  -31981.446340   ehk=  -31981.446224
+ diffe(q)=  0.000025 (0.000290)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014302 ehf=-31981.4463154 ehk=-31981.4462098
+ cpudel    ...   Time this iter:  time(s):  3.03     total:  46.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 16 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5309 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5309 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4782 -0.4443 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4782 -0.4443 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068814;  58.000000 electrons;  D(Ef):  102.931
+         Sum occ. bands:  -23.5378914  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001435
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4460673  ehk=-31981.4460830  sumev=-23.5378914  delsev=0.0890088
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.771553
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=7.09e-5  last it=2.90e-4
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=7.09e-5
+   tj: 0.18023
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177151  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228044  mom=2.16848  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228044  mom=-2.16848  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648507  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577463  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421024  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177151   0.000000   0.025580   0.111785  -0.384243
+ Fe1       -0.228044   0.000000   0.103958  -0.067503  -0.806480
+ Fe2       -0.228044   0.000000   0.103958  -0.067503  -0.806480
+ Se1       -0.648507   0.000000   0.406064  -0.081535  -0.807991
+ E          0.577463   0.000000  -0.493494   0.052029  -0.590248
+ E2         0.421024   0.000000  -0.262453   0.135284  -0.464044
+ Sum Q=0.000000  Emad=0.273389(-1.250000)  Vmtz=-0.595075 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001435
+ SV:  16  7.095e-5 0.3000  2.150e-4  -31981.44608298-0.001435 A 0.180
+
+   it 16  of 40    ehf=  -31981.446067   ehk=  -31981.446083
+ From last iter    ehf=  -31981.446315   ehk=  -31981.446210
+ diffe(q)=  0.000248 (0.000071)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.001435 ehf=-31981.4460673 ehk=-31981.446083
+ cpudel    ...   Time this iter:  time(s):  2.98     total:  49.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 17 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068917;  58.000000 electrons;  D(Ef):  102.930
+         Sum occ. bands:  -23.5424222  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4461159  ehk=-31981.4461045  sumev=-23.5424222  delsev=0.0888492
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.772091
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=3.27e-5  last it=7.09e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=3.27e-5
+   tj: 0.30807
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.17714  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.22801  mom=2.16804  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.22801  mom=-2.16804  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648533  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577462  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421023  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177140   0.000000   0.025578   0.111777  -0.384250
+ Fe1       -0.228010   0.000000   0.103946  -0.067490  -0.806467
+ Fe2       -0.228010   0.000000   0.103946  -0.067490  -0.806467
+ Se1       -0.648533   0.000000   0.406086  -0.081533  -0.807989
+ E          0.577462   0.000000  -0.493481   0.052041  -0.590235
+ E2         0.421023   0.000000  -0.262466   0.135270  -0.464057
+ Sum Q=0.000000  Emad=0.273386(-1.250027)  Vmtz=-0.595074 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001433
+ SV:  17  3.265e-5 0.3000  6.868e-5  -31981.44610446-0.001433 A 0.308
+
+   it 17  of 40    ehf=  -31981.446116   ehk=  -31981.446104
+ From last iter    ehf=  -31981.446067   ehk=  -31981.446083
+ diffe(q)= -0.000049 (0.000033)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014327 ehf=-31981.4461159 ehk=-31981.4461045
+ cpudel    ...   Time this iter:  time(s):  3.06     total:  52.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 18 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068904;  58.000000 electrons;  D(Ef):  102.927
+         Sum occ. bands:  -23.5416914  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4461010  ehk=-31981.4460971  sumev=-23.5416914  delsev=0.0888489
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.772015
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.04e-5  last it=3.27e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=1.04e-5
+   tj:-0.44498
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177141  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228002  mom=2.16784  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228002  mom=-2.16784  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648542  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577462  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421022  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177141   0.000000   0.025575   0.111775  -0.384251
+ Fe1       -0.228002   0.000000   0.103942  -0.067488  -0.806464
+ Fe2       -0.228002   0.000000   0.103942  -0.067488  -0.806464
+ Se1       -0.648542   0.000000   0.406092  -0.081534  -0.807989
+ E          0.577462   0.000000  -0.493479   0.052043  -0.590233
+ E2         0.421022   0.000000  -0.262468   0.135267  -0.464059
+ Sum Q=0.000000  Emad=0.273387(-1.250038)  Vmtz=-0.595074 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001433
+ SV:  18  1.040e-5 0.3000  3.081e-5  -31981.44609710-0.001433 A -0.445
+
+   it 18  of 40    ehf=  -31981.446101   ehk=  -31981.446097
+ From last iter    ehf=  -31981.446116   ehk=  -31981.446104
+ diffe(q)=  0.000015 (0.000010)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014331 ehf=-31981.446101 ehk=-31981.4460971
+ cpudel    ...   Time this iter:  time(s):  2.97     total:  55.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 19 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068901;  58.000000 electrons;  D(Ef):  102.926
+         Sum occ. bands:  -23.5415060  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4460942  ehk=-31981.4460934  sumev=-23.5415060  delsev=0.0888209
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.771998
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=2.36e-6  last it=1.04e-5
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=2.37e-6
+   tj:-0.23724
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177143  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228002  mom=2.16779  a=0.025  nr=397  bscal=0.9
+
+ RSEQ warning!  sphere density not converged
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228002  mom=-2.16779  a=0.025  nr=397  bscal=0.9
+
+ RSEQ warning!  sphere density not converged
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648544  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577463  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421021  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177143   0.000000   0.025574   0.111775  -0.384251
+ Fe1       -0.228002   0.000000   0.103942  -0.067488  -0.806464
+ Fe2       -0.228002   0.000000   0.103942  -0.067488  -0.806464
+ Se1       -0.648544   0.000000   0.406093  -0.081534  -0.807989
+ E          0.577463   0.000000  -0.493479   0.052043  -0.590233
+ E2         0.421021   0.000000  -0.262468   0.135267  -0.464059
+ Sum Q=0.000000  Emad=0.273388(-1.250042)  Vmtz=-0.595074 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001433
+ SV:  19  2.365e-6 0.3000  7.231e-6  -31981.44609340-0.001433 A -0.237
+
+   it 19  of 40    ehf=  -31981.446094   ehk=  -31981.446093
+ From last iter    ehf=  -31981.446101   ehk=  -31981.446097
+ diffe(q)=  0.000007 (0.000002)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014332 ehf=-31981.4460942 ehk=-31981.4460934
+ cpudel    ...   Time this iter:  time(s):  2.95     total:  58.0s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 20 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5309 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068901;  58.000000 electrons;  D(Ef):  102.925
+         Sum occ. bands:  -23.5414734  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4460924  ehk=-31981.4460923  sumev=-23.5414734  delsev=0.0887997
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.771995
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=8.79e-7  last it=2.36e-6
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=8.77e-7
+   tj:-0.19342
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177144  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228003  mom=2.16778  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228003  mom=-2.16778  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648543  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577464  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.421021  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177144   0.000000   0.025574   0.111775  -0.384251
+ Fe1       -0.228003   0.000000   0.103943  -0.067488  -0.806464
+ Fe2       -0.228003   0.000000   0.103943  -0.067488  -0.806464
+ Se1       -0.648543   0.000000   0.406092  -0.081534  -0.807989
+ E          0.577464   0.000000  -0.493480   0.052043  -0.590233
+ E2         0.421021   0.000000  -0.262467   0.135267  -0.464058
+ Sum Q=0.000000  Emad=0.273388(-1.250043)  Vmtz=-0.595074 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001433
+ SV:  20  8.786e-7 0.3000  1.288e-6  -31981.44609226-0.001433 A -0.193
+
+   it 20  of 40    ehf=  -31981.446092   ehk=  -31981.446092
+ From last iter    ehf=  -31981.446094   ehk=  -31981.446093
+ diffe(q)=  0.000002 (0.000001)    tol= 0.000001 (0.000001)   more=T
+i bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014332 ehf=-31981.4460924 ehk=-31981.4460923
+ cpudel    ...   Time this iter:  time(s):  2.95     total:  1.02m
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 94 64 0 98
+
+ lmasa (warning): no sigm file found ... LDA calculation only
+
+ --- BNDASA : iteration 21 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 1 of 105, k=  0.00000  0.00000  0.00000
+ -1.1528 -1.1026 -1.0924 -1.0829 -0.5310 -0.5277 -0.5113 -0.4208 -0.4099
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+ SECMAT:  kpt 101 of 105, k=  0.00000  0.00000  0.27881
+ -1.1441 -1.1133 -1.0924 -1.0829 -0.5313 -0.5269 -0.4783 -0.4444 -0.4152
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.068901;  58.000000 electrons;  D(Ef):  102.925
+         Sum occ. bands:  -23.5414655  incl. Bloechl correction:   -0.000874
+         Mag. moment:      -0.001433
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ LM: ehf=-31981.4460920  ehk=-31981.4460919  sumev=-23.5414655  delsev=0.0887881
+
+ Mixpqc: ic  ngrp  group
+     2 elts in group  1  Q= 7.771994
+  
+ mixing: mode=A  nmix=1  beta=.3  bet2=.3  elind=-1  locm=33  wgt=1,1
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=5.37e-7  last it=8.79e-7
+ AMIX: nmix=1 mmix=8  nelts=152  beta=0.3  tm=10  rmsdel=5.35e-7
+   tj:-0.88901
+
+ GETZV:  58 valence electrons
+ATOM=K1   Z=19  Qc=18  R=4.110000  Qv=0.177145  mom=-0.00003  a=0.025  nr=407
+ATOM=Fe1  Z=26  Qc=18  R=2.660000  Qv=-0.228005  mom=2.16778  a=0.025  nr=397  bscal=0.9
+ATOM=Fe2  Z=26  Qc=18  R=2.660000  Qv=-0.228005  mom=-2.16778  a=0.025  nr=397  bscal=0.9
+ATOM=Se1  Z=34  Qc=28  R=2.660000  Qv=-0.648542  mom=-0.00007  a=0.025  nr=417
+ATOM=E    Z=0  Qc=0  R=2.117100  Qv=0.577465  mom=-0.00002  a=0.025  nr=91
+ATOM=E2   Z=0  Qc=0  R=2.117100  Qv=0.42102  mom=-0.00001  a=0.025  nr=91
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ K1         0.177145   0.000000   0.025573   0.111776  -0.384251
+ Fe1       -0.228005   0.000000   0.103944  -0.067489  -0.806464
+ Fe2       -0.228005   0.000000   0.103944  -0.067489  -0.806464
+ Se1       -0.648542   0.000000   0.406092  -0.081534  -0.807989
+ E          0.577465   0.000000  -0.493481   0.052043  -0.590233
+ E2         0.421020   0.000000  -0.262466   0.135267  -0.464058
+ Sum Q=0.000000  Emad=0.273389(-1.250044)  Vmtz=-0.595074 (up-dn=0.000002)
+ Magnetization from sphere program: -0.000428  from output rho: -0.001433
+ SV:  21  5.366e-7 0.3000  1.036e-6  -31981.44609193-0.001433 A -0.889
+
+   it 21  of 40    ehf=  -31981.446092   ehk=  -31981.446092
+ From last iter    ehf=  -31981.446092   ehk=  -31981.446092
+ diffe(q)=  0.000000 (0.000001)    tol= 0.000001 (0.000001)   more=F
+c bxcs=1 convc=1e-6 nit=40 nsp=2 nm=0 file=0 lxcf=2 gga=0 stripe=1 z4e=.3539 zes=.19 mmom=-.0014332 ehf=-31981.446092 ehk=-31981.4460919
+ cpudel    ...   Time this iter:  time(s):  2.95     total:  1.06m
+
+ Jolly good show !  You converged to rms DQ=  0.000001
+ Exit 0 [4 severe warnings] LM
+ CPU time:  63.858s   Wall clock 63.912s  at  14:49:28 05.04.2018  on  localhost.localdomai

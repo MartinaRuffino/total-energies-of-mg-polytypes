@@ -1,0 +1,12 @@
+1. Compile all the .f files in this directory, e.g.
+   mpiifort -132 -O3 -c -module /home/ms4/lmf/b/mods -xHost *.f
+2. Copy two other files so library is included in link
+   cp ../b/pgf/pgfasa.f.o ../b/pgf/lmasa.f.o .
+3. Make the archive library
+   ar rv pgf-r16.a *.o
+4. remove lmpg and relink it.  Copy the line and insert this library in the link immediately after lmpg.o
+   mpiifort -O3 -debug minimal -march=native -extend-source 132 -I/opt/intel/compilers_and_libraries_2018.0.128/linux/mkl/include -I/opt/libxc/4.0.1/intel/18.0.0/o/include -module ./mods -I./mods -I. lmpg.o ../pgf-r16/pgf-r16.a ...
+
+
+Clean directory
+rm *.o pgf-r16.a

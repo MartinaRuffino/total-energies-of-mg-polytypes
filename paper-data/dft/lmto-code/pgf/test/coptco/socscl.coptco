@@ -1,0 +1,5 @@
+% const soscl=1
+% rows 32 cols 1
+% repeat 1=1:32
+{soscl}
+% end

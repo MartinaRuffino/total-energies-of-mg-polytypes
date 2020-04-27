@@ -1,0 +1,204 @@
+ --------------------  START LMSCELL  ---------------------
+#rf  185: (Ni)NiO in the NaCl structure nl=3
+#rf  317: Ni parms : Z=28 eref=-3036.182
+#rf  317: O parms : Z=8 eref=-149.1822
+#rf  317: Ni parms : Z=28 eref=-3036.182
+ IOSITE: read pos,vel,eula,vshft,ipl,irlx from file unit 10
+
+ LMSCELL:  nbas = 4  nspec = 5  verb 41,20
+ special:
+
+                Plat                                  Qlat
+   0.500000   0.500000   1.000000       -0.500000  -0.500000   1.500000
+   0.500000   1.000000   0.500000       -0.500000   1.500000  -0.500000
+   1.000000   0.500000   0.500000        1.500000  -0.500000  -0.500000
+   alat = 7.88  Cell vol = 244.651936
+
+ LATTC:  as= 1.000   tol=2.22507e-308   alat= 7.88000   awald= 0.160   lmax=6
+         r1= 21.640   nkd= 84751    q1= 11.556   nkg= 3261
+
+ Enter lattice vectors of supercell, or ? for help:
+
+ Basis vectors of supercell:
+
+               plx                            plx/plat                           qlx
+   1.00000   1.00000   2.00000      2.00000   0.00000   0.00000     -0.25000  -0.25000   0.75000
+   1.00000   2.00000   1.00000      0.00000   2.00000   0.00000     -0.25000   0.75000  -0.25000
+   2.00000   1.00000   1.00000      0.00000   0.00000   2.00000      0.75000  -0.25000  -0.25000
+
+ Angles between SL vectors :   33.557310 (1,2)    33.557310 (2,3)    33.557310 (3,1)
+ cosine of angles               0.833333 (1,2)     0.833333 (2,3)     0.833333 (3,1)
+  
+    ib spec                     tau                  + plat  n(ib)
+     1  C1         0.000000   0.000000   0.000000    0  0  0    1
+     1  C1         0.500000   0.500000   1.000000    1  0  0    2
+     1  C1         0.500000   1.000000   0.500000    0  1  0    3
+     1  C1         1.000000   0.500000   0.500000    0  0  1    4
+     1  C1         1.500000   1.500000   1.000000    0  1  1    5
+     1  C1         1.000000   1.500000   1.500000    1  1  0    6
+     1  C1         1.500000   1.000000   1.500000    1  0  1    7
+     1  C1         2.000000   2.000000   2.000000    1  1  1    8
+     2  B1         1.000000   1.000000   1.000000    0  0  0    1
+     2  B1         1.500000   1.500000   2.000000    1  0  0    2
+     2  B1         1.500000   2.000000   1.500000    0  1  0    3
+     2  B1         2.000000   1.500000   1.500000    0  0  1    4
+     2  B1         2.500000   2.500000   2.000000    0  1  1    5
+     2  B1         2.000000   2.500000   2.500000    1  1  0    6
+     2  B1         2.500000   2.000000   2.500000    1  0  1    7
+     2  B1         3.000000   3.000000   3.000000    1  1  1    8
+     3  A1         0.500000   0.500000   0.500000    0  0  0    1
+     3  A1         1.000000   1.000000   1.500000    1  0  0    2
+     3  A1         1.000000   1.500000   1.000000    0  1  0    3
+     3  A1         1.500000   1.000000   1.000000    0  0  1    4
+     3  A1         2.000000   2.000000   1.500000    0  1  1    5
+     3  A1         1.500000   2.000000   2.000000    1  1  0    6
+     3  A1         2.000000   1.500000   2.000000    1  0  1    7
+     3  A1         2.500000   2.500000   2.500000    1  1  1    8
+     4  A1         1.500000   1.500000   1.500000    0  0  0    1
+     4  A1         2.000000   2.000000   2.500000    1  0  0    2
+     4  A1         2.000000   2.500000   2.000000    0  1  0    3
+     4  A1         2.500000   2.000000   2.000000    0  0  1    4
+     4  A1         3.000000   3.000000   2.500000    0  1  1    5
+     4  A1         2.500000   3.000000   3.000000    1  1  0    6
+     4  A1         3.000000   2.500000   3.000000    1  0  1    7
+     4  A1         3.500000   3.500000   3.500000    1  1  1    8
+
+ cell vol=  0.500000     scell vol=    4.000000     ratio=   8.00
+ cell nbas=        4     scell nbas=         32     ratio=   8.00
+
+ Found 8 q points in original cell that map to q=0:
+             q (2*pi/a)                    q (multiples of qlat)
+   0.000000   0.000000   0.000000      0.000000   0.000000   0.000000
+   0.750000  -0.250000  -0.250000      0.000000   0.000000   0.500000
+  -0.250000   0.750000  -0.250000      0.000000   0.500000   0.000000
+   0.500000   0.500000  -0.500000      0.000000   0.500000   0.500000
+  -0.250000  -0.250000   0.750000      0.500000   0.000000   0.000000
+   0.500000  -0.500000   0.500000      0.500000   0.000000   0.500000
+  -0.500000   0.500000   0.500000      0.500000   0.500000   0.000000
+   0.250000   0.250000   0.250000      0.500000   0.500000   0.500000
+
+ Initiate SQS algorithm : r2max=1.3  r3max=1  r3mode=2  seed=1
+
+
+ pairc, ib=  1: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  2: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  3: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  4: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  5: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  6: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  7: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  8: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib=  9: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 10: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 11: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 12: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 13: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 14: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 15: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 16: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 17: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 18: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 19: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 20: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 21: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 22: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 23: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 24: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 25: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 26: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 27: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 28: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 29: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 30: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 31: 147 neighbors in range  1.613*alat =  12.71
+ pairc, ib= 32: 147 neighbors in range  1.613*alat =  12.71
+ pairc:  4704 pairs total  147 is max cluster size
+ supcel, ib=  1:  pair table pared from 147 to  42
+ supcel, ib=  2:  pair table pared from 147 to  42
+ supcel, ib=  3:  pair table pared from 147 to  42
+ supcel, ib=  4:  pair table pared from 147 to  42
+ supcel, ib=  5:  pair table pared from 147 to  42
+ supcel, ib=  6:  pair table pared from 147 to  42
+ supcel, ib=  7:  pair table pared from 147 to  42
+ supcel, ib=  8:  pair table pared from 147 to  42
+ supcel, ib=  9:  pair table pared from 147 to  42
+ supcel, ib= 10:  pair table pared from 147 to  42
+ supcel, ib= 11:  pair table pared from 147 to  42
+ supcel, ib= 12:  pair table pared from 147 to  42
+ supcel, ib= 13:  pair table pared from 147 to  42
+ supcel, ib= 14:  pair table pared from 147 to  42
+ supcel, ib= 15:  pair table pared from 147 to  42
+ supcel, ib= 16:  pair table pared from 147 to  42
+ pair3c site   1 : found 408 triplets out of 1764
+ pair3c site   2 : found 408 triplets out of 1764
+ pair3c site   3 : found 408 triplets out of 1764
+ pair3c site   4 : found 408 triplets out of 1764
+ pair3c site   5 : found 408 triplets out of 1764
+ pair3c site   6 : found 408 triplets out of 1764
+ pair3c site   7 : found 408 triplets out of 1764
+ pair3c site   8 : found 408 triplets out of 1764
+ pair3c site   9 : found 408 triplets out of 1764
+ pair3c site  10 : found 408 triplets out of 1764
+ pair3c site  11 : found 408 triplets out of 1764
+ pair3c site  12 : found 408 triplets out of 1764
+ pair3c site  13 : found 408 triplets out of 1764
+ pair3c site  14 : found 408 triplets out of 1764
+ pair3c site  15 : found 408 triplets out of 1764
+ pair3c site  16 : found 408 triplets out of 1764
+
+ SQS:  672 pairs, 6528 triplets among 16 SQS sites
+       smallest pair length 0.7071  energy 0.4931
+       largest  pair length 1.2247  energy 0.2938
+       pair energy e2 scales as 1*exp(-1*d)
+       smallest triplet length 2.1213  energy 0.1199
+       largest  triplet length 2.9319  energy 0.0533
+ 
+ mcasim:   100 mc steps (ttot=10, ts=0.1) incl. 0 equil. steps,  kT=5
+
+  mcasho :  sites 1:32  e2=-17.6582  e3=0  esqs=311.8125
+  ib site sig     ib site sig     ib site sig     ib site sig
+   1   1   1  |    9   9  -1  |   17  17   0  |   25  25   0
+   2   2   1  |   10  10  -1  |   18  18   0  |   26  26   0
+   3   3   1  |   11  11  -1  |   19  19   0  |   27  27   0
+   4   4   1  |   12  12  -1  |   20  20   0  |   28  28   0
+   5   5   1  |   13  13  -1  |   21  21   0  |   29  29   0
+   6   6   1  |   14  14  -1  |   22  22   0  |   30  30   0
+   7   7   1  |   15  15  -1  |   23  23   0  |   31  31   0
+   8   8   1  |   16  16  -1  |   24  24   0  |   32  32   0
+ swap  13   1 enow =   172.976225 de =  -138.836268  metrop=F
+ swap  14   2 enow =    85.739623 de =   -87.236601  metrop=F
+ swap   4  11 enow =    68.351317 de =   -17.388306  metrop=F
+ swap  16   7 enow =    62.237884 de =    -6.113433  metrop=F
+ swap  11   2 enow =    69.874600 de =     7.636716  metrop=T
+ swap  14   6 enow =     2.572619 de =   -67.301981  metrop=F
+ swap   8  12 enow =    14.605064 de =    12.032445  metrop=T
+ swap   5  14 enow =     5.525608 de =    -9.079456  metrop=F
+ swap   5  11 enow =     9.539080 de =     4.013472  metrop=T
+ swap   4  10 enow =    11.142953 de =     1.603873  metrop=T
+ swap  10   8 enow =     9.539080 de =    -1.603873  metrop=F
+ swap  10   7 enow =     7.216664 de =    -2.322417  metrop=F
+ swap  15   5 enow =     7.216664 de =     0.000000  metrop=F
+ swap  10   4 enow =     9.539080 de =     2.322417  metrop=T
+ swap  13   1 enow =     5.525608 de =    -4.013472  metrop=F
+ swap   8  10 enow =     0.000000 de =    -5.525608  metrop=F
+
+ sqssim completed 16+0 swaps in 117 attempts:
+ kt = 5  estart = 311.8125  emin = 0  enow = 0  ebar = 33.8501  rms(e-ebar) = 45.5171 
+
+  mcasho :  sites 1:32  e2=0  e3=0  esqs=0
+  ib site sig     ib site sig     ib site sig     ib site sig
+   1   1   1  |    9   9  -1  |   17  17   0  |   25  25   0
+   2   4   1  |   10  11  -1  |   18  18   0  |   26  26   0
+   3   3   1  |   11   6  -1  |   19  19   0  |   27  27   0
+   4  16   1  |   12   8  -1  |   20  20   0  |   28  28   0
+   5  15   1  |   13  13  -1  |   21  21   0  |   29  29   0
+   6   2   1  |   14   5  -1  |   22  22   0  |   30  30   0
+   7  12   1  |   15  14  -1  |   23  23   0  |   31  31   0
+   8  10   1  |   16   7  -1  |   24  24   0  |   32  32   0
+
+
+ SQS completed ... permute species and write site permutations to file siteperm
+
+ iosits: wrote to file 'site2', 32 sites
+ Exit 0 LMSCELL 
+ CPU time:  0.119s   Wall clock 0.203s  at  15:18:49 06.10.2018  on  localhost.localdomai

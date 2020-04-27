@@ -1,0 +1,188 @@
+rdcmd:  lmstr fe2 -vnit=-1 -vfile=2 -vnc=f
+ -----------------------  START LMSTR -----------------------
+#rf  108: reading moments for nc==0&file==2
+ HEADER Study of Fe
+
+ LMSTR:    nbas = 2  nspec = 1  vn 7.11.d  verb 31,20
+ special
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 5.42  Cell vol = 159.220088
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42000   awald= 0.369
+         r1=  3.015   nkd= 123      q1=  3.598   nkg= 179
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ SPLCLS:  1 species split into 2 classes
+ Species  Class      Sites...
+ A        1:A        1
+          2:A2       2
+
+ ASASTR: strux for 2nd gen LMTOs, and Sdot
+         avw = 2.668659
+
+ pairc, ib=  1:  51 neighbors in range  1.723*alat =   9.34
+ pairc, ib=  2:  51 neighbors in range  1.723*alat =   9.34
+ pairc:  102 pairs total  51 is max cluster size
+ strscr:  generated 102 inequivalent strux from 102 total
+ Exit 0 LMSTR 
+ CPU time:    0.060s   Wall clock    0.111s   12:01:41 12.05.2015        on phpdl1.ph.kcl.ac.uk
+rdcmd:  lm fe2 -vnit=-1 -vfile=2 -vnc=f --pr41,20
+ -----------------------  START LM -----------------------
+#rf  108: reading moments for nc==0&file==2
+ HEADER Study of Fe
+ IOSITE: read pos,vel,eula,vshft,ipl,irlx from file unit 14
+
+ LM:       nbas = 2  nspec = 1  vn 7.11.d  verb 41,20
+ special
+ pot:      spin-pol, XC:BH
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 5.42  Cell vol = 159.220088
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42000   awald= 0.369
+         r1=  3.015   nkd= 123      q1=  3.598   nkg= 179
+
+ SGROUP: 1 symmetry operations from 0 generators
+ ADDBAS: basis is already complete --- no sites added
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ SPLCLS:  1 species split into 2 classes
+ Species  Class      Sites...
+ A        1:A        1
+          2:A2       2
+ aiocls class A: nothing read
+ aiocls class A2: nothing read
+ aiocls class A: nothing read
+ aiocls class A2: nothing read
+ BZMESH:  816 irreducible QP from 27000 ( 30 30 30 )  shift= F F F
+ TETIRR: sorting 162000 tetrahedra ... 13472 inequivalent ones found
+
+ GETZV:  16 valence electrons
+ATOM=A    Z=26  Qc=18  R=2.668659  Qv=0.000019  mom=2.28903  a=0.03  nr=331
+ATOM=A2   Z=26  Qc=18  R=2.668659  Qv=-0.000019  mom=2.28946  a=0.03  nr=331
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000019   0.000000  -0.000014   0.000000  -0.764868
+ A2        -0.000019   0.000000   0.000014   0.000000  -0.764867
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764867 (up-dn=0.016698)
+ LM: it 0 of 1  ehk0=-0.929768  pv=-0.1304  mmom=4.5785  seref=-5081.1362
+ cpudel    ...   Time this iter:  time(s):  0.234    total:  0.234s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   -      18     0     0    18    18       0
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 816, k=  0.00000  0.00000  0.00000
+ -0.6972 -0.4045 -0.4045 -0.2231 -0.2231 -0.2231 -0.1230 -0.1230 -0.0547
+ -0.0547 -0.0547  0.7285  0.7285  0.7285  1.3937  2.3949  2.3949  2.3949
+ nev, nevmx, ldim=  12  13  18  ev(nev) = 0.72846  efmax = 0.5
+         Est E_f           Window        Tolerance  DOS(E_f)
+        -0.056287  -0.056678  -0.055946   0.000733  32.539698
+        -0.056286  -0.056290  -0.056283   0.000007  32.444179
+        -0.056286  -0.056286  -0.056286   0.000000  32.444354
+ BZINTS: Fermi energy:     -0.056286;  16.000000 electrons;  D(Ef):   32.444
+         Sum occ. bands:   -3.4867620  incl. Bloechl correction:   -0.000381
+         Mag. moment:       4.578493
+
+ Saved qp weights ...
+ IOMOMS: file contains:  bands  doswts  moments
+         nl=3  nsp=2  nspc=1  nkp=816  ldim=18
+
+ Harris energy:  sumev= -3.486762
+ rhov=     -8122.896883   ekin=      5149.015082   eref=    -5081.136200
+ rhoep=     -214.520244   utot=    -10016.557849   ehar=       -0.926811
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764867 (up-dn=0.016698)
+
+ Kohn-Sham energy:  sumev= -3.486762
+ rhov=     -8122.896842   ekin=      5149.015041   eref=    -5081.136200
+ rhoep=     -214.520241   utot=    -10016.557811   ehks=       -0.926811
+
+ LM: ehf=-0.9268114  ehk=-0.9268113  sumev=-3.4867620  delsev=0.0029564
+
+ CLASS L    Q0         Q1         Q2         EB         POLD       PNU
+   1   0  0.315227  -0.000001   0.005091
+          0.315227   0.000000   0.005091  -0.000002   4.649212   4.649211
+   1   1  0.365883   0.000000   0.004962
+          0.365883   0.000000   0.004962   0.000000   4.395282   4.395281
+   1   2  4.463417   0.000000   0.044660
+          4.463417   0.000000   0.044660   0.000000   3.873454   3.873454
+   1   0  0.329056   0.000000   0.004779
+          0.329056   0.000000   0.004779  -0.000001   4.659316   4.659316
+   1   1  0.422405   0.000000   0.005661
+          0.422405   0.000000   0.005661  -0.000001   4.421791   4.421792
+   1   2  2.104031  -0.000002   0.010113
+          2.104031   0.000000   0.010113  -0.000001   3.681420   3.681420
+   2   0  0.315240  -0.000001   0.005092
+          0.315240   0.000000   0.005092  -0.000002   4.649224   4.649223
+   2   1  0.365886   0.000000   0.004961
+          0.365886   0.000000   0.004961   0.000001   4.395285   4.395285
+   2   2  4.463593   0.000000   0.044662
+          4.463593   0.000000   0.044662   0.000000   3.873463   3.873463
+   2   0  0.329050   0.000000   0.004778
+          0.329050   0.000000   0.004778  -0.000001   4.659311   4.659311
+   2   1  0.422415   0.000000   0.005661
+          0.422415   0.000000   0.005661  -0.000001   4.421790   4.421790
+   2   2  2.103797  -0.000002   0.010110
+          2.103797   0.000000   0.010110  -0.000001   3.681392   3.681392
+  
+ mixing: mode=A  nmix=4  beta=.2
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=7.66e-7
+ AMIX: nmix=0 mmix=8  nelts=48  beta=0.2  tm=10  rmsdel=7.64e-7
+              Old            New         Diff          Mixed
+    1      6.582123      6.582122     -0.000001      6.582123
+    2     -0.007145     -0.007146     -0.000001     -0.007145
+    3      0.455577      0.455577     -0.000001      0.455577
+    4     -0.009777     -0.009778     -0.000001     -0.009777
+   10     -0.018745     -0.018746      0.000000     -0.018745
+   12     -0.039966     -0.039967     -0.000001     -0.039966
+   20      1.668335      1.668337      0.000003      1.668335
+   26     -0.007133     -0.007133     -0.000001     -0.007133
+   27      0.455582      0.455582     -0.000001      0.455582
+   28     -0.009764     -0.009765     -0.000001     -0.009764
+   35      0.557412      0.557413      0.000001      0.557412
+   36     -0.039971     -0.039972     -0.000001     -0.039971
+   44      1.668624      1.668628      0.000003      1.668625
+
+ GETZV:  16 valence electrons
+ATOM=A    Z=26  Qc=18  R=2.668659  Qv=0.000019  mom=2.28903  a=0.03  nr=331
+ATOM=A2   Z=26  Qc=18  R=2.668659  Qv=-0.000019  mom=2.28946  a=0.03  nr=331
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000019   0.000000  -0.000014   0.000000  -0.764868
+ A2        -0.000019   0.000000   0.000014   0.000000  -0.764867
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764867 (up-dn=0.016698)
+ Magnetization from sphere program: 4.578490  from output rho: 4.578493
+ SV:   1 7.656D-07 0.2000 2.913E-07      -0.92681135 4.578493 L
+
+   it  1  of  1    ehf=      -0.926811   ehk=      -0.926811
+                rms dq=  0.000001        tol= 0.000004   more=F
+c nit=-1 file=2 nc=0 mmom=4.578493 ehf=-.9268114 ehk=-.9268113
+ cpudel    ...   Time this iter:  time(s):  0.867    total:  1.10s
+
+ Jolly good show !  You converged to rms DQ=  0.000000
+ Exit 0 LM 
+ CPU time:    1.101s   Wall clock    1.153s   12:01:43 12.05.2015        on phpdl1.ph.kcl.ac.uk

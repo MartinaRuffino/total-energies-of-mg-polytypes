@@ -1,0 +1,1431 @@
+#!/bin/tcsh -f
+
+# Tests the operation of ctrl file maker, blm
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+alias compare_resf 'set retcall = \!\!:1; set testvar = \!\!:2 ; set refvar = \!\!:3 ; set keyword = \!\!:4  ; set arg_number = \!\!:5 ; set occur_number = \!\!:6 ; set sed_strn = \!\!:7 ; goto compare_resf'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias zcmpmfiles_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 ; goto zcmpmfiles_res_0 '
+alias getrmfiles 'set rmfiles = ($rmfilel) ; if ("$rmfilel" == "ALL") touch ctrl.$exti; if ("$rmfilel" == "ALL") set rmfiles = *.$exti'
+
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `(cd $testdir/..; pwd)`
+set tmpdir = $cwd
+set space = '        '
+set failed = 0
+
+# Prepend current working-directory, top-level dir and maindir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.blm: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--withlmfa":
+      set withlmfa
+      breaksw
+    case "--whichexec"
+      set quiet; unset quiet
+      findcmd chk00 blm "$path" "$topdir"
+      chk00:
+      exit 0
+      breaksw
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+#   does nothing here
+    case "--all":
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--verb*":
+      set verb = 1
+      breaksw
+    case "--noplot*":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+
+end
+
+if ( $?joblist == 0 ) then
+set joblist = ($argv)
+if ( $#joblist == 0 ) set joblist = (1 2 3 4 5 6 7 8 9 10 11 12)
+endif
+
+# ------------------ job 1 --------------------
+# echo $joblist | grep 1 >/dev/null
+echo $joblist | egrep '\b1\b' >/dev/null
+if ($status) goto chk1e
+set pass
+cat <<EOF
+
+         --- Test 1.  Generate ctrl file template, from init file for Bi2Te3
+             blm translates init file ($testdir/init.bi2te3) into actrl.bi2te3 .
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+             This test demonstrates how space group and symmetry-inequivalent basis
+             positions are sufficient to generate an input file with complete basis.
+
+             The input file is generated for a full-potential LDA calculation.
+             It is a minimal input file (created with --express)
+
+             Note that the basis vectors are expressed in terms of the conventional unit cell.
+
+EOF2
+endif
+set ext=bi2te3
+query chk11 chk1e "test blm (file init.$ext)"
+chk11:
+if ($?clean) then
+  echo "$space rm -f {actrl,init,log,out}.$ext"
+               rm -f {actrl,init,log,out}.$ext
+  goto chk1e
+endif
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+
+findcmd chk11a blm "$path" "$topdir"
+chk11a:
+
+echo "$space touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext ."
+             touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext .
+echo "$space blm --express $ext > $testout"
+             blm --express $ext > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp actrl.$ext actrl.$ext~
+  cat actrl.$ext~ | sed -e 's/-0 /0 /' > actrl.$ext
+  rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+echo
+call simple_diff chk1s "$testout $refout"
+chk1s:
+call simple_diff chk1s2 "actrl.$ext $testdir/actrl.$ext"
+chk1s2:
+
+if ($?withlmfa) then
+echo "$space cp actrl.$ext ctrl.$ext"
+             cp actrl.$ext ctrl.$ext
+echo "$space lmfa ctrl.$ext > $testout"
+             lmfa ctrl.$ext > $testout
+call simple_diff chk1s3 "basp0.$ext $testdir/basp0.$ext"
+chk1s3:
+endif
+
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+echo -n "$space file actrl.$ext identical to reference $testdir/actrl.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+cmp site.$ext $testdir/site.$ext >& /dev/null
+set retval = $status
+echo -n "$space file site.$ext identical to reference $testdir/site.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?withlmfa) then
+echo -n "$space file basp0.$ext identical to reference $testdir/basp0.$ext ? ... "
+cmp basp0.$ext $testdir/basp0.$ext >& /dev/null
+set retval = $status
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+endif
+
+if ($?pass) then
+    echo "$space blm test 1 PASSED ($ext)"
+else
+    echo "$space blm test 1 FAILED ($ext)"
+    set failed = ($failed 1)
+endif
+chk1e:
+
+# ------------------ job 2 --------------------
+echo $joblist | egrep '\b2\b' >/dev/null
+if ($status) goto chk2e
+set pass
+cat <<EOF
+
+         --- Test 2.  Generate ctrl file template from init file
+             blm translates init file for SbSeI ($testdir/init.sbsei) into ctrl.sbsei
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+         This test generates a ctrl file for the 5-6-7 compound SbSeI, tailored
+         for a GW calculation.  It checks and demonstrates special features:
+
+         1. A new symmetry operation is identified by "fuzzing out" given site positions.
+            They were obtained from molecular statics and were not quite tight
+            enough to identify all 8 operations.  Positions are shifted slightly
+            to render the crystal exactly compatible with all operations.
+
+         2. The as-given lattice constant ALAT (1 AA) is scaled so that dimensionless
+            lattice vectors (PLAT) have a volume of order unity.
+
+         3. Site positions are simplified by a uniform constant to simplify the
+            translation part space group operations identified.
+
+         4. Command line switches are employed for the following:
+              --gw      modifies some tags and adds others to tune for a GW calculation
+              --addes   modifies tags to facilitate later determination of floating
+                        orbitals, to improve completeness of the basis.  GW calculations
+                        are more sensitive to completeness than LDA calculations.
+                        (They are found using lmchk --findes --wsitex)
+              --ehmx    sets autobas_ehmx
+              --fixpos  makes small adjustments in site positions that conform to
+                        symmetry operations found. tol is the allowed fuzziness
+              --scalp   shrinks lattice vectors and scales lattice constant
+                        to make det(plat)=1
+              --xshftx  shifts site positions by a uniform translation.
+                        In this case it distributes the atoms uniformly around z=0.
+                        It has no effect on the result, but it clarifies the structure.
+              --wsitex  writes site positions in the site file as multiples of plat
+                        Without this switch positions are written in Cartesian coordinates.
+              --ctrl=   name the ctrl file blm creates (default = actrl)
+              --optics  make template OPTICS category
+
+         5. blm generates a site file, and modifies ctrl.sbsei to read it.
+
+EOF2
+endif
+
+set ext=sbsei
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+
+if (! -e $refout) then
+   echo ' '
+   echo " test.blm aborting ... missing file $refout"
+   exit -1
+endif
+if (! -e $testdir/init.$ext) then
+   echo ' '
+   echo " test.blm aborting ... missing file $testdir/init.$ext"
+   exit -1
+endif
+
+query chk21 chk2e 'run this test'
+chk21:
+findcmd chk21a blm "$path" "$topdir"
+chk21a:
+
+if ($?clean) then
+  echo "$space rm -f {ctrl,init,log,site,out}.sbsei"
+               rm -f {ctrl,init,log,site,out}.sbsei
+  goto chk2e
+endif
+
+echo "$space touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext ."
+             touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext .
+echo "$space blm --gw --addes --ehmx=-.4 --fixpos:tol=1e-2 --scalp=1 --xshftx=0,0,-0.0398106/2 --wsitex --ctrl=ctrl --optics init.$ext > $testout"
+             blm --gw --addes --ehmx=-.4 --fixpos:tol=1e-2 --scalp=1 --xshftx=0,0,-0.0398106/2 --wsitex --ctrl=ctrl --optics init.$ext > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp ctrl.$ext ctrl.$ext~
+  cat ctrl.$ext~ | sed -e 's/-0 /0 /' > ctrl.$ext
+  rm ctrl.$ext~
+  echo -n "         ..." ; $poszer ctrl.$ext
+endif
+
+echo
+call simple_diff chk2s "$testout $refout"
+chk2s:
+call simple_diff chk2s2 "ctrl.$ext $testdir/ctrl.$ext"
+chk2s2:
+
+chk2pa:
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp ctrl.$ext $testdir/ctrl.$ext >& /dev/null"
+diff -ISYMGRP ctrl.sbsei $testdir/ctrl.sbsei >& /dev/null
+set retval = $status
+echo -n "$space file ctrl.$ext match reference ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+cmp site.$ext $testdir/site.$ext >& /dev/null
+set retval = $status
+echo -n "$space file site.$ext identical to $testdir/site.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 2 PASSED ($ext)"
+else
+    echo "$space blm test 2 FAILED ($ext)"
+    set failed = ($failed 2)
+endif
+chk2e:
+
+# ------------------ job 3 --------------------
+echo $joblist | grep 3 >/dev/null
+if ($status) goto chk3e
+set pass
+cat <<EOF
+
+         --- Test 3.  Generate ctrl file template, from init file for FePt
+             blm translates init file ($testdir/init.fept) into actrl.fept .
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+             The input file is generated for an ASA-Green's function calculation
+             of a magnetic system
+
+EOF2
+endif
+query chk31 chk3e 'test blm (file ctrl.fept)'
+chk31:
+if ($?clean) then
+  echo "$space rm -f {actrl,init,log,out}.fept"
+               rm -f {actrl,init,log,out}.fept
+  goto chk3e
+endif
+set ext=fept
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+echo "$space touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext ."
+             touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext .
+echo "$space blm --mag --asa --gf --nk=10 $ext > $testout"
+             blm --mag --asa --gf --nk=10 $ext > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp actrl.$ext actrl.$ext~
+  cat actrl.$ext~ | sed -e 's/-0 /0 /' > actrl.$ext
+  rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+echo
+call simple_diff chk3s "$testout $refout"
+chk3s:
+call simple_diff chk3s2 "actrl.$ext $testdir/actrl.$ext"
+chk3s2:
+
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+echo -n "$space file actrl.$ext identical to reference $testdir/actrl.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 3 PASSED ($ext)"
+else
+    echo "$space blm test 3 FAILED ($ext)"
+    set failed = ($failed 3)
+endif
+chk3e:
+
+# ------------------ job 4 --------------------
+echo $joblist | grep 4 >/dev/null
+if ($status) goto chk4e
+set pass
+cat <<EOF
+
+         --- Test 4.  Generate ctrl file template, from init file for Cr
+             blm translates init file ($testdir/init.cr) into actrl.cr .
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+             Tests how blm reads the following TOKENS from the init file
+               BZ_FSMOM
+               HAM_REL
+               SPEC_TOKEN
+             Tests how blm uses of following SWITCHES for a transition metal
+               --gw --pmt --frzwf --convc --omax --pbe --nit --nk --nkgw --gmax --wsitex --mag --dv
+
+EOF2
+endif
+query chk41 chk4e 'test blm (file ctrl.cr)'
+chk41:
+if ($?clean) then
+  echo "$space rm -f {actrl,init,log,out}.cr"
+               rm -f {actrl,init,log,out}.cr
+  goto chk4e
+endif
+set ext=cr
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+echo "$space touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext ."
+             touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext .
+echo "$space blm --pmt:emax=2 --frzwf --convc=1e-5 --omax=-.03 --pbe --nit=100 --nk=-10000 --gmax=11 --nkgw=8 --gw --wsitex --mag --dv=idp=0 $ext > $testout"
+             blm --pmt:emax=2 --frzwf --convc=1e-5 --omax=-.03 --pbe --nit=100 --nk=-10000 --gmax=11 --nkgw=8 --gw --wsitex --mag --dv=idp=0 $ext > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp actrl.$ext actrl.$ext~
+  cat actrl.$ext~ | sed -e 's/-0 /0 /' > actrl.$ext
+  rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+echo
+call simple_diff chk4s "$testout $refout"
+chk4s:
+call simple_diff chk4s2 "actrl.$ext $testdir/actrl.$ext"
+chk4s2:
+
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+echo -n "$space file actrl.$ext identical to reference $testdir/actrl.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 4 PASSED ($ext)"
+else
+    echo "$space blm test 4 FAILED ($ext)"
+    set failed = ($failed 4)
+endif
+chk4e:
+
+# ------------------ job 5 --------------------
+echo $joblist | grep 5 >/dev/null
+if ($status) goto chk5e
+set pass
+set ext=batio3
+cat <<EOF
+
+         --- Test 5.  Generate ctrl file template from cif2cell file
+             Makes ctrl.$ext from cif2cell.$ext
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+             A ctrl file is generated and checked with the following sequence:
+
+             1. cif2cell.$ext was generated from CIF file for orthorhombic $ext
+             using cif2cell program, version 1.1.0
+             This test starts not from the CIF file but from cif2cell.$ext.
+
+             2. cif2init reads cif2cell.$ext to make init.$ext
+
+             3. blm  reads init.$ext to make actrl.$ext
+                Command line switches are employed for the following:
+                --omax=-.03   Sets maximum overlap to -3%
+                --frzwf       Sets conditions to freeze the basis set
+                --noshorten   Suppresses shortening of site positions
+                --wsitex      Write site file for structural data, in units of plat
+
+             4. actrl.$ext is copied to ctrl.$ext and tested by lmchk
+
+EOF2
+endif
+
+query chk51 chk5e 'test cif2init, blm, and lmchk'
+chk51:
+if ($?clean) then
+  touch site.$ext
+  echo "$space rm -f {actrl,ctrl,init,log,cif2cell,site,ti,out,o2,o,ctrl,ba}.$ext"
+               rm -f {actrl,ctrl,init,log,cif2cell,site,ti,out,o2,o,ctrl,ba}.$ext
+  goto chk5e
+endif
+set refout=$testdir/out.$ext  testout=out.$ext
+
+echo "$space touch init.$ext; rm -f *.$ext"
+             touch init.$ext; rm -f *.$ext
+
+echo "$space cp $testdir/cif2cell.$ext ."
+             cp $testdir/cif2cell.$ext .
+
+echo "$space cif2init cif2cell.$ext > out.$ext"
+             cif2init cif2cell.$ext > out.$ext
+
+echo "$space mv init init.$ext"
+             mv init init.$ext
+
+echo "$space blm --omax=-.03 --frzwf --noshorten --wsitex $ext > $testout"
+             blm --omax=-.03 --frzwf --noshorten --wsitex $ext > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+
+echo
+echo "$space cp actrl.$ext ctrl.$ext"
+             cp actrl.$ext ctrl.$ext
+echo
+
+echo "$space lmchk ctrl.$ext --fixpos:tol=1e-6 --shell:r=1 --angles >> $testout"
+             lmchk ctrl.$ext --fixpos:tol=1e-6 --shell:r=1 --angles >> $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program lmchk returned successfully."
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+#   cp actrl.$ext actrl.$ext~
+#   cat actrl.$ext~ | sed -e 's/,-0)/,0)/' > actrl.$ext
+#   rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+echo
+call simple_diff chk5s "$testout $refout"
+chk5s:
+call simple_diff chk5s2 "actrl.$ext $testdir/actrl.$ext"
+chk5s2:
+call simple_diff chk5s3 "site.$ext $testdir/site.$ext"
+chk5s3:
+
+if ($?quiet) goto chk5pa
+
+echo
+echo "$space Overlap generated by lmchk:"
+echo -n "$space"
+cat out.$ext | grep '<ovlp>'
+echo
+
+chk5pa:
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+if ($retval == 1) then
+diff -I SYMGRP actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+endif
+echo -n "$space file actrl.$ext identical to reference ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo -n "no ... to 6 digits? ... "
+  call zcmpnfiles chk5pb "6 actrl.$ext $testdir/actrl.$ext"
+chk5pb:
+  if ($retval == 0) then
+    echo yes
+#   else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+#     echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) of $ncharfile)"
+    unset pass
+  endif
+endif
+
+diff -w site.$ext $testdir/site.$ext >& /dev/null
+set retval = $status
+endif
+echo -n "$space file site.$ext identical to reference ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo -n "no ... to 6 digits? ... "
+  call zcmpnfiles chk5pc "6 site.$ext $testdir/site.$ext"
+chk5pc:
+  if ($retval == 0) then
+    echo yes
+#   else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+#     echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) of $ncharfile)"
+    unset pass
+  endif
+endif
+
+set ovl = `cat out.$ext | grep '<ovlp>' | awk '{print $13}'`
+echo -n "$space max overlap from lmchk equal to -3% ? ... "
+if ($ovl == '-3%') then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 5 PASSED ($ext)"
+else
+    echo "$space blm test 5 FAILED ($ext)"
+    set failed = ($failed 5)
+endif
+chk5e:
+
+# ------------------ job 6 --------------------
+echo $joblist | grep 6 >/dev/null
+if ($status) goto chk6e
+set pass
+cat <<EOF
+
+         --- Test 6.  Generate site file from cif2cell file
+             File cif2cell.batio3 generated from CIF file for orthorhombic BaTiO3
+             using cif2cell program, version 1.1.0
+
+EOF
+query chk61 chk6e 'test cifsite'
+chk61:
+if ($?clean) then
+  echo "$space rm -f site cif2cell.$ext"
+               rm -f site cif2cell.$ext
+  goto chk6e
+endif
+
+set ext=batio3
+set refout=$testdir/out.$ext  testout=out.$ext
+
+echo "$space rm -f site cif2cell.$ext"
+             rm -f site cif2cell.$ext
+
+echo "$space cp $testdir/cif2cell.batio3 ."
+             cp $testdir/cif2cell.batio3 .
+
+echo "$space cif2site cif2cell.$ext > /dev/null"
+             cif2site cif2cell.$ext > /dev/null
+
+chk6pa:
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+cmp site $testdir/site.$ext >& /dev/null
+set retval = $status
+echo -n "$space file site identical to $testdir/site.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 6 PASSED ($ext)"
+else
+    echo "$space blm test 6 FAILED ($ext)"
+    set failed = ($failed 6)
+endif
+chk6e:
+
+# ------------------ job 7 --------------------
+echo $joblist | grep 7 >/dev/null
+if ($status) goto chk7e
+set pass
+cat <<EOF
+
+         --- Test 7.  Generate ctrl file template from POSCAR file
+             POSCAR file for Zn3As2 (80 atom unit cell) ($testdir/POSCAR.zn3as2)
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+             poscar2init reads POSCAR to make init.zn3as2
+             blm         reads init.zn3as2 to make actrl.zn3as2
+             lmchk       checks that ctrl.zn3as2
+
+             Note the --fixpos switch (it is needed to avoid confusing the symmetry finder)
+
+EOF2
+endif
+query chk71 chk7e 'test poscar2init, blm, and lmchk'
+chk71:
+if ($?clean) then
+  touch actrl.zn3as2 zn.zn3as2 as.zn3as2
+  echo "$space rm -f {actrl,zn*,as*,init,log}.zn3as2 POSCAR"
+               rm -f {actrl,ctrl,out,zn*,as*,init,log}.zn3as2 POSCAR
+  goto chk7e
+endif
+set ext=zn3as2
+set refout=$testdir/out.$ext  testout=out.$ext
+
+echo "$space touch init.$ext; rm -f *.$ext"
+             touch init.$ext; rm -f *.$ext
+
+echo "$space cp $testdir/POSCAR.zn3as2 POSCAR"
+             cp $testdir/POSCAR.zn3as2 POSCAR
+
+echo "$space poscar2init > init.$ext"
+             poscar2init > init.$ext
+
+echo "$space blm --express=0 $ext --fixpos:tol=1e-6 > $testout"
+             blm --express=0 $ext --fixpos:tol=1e-6 > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+
+echo
+echo "$space cp actrl.$ext ctrl.$ext"
+             cp actrl.$ext ctrl.$ext
+echo
+
+echo "$space lmchk ctrl.zn3as2 --fixpos:tol=1e-6 --shell:r=.2 >> $testout"
+             lmchk ctrl.zn3as2 --fixpos:tol=1e-6 --shell:r=.2 >> $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program lmchk returned successfully."
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+#   cp actrl.$ext actrl.$ext~
+#   cat actrl.$ext~ | sed -e 's/,-0)/,0)/' > actrl.$ext
+#   rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+if ($?quiet) goto chk7pa
+query chk7s chk7pa "compare output files $testout $refout"
+chk7s:
+$testdir/zdiff $testout $refout
+
+echo
+echo "$space Overlap generated by lmchk:"
+echo -n "$space"
+cat out.zn3as2 | grep '<ovlp>'
+echo
+
+chk7pa:
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+if ($retval == 1) then
+diff -I SYMGRP actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+endif
+echo -n "$space file actrl.$ext identical to reference ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+set ovl = `cat out.zn3as2 | grep '<ovlp>' | awk '{print $13}'`
+echo -n "$space max overlap from lmchk equal to 0% ? ... "
+if ($ovl == '0%') then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 7 PASSED ($ext)"
+else
+    echo "$space blm test 7 FAILED ($ext)"
+    set failed = ($failed 7)
+endif
+chk7e:
+
+# ------------------ job 8 --------------------
+echo $joblist | grep 8 >/dev/null
+if ($status) goto chk8e
+set pass
+cat <<EOF
+
+         --- Test 8.  Generate site file from POSCAR file
+             POSCAR file for CuZnSnS (16 atom unit cell) ($testdir/POSCAR.cuznsns)
+
+EOF
+endif
+query chk81 chk8e 'test poscar2site'
+chk81:
+if ($?clean) then
+  echo "$space rm -f site POSCAR"
+               rm -f site POSCAR
+  goto chk8e
+endif
+
+set ext=cuznsns
+set refout=$testdir/out.$ext  testout=out.$ext
+
+echo "$space rm -f site"
+             rm -f site
+
+echo "$space cp $testdir/POSCAR.$ext POSCAR"
+             cp $testdir/POSCAR.$ext POSCAR
+
+echo "$space poscar2site > /dev/null"
+             poscar2site > /dev/null
+
+chk8pa:
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp site $testdir/site.$ext >& /dev/null
+set retval = $status
+echo -n "$space file site identical to $testdir/site.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 8 PASSED ($ext)"
+else
+    echo "$space blm test 8 FAILED ($ext)"
+    set failed = ($failed 8)
+endif
+chk8e:
+
+# ------------------ job 9 --------------------
+echo $joblist | grep 9 >/dev/null
+if ($status) goto chk9e
+set pass
+cat <<EOF
+
+         --- Test 9.  Generate input file from site file ---
+
+         The input file is generated for an ASA-GF calculation.
+         It reads a site file, creating an input file and a new site file positions for empty spheres.
+
+         Note: sphere packing is intermediate.
+         To make the ASA spheres flll space with out empty spheres requires rather large overlaps.
+         In this case, locate empty spheres, the sphere finder needs to have nearly zero overlaps.
+         To find a workable input file, modify actrl.fe2p as follows:
+            cat actrl.fe2p | sed 's/SCLWSR=11 WSRMAX=3.3 OMAX1=0.00 0.18 0.20/SCLWSR=21 WSRMAX=3.3 OMAX1=0.18 0.23/' > ctrl.fe2p
+         Then run
+           lmchk ctrl.fe2p
+         and confirm that sum-of-sphere volumes matches the cell volume, while keeping the overlaps between (real) atoms below 18%.
+
+EOF
+endif
+
+set ext=fe2p
+query chk91 chk9e "test blm (file sitein.$ext)"
+chk91:
+if ($?clean) then
+  echo "$space rm -f {actrl,sitein,log,out,site}.$ext"
+               rm -f {actrl,sitein,log,out,site}.$ext
+  goto chk9e
+endif
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+
+echo "$space rm -f {actrl,sitein,log,out,site}.$ext"
+             rm -f {actrl,sitein,log,out,site}.$ext
+
+echo "$space cp $testdir/sitein.$ext ."
+             cp $testdir/sitein.$ext .
+
+echo "$space blm $ext --rdsite --express=1 --mag --findes --asa --omax=.00,.18,.20 > $testout"
+             blm $ext --rdsite --express=1 --mag --findes --asa --omax=.00,.18,.20 > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp actrl.$ext actrl.$ext~
+  cat actrl.$ext~ | sed -e 's/-0 /0 /' > actrl.$ext
+  rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+echo
+call simple_diff chk9s "$testout $refout"
+chk9s:
+call simple_diff chk9s2 "actrl.$ext $testdir/actrl.$ext"
+chk9s2:
+
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+echo -n "$space file actrl.$ext identical to reference $testdir/actrl.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo -n "no. If exclude site positions? ... "
+  diff -I ATOM= actrl.$ext $testdir/actrl.$ext > /dev/null
+  set retval = $status
+  if ($retval == 0) then
+    echo yes
+  else
+    echo no
+   unset pass
+  endif
+endif
+
+if ($?pass) then
+    echo "$space blm test 9 PASSED ($ext)"
+else
+    echo "$space blm test 9 FAILED ($ext)"
+    set failed = ($failed 9)
+endif
+chk9e:
+
+# ------------------ job 10 --------------------
+echo $joblist | grep 10 >/dev/null
+if ($status) goto chkae
+set pass
+cat <<EOF
+
+         --- Test 10.  Generate ctrl file from site file ---
+
+         A site file (testing/sitein.inasgasb) is read to make a ctrl file.
+
+         This test demonstrates many of blm's switches
+
+EOF
+endif
+
+set ext=inasgasb
+query chka1 chkae "test blm (file sitein.$ext)"
+chka1:
+if ($?clean) then
+  echo "$space rm -f {actrl,sitein,log,out,site}.$ext"
+               rm -f {actrl,sitein,log,out,site}.$ext
+  goto chkae
+endif
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+
+echo "$space rm -f {actrl,sitein,log,out,site}.$ext"
+             rm -f {actrl,sitein,log,out,site}.$ext
+
+echo "$space cp $testdir/sitein.$ext ."
+             cp $testdir/sitein.$ext .
+
+echo "$space blm $ext --rdsite --addes,end --nosort --shorten=no --findes,rmin=1.3,float,1spec --ehmx=-.3 --nit=20 --gw~gcutb=2.7~gcutx=2.3~pbtol=3e-4,3e-4,1e-3,1e-3,1e-2 --nk=6 --nkgw=4 --gmax=9.2 --eloc=-3.5 --ctrl=ctrl > $testout"
+             blm $ext --rdsite --addes,end --nosort --shorten=no --findes,rmin=1.3,float,1spec --ehmx=-.3 --nit=20 --gw~gcutb=2.7~gcutx=2.3~pbtol=3e-4,3e-4,1e-3,1e-3,1e-2 --nk=6 --nkgw=4 --gmax=9.2 --eloc=-3.5 --ctrl=ctrl > $testout
+
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp ctrl.$ext ctrl.$ext~
+  cat ctrl.$ext~ | sed -e 's/-0 /0 /' > ctrl.$ext
+  rm ctrl.$ext~
+  echo -n "         ..." ; $poszer ctrl.$ext
+endif
+
+echo
+call simple_diff chkas "$testout $refout"
+chkas:
+call simple_diff chkas2 "ctrl.$ext $testdir/ctrl.$ext"
+chkas2:
+
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp ctrl.$ext $testdir/ctrl.$ext >& /dev/null"
+cmp ctrl.$ext $testdir/ctrl.$ext >& /dev/null
+set retval = $status
+echo -n "$space file ctrl.$ext identical to reference $testdir/ctrl.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 10 PASSED ($ext)"
+else
+    echo "$space blm test 10 FAILED ($ext)"
+    set failed = ($failed 10)
+endif
+chkae:
+
+# ------------------ job 11 --------------------
+echo $joblist | grep 11 >/dev/null
+if ($status) goto chkbe
+set pass
+cat <<EOF
+
+         --- Test 11.  Generate init file from site file ---
+
+         A site file (testing/site.sbsei) is read  to make an init file, using site2init.
+
+EOF
+endif
+
+set ext=sbsei
+query chkb1 chkbe "test site2init (file site.$ext)"
+chkb1:
+if ($?clean) then
+  echo "$space rm -f sitein {site}.$ext"
+               rm -f sitein {site}.$ext
+  goto chkbe
+endif
+set refout=$testdir/init.site2init.$ext  testout=init.$ext
+
+echo "$space rm -f sitein {site}.$ext"
+             rm -f sitein {site}.$ext
+
+echo "$space cp $testdir/site.$ext sitein"
+             cp $testdir/site.$ext sitein
+
+echo "$space site2init > init.$ext"
+             site2init > init.$ext
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program site2init returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+echo ''
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+echo  "$space cmp $testout $refout >& /dev/null"
+              cmp $testout $refout >& /dev/null
+set retval = $status
+echo -n "$space file $testout identical to reference $refout ? ... "
+if ($retval == 0) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 11 PASSED ($ext)"
+else
+    echo "$space blm test 11 FAILED ($ext)"
+    set failed = ($failed 11)
+endif
+chkbe:
+
+# ------------------ job 12 --------------------
+echo $joblist | grep 12 >/dev/null
+if ($status) goto chkce
+set pass
+cat <<EOF
+
+         --- Test 12.  Generate ctrl file template, from init file for LiFeAs
+             blm translates init file ($testdir/init.lifeas) into actrl.lifeas .
+
+EOF
+if (! $?quiet) then
+cat <<EOF2
+         1. Demonstrates the SPCGRP token together with with ORIGIN=2
+             
+         2. Command line switches are employed to test thie following:
+	     --fpandasa     Include tags for both ASA and FP
+             --molstat      Add template DYN category for molecular statics
+             --dhftol=2     Set tolerance for Harris forces correction (ITER_DHFTOL)
+	     --ewald=1d-12  Make tag EWALD_TOL and assign it
+
+EOF2
+endif
+query chkc1 chkce 'test blm (file ctrl.lifeas)'
+chkc1:
+if ($?clean) then
+  echo "$space rm -f {actrl,init,log,out}.lifeas"
+               rm -f {actrl,init,log,out}.lifeas
+  goto chkce
+endif
+set ext=lifeas
+set refout=$testdir/out.blm.$ext  testout=out.$ext
+echo "$space touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext ."
+             touch init.$ext; rm -f *.$ext ; cp $testdir/init.$ext .
+echo "$space blm --molstat --dhftol=5 --ewald=1d-12 --fpandasa --gw --wsitex $ext > $testout"
+             blm --molstat --dhftol=5 --ewald=1d-12 --fpandasa --gw --wsitex $ext > $testout
+set retval = $status
+if ($retval != 0) goto cleanup
+if (! $?quiet) echo "$space Program blm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+endif
+if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+  cp actrl.$ext actrl.$ext~
+  cat actrl.$ext~ | sed -e 's/-0 /0 /' > actrl.$ext
+  rm actrl.$ext~
+  echo -n "         ..." ; $poszer actrl.$ext
+endif
+
+echo
+call simple_diff chkcs "$testout $refout"
+chkcs:
+call simple_diff chkcs2 "actrl.$ext $testdir/actrl.$ext"
+chkcs2:
+
+if (! $?quiet) echo "$space ... automatic pass checks :"
+
+#echo "$space cmp actrl.$ext $testdir/actrl.$ext >& /dev/null"
+cmp actrl.$ext $testdir/actrl.$ext >& /dev/null
+set retval = $status
+echo -n "$space file actrl.$ext identical to reference $testdir/actrl.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+cmp site.$ext $testdir/site.$ext >& /dev/null
+set retval = $status
+echo -n "$space file site.$ext identical to reference $testdir/site.$ext ? ... "
+if ($retval == 0) then
+ echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?pass) then
+    echo "$space blm test 12 PASSED ($ext)"
+else
+    echo "$space blm test 12 FAILED ($ext)"
+    set failed = ($failed 12)
+endif
+chkce:
+
+# --- Summary ---
+echo ' '
+if ($?clean) exit
+if ($#failed <= 1) then
+    echo "$space $testfile : all tests PASSED"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit ($failed[1])
+endif
+
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: no-digits test-file reference-file
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = number of differences in reduced files
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+# set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; print "" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) rm -f $fn1 $fn2
+  if ($retval == 0) goto $quitjob
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- simple_diff --------------
+# calling argument should consist of two strings:
+# 1st string = first file name
+# 2nd string = second file name
+# example: call simple_diff chk69 "$testout $refout"
+exit
+simple_diff:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  query sdiff11 $quitjob "compare $files"
+sdiff11:
+  diff $files
+  goto $quitjob
+
+# ---------------- diffiles --------------
+# calling argument should consist of four strings:
+# 1st string = string that terminates diff
+# 2nd string = integer that counts how many times terminator should occur before terminating
+# 3nd string = first file name
+# 4th string = second file name
+# example: call diffiles chk69 "CPU 3 $testout $refout"
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+#    echo difffiles : $quitjob $nend
+#    grep $endstr $files[1]
+
+  query diff11 $quitjob "compare $files"
+diff11:
+  diff $files | awk -v endstr=$endstr -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg to line(s) in file $refout":
+  grep $callarg $testout
+  if (`cat $testout | grep $callarg | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep $callarg
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space $callarg  > $outfile"
+      $callarg > $outfile
+      set retval = $status
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space Program returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting"
+  exit $retval
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+# ---------------- List tests --------------
+showtests:
+cat <<EOF
+  Usage: invoke with:    $testfile job-list
+
+  Material   job      Tests
+   Bi2Te3     1       ctrl file template for a thermoeletric material from an init file
+   SbSeI      2       ctrl file template tailored for a GW calculation (use with test.ovlp 4)
+   FePt       3       ctrl file template for an ASA Green's function calculation
+   Cr         4       ctrl file template for GW calculation of an antiferromagnetic transition metal
+   BaTiO3     5       ctrl file template starting from data generated by a CIF file
+   BaTiO3     6       site file starting from data generated by a CIF file
+   Zn3As2     7       ctrl file template starting from a POSCAR file
+   CuZnSnS    8       site file starting from a POSCAR file
+   Fe2P       9       ctrl file from site file
+   InAsGaSb  10       ctrl file from site file
+   SbSeI     11       init file from site file
+
+EOF
+exit
+
+# ---------------- usage: --------------
+usage:
+cat <<EOF
+ usage: test.blm [switches] [testcase-list]
+        e.g., "test.blm 1 2"
+        Switches:
+        --no-iactive runs tests without prompting user
+        --quiet runs tests with minimal output and without prompting user
+        --withlmfa   tests some output of lmfa from ctrl file made by blm
+        --whichexec  prints out which blm executable it finds in path and exits
+EOF
+#       --verbose    script prints out extra information
+exit -1

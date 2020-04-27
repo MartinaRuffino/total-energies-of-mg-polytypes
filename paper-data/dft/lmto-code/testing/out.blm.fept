@@ -1,0 +1,56 @@
+ ----------------------  START BLM  -----------------------
+
+ ... Reading lattice data ... read plat ... no group generators
+
+ LATPAR:     A=  2.72943     B=  2.72943      C=  3.71310
+         ALPHA=  90.0000  BETA=  90.0000  GAMMA=  90.0000
+
+ ... Reading site data ...  2 sites, 2 species found
+
+ ... Reading species data ... species data read for 1 species
+
+ ... Complete basis for supplied symmetry
+ SGROUP: 1 symmetry operations from 1 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ FIXPOS: shifted site positions by average 8.16e-10
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: 3 generator(s) were added to complete the group:
+         i*i r4z i r2(1,1,0)
+         i*i r4z i r2(1,1,0)
+
+ Lattice vectors : alat = 5.15788 a.u.  vol=186.672 a.u.
+
+                 Plat                     Conventional unit cell          As multiples of Plat
+   1.0000000  0.0000000  0.0000000    1.0000000  0.0000000  0.0000000    1.0000  0.0000  0.0000
+   0.0000000  1.0000000  0.0000000    0.0000000  1.0000000  0.0000000    0.0000  1.0000  0.0000
+   0.0000000  0.0000000  1.3603928    0.0000000  0.0000000  1.3603928    0.0000  0.0000  1.0000
+
+ Basis vectors after sorting and shortening:
+ site spec        pos (Cartesian coordinates)         pos (multiples of plat)
+   1  Fe        0.000000   0.000000   0.000000    0.000000   0.000000   0.000000
+   2  Pt        0.500000   0.500000   0.680196    0.500000   0.500000   0.500000
+
+ ... Make sphere radii
+
+ pairc, ib=  1:  43 neighbors in range  1.954*alat =  10.08
+ pairc:  43 pairs total  43 is max cluster size
+
+ pairc, ib=  2:  55 neighbors in range  2.233*alat =  11.52
+ pairc:  55 pairs total  55 is max cluster size
+
+ makrm0: initial MT radii from first estat potential maximum
+  site   spec            rmt       rmt-       rmt-       rold   lock
+                                  <spec avg>  spec-min
+    1    1:Fe           2.4745     0.0000     0.0000     0.0000
+    2    2:Pt           2.5789     0.0000     0.0000     0.0000
+ SCLWSR:  mode = 100  vol = 186.672 a.u.   Initial sphere packing = 72.5%  scaled to 100%
+ constr omax1=  16.0  18.0  20.0 %    omax2= 100.0 100.0 100.0 %
+ actual omax1=  11.3   0.0   0.0 %    omax2=  20.5   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.474479    2.754622    1.113213
+   2   Pt          2.578950    2.870921    1.113213
+
+ ... Create input file actrl.fept (express mode 3)
+ IOSITE: wrote to file 'site', 2 sites

@@ -1,0 +1,135 @@
+         /home/ms4/lm/lmgf fe -vldau=1 -vudiag=1 -vnk=16 -vccor=f -vtwoc=f -vfile=f -vgfmod=10 --no-iactiv -ef=-0.075818+.000
+ ----------------------  START LMGF  ----------------------
+ HEADER Study of Fe
+
+ LMGF:     nbas = 1  nspec = 1  verb 31,20
+ special:  transverse J
+ pot:      spin-pol, LDA+U, XC:BH
+ asa:      no-ccor, gam-rep, Q2:Power-moments
+ bz:       metal(3), tetra 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 5.406  Cell vol = 78.994732
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.40600   awald= 0.466   lmax=6
+         r1=  2.467   nkd= 137      q1=  4.689   nkg= 201
+
+ SGROUP: 48 symmetry operations from 3 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ IOQPP:  reading qpp from disk ...
+ IOQPP:  (warning) failed to read qpp file
+ BZMESH: 145 irreducible QP from 4096 ( 16 16 16 )  shift= F F F
+ TETIRR: sorting 24576 tetrahedra ... 4715 inequivalent ones found
+
+ EXASA: (gamma repsn) make transverse exchange J (LW)
+
+ Override file fermi level, use ef= -0.075818, delef= -0.075818
+
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 9 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ suldau:  1 U block(s)  lmaxu = 2
+
+ sudmtu:  no file dmats ... read (diagonal) density-matrix from occnum file
+ occ numbers, site 1 l=2:   0.84 0.84 0.92 0.84 0.92 (spin 1)   0.49 0.49 0.31 0.49 0.31 (spin 2)
+ symdmu  (warning): 40 symops rotate z axis
+ sudmtu:  RMS change in dmats from symmetrization = 0.000000
+ 
+ Symmetrized dmats l=2  site 1  spin 1, real harmonics                                         
+  0.84000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.84000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.92000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.84000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.92000
+
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+ Symmetrized dmats l=2  site 1  spin 2, real harmonics                                         
+  0.49000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.49000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.31000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.49000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.31000
+
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+
+ Species A: mode= 0 0 2    U= 0 0 0.1    J= 0 0 0
+ ldau:   version = 2  iblu = 1
+ vldau:  Eldau = 1.844020  Edc = 1.757625  Eorb = 0.086395  
+ symdmu  (warning): 40 symops rotate z axis
+
+ sudmtu:  RMS change in vorb from symmetrization = 0.000000
+ Symmetrized vorb l=2  site 1  spin 1, real harmonics                                          
+ -0.03400    0.00000    0.00000    0.00000    0.00000
+  0.00000   -0.03400    0.00000    0.00000    0.00000
+  0.00000    0.00000   -0.04200    0.00000    0.00000
+  0.00000    0.00000    0.00000   -0.03400    0.00000
+  0.00000    0.00000    0.00000    0.00000   -0.04200
+
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+ Symmetrized vorb l=2  site 1  spin 2, real harmonics                                          
+  0.00100    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00100    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.01900    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00100    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.01900
+
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  0.00000    0.00000    0.00000    0.00000    0.00000
+  
+ ZMESH: nz=12 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.0758,-0.0758
+ GFASA:  reading initial shfac file
+
+ ioextf:   reading site-dependent, lm-dependent file "shfac", 3 components
+
+ done iz=1  z = (-1.075418,0.010004)
+ done iz=6  z = (-0.539636,0.249345)
+ done iz=11  z = (-0.078632,0.026488)
+
+ Sum rule: ib  1   pTpT =    0.7289,  88.4284; -p(T+ - T-) =    0.7289,  88.4284
+
+ Sum rule: ib  1   lifetime (mRy) =   83.6504,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =   5.783318655349042E-016 Re Sum7  8.365039311627923E-002
+ done iz=12  z = (-0.075919,0.005035)
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1          88.428      75.333      13.096      13.096    1377.9
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1       -0.339 -0.193 -0.193 -0.193  1.094  1.094  5.366  1.094  5.366
+
+ Moments and charges for ef=-0.075818:
+        ATOM=A        P=  4.6622701  4.4026650  3.8692903
+                          4.6686768  4.4274697  3.6737122
+                      Q=  0.3134313 -0.0027921  0.0050828
+                          0.3501818 -0.0071369  0.0048271
+                          4.5846756  0.0251468  0.0474148
+                          0.3352279  0.0004476  0.0050304
+                          0.4138560 -0.0022641  0.0060415
+                          2.0087965 -0.0097830  0.0104571
+
+ Class   dq     amom
+   1   0.0062  2.4904  |
+ Sum of sphere charges = 0.006169
+ Exit 0 LMGF 
+ CPU time:  1.581s   Wall clock 1.617s  at  15:51:27 22.07.2018  on  ellery

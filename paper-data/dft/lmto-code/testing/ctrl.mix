@@ -1,0 +1,97 @@
+HEADER  Demonstrate and test pqmix and parmxp
+Notes:  To replicate file out.mix, run
+  lm -vnit=0 -vbzj=0 -vnk=8 mix > out.mix
+  to query, s10, i
+CLASS   ATOM=A  Z=26 EREF=-2540.5681 A=.01 NR=901 R/W=1 GRP2=1
+        ATOM=A2 Z=26 EREF=-2540.5681 A=.01 NR=901 R/W=1 GRP2=-1
+SYMGRP  R4Z MX MZ
+SITE    ATOM=A  POS=   0   0   0
+        ATOM=A2 POS=  .5     0 .5
+STRUC   NBAS=2 NCLASS=2 ALAT=a
+        PLAT=.5 .5 0  .5 -.5 0  0 0 1
+VERS    LMFP-4.0 LMASA-6 LM:7 ASA:7
+# MASTER  a=7.113672904
+        JOB  1
+STR     RMAX=2.7 MODE=10
+STR     RMAX=4.1 MODE=10
+CONST   a=7.113672904 rc=0 nk=36 tet=1 bzj=1 mom=2.2 cbya=sqrt(8/3)
+        lmxb=221 ns=2 np=0 nd=6+2+0-ns-np
+
+IO      SHOW=f HELP=F VERBOS=31 20 WKP=F IACTIV=t
+% const ccor=f gamrep=t
+# version 7
+HAM     NSPIN=2 REL=t QASA=0
+OPTIONS NSPIN=2 REL=t TPAN=1 XCN=0 HF=0 LMH=0
+        ASA[ CCOR={ccor} TWOC=T f GAMMA={gamrep} ELIN=-.2 ]
+FIT     WVS=1 1  NFIT=2  EFIT=-.5 -2
+BZ      NKABC=nk BZJOB=bzj W=.002 NPTS=501 NKABC2=6 JOB2=bzj
+        SAVDOS=f DOS=0-1 0+.5 INVIT=f
+        EF0=0 DELEF=.1 TETRA=t DOS=0-1 0+.5 METAL=T EFMAX=.5
+EWALD   AS=2.0 TOL=1D-6 ALAT0=a
+%const mixmod=0 nit=1
+%ifdef mixmod==0
+ITER    MIX=B,n=2,b=.9,w=5,1,fn=mq;A2,b=.9,n=3,w=1,5,fn=mm
+        CONV=.00001 CONVC=1D-7 NIT={nit}
+MIX     MODE=B,n=2,b=.9,w=5,1,fn=mq;A2,b=.9,n=3,w=1,5,fn=mm
+        CONV=.00001 CONVC=.005/50 AMIX=T
+%elseifd mixmod==1
+ITER    MIX=B,n=5,b=.8,w=1,0,fn=mq;A2,b=.8,n=5,w=0,1,fn=mm,k=3
+MIX     MODE=B,n=5,b=.8,w=1,0,fn=mq;A2,b=.8,n=5,w=0,1,fn=mm,k=3 NIT={nit}
+%elseifd mixmod==2
+ITER    MIX=B,n=2,b=.8,w=1,2,fn=mq,r<errmin/1.5;A2,b=.8,w=2,1,fn=mm
+        CONV=.00001 CONVC=1D-7 NIT={nit}
+MIX     MODE=B,n=2,b=.8,w=1,2,fn=mq,r<errmin/1.5;A2,b=.8,w=2,1,fn=mm
+        CONV=.00001 CONVC=.005/50 AMIX=T
+%endif
+START   CNTROL={nit==0} BEGMOM={nit==0}
+# (FM): (wsr=2.78,nk=36,Tetrahedron,2C-ASA+CC)
+        ATOM=A     P=  4.6827942  4.4408284  3.6580839
+                       4.6754095  4.4085613  3.8847599
+                   Q=  0.3718903  0.0000000  0.0066800
+                       0.4375699  0.0000000  0.0062823
+                       1.8778332  0.0000000  0.0101430
+                       0.3323765  0.0000000  0.0059050
+                       0.3434852  0.0000000  0.0043020
+                       4.6368449  0.0000000  0.0340471
+        ATOM=A2    P=  4.6827942  4.4408284  3.6580839
+                       4.6754095  4.4085613  3.8847599
+                   Q=  0.3718903  0.0000000  0.0066800
+                       0.4375699  0.0000000  0.0062823
+                       1.8778332  0.0000000  0.0101430
+                       0.3323765  0.0000000  0.0059050
+                       0.3434852  0.0000000  0.0043020
+                       4.6368449  0.0000000  0.0340471
+# (AFM): (wsr=2.78,nk=36,Tetrahedron,3C-ASA+CC)
+        ATOM=A     P=  4.6636175  4.4012255  3.7009438
+                       4.6930304  4.4372034  3.8585676
+                   Q=  0.3205143  0.0000000  0.0051343
+                       0.3656337  0.0000000  0.0051240
+                       2.1528794  0.0000000  0.0176606
+                       0.3515748  0.0000000  0.0056164
+                       0.4197153  0.0000000  0.0062063
+                       4.3896825  0.0000000  0.0252841
+        ATOM=A2    P=  4.6930304  4.4372034  3.8585676
+                       4.6636175  4.4012255  3.7009438
+                   Q=  0.3515748  0.0000000  0.0056164
+                       0.4197153  0.0000000  0.0062063
+                       4.3896825  0.0000000  0.0252841
+                       0.3205143  0.0000000  0.0051343
+                       0.3656337  0.0000000  0.0051240
+                       2.1528794  0.0000000  0.0176606
+.# (AFM): (wsr=2.78,nk=36,Tetrahedron,2C-ASA+CC)
+        ATOM=A     P=  4.6660669  4.4083751  3.7179890
+                       4.6927410  4.4446279  3.8583854
+                   Q=  0.3354584  0.0000000  0.0064753
+                       0.3657544  0.0000000  0.0053053
+                       2.1875182  0.0000000  0.0181477
+                       0.3679384  0.0000000  0.0067021
+                       0.4230278  0.0000000  0.0062619
+                       4.3203028  0.0000000  0.0248679
+        ATOM=A2    P=  4.6927410  4.4446279  3.8583854
+                       4.6660669  4.4083751  3.7179890
+                   Q=  0.3679384  0.0000000  0.0067021
+                       0.4230278  0.0000000  0.0062619
+                       4.3203028  0.0000000  0.0248679
+                       0.3354584  0.0000000  0.0064753
+                       0.3657544  0.0000000  0.0053053
+                       2.1875182  0.0000000  0.0181477

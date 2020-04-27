@@ -1,0 +1,176 @@
+GFTEST
+  lmstr ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+  rm -f eula.fept2 mixm.fept2
+  cp vshft.fept2 vshft-bk.fept2
+  lmgf          ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+  cp vshft-bk.fept2 vshft.fept2
+  lmgf  --nosym ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+
+  lmstr ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -veula=1 --quit=rho
+  rm -f eula.fept2 mixm.fept2
+  cp vshft-bk.fept2 vshft.fept2
+  lmgf  --nosym ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -veula=1 --quit=rho
+GFMTEST
+  lmstr ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+  rm -f eula.fept2 mixm.fept2
+  cp vshft.fept2 vshft-bk.fept2
+  mpirun -n 6 lmgf          ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+  cp vshft-bk.fept2 vshft.fept2
+  mpirun -n 6 lmgf  --nosym ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+
+  lmstr ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -veula=1 --quit=rho
+  rm -f eula.fept2 mixm.fept2
+  cp vshft-bk.fept2 vshft.fept2
+  mpirun -n 6 lmgf  --nosym ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -veula=1 --quit=rho
+EXIT
+
+%const  nit=10 mldau=0.1 beta=0.3 gfmod=1 so=1 rot=0 eula=0
+VERS    LM=7.3 FP=7.3 ASA=7.3
+ITER    MIX=B3,b={beta} UMIX={mldau} NIT={abs(nit)} CONV=1e-7 CONVC=1e-6
+HEADER  FePt
+IO      SHOW=f HELP=f VERBOS=31,20 WKP=F IACTIV=F
+HAM     QASA=0 NSPIN=2 REL=1 UDIAG=0 ELIND=-1 SO={so} NONCOL=1
+GF      MODE={gfmod}
+#         GFOPTS=p2;padtol=0.000001;qtolp=1d-5;inveula
+        GFOPTS=p2;padtol=0.000001;qtolp=1d-5
+STR     RMAX=4.0
+CONST   nk=12 a0=7.275 c0=0.969
+STRUC   NBAS=2 NSPEC=2 NL=3
+%ifdef rot==3
+        ROT=x:pi/2
+%elseifd rot==2
+        ROT=y:pi/2
+%elseifd rot
+        ROT=y:pi/4
+%endif
+        ALAT=a0
+        PLAT= 0.5 -0.5  0.0
+              0.5  0.5  0.0
+              0.0  0.0  c0
+SYMGRP  find SOC
+SPEC    ATOM=Fe Z=26 R/W=1 IDXDN=1 1 1 A=.01 LMX=2 IDMOD=0 0 0
+        ATOM=Pt Z=78 R/W=1 IDXDN=1 1 1 A=.01 LMX=2 IDMOD=0 0 0
+SITE    ATOM=Fe POS=0.0 0.0 0.0
+%ifdef  eula
+        ROT=y:pi/4
+%endif
+        ATOM=Pt POS=0.5 0.0 0.5*c0
+%ifdef  eula
+        ROT=y:pi/4
+%endif
+% const gamma=f
+OPTIONS ASA[CCOR=F GAMMA={gamma} TWOC=T]
+BZ      NKABC=nk BZJOB=0 METAL=1 TETRA=1 NOINV=F
+        EMESH=41 10 -0.90 0.0 .5 .0
+START   CNTROL={nit<=0} BEGMOM={nit<=0}
+# lmgf  ctrl.fept2 -vnit=-1 -vnk=12 -vso=1 -vrot=1 --quit=rho
+# lmgf  ctrl.fept2 -vnit=-1 -vnk=12 -vso=1 -veula=1 --quit=rho
+%ifdef so==1&nk==12&(eula==1|rot==1)
+% echo reading P,Q for so=={so} nk=={nk} eula=={eula} rot=={rot}
+        ATOM=Fe       P=  4.6492705  4.3905162  3.8897573
+                          4.6417815  4.3931060  3.6452983
+                      Q=  0.3447313  0.0000000  0.0077341
+                          0.4561716  0.0000000  0.0096331
+                          4.6724068  0.0000000  0.0582583
+                          0.3377303  0.0000000  0.0078116
+                          0.4701333  0.0000000  0.0111262
+                          1.9181815  0.0000000  0.0300353
+        ATOM=Pt       P=  6.7238396  6.3755022  5.8833326
+                          6.7362682  6.4064437  5.8592577
+                      Q=  0.3985593  0.0000000  0.0088159
+                          0.3846698  0.0000000  0.0079343
+                          4.3110550  0.0000000  0.0987402
+                          0.4127082  0.0000000  0.0086930
+                          0.4448234  0.0000000  0.0102129
+                          3.8488295  0.0000000  0.0585166
+%endif
+%ifdef so==1&nk==8&(eula==1|rot==1)
+% echo reading P,Q for so=={so} nk=={nk} eula=={eula} rot=={rot}
+        ATOM=Fe       P=  4.6483535  4.3917349  3.8899926
+                          4.6421639  4.3934936  3.6424993
+                      Q=  0.3437343  0.0000000  0.0074020
+                          0.4590599  0.0000000  0.0098454
+                          4.6772688  0.0000000  0.0580917
+                          0.3379827  0.0000000  0.0077747
+                          0.4704905  0.0000000  0.0110751
+                          1.9076659  0.0000000  0.0294693
+        ATOM=Pt       P=  6.7239933  6.3754350  5.8838051
+                          6.7361603  6.4063086  5.8587679
+                      Q=  0.3987612  0.0000000  0.0089758
+                          0.3854184  0.0000000  0.0079763
+                          4.3235174  0.0000000  0.0994396
+                          0.4125654  0.0000000  0.0087425
+                          0.4454820  0.0000000  0.0102168
+                          3.8380540  0.0000000  0.0582373
+%endif
+%ifdef so==1&nk==6&eula==0&rot==0
+# SO with eula=0
+# echo ef=0.0000000  vconst=0.0482735 > vshft.fept2
+# lmgf ctrl.fept2 -vnit=-1 -vnk=6 -vso=1 -veula=0 --iactiv
+% echo reading P,Q for so=={so} nk=={nk} eula=={eula} rot=={rot}
+        ATOM=Fe       P=  4.6451902  4.3912592  3.8896295
+                          4.6419103  4.3929390  3.6479122
+                      Q=  0.3404881  0.0000000  0.0068664
+                          0.4587827  0.0000000  0.0099010
+                          4.6694441  0.0000000  0.0584047
+                          0.3378843  0.0000000  0.0078944
+                          0.4696980  0.0000000  0.0111663
+                          1.9247096  0.0000000  0.0305352
+        ATOM=Pt       P=  6.7252573  6.3750287  5.8831915
+                          6.7363425  6.4058090  5.8590313
+                      Q=  0.4008432  0.0000000  0.0092135
+                          0.3837549  0.0000000  0.0077109
+                          4.3115010  0.0000000  0.0981719
+                          0.4130268  0.0000000  0.0086526
+                          0.4419639  0.0000000  0.0101089
+                          3.8479032  0.0000000  0.0579284
+% endif
+# Check anisotropy : rot=2 or 3 -> axis parallel to x or y ehf=-39347.008052 = 2.609e-4 = 3.5 meV
+# A bit higher than converged LDA, e.g. 2.7meV in PRB 63, 144409
+# lmgf ctrl.fept2 -vnit=-1 -vnk=12 -vso=1 -vrot=2 --quit=rho
+%ifdef (rot==2|rot==3)&so==1&nk==12
+        ATOM=Fe       P=  4.6493350  4.3904942  3.8897901
+                          4.6418673  4.3931823  3.6452060
+                      Q=  0.3447934  0.0000000  0.0077413
+                          0.4560738  0.0000000  0.0096173
+                          4.6727679  0.0000000  0.0582721
+                          0.3378255  0.0000000  0.0078273
+                          0.4703288  0.0000000  0.0111430
+                          1.9174903  0.0000000  0.0300265
+        ATOM=Pt       P=  6.7237675  6.3753698  5.8833356
+                          6.7362917  6.4065037  5.8592866
+                      Q=  0.3984523  0.0000000  0.0087977
+                          0.3843419  0.0000000  0.0079103
+                          4.3108537  0.0000000  0.0987772
+                          0.4127534  0.0000000  0.0087041
+                          0.4450450  0.0000000  0.0102248
+                          3.8492741  0.0000000  0.0585656
+%endif
+# lmgf ctrl.fept2 -vnit=-1 -vnk=12 -vso=1 -vrot=0
+# Check anisotropy : rot=0 -> axis parallel to z ehf=-39347.0083129
+%ifdef (rot==0)&so==1&nk==12
+        ATOM=Fe       P=  4.6492542  4.3905218  3.8897028
+                          4.6417534  4.3930422  3.6454883
+                      Q=  0.3447171  0.0000000  0.0077410
+                          0.4562359  0.0000000  0.0096474
+                          4.6716740  0.0000000  0.0582331
+                          0.3377132  0.0000000  0.0078172
+                          0.4700376  0.0000000  0.0111248
+                          1.9191940  0.0000000  0.0300653
+        ATOM=Pt       P=  6.7238924  6.3756545  5.8832515
+                          6.7363246  6.4064463  5.8593037
+                      Q=  0.3986300  0.0000000  0.0088241
+                          0.3850279  0.0000000  0.0079604
+                          4.3093578  0.0000000  0.0985675
+                          0.4127947  0.0000000  0.0087056
+                          0.4447724  0.0000000  0.0102123
+                          3.8498452  0.0000000  0.0585295
+%endif
+# Use lmgf ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -vrot=1 --quit=rho
+# if rot=y:pi/4 (counterclockwise around y), z -> zrot = (-x+z)/sqrt(2)
+# rot=1: rot=y:pi/4  Torque(Fe) = -2.2744e-4 < 0, i.e. torque acts to reduce angle back to 0
+#        rot=y:-pi/4 Torque(Fe) =  2.2744e-4 > 0, i.e. increases angle back to 0
+# Euler angles rot=y:pi/4 => local quantization axis is (-x+z)/sqrt(2)
+# Use lmgf  --nosym ctrl.fept2 -vnit=-1 -vnk=8 -vso=1 -veula=1 --quit=rho
+# eula=1:            Torque(Fe) = -2.2744e-4 < 0, i.e. reduce angle back to 0
+

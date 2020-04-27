@@ -1,0 +1,319 @@
+rdcmd:  lm cr3si6 -vmet=2 -vnsph=1 -vnit=1 --iactiv=no --quit=band
+ -----------------------  START LM -----------------------
+ HEADER Cr3Si6, hexagonal
+
+ LM:       nbas = 9  nspec = 2  vn 7.11.j  verb 30
+ special:  forces
+ pot:      XC:BH, nsph-mpol
+ asa:      Q2:Power-moments
+ bz:       metal(2), tetra, invit 
+
+                Plat                                  Qlat
+   0.866025  -0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.577350   1.000000   0.000000
+   0.000000   0.000000   1.433692        0.000000   0.000000   0.697500
+   alat = 8.37  Cell vol = 728.052660
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 8.37000   awald= 0.222
+         r1=  2.646   nkd= 69       q1=  2.649   nkg= 97
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r6z:(0,0,0.4778973) r2(1/2,sqrt(3)/2,0)
+         r6z::(0,0,1/3) r2(1/2,sqrt(3)/2,0)
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+ IOQPP:  reading qpp from disk ...
+ BZMESH:  15 irreducible QP from 125 ( 5 5 5 )  shift= F F F
+
+ GETZV:  42 valence electrons
+
+ ASAQMP: Make and symmetrize multipole moments for 2 classes
+  ib  ic  ilm       Qmp      Z-Qc       Pot0        Vval        Vmad      Vh(rmt)
+   1   1   1      1.742940   6.000    1.265970   -0.467681   -0.131931    0.001179
+           5      0.060205            0.100875   -0.018184
+           7     -0.006845           -0.011469   -0.007742
+           9      0.034760            0.058240   -0.010498
+   4   2   1      1.103191   4.000   -0.633039    0.234628    0.066187   -0.000373
+           4      0.008287            0.069426    0.025319
+           6     -0.016642           -0.027883   -0.038679
+           7     -0.013751           -0.023040   -0.019731
+           9      0.005343            0.008952   -0.023227
+
+ MADPOT: potential not calculated.  Input Q,V:
+ Class        Qtot       Qbak       V0        V0+Vxc
+ Cr         0.175003   0.000000   0.001179  -0.806538
+ Si        -0.087502   0.000000  -0.000373  -0.786592
+ Sum Q=0.000000  Vmtz=-0.793241
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 51 30 0 0
+
+ --- BNDASA : iteration 1 (KKR-qout) ---
+
+ Incompatible or missing qp weights file ...
+ Start first of two band passes ...
+ SECMAT:  kpt 1 of 15, k=  0.00000  0.00000  0.00000
+ -0.9732 -0.7206 -0.7206 -0.4015 -0.3432 -0.3432 -0.2874 -0.2874 -0.2058
+
+ BZWTS : --- Tetrahedron Integration ---
+ ... only filled or empty bands encountered:  ev=0.099080  ec=0.137614
+ VBmax = 0.099080  CBmin = 0.137614  gap = 0.038534 Ry = 0.52406 eV
+ BZINTS: Fermi energy:      0.099080;  42.000000 electrons;  D(Ef):    0.000
+         Sum occ. bands:  -10.9884188  incl. Bloechl correction:    0.000000
+ Start second band pass ...
+ SECMAT:  kpt 1 of 15, k=  0.00000  0.00000  0.00000
+ -0.9732 -0.7206 -0.7206 -0.4015 -0.3432 -0.3432 -0.2874 -0.2874 -0.2058
+
+ BZWTS : --- Tetrahedron Integration ---
+ ... only filled or empty bands encountered:  ev=0.099080  ec=0.137614
+ VBmax = 0.099080  CBmin = 0.137614  gap = 0.038534 Ry = 0.52406 eV
+ BZINTS: Fermi energy:      0.099080;  42.000000 electrons;  D(Ef):    0.000
+         Sum occ. bands:  -10.9884188  incl. Bloechl correction:    0.000000
+
+ Saved qp weights ...
+
+ LM: ehf=-9761.6534258  ehk=-9761.6534050  sumev=-10.9884188  delsev=0.0000037
+h met=2 nsph=1 nit=1 ehf=-9761.6534258 ehk=-9761.653405
+ Exit 0 LM      : quit after bands 
+ CPU time:  0.229s   Wall clock 0.284s  at  15:20:19 16.06.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  lmdos --dos:npts=501:window=-.8,.5 cr3si6
+ -----------------------  START LMDOS -----------------------
+ HEADER Cr3Si6, hexagonal
+
+ LMDOS:    nbas = 9  nspec = 2  vn 7.11.j  verb 30
+ bz:       nonmetal, tetra, invit 
+
+                Plat                                  Qlat
+   0.866025  -0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.577350   1.000000   0.000000
+   0.000000   0.000000   1.433692        0.000000   0.000000   0.697500
+   alat = 8.37  Cell vol = 728.052660
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 8.37000   awald= 0.222
+         r1=  2.646   nkd= 69       q1=  2.649   nkg= 97
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r6z:(0,0,0.4778973) r2(1/2,sqrt(3)/2,0)
+         r6z::(0,0,1/3) r2(1/2,sqrt(3)/2,0)
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+ BZMESH:  15 irreducible QP from 125 ( 5 5 5 )  shift= F F F
+
+ ASADOS: reading weights from file MOMS
+         expecting file to be resolved by l
+         file has 6 channel(s)
+         Using npts=501  emin=-0.8  emax=0.5
+ IOMOMQ: read 15 qp  efermi=0.099080  vmtz=-0.793241
+
+ ASADOS:  make dos for 501 points from 33 bands in window (-0.8,0.5)
+
+ Channels in dos file generated by LMDOS:
+ site class label   spin-1
+    1    1   Cr     1:3
+    4    2   Si     4:6
+ Exit 0 LMDOS 
+ CPU time:  0.079s   Wall clock 0.132s  at  15:20:19 16.06.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  cp dos.cr3si6 pdos.class.cr3si6
+rdcmd:  lm --pr31 cr3si6 -vmet=2 -vnsph=1 --iactiv=no --quit=band '--pdos~mode=1~group=1:3;4:9~lcut=2,1'
+ -----------------------  START LM -----------------------
+ HEADER Cr3Si6, hexagonal
+
+ LM:       nbas = 9  nspec = 2  vn 7.11.j  verb 31
+ special:  forces
+ pot:      XC:BH, nsph-mpol
+ asa:      Q2:Power-moments
+ bz:       metal(2), tetra, invit 
+
+                Plat                                  Qlat
+   0.866025  -0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.577350   1.000000   0.000000
+   0.000000   0.000000   1.433692        0.000000   0.000000   0.697500
+   alat = 8.37  Cell vol = 728.052660
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 8.37000   awald= 0.222
+         r1=  2.646   nkd= 69       q1=  2.649   nkg= 97
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r6z:(0,0,0.4778973) r2(1/2,sqrt(3)/2,0)
+         r6z::(0,0,1/3) r2(1/2,sqrt(3)/2,0)
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+ IOQPP:  reading qpp from disk ...
+ BZMESH:  15 irreducible QP from 125 ( 5 5 5 )  shift= F F F
+
+ GETZV:  42 valence electrons
+
+ v_rmax= -0.807717     etot= -2097.923136
+
+PPAR:  Cr        nl=3  nsp=1  ves=  0.00117866
+ l     e_nu          C        +/-del     1/sqrt(p)      gam         alp
+ 0 -0.48062482 -0.08718370  0.20249083   5.9524560  0.43777109  0.43777109
+ 1 -0.30898139  0.96561775  0.18830999   6.5923421  0.12114402  0.12114402
+ 2 -0.07926568  0.09707631  0.02249318   1.0599872  0.00709493  0.00709493
+PMPOL: Cr    nl=3  nsp=1
+   0   0    1.000000    2.116865    4.750493   10.964998   25.774326
+   0   1    0.980585    2.091747    4.754665   11.115072   26.420084
+   0   2    0.514572    1.268618    2.910006    6.633434   15.290766
+   1   0    0.980585    2.091747    4.754665   11.115072   26.420084
+   1   1    1.000000    2.116477    4.838379   11.405722   27.336570
+   1   2    0.377281    1.112445    2.732414    6.465853   15.269278
+   2   0    0.514572    1.268618    2.910006    6.633434   15.290766
+   2   1    0.377281    1.112445    2.732414    6.465853   15.269278
+   2   2    1.000000    1.420296    2.448637    4.770469   10.031438
+
+   0   0    0.000000   -0.065380   -0.257795   -0.806376   -2.318900
+   0   1    0.024898    0.015981   -0.047400   -0.284310   -1.032119
+   0   2   -0.759432   -1.661651   -3.903250   -9.421898  -23.023652
+   1   0   -0.022000   -0.107314   -0.341174   -0.981542   -2.707007
+   1   1    0.000000   -0.026146   -0.124444   -0.436196   -1.352080
+   1   2   -0.843285   -1.782166   -4.135203   -9.955497  -24.357225
+   2   0    0.025426    0.019847   -0.041897   -0.270079   -0.967856
+   2   1    0.074749    0.094123    0.100666    0.043944   -0.231204
+   2   2    0.000000   -0.589791   -1.883437   -4.970976  -12.503587
+
+   0   0    0.028218    0.056748    0.124274    0.286980    0.687320
+   0   1    0.023494    0.046788    0.099072    0.221191    0.515291
+   0   2    0.063087    0.175042    0.457380    1.186070    3.078339
+   1   0    0.023494    0.046788    0.099072    0.221191    0.515291
+   1   1    0.023007    0.043149    0.086732    0.185199    0.415764
+   1   2    0.050161    0.108710    0.265943    0.688459    1.819076
+   2   0    0.063087    0.175042    0.457380    1.186070    3.078339
+   2   1    0.050161    0.108710    0.265943    0.688459    1.819076
+   2   2    0.889917    1.713438    3.870506    9.287153   22.832480
+
+ v_rmax= -0.786219     etot= -577.980664
+
+PPAR:  Si        nl=3  nsp=1  ves= -0.00037288
+ l     e_nu          C        +/-del     1/sqrt(p)      gam         alp
+ 0 -0.58007335 -0.77337614  0.13447510   2.7511250  0.39839657  0.39839657
+ 1 -0.27098141  0.09367589  0.11411409   3.6182939  0.09542328  0.09542328
+ 2 -0.18902968  1.40256668  0.12583529   5.5675989  0.05166660  0.05166660
+PMPOL: Si    nl=3  nsp=1
+   0   0    1.000000    1.843576    3.683605    7.731114   16.827992
+   0   1    0.982128    1.892461    3.910246    8.435460   18.782243
+   0   2    0.907670    1.883976    4.067986    9.074176   20.764789
+   1   0    0.982128    1.892461    3.910246    8.435460   18.782243
+   1   1    1.000000    1.991601    4.240352    9.374339   21.294817
+   1   2    0.954639    2.044720    4.530101   10.316914   24.008176
+   2   0    0.907670    1.883976    4.067986    9.074176   20.764789
+   2   1    0.954639    2.044720    4.530101   10.316914   24.008176
+   2   2    1.000000    2.201327    5.012537   11.689044   27.744932
+
+   0   0    0.000000   -0.173947   -0.636564   -1.862724   -5.052398
+   0   1    0.041115   -0.048159   -0.311383   -1.054055   -3.065563
+   0   2    0.053452    0.040636   -0.042451   -0.334007   -1.212795
+   1   0   -0.059164   -0.287446   -0.884766   -2.441917   -6.455797
+   1   1    0.000000   -0.131205   -0.490940   -1.469008   -4.065734
+   1   2    0.028208   -0.007888   -0.145124   -0.567949   -1.772952
+   2   0   -0.140293   -0.434375   -1.206929   -3.201711   -8.312411
+   2   1   -0.065015   -0.243952   -0.733773   -2.033977   -5.432788
+   2   2    0.000000   -0.072777   -0.290644   -0.905142   -2.581532
+
+   0   0    0.132108    0.268206    0.606677    1.447284    3.555822
+   0   1    0.098170    0.196267    0.438200    1.037344    2.539189
+   0   2    0.055993    0.113551    0.250241    0.586482    1.429805
+   1   0    0.098170    0.196267    0.438200    1.037344    2.539189
+   1   1    0.076372    0.148165    0.325137    0.760636    1.847898
+   1   2    0.045294    0.089818    0.193858    0.446575    1.074625
+   2   0    0.055993    0.113551    0.250241    0.586482    1.429805
+   2   1    0.045294    0.089818    0.193858    0.446575    1.074625
+   2   2    0.032255    0.059756    0.124050    0.278564    0.658790
+
+ ASAQMP: Make and symmetrize multipole moments for 2 classes
+  ib  ic  ilm       Qmp      Z-Qc       Pot0        Vval        Vmad      Vh(rmt)
+   1   1   1      1.742940   6.000    1.265970   -0.467681   -0.131931    0.001179
+           5      0.060205            0.100875   -0.018184
+           7     -0.006845           -0.011469   -0.007742
+           9      0.034760            0.058240   -0.010498
+   4   2   1      1.103191   4.000   -0.633039    0.234628    0.066187   -0.000373
+           4      0.008287            0.069426    0.025319
+           6     -0.016642           -0.027883   -0.038679
+           7     -0.013751           -0.023040   -0.019731
+           9      0.005343            0.008952   -0.023227
+
+ MADPOT: potential not calculated.  Input Q,V:
+ Class        Qtot       Qbak       V0        V0+Vxc
+ Cr         0.175003   0.000000   0.001179  -0.806538
+ Si        -0.087502   0.000000  -0.000373  -0.786592
+ Sum Q=0.000000  Vmtz=-0.793241
+ cpudel    ...   Time this iter:  time(s):  0.162    total:  0.162s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 51 30 0 0
+
+ sumlst:  Partial DOS mode 4 (site list l-projected)  9 sites 5 channels
+
+ --- BNDASA : iteration 1 (KKR-qout) ---
+
+ Read qp weights ...  ef=0.09908,  42 occ states
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 15, k=  0.00000  0.00000  0.00000
+ -0.9732 -0.7206 -0.7206 -0.4015 -0.3432 -0.3432 -0.2874 -0.2874 -0.2058
+
+ BZWTS : --- Tetrahedron Integration ---
+ ... only filled or empty bands encountered:  ev=0.099080  ec=0.137614
+ VBmax = 0.099080  CBmin = 0.137614  gap = 0.038534 Ry = 0.52406 eV
+ BZINTS: Fermi energy:      0.099080;  42.000000 electrons;  D(Ef):    0.000
+         Sum occ. bands:  -10.9884188  incl. Bloechl correction:    0.000000
+
+ Saved qp weights ...
+
+ LM: ehf=-9761.6534258  ehk=-9761.6534050  sumev=-10.9884188  delsev=0.0000037
+h met=2 nsph=1 ehf=-9761.6534258 ehk=-9761.653405
+ Exit 0 LM      : quit after bands 
+ CPU time:  0.213s   Wall clock 0.257s  at  15:20:20 16.06.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  lmdos --dos:npts=501:window=-.8,.5 cr3si6 '--pdos~mode=1~group=1:3;4:9~lcut=2,1'
+ -----------------------  START LMDOS -----------------------
+ HEADER Cr3Si6, hexagonal
+
+ LMDOS:    nbas = 9  nspec = 2  vn 7.11.j  verb 30
+ bz:       nonmetal, tetra, invit 
+
+                Plat                                  Qlat
+   0.866025  -0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.577350   1.000000   0.000000
+   0.000000   0.000000   1.433692        0.000000   0.000000   0.697500
+   alat = 8.37  Cell vol = 728.052660
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 8.37000   awald= 0.222
+         r1=  2.646   nkd= 69       q1=  2.649   nkg= 97
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r6z:(0,0,0.4778973) r2(1/2,sqrt(3)/2,0)
+         r6z::(0,0,1/3) r2(1/2,sqrt(3)/2,0)
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+
+ sumlst:  Partial DOS mode 4 (site list l-projected)  9 sites 5 channels
+ BZMESH:  15 irreducible QP from 125 ( 5 5 5 )  shift= F F F
+
+ ASADOS: reading weights from file MOMS
+         expecting file to be resolved by l
+         file has 5 channel(s)
+         Using npts=501  emin=-0.8  emax=0.5
+ IOMOMQ: read 15 qp  efermi=0.099080  vmtz=-0.793241
+
+ ASADOS:  make dos for 501 points from 51 bands in window (-0.8,0.5)
+
+ Channels in dos file generated by LMDOS:
+ site class label   spin-1
+    1    1   Cr     1:3
+    2    1   Cr     1:3
+    3    1   Cr     1:3
+    4    2   Si     4,5
+    5    2   Si     4,5
+    6    2   Si     4,5
+    7    2   Si     4,5
+    8    2   Si     4,5
+    9    2   Si     4,5
+ Exit 0 LMDOS 
+ CPU time:  0.078s   Wall clock 0.132s  at  15:20:20 16.06.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  cp dos.cr3si6 pdos.site.cr3si6

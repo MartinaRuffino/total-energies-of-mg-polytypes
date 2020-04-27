@@ -1,0 +1,115 @@
+% const asa=t xcn=1 zbak=1 nk=24 gf=1 scell=1 nit=0 nmto=0
+MAP     F  *: \h\t:g
+HEADER  Study of Jellium (Al fcc)
+        Note: ASA total energy doesn't have hom. back. subtracted ... use sphere total energy
+HAM     NMTO={nmto} KMTO=-.2 .2 .5 .8 EWALD=T
+#       for V7
+        NSPIN=1 REL=t QASA=3
+        GMAX=7
+# rdcmd '-f:#rdcmd:%2f' -cat:TEST --noerr ctrl.jell  >& out
+TEST    lmstr jell
+        lm -vnit=0 -vrho=.001 --show --iactiv=no jell > out.jell
+        lm -vnit=1 -vrho=.001 --iactiv=no jell >> out.jell
+TESTFP  rm -r mixm.jell
+        lmfa -vnit=10 -vasa=0 jell --rs=0,0 -vrho=.001 -vzbak='-1000*rho'
+        lmf -vnit=10 -vasa=0 jell --rs=0,0 -vrho=.001 -vzbak='-1000*rho'
+        echo 40 20 0 .5 | pldos -fplot -lst=1 dos.jell 
+VERS    LMFP-5.1 LMASA-6 LM:7 ASA:7 FP:7
+IO      SHOW=f HELP=f VERBOS=30 40 WKP=F IACTIV=t
+% const optmod=0
+OPTICS  MODE={optmod} NPTS=1001 WINDOW=0 1 LTET=3
+OPTIONS NSPIN=1 REL=t LMH=F XCN={xcn}
+        ASA[ CCOR=t ADNF=f MTCOR={zbak<>0} QMT={zbak}]
+%ifdef gf==1
+GF      MODE=1 GFOPTS=p3;noidos;pdos
+%endif
+GF      MODE=12 GFOPTS=p3
+FIT     WVS=1 1 EFIT=-.2 -1
+MIX     NMIX=2 BETA=1 CNVG=1d-5 CONVC=3d-5
+# for V7
+ITER    NIT={nit} CONVC=1E-6 CONV=0
+MIX     NMIX=2 BETA=1 CNVG=1d-5 CONVC=3d-5
+
+CONST   rho=.001 a=(4/rho)^(1/3)
+BZ      NKABC={nk} TOL=1E-6
+        TETRA=T METAL={asa?1:5} N=1 W=.02 RANGE=6 NPTS=1001 EFMAX=99 NEVMX=16
+#        EMESH=10 10  .0 .096 .8 .0 INVIT=f NOINV=T SAVDOS=t DOS=0 .5
+        EMESH=50 0   .1 .5 .01 .0 INVIT=f NOINV=T SAVDOS=t DOS=0 .5
+        EMESH=50 0   .0 .5 .01 .0 INVIT=f NOINV=T SAVDOS=t DOS=0 .5
+        EMESH=30 10  .0 .5 .8 .0 INVIT=f NOINV=T SAVDOS=t DOS=0 .5
+# for V7
+#        ZBAK={zbak} ZVAL={zbak}
+        ZBAK={zbak}
+STR     RMAXS
+EWALD   NKDMX=1500 NKRMX=1500 TOL=1d-10
+% ifdef scell==4
+.ORDERN  MODE=1 PLATE=1  1 .0  0 0 .5 0 .5 0
+        RG/W=3.2 4 6.5
+ORDERN  MODE=1 PLATE=.5  .5 .0  .0 .5 .5   .5 .0 .5
+        RG/W=3.2 4 6.5
+STRUC   NBAS=4 NCLASS=2 NL=4 ALAT=a PLAT=1 0 0  0 1 0  0 0 1
+SITE    ATOM=A   POS=   0   0  0
+        ATOM=A2  POS=  .5  .5 .0
+        ATOM=A2  POS=  .0  .5 .5
+        ATOM=A2  POS=  .5  .0 .5
+CLASS   ATOM=A  Z=0 R/W={asa?1.0556:.88} IDXDN=1 1 1 1 2 2
+	RSMH=2,2,2,2 EH=-.1,-.1,-.1,-.1 RSMH2=2,2,2 EH=-1,-1,-1
+        ATOM=A2 Z=0 R/W={asa?.98:.88} IDXDN=1 1 1 1 2 2   
+% elseif scell==32
+ORDERN MODE=1 PLATE=1 0 0   0 1 0   0 0 1
+       RG/W=3.2 4 6.5
+SYMGRP  find
+STRUC   NBAS=32 NCLASS=1 ALAT=a PLAT=2 0 0   0 2 0   0 0 2
+CLASS   ATOM=A  Z=0 R/W={asa?1:.88} IDXDN=1 1 1 1 2 2
+SITE
+% var i=0
+% repeat i1 = 0,1
+% repeat i2 = 0,1
+% repeat i3 = 0,1
+% var i=i+1
+  ATOM=A POS= .0+{i1}  .0+{i2}  .0+{i3}
+  ATOM=A POS= .5+{i1}  .5+{i2}  .0+{i3}
+  ATOM=A POS= .5+{i1}  .0+{i2}  .5+{i3}
+  ATOM=A POS= .0+{i1}  .5+{i2}  .5+{i3}
+% end
+% end
+% end
+% endif
+SYMGRP  R4Z MX R3D
+STRUC   NBAS=1 NCLASS=1 NL=4 ALAT=a
+        PLAT= 0 .5 .5    .5 0 .5    .5 .5 0
+SITE    ATOM=A POS=   0   0   0
+CLASS   ATOM=A  Z=0 R/W={asa?1:.88} IDXDN=1 1 1 1 2 2   A=.025
+        LMXF=3 LMXB=221
+	RSMH=3,3,3,3 EH=-.1,-.1,-.1,-.1 RSMH2=2,2,2 EH2=-1,-1,-1
+% ifdef asa
+START   FREE=F BEGMOM={nit==0} CNTROL=t CNVG=1d-5
+        ATOM=A     P=  1.7132985  2.3670680  3.1798926  4.1145219
+% ifdef zbak==1
+        ATOM=A        P=  1.7114908  2.3625265  3.1813793  4.1132217
+                      Q=  0.6531912  0.0000000  0.0004264
+                          0.3039512  0.0000000  0.0001339
+                          0.0401811  0.0000000  0.0000157
+                          0.0026765  0.0000000  0.0000442
+% endif
+                   Q=  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+% endif
+START   FREE=F BEGMOM=t CNTROL=t CNVG=1d-5
+        ATOM=A     P=  1.5 2.5 3.5 4.5
+                   Q=  1 0 0  0 0 0  0 0 0  0 0 0
+# Note : charge zbak is -1000*rho
+#     ... Exact expressions .........     ASA             lmf                 
+#                                              ASA numbers slightly different now ...
+ rho    ef     3ef/5   -exc     etot   ASAEk  -ASA(e)* ehf(1s)  sc
+.001 .095708 .057425 .203667 -.146242 .05806 -.14561 -.145901
+.002 .151927 .091156 .249619 -.158463 .09213 -.15749 -.157391 -.1613
+.003 .199080 .119448 .281181 -.161732 .12071 -.16047 -.160891 -.1642
+.004 .241169 .144701 .305991 -.161290 .14621 -.15978 -.160588 -.1635
+.005 .279851 .167911 .326758 -.158847 .16965 -.15711 -.158214
+.006 .316020 .189612 .344787 -.155175 .19157 -.15322 -.154636
+.007 .350224 .210134 .360821 -.150687 .21229 -.14853 -.150199
+.008 .382831 .229699 .375327 -.145628 .23205 -.14328 -.14518
+.009 .414104 .248462 .388617 -.140155 .25100 -.13762 -.139739
+.010 .444236 .266542 .400914 -.134372 .26926 -.13166 -.133982 -.1363
+JOB    10  20
+

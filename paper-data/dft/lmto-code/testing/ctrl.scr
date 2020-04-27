@@ -1,0 +1,183 @@
+# To make plot partial DOS resolved by site
+# lm   -vnk1=30 -vnk2=24 -vnk3=8 scr -vmet=3 -vnit=1 -vscr=2 --iactive '--pdos~mode=0~sites=1,2,5,6,9,10,21:26' --dos~npts=1701~window=-1.2,0.5  --quit=rho
+# lmdos -vnk1=30 -vnk2=24 -vnk3=8 scr -vmet=3 -vnit=1 -vscr=2 --iactive '--pdos~mode=0~sites=1,2,5,6,9,10,21:26' --dos~npts=1701~window=-1.2,0.5  --quit=rho
+# echo 1.5 3.2 -16 5 | pldos -ef=0 -esclxy=13.7 -fplot~sh~tmy=.5 -lst="6;5;4;3;2;1;7;8;9;10;11;12" dos.scr
+% const scr=0 nit=0 gamrep=f
+JOBLM   lm scr -vnit=0 -vscr=11 --time=5
+JOBGF   lmgf scr -vnit=0 -vscr=11 -vgamrep=t --time=5
+HEADER  GaAs/Pt in 5/5 supercell, ordering BAB..AB/ABA..BA
+        Demonstration of dielectric screening
+ITER    MIX=B,b=1 CONV=0 CONVC=1E-5 NIT={abs(nit)}
+MIX     MODE=B,b=1
+VERS    LMASA-6 LMFP-4 LM:7 ASA:7
+IO      SHOW=f HELP=F VERBOS=40 20 WKP=F IACTIV=t
+SOLVE   SMODE=11*0 TOL=.003 H=.004 EEPS=4d-6
+        VAR=zg1 za1 za11 za12 xg1 xa1 xa11 xa12 z
+CONST   dq=0 hi=.24
+        zg1=-.029 za1=.014  za11=-.002 za12=-.013
+        xg1=0.035 xa1=-.001 xa11=0.006 xa12=-.000 z=0 y=0
+        zg1=0 za1=0 za11=0 za12=0
+        xg1=0 xa1=0 xa11=0 xa12=0 z=0 y=0
+        hs=.25 hm=.178544462
+        hi=hs xa11=0 xa12=0 za11=0 za12=0 zg1=0 za1=0 z=0
+# MASTER  JOB 1 dq=0 hi=.24
+#         zg1=-.029 za1=.014  za11=-.002 za12=-.013
+#         xg1=0.035 xa1=-.001 xa11=0.006 xa12=-.000 z=0 y=0
+#         zg1=0 za1=0 za11=0 za12=0
+#         xg1=0 xa1=0 xa11=0 xa12=0 z=0 y=0
+# CONST   hs=.25 hm=.178544462
+#         hi=hs xa11=0 xa12=0 za11=0 za12=0 zg1=0 za1=0 z=0
+
+        da=0 a=10.69+da hc=2*hi+(5-1)*hm+hs*(5-1)
+        volm=a^3*hm/2                 vols=a^3*hs/2
+        Rm=(volm*3/4/pi)^(1/3)        Rs=(vols*3/8/pi)^(1/3)
+        delV=(2*hi-hm-hs)*a^3         hend=hc-hi
+        Rmi=Rm*(1-.00-.00^2)         Rsi=(3/32/pi*delV+Rs^3)^(1/3)
+        Rm2=Rm*(1+.00-.00^2)         Rs2=Rs
+        scr=0
+        nk1=6 nk2=4 nk3=2
+HAM     NSPIN=1 REL=T QASA=0
+OPTIONS NSPIN=1 REL=T LMH=F NOMAD=f SCR={scr}
+#       use GAMMA=t for GF
+        ASA[CCOR=f ADNF=F GAMMA={gamrep} ]
+GF      MODE=1 GFOPTS=p3
+SYMGRP  M(1,-1,0):T(4/4,-4/4,0) M(1,1,0)
+EWALD   TOL=1D-12 NKDMX=500 VEC=F
+% const bzj={scr%10==1?0:1} met=1
+BZ      TETRA=1 NKABC=nk1 nk2 nk3 TOL=1E-6 METAL={met} EFMAX=0.5
+        BZJOB={bzj}
+        BZJOB2=1 NKABC2=2 2 2 EF0=0 DELEF=.1
+        EMESH=12 10 -1.2 -.134 .5 .5
+STR     RMAX=2.9
+STRUC   NBAS=30 NCLASS=18 NSPEC=18 NL=3
+        ALAT=a PLAT= .5 .5 0   0 0 1   hc -hc 0
+CLASS
+% const idd=scr%10==1?1:2
+   ATOM=GA1 Z=31 GROUP=1 R=Rsi*1 IDXDN=1 1 {idd} A=0.03
+   IDMOD=0 0 1 LMXB=220 EREF=-3882.1256
+   ATOM=AS1 Z=33 GROUP=1 R=Rsi*1 IDXDN=1 1 {idd} A=0.03
+   LMXB=220 EREF=-4515.4714
+   ATOM=E11 Z= 0 GROUP=1 R=Rsi*1 IDXDN=1 1 {idd} LMXB=999 A=0.03
+   ATOM=E21 Z= 0 GROUP=1 R=Rsi*1 IDXDN=1 1 {idd} LMXB=999 A=0.03
+   ATOM=GA2 Z=31 GROUP=1 R=Rs2*1 IDXDN=1 1 {idd} A=0.03
+   IDMOD=0 0 1 LMXB=220 EREF=-3882.1256
+   ATOM=AS2 Z=33 GROUP=1 R=Rs2*1 IDXDN=1 1 {idd} A=0.03
+   LMXB=220 EREF=-4515.4714
+   ATOM=E12 Z= 0 GROUP=1 R=Rs2*1 IDXDN=1 1 {idd} LMXB=999 A=0.03
+   ATOM=E22 Z= 0 GROUP=1 R=Rs2*1 IDXDN=1 1 {idd} LMXB=999 A=0.03
+   ATOM=GA3 Z=31 GROUP=1 R=Rs*1 IDXDN=1 1 {idd} A=0.03
+   IDMOD=0 0 1 LMXB=220 EREF=-3882.1256
+   ATOM=AS3 Z=33 GROUP=1 R=Rs*1 IDXDN=1 1 {idd} A=0.03
+   LMXB=220 EREF=-4515.4714
+   ATOM=E13 Z= 0 GROUP=1 R=Rs*1 IDXDN=1 1 {idd} LMXB=999 A=0.03
+   ATOM=E23 Z= 0 GROUP=1 R=Rs*1 IDXDN=1 1 {idd} LMXB=999 A=0.03
+   ATOM=A11 Z=78 GROUP=-1 R=Rmi*1 EREF=-36805.4789 LMXB=229 A=0.03
+   ATOM=A21 Z=78 GROUP=-1 R=Rmi*1 EREF=-36805.4789 LMXB=229 A=0.03
+   ATOM=A12 Z=78 GROUP=-1 R=Rm2*1 EREF=-36805.4789 LMXB=229 A=0.03
+   ATOM=A22 Z=78 GROUP=-1 R=Rm2*1 EREF=-36805.4789 LMXB=229 A=0.03
+   ATOM=A13 Z=78 GROUP=-1 R=Rm*1 EREF=-36805.4789 LMXB=229 A=0.03
+   ATOM=A23 Z=78 GROUP=-1 R=Rm*1 EREF=-36805.4789 LMXB=229 A=0.03
+SITE
+ ATOM=GA1 POS=y+hs*0-xg1+1/4 y-hs*0+xg1+1/4 2/4+z+zg1
+ ATOM=AS1 POS=y+hs*0-xa1+2/4 y-hs*0+xa1+2/4 3/4+z+za1
+     ATOM=E11 POS=y+hs*0-0*xa1/2+3/4 y-hs*0+0*xa1/2+3/4 4/4+z+0*za1/2
+     ATOM=E21 POS=y+hs*0-0*xg1/2+4/4 y-hs*0+0*xg1/2+4/4 5/4+z+0*zg1/2
+ ATOM=GA2 POS=y+hs*1+0/4 y-hs*1+0/4 0/4+z
+ ATOM=AS2 POS=y+hs*1+1/4 y-hs*1+1/4 1/4+z
+ ATOM=E12 POS=y+hs*1+2/4 y-hs*1+2/4 2/4+z
+ ATOM=E22 POS=y+hs*1+3/4 y-hs*1+3/4 3/4+z
+ ATOM=GA3 POS=y+hs*2+1/4 y-hs*2+1/4 2/4+z
+ ATOM=AS3 POS=y+hs*2+2/4 y-hs*2+2/4 3/4+z
+ ATOM=E13 POS=y+hs*2+3/4 y-hs*2+3/4 4/4+z
+ ATOM=E23 POS=y+hs*2+4/4 y-hs*2+4/4 5/4+z
+ ATOM=GA2 POS=y+hs*3+0/4 y-hs*3+0/4 0/4+z
+ ATOM=AS2 POS=y+hs*3+1/4 y-hs*3+1/4 1/4+z
+ ATOM=E12 POS=y+hs*3+2/4 y-hs*3+2/4 2/4+z
+ ATOM=E22 POS=y+hs*3+3/4 y-hs*3+3/4 3/4+z
+ ATOM=GA1 POS=y+hs*4+xg1+1/4 y-hs*4-xg1+1/4 2/4+z+zg1
+ ATOM=AS1 POS=y+hs*4+xa1+2/4 y-hs*4-xa1+2/4 3/4+z+za1
+     ATOM=E11 POS=y+hs*4+0*xa1/2+3/4 y-hs*4-0*xa1/2+3/4 4/4+z+0*za1/2
+     ATOM=E21 POS=y+hs*4+0*xg1/2+4/4 y-hs*4-0*xg1/2+4/4 5/4+z+0*zg1/2
+ ATOM=A11 POS=(hi+hs*4+hm*0)+0/4+xa11 -(hi+hs*4+hm*0)+0/4-xa11 0/4+za11
+ ATOM=A21 POS=(hi+hs*4+hm*0)+0/4+xa12 -(hi+hs*4+hm*0)+0/4-xa12 2/4+za12
+ ATOM=A12 POS=(hi+hs*4+hm*1)+1/4 -(hi+hs*4+hm*1)+1/4 1/4
+ ATOM=A22 POS=(hi+hs*4+hm*1)+1/4 -(hi+hs*4+hm*1)+1/4 3/4
+ ATOM=A13 POS=(hi+hs*4+hm*2)+0/4 -(hi+hs*4+hm*2)+0/4 0/4
+ ATOM=A23 POS=(hi+hs*4+hm*2)+0/4 -(hi+hs*4+hm*2)+0/4 2/4
+ ATOM=A12 POS=(hi+hs*4+hm*3)+1/4 -(hi+hs*4+hm*3)+1/4 1/4
+ ATOM=A22 POS=(hi+hs*4+hm*3)+1/4 -(hi+hs*4+hm*3)+1/4 3/4
+ ATOM=A11 POS=(hi+hs*4+hm*4)+0/4-xa11 -(hi+hs*4+hm*4)+0/4+xa11 0/4+za11
+ ATOM=A21 POS=(hi+hs*4+hm*4)+0/4-xa12 -(hi+hs*4+hm*4)+0/4+xa12 2/4+za12
+START   BEGMOM={nit<=0} CNTROL={nit<=0} RDVES=t
+        ATOM=GA1 P=  4.8179507  4.5901070  4.2400000
+                   Q=  1.0456634  0.0000000  0.0387972
+                       1.1158583  0.0000000  0.0460785
+                       0.1995603 -0.0461227  0.0256759
+        ATOM=AS1 P=  4.8875464  4.7894145  4.2154362
+                   Q=  1.5430428  0.0000000  0.0384973
+                       2.5915432  0.0000000  0.0492219
+                       0.0846732  0.0000000  0.0026387
+        ATOM=E11 P=  1.4136018  2.2428128  3.1486396
+                   Q=  0.2856369  0.0000000  0.0194321
+                       0.3383763  0.0000000  0.0230055
+                       0.1485889  0.0000000  0.0100642
+        ATOM=E21 P=  1.4052249  2.2418108  3.1477431
+                   Q=  0.2496649  0.0000000  0.0130294
+                       0.2858981  0.0000000  0.0152365
+                       0.1114938  0.0000000  0.0062403
+        ATOM=GA2 P=  4.8179507  4.5901070  4.2400000
+                   Q=  1.0456634  0.0000000  0.0387972
+                       1.1158583  0.0000000  0.0460785
+                       0.1995603 -0.0461227  0.0256759
+        ATOM=AS2 P=  4.8875464  4.7894145  4.2154362
+                   Q=  1.5430428  0.0000000  0.0384973
+                       2.5915432  0.0000000  0.0492219
+                       0.0846732  0.0000000  0.0026387
+        ATOM=E12 P=  1.4136018  2.2428128  3.1486396
+                   Q=  0.2856369  0.0000000  0.0194321
+                       0.3383763  0.0000000  0.0230055
+                       0.1485889  0.0000000  0.0100642
+        ATOM=E22 P=  1.4052249  2.2418108  3.1477431
+                   Q=  0.2496649  0.0000000  0.0130294
+                       0.2858981  0.0000000  0.0152365
+                       0.1114938  0.0000000  0.0062403
+        ATOM=GA3 P=  4.8179507  4.5901070  4.2400000
+                   Q=  1.0456634  0.0000000  0.0387972
+                       1.1158583  0.0000000  0.0460785
+                       0.1995603 -0.0461227  0.0256759
+        ATOM=AS3 P=  4.8875464  4.7894145  4.2154362
+                   Q=  1.5430428  0.0000000  0.0384973
+                       2.5915432  0.0000000  0.0492219
+                       0.0846732  0.0000000  0.0026387
+        ATOM=E13 P=  1.4136018  2.2428128  3.1486396
+                   Q=  0.2856369  0.0000000  0.0194321
+                       0.3383763  0.0000000  0.0230055
+                       0.1485889  0.0000000  0.0100642
+        ATOM=E23 P=  1.4052249  2.2418108  3.1477431
+                   Q=  0.2496649  0.0000000  0.0130294
+                       0.2858981  0.0000000  0.0152365
+                       0.1114938  0.0000000  0.0062403
+        ATOM=A11 P=  6.7121339  6.3678522  5.8767971
+                   Q=  0.7588179  0.0000000  0.0146860
+                       0.8224294  0.0000000  0.0157569
+                       8.4187527  0.0000000  0.1616237
+        ATOM=A21 P=  6.7121339  6.3678522  5.8767971
+                   Q=  0.7588179  0.0000000  0.0146860
+                       0.8224294  0.0000000  0.0157569
+                       8.4187527  0.0000000  0.1616237
+        ATOM=A12 P=  6.7121339  6.3678522  5.8767971
+                   Q=  0.7588179  0.0000000  0.0146860
+                       0.8224294  0.0000000  0.0157569
+                       8.4187527  0.0000000  0.1616237
+        ATOM=A22 P=  6.7121339  6.3678522  5.8767971
+                   Q=  0.7588179  0.0000000  0.0146860
+                       0.8224294  0.0000000  0.0157569
+                       8.4187527  0.0000000  0.1616237
+        ATOM=A13 P=  6.7121339  6.3678522  5.8767971
+                   Q=  0.7588179  0.0000000  0.0146860
+                       0.8224294  0.0000000  0.0157569
+                       8.4187527  0.0000000  0.1616237
+        ATOM=A23 P=  6.7121339  6.3678522  5.8767971
+                   Q=  0.7588179  0.0000000  0.0146860
+                       0.8224294  0.0000000  0.0157569
+                       8.4187527  0.0000000  0.1616237

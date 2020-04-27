@@ -1,0 +1,467 @@
+rdcmd:  lmfgwd --jobgw=-1 gas --make-Q0P
+ -----------------------  START LMFGWD -----------------------
+ HEADER GaAs in the ZB structure, with local orbitals
+
+ LMFGWD:   nbas = 2(+2)  nspec = 4  vn 7.11.g  verb 31,20,31
+ special:  forces, APW basis(q)
+ pot:      XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       nonmetal, tetra 
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 10.66  Cell vol = 302.838874
+
+ LATTC:  as= 2.000   tol=1.00E-10   alat=10.66000   awald= 0.298
+         r1=  2.009   nkd= 141      q1=  6.076   nkg= 259
+
+ SGROUP: 24 symmetry operations from 3 generators
+ MKSYM:  found 24 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ C1       2.362  0.945    4    3         4  0.590  1.181    15    1   0.945
+ A1       2.362  0.945    4    3         4  0.590  1.181    15    1   0.945
+ EA1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+ EC1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+
+ lmfp : shortened basis vectors ... 
+
+ GVLIST: gmax = 10 a.u. created 5029 vectors of 13824 (36%)
+         mesh has 24 x 24 x 24 divisions; length 0.314, 0.314, 0.314
+ SGVSYM: 297 symmetry stars found for 5029 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 65 0 77 158
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      50     0    18    50    68      32
+   2       9     0    59     9    68      32
+   3       6     0     0     6     6      94
+  all     65     0    77    65   142     158
+ suham :  50 augmentation channels, 50 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       0*   1.60  -0.10   4.646    2.01E-06     531 
+  C1       1*   1.60  -0.10   4.906    1.32E-06     609 
+  C1       2*   1.60  -0.10   5.169    1.21E-06     725 
+  C1       3    1.60  -0.10   5.433    1.22E-06     869 
+  C1       0    1.60  -1.00   4.646    2.01E-06     531 
+  C1       2    0.90  -1.00   9.512    1.03E-06    4477 
+  A1       0    1.30  -0.60   5.718    1.58E-06     941 
+  A1       1*   1.30  -0.10   6.080    1.41E-06    1139 
+  A1       2*   1.30  -0.10   6.444    1.62E-06    1363 
+  A1       3    1.30  -0.10   6.806    1.20E-06    1639 
+  A1       1    1.30  -1.00   6.080    1.41E-06    1139 
+  EA1      0*   1.50  -0.10   4.956    1.69E-06     609 
+  EA1      1*   1.50  -0.10   5.245    1.82E-06     725 
+  EA1      2    1.50  -0.10   5.536    1.04E-06     893 
+  EC1      0*   1.50  -0.10   4.956    1.69E-06     609 
+  EC1      1*   1.50  -0.10   5.245    1.82E-06     725 
+  EC1      2    1.50  -0.10   5.536    1.04E-06     893 
+ 
+
+ suham:  q-dependent PW basis with  Emin = 1 < E < 2.
+         Est. min,max PW dimension = 6,14.  Use npwpad = 3 => ndham = 82
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Average es pot at rmt = 0.279631  avg sphere pot = 0.316036   vconst = -0.279631
+
+ Fit local orbitals to sm hankels, species C1, rmt=2.361911
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  2  low    3.926   -1.011454   -0.267944   1.00000  -2.13719   0.06765   -0.060372*
+
+ site  1  z= 31.0  rmt= 2.36191  nr=667   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.068753 (sphere) + 0.000922 (spillout) = 0.069675
+ potential shift to crystal energy zero:    0.000324
+
+ site  2  z= 33.0  rmt= 2.36191  nr=677   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.573019 (sphere) + 0.015702 (spillout) = 0.588721
+ potential shift to crystal energy zero:    0.000117
+
+
+ sugcut:  make orbital-dependent cutoffs for local orbitals, tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       2    1.00  -2.14   8.508    1.03E-06    3143 
+ 
+ subzi : nonmetal
+
+
+ gw setup, job -1 code  0
+ ... Creating files GWinput, QIBZ, KPTin1BZ
+ BZMESH:  10 irreducible QP from 64 ( 4 4 4 )  shift= F F F
+
+ ... Creating in GWinput the following product basis:
+ site  phi(o)     phi(u)     dot(o)     dot(u)     loc(o)     loc(u)
+   1   11100      11110      00000      00000      --1--      --0--   
+   2   11100      11110      00000      00000      0----      1----   
+ getcor:  qcore= 18.00  qsc= 28.00  konf = 4  4  3* 4  5 
+ sum q=18.00  sum ec= -2227.33794527  sum tc=  3687.48390929  rho(rmax) 0.00007
+ getcor:  qcore= 28.00  qsc= 28.00  konf = 4  4  4  4  5 
+ sum q=28.00  sum ec= -2613.63532001  sum tc=  4589.49168607  rho(rmax) 0.00090
+ Add to core product basis: site 2 species A1 state 3d ecore=-2.496239
+
+ ... Creating files Q0P, QGpsi, QGcou
+ suq0x : 6 special gamma-points  auxf = 13.596490 (error = 0.0)
+         qa = 0.131761  q0x(1) = -0.07607228 0.07607228 0.07607228
+ q0irre: 2 irreducible special gamma-point(s)
+
+ Maximum number of PW = 113 for basis,  59 for coulomb
+ Extended mesh has 50 irreducible qp out of 192
+
+ Exit 0 lmfgw, job -1 
+ CPU time:    0.354s   Wall clock    0.400s   18:09:29 25.06.2016        on phpdl1.ph.kcl.ac.uk
+rdcmd:  lmfgwd --jobgw=0 gas --gwcode=2
+ -----------------------  START LMFGWD -----------------------
+ HEADER GaAs in the ZB structure, with local orbitals
+
+ LMFGWD:   nbas = 2(+2)  nspec = 4  vn 7.11.g  verb 31,20,31
+ special:  forces, APW basis(q)
+ pot:      XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       nonmetal, tetra 
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 10.66  Cell vol = 302.838874
+
+ LATTC:  as= 2.000   tol=1.00E-10   alat=10.66000   awald= 0.298
+         r1=  2.009   nkd= 141      q1=  6.076   nkg= 259
+
+ SGROUP: 24 symmetry operations from 3 generators
+ MKSYM:  found 24 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ C1       2.362  0.945    4    3         4  0.590  1.181    15    1   0.945
+ A1       2.362  0.945    4    3         4  0.590  1.181    15    1   0.945
+ EA1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+ EC1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+
+ lmfp : shortened basis vectors ... 
+
+ GVLIST: gmax = 10 a.u. created 5029 vectors of 13824 (36%)
+         mesh has 24 x 24 x 24 divisions; length 0.314, 0.314, 0.314
+ SGVSYM: 297 symmetry stars found for 5029 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 65 0 77 158
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      50     0    18    50    68      32
+   2       9     0    59     9    68      32
+   3       6     0     0     6     6      94
+  all     65     0    77    65   142     158
+ suham :  50 augmentation channels, 50 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       0*   1.60  -0.10   4.646    2.01E-06     531 
+  C1       1*   1.60  -0.10   4.906    1.32E-06     609 
+  C1       2*   1.60  -0.10   5.169    1.21E-06     725 
+  C1       3    1.60  -0.10   5.433    1.22E-06     869 
+  C1       0    1.60  -1.00   4.646    2.01E-06     531 
+  C1       2    0.90  -1.00   9.512    1.03E-06    4477 
+  A1       0    1.30  -0.60   5.718    1.58E-06     941 
+  A1       1*   1.30  -0.10   6.080    1.41E-06    1139 
+  A1       2*   1.30  -0.10   6.444    1.62E-06    1363 
+  A1       3    1.30  -0.10   6.806    1.20E-06    1639 
+  A1       1    1.30  -1.00   6.080    1.41E-06    1139 
+  EA1      0*   1.50  -0.10   4.956    1.69E-06     609 
+  EA1      1*   1.50  -0.10   5.245    1.82E-06     725 
+  EA1      2    1.50  -0.10   5.536    1.04E-06     893 
+  EC1      0*   1.50  -0.10   4.956    1.69E-06     609 
+  EC1      1*   1.50  -0.10   5.245    1.82E-06     725 
+  EC1      2    1.50  -0.10   5.536    1.04E-06     893 
+ 
+
+ suham:  q-dependent PW basis with  Emin = 1 < E < 2.
+         Est. min,max PW dimension = 6,14.  Use npwpad = 3 => ndham = 82
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Average es pot at rmt = 0.279631  avg sphere pot = 0.316036   vconst = -0.279631
+
+ Fit local orbitals to sm hankels, species C1, rmt=2.361911
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  2  low    3.926   -1.011454   -0.267944   1.00000  -2.13719   0.06765   -0.060372*
+
+ site  1  z= 31.0  rmt= 2.36191  nr=667   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.068753 (sphere) + 0.000922 (spillout) = 0.069675
+ potential shift to crystal energy zero:    0.000324
+
+ site  2  z= 33.0  rmt= 2.36191  nr=677   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.573019 (sphere) + 0.015702 (spillout) = 0.588721
+ potential shift to crystal energy zero:    0.000117
+
+
+ sugcut:  make orbital-dependent cutoffs for local orbitals, tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       2    1.00  -2.14   8.508    1.03E-06    3143 
+ 
+ subzi : nonmetal
+
+
+ gw setup, job  0 code  2
+ PMT: Make eigenvectors in LMTO basis for sigm interpolation
+
+ Creating files SYMOPS, LATTC, CLASS, NLAindx, ldima
+
+ OK! lmfgw generated files, job 0
+rdcmd:  lmfgwd --jobgw=1 gas --gwcode=2
+ -----------------------  START LMFGWD -----------------------
+ HEADER GaAs in the ZB structure, with local orbitals
+
+ LMFGWD:   nbas = 2(+2)  nspec = 4  vn 7.11.g  verb 31,20,31
+ special:  forces, APW basis(q)
+ pot:      XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       nonmetal, tetra 
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 10.66  Cell vol = 302.838874
+
+ LATTC:  as= 2.000   tol=1.00E-10   alat=10.66000   awald= 0.298
+         r1=  2.009   nkd= 141      q1=  6.076   nkg= 259
+
+ SGROUP: 24 symmetry operations from 3 generators
+ MKSYM:  found 24 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ C1       2.362  0.945    4    3         4  0.590  1.181    15    1   0.945
+ A1       2.362  0.945    4    3         4  0.590  1.181    15    1   0.945
+ EA1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+ EC1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+
+ lmfp : shortened basis vectors ... 
+
+ GVLIST: gmax = 10 a.u. created 5029 vectors of 13824 (36%)
+         mesh has 24 x 24 x 24 divisions; length 0.314, 0.314, 0.314
+ SGVSYM: 297 symmetry stars found for 5029 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 65 0 77 158
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      50     0    18    50    68      32
+   2       9     0    59     9    68      32
+   3       6     0     0     6     6      94
+  all     65     0    77    65   142     158
+ suham :  50 augmentation channels, 50 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       0*   1.60  -0.10   4.646    2.01E-06     531 
+  C1       1*   1.60  -0.10   4.906    1.32E-06     609 
+  C1       2*   1.60  -0.10   5.169    1.21E-06     725 
+  C1       3    1.60  -0.10   5.433    1.22E-06     869 
+  C1       0    1.60  -1.00   4.646    2.01E-06     531 
+  C1       2    0.90  -1.00   9.512    1.03E-06    4477 
+  A1       0    1.30  -0.60   5.718    1.58E-06     941 
+  A1       1*   1.30  -0.10   6.080    1.41E-06    1139 
+  A1       2*   1.30  -0.10   6.444    1.62E-06    1363 
+  A1       3    1.30  -0.10   6.806    1.20E-06    1639 
+  A1       1    1.30  -1.00   6.080    1.41E-06    1139 
+  EA1      0*   1.50  -0.10   4.956    1.69E-06     609 
+  EA1      1*   1.50  -0.10   5.245    1.82E-06     725 
+  EA1      2    1.50  -0.10   5.536    1.04E-06     893 
+  EC1      0*   1.50  -0.10   4.956    1.69E-06     609 
+  EC1      1*   1.50  -0.10   5.245    1.82E-06     725 
+  EC1      2    1.50  -0.10   5.536    1.04E-06     893 
+ 
+
+ suham:  q-dependent PW basis with  Emin = 1 < E < 2.
+         Est. min,max PW dimension = 6,14.  Use npwpad = 3 => ndham = 82
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ Average es pot at rmt = 0.279631  avg sphere pot = 0.316036   vconst = -0.279631
+
+ Fit local orbitals to sm hankels, species C1, rmt=2.361911
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  2  low    3.926   -1.011454   -0.267944   1.00000  -2.13719   0.06765   -0.060372*
+
+ site  1  z= 31.0  rmt= 2.36191  nr=667   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.068753 (sphere) + 0.000922 (spillout) = 0.069675
+ potential shift to crystal energy zero:    0.000324
+
+ site  2  z= 33.0  rmt= 2.36191  nr=677   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.573019 (sphere) + 0.015702 (spillout) = 0.588721
+ potential shift to crystal energy zero:    0.000117
+
+
+ Average es pot at rmt = 0.279631  avg sphere pot = 0.316036   vconst = -0.279631
+
+ Fit local orbitals to sm hankels, species C1, rmt=2.361911
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  2  low    3.926   -1.011355   -0.267534   1.00000  -2.13719   0.06765   -0.060372*
+
+ site  1  z= 31.0  rmt= 2.36191  nr=667   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.068753 (sphere) + 0.000922 (spillout) = 0.069675
+ potential shift to crystal energy zero:    0.000324
+
+ site  2  z= 33.0  rmt= 2.36191  nr=677   a=0.015  nlml=25  rg=0.590  Vfloat=T
+ sm core charge = 0.573019 (sphere) + 0.015702 (spillout) = 0.588721
+ potential shift to crystal energy zero:    0.000117
+
+
+ sugcut:  make orbital-dependent cutoffs for local orbitals, tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       2    1.00  -2.14   8.508    1.03E-06    3143 
+ 
+ subzi : nonmetal
+
+
+ gw setup, job  1 code  2
+ PMT: Make eigenvectors in LMTO basis for sigm interpolation
+
+ ... Generate radial wave functions (file gwa)
+
+ getcor:  qcore= 18.00  qsc= 28.00  konf = 4  4  3* 4  5 
+ sum q=18.00  sum ec= -2227.33794527  sum tc=  3687.48390929  rho(rmax) 0.00007
+ getcor:  qcore= 28.00  qsc= 28.00  konf = 4  4  4  4  5 
+ sum q=28.00  sum ec= -2613.63532001  sum tc=  4589.49168607  rho(rmax) 0.00090
+
+ ... Make w.f. and matrix elements, 192 qp (50 irr): file(s) gwb, vxc, evec
+
+ sugw:  kpt 1 of 192, k=  0.00000  0.00000  0.00000
+ -1.0216 -1.0216 -1.0216 -1.0157 -1.0157 -0.8720  0.0714  0.0714  0.0714
+ sugw:  kpt 1 of 192, k=  0.00000  0.00000  0.00000
+ -1.0216 -1.0216 -1.0216 -1.0157 -1.0157 -0.8721  0.0713  0.0713  0.0713
+ sugw:  kpt 11 of 192, k=  1.00000  0.00000  0.00000
+ -1.0300 -1.0179 -1.0179 -1.0176 -1.0147 -0.6855 -0.4378 -0.1284 -0.1284
+ sugw:  kpt 11 of 192, k=  1.00000  0.00000  0.00000
+ -1.0300 -1.0179 -1.0179 -1.0176 -1.0147 -0.6855 -0.4378 -0.1284 -0.1284
+ sugw:  kpt 71 of 192, k=  0.67393  0.32607  -0.17393
+ -1.0281 -1.0196 -1.0192 -1.0163 -1.0152 -0.7341 -0.3804 -0.1526 -0.0737
+ sugw:  kpt 81 of 192, k=  -0.32607  0.32607  0.32607
+ -1.0262 -1.0204 -1.0204 -1.0156 -1.0156 -0.7898 -0.3236  0.0035  0.0035
+ sugw:  kpt 91 of 192, k=  0.67393  0.32607  0.32607
+ -1.0281 -1.0198 -1.0195 -1.0160 -1.0153 -0.7301 -0.4046 -0.1320 -0.0537
+ sugw:  kpt 131 of 192, k=  0.57607  0.42393  -0.57607
+ -1.0277 -1.0201 -1.0200 -1.0155 -1.0154 -0.7386 -0.4197 -0.0532 -0.0231
+ sugw:  kpt 161 of 192, k=  -0.42393  0.42393  0.42393
+ -1.0274 -1.0202 -1.0202 -1.0154 -1.0154 -0.7527 -0.4023 -0.0105 -0.0105
+ 
+ sugw: minimum reduced hilbert space = 71 ... check nband_chi0 in GWinput
+ Exit 0 bndfp 
+ CPU time:   11.445s   Wall clock   11.489s   18:09:41 25.06.2016        on phpdl1.ph.kcl.ac.uk
+rdcmd:  lmf2gw_2 gas
+ lmf2gw: read files from ext=.gas          50  qp made by           1  threads
+ File CLASS:  nclass =   2
+ nqbze nqpz ndimh(max)=   50   64   82
+ikp isp nband q=     1     1    79      0.000000   0.000000   0.000000 geig sumcheck=  0.273992D+01 0.839107D+00
+ikp isp nband q=     2     1    75      0.250000   0.250000  -0.250000 geig sumcheck= -0.125998D+01 0.808547D+00
+ikp isp nband q=     3     1    71      0.500000   0.500000  -0.500000 geig sumcheck=  0.102004D+01-0.460618D+00
+ikp isp nband q=     4     1    75      0.750000   0.750000  -0.750000 geig sumcheck=  0.193768D+01 0.112499D+01
+ikp isp nband q=     5     1    73      0.500000   0.000000   0.000000 geig sumcheck= -0.490317D+00 0.152482D+01
+ikp isp nband q=     6     1    75      0.750000   0.250000  -0.250000 geig sumcheck= -0.110215D+01 0.287790D+01
+ikp isp nband q=     7     1    74      1.000000   0.500000  -0.500000 geig sumcheck=  0.140505D+01 0.871684D+00
+ikp isp nband q=     8     1    73      1.000000   0.000000   0.000000 geig sumcheck= -0.131015D+01 0.847281D-05
+ikp isp nband q=     9     1    75      1.250000   0.250000  -0.250000 geig sumcheck=  0.156837D+01 0.541008D+00
+ikp isp nband q=    10     1    77      1.000000   0.500000   0.000000 geig sumcheck=  0.942213D+00 0.333348D+00
+ikp isp nband q=    11     1    75     -0.076072   0.076072   0.076072 geig sumcheck=  0.337072D+00-0.718512D+00
+ikp isp nband q=    12     1    75      0.173928   0.326072  -0.173928 geig sumcheck= -0.971695D+00 0.139410D+00
+ikp isp nband q=    13     1    74      0.423928   0.576072  -0.423928 geig sumcheck= -0.323882D+01-0.148473D+01
+ikp isp nband q=    14     1    78      0.673928   0.826072  -0.673928 geig sumcheck=  0.599613D+00 0.660196D+00
+ikp isp nband q=    15     1    73      0.423928   0.076072   0.076072 geig sumcheck= -0.273590D+00-0.100866D+01
+ikp isp nband q=    16     1    74      0.673928   0.326072  -0.173928 geig sumcheck=  0.615884D+00 0.459427D+00
+ikp isp nband q=    17     1    74      0.923928   0.576072  -0.423928 geig sumcheck= -0.353693D-01 0.906449D+00
+ikp isp nband q=    18     1    76      0.923928   0.076072   0.076072 geig sumcheck= -0.242733D+01 0.276230D+00
+ikp isp nband q=    19     1    73      1.173928   0.326072  -0.173928 geig sumcheck=  0.250919D+00 0.284850D+00
+ikp isp nband q=    20     1    75      1.423928   0.076072   0.076072 geig sumcheck=  0.123421D+01-0.656688D+00
+ikp isp nband q=    21     1    78     -0.326072   0.326072   0.326072 geig sumcheck= -0.359003D+01 0.839593D+00
+ikp isp nband q=    22     1    74      0.173928   0.826072  -0.173928 geig sumcheck=  0.170065D+00 0.131749D+01
+ikp isp nband q=    23     1    72      0.423928   1.076072  -0.423928 geig sumcheck=  0.246896D+00 0.425119D+00
+ikp isp nband q=    24     1    73      0.673928   0.326072   0.326072 geig sumcheck= -0.142685D+01-0.110229D+01
+ikp isp nband q=    25     1    76      0.923928   0.576072   0.076072 geig sumcheck=  0.185737D+00-0.512316D+00
+ikp isp nband q=    26     1    74      1.173928   0.326072   0.326072 geig sumcheck= -0.156559D+01-0.221002D+00
+ikp isp nband q=    27     1    71     -0.576072   0.576072   0.576072 geig sumcheck= -0.949557D+00 0.181133D+01
+ikp isp nband q=    28     1    75      0.173928   1.326072  -0.173928 geig sumcheck=  0.884106D+00 0.144579D+01
+ikp isp nband q=    29     1    74      0.923928   0.576072   0.576072 geig sumcheck= -0.111274D+00-0.179215D+01
+ikp isp nband q=    30     1    75     -0.826072   0.826072   0.826072 geig sumcheck=  0.188622D+01 0.148176D+00
+ikp isp nband q=    31     1    75      0.076072  -0.076072  -0.076072 geig sumcheck= -0.598171D+00-0.151709D+01
+ikp isp nband q=    32     1    78      0.326072   0.173928  -0.326072 geig sumcheck= -0.309444D+01-0.158158D+01
+ikp isp nband q=    33     1    74      0.576072   0.423928  -0.576072 geig sumcheck=  0.122194D+01 0.246043D+01
+ikp isp nband q=    34     1    75      0.826072   0.673928  -0.826072 geig sumcheck= -0.743344D+00 0.626138D+00
+ikp isp nband q=    35     1    75      0.576072  -0.076072  -0.076072 geig sumcheck= -0.663389D+00-0.254457D+00
+ikp isp nband q=    36     1    73      0.826072   0.173928  -0.326072 geig sumcheck=  0.652273D+00-0.443698D+00
+ikp isp nband q=    37     1    74      1.076072   0.423928  -0.576072 geig sumcheck= -0.682063D+00 0.873780D-03
+ikp isp nband q=    38     1    76      1.076072  -0.076072  -0.076072 geig sumcheck=  0.371893D+01 0.107302D+01
+ikp isp nband q=    39     1    74      1.326072   0.173928  -0.326072 geig sumcheck= -0.169181D+01 0.179194D+01
+ikp isp nband q=    40     1    73      1.576072  -0.076072  -0.076072 geig sumcheck=  0.179838D+00 0.811057D+00
+ikp isp nband q=    41     1    75     -0.173928   0.173928   0.173928 geig sumcheck=  0.379990D+01-0.533719D+00
+ikp isp nband q=    42     1    73      0.326072   0.673928  -0.326072 geig sumcheck=  0.918852D+00 0.723502D+00
+ikp isp nband q=    43     1    74      0.576072   0.923928  -0.576072 geig sumcheck=  0.216135D+01 0.975912D+00
+ikp isp nband q=    44     1    74      0.826072   0.173928   0.173928 geig sumcheck= -0.185733D+00-0.881256D+00
+ikp isp nband q=    45     1    76      1.076072   0.423928  -0.076072 geig sumcheck=  0.127402D+01-0.766018D+00
+ikp isp nband q=    46     1    75      1.326072   0.173928   0.173928 geig sumcheck=  0.940401D-01-0.144077D+01
+ikp isp nband q=    47     1    71     -0.423928   0.423928   0.423928 geig sumcheck= -0.174487D+01-0.799560D+00
+ikp isp nband q=    48     1    74      0.326072   1.173928  -0.326072 geig sumcheck= -0.159545D+01-0.216008D+00
+ikp isp nband q=    49     1    72      1.076072   0.423928   0.423928 geig sumcheck=  0.159582D+01-0.340842D+00
+ikp isp nband q=    50     1    78     -0.673928   0.673928   0.673928 geig sumcheck= -0.297785D+01 0.443025D+00
+
+ File gwa: reading atom data
+ site  1  z= 31.0  rmax= 2.36191  lmax=4  konf=44*45
+  l    g(rmax)    gp(rmax)    <g g>         <gp gp>         <g gp>
+  0    0.96250   -0.39614   0.9999275893   0.0404410421   -0.000019
+  1    1.26857   -0.27855   0.9999387980   0.0193972197   -0.000009
+  2    1.33984   -0.09880   0.9998275139   0.0635295483    0.000032
+  gz(rmax); <gz gz> <gz g> <gz gp> =  0.12680   0.7285631018  -0.2068575   0.1907498
+  3    1.85301   -0.13277   0.9999425043   0.0037235069    0.000003
+  4    2.05361   -0.09732   0.9999069277   0.0016367371    0.000003
+  l  k isp       ecore      gc(rmax)     <gc gc>
+  0  1  1    -749.835451    0.000000   0.9874864649  1  1
+  0  2  1     -92.157221    0.000000   0.9975957799  2  2
+  0  3  1     -10.419442    0.012648   0.9994555150  3  3
+  1  2  1     -80.251193    0.000000   0.9976330005  4  4
+  1  3  1      -6.834426    0.028024   0.9995127173  5  5
+ site  2  z= 33.0  rmax= 2.36191  lmax=4  konf=*4445
+  l    g(rmax)    gp(rmax)    <g g>         <gp gp>         <g gp>
+  0    0.74426   -0.51720   0.9999046294   0.0715623179   -0.000031
+  gz(rmax); <gz gz> <gz g> <gz gp> =  0.00000   2.0120185820  -1.1753239  -0.1999376
+  1    1.03273   -0.37544   0.9999280291   0.0368292034   -0.000017
+  2    1.39784   -0.21387   0.9998982996   0.0174201374    0.000003
+  3    1.87214   -0.13156   0.9999416783   0.0036914015    0.000003
+  4    2.07113   -0.09613   0.9999058740   0.0015996213    0.000003
+  l  k isp       ecore      gc(rmax)     <gc gc>
+  0  1  1    -859.036991    0.000000   0.9857681940  1  1
+  0  2  1    -108.513741    0.000000   0.9972258152  2  2
+  0  3  1     -13.409648    0.005841   0.9993528156  3  3
+  1  2  1     -95.170582    0.000000   0.9972690284  4  4
+  1  3  1      -9.288112    0.013475   0.9994134171  5  5
+  2  3  1      -2.496239    0.078633   0.9995486765  6  6
+ 
+  *** DATA4GW_V2 size=           1           2           2         677
+           6
+                  =           4         113          82         106          50
+                  =         106           3
+
+ ----  OK! lmf2gw: end --- DATA4GW_V2 is written 

@@ -1,0 +1,12 @@
+
+ plbnds creating setup for fplot
+ plbnds : bands file contains two sets of color weights
+ plbnds: 47 bands  fermi=-0.06352  scaled by 13.6  shifted to 0
+ panel 1  nq=81  ebot=-14.893088  etop=30.287472  delta q=0.707107
+ panel 2  nq=61  ebot=-14.893088  etop=32.055472  delta q=0.5
+ nq=142  npan=2  emin=-14.893088  ef=0  emax=32.055472  sum dq=1.207107
+ emin, emax, width(cm), height(cm) ?
+ write file bnd1.kfese, bands 9 - 19
+ write file bnd2.kfese, bands 9 - 19
+  ... to plot, invoke:
+  fplot -f plot.plbnds

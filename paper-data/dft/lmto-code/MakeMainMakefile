@@ -1,0 +1,717 @@
+#!/bin/sh
+
+# this is a shell script to create Makefile.in for the ASA package
+# Invoke with:
+# MakeMainMakefile [-v6|-v7] [-cp] [nc] [sx] [optics] [fp] [gf] [pgf] [gwd] [dmft]
+# -cp creates appropriate main programs from main/lm.f
+# To add lines to handle the various extensions.
+
+PATH=$PATH:`pwd`
+v7=yes
+lm=yes
+lmasa_flgs=
+
+# --- Extract which packages ---
+nc=no; sx=no; optics=no; fp=no; gf=no; pgf=no; mol=no; tb=no; lmasa_flgs="-uNC -uSX"
+for package in $*; do
+ case $package  in
+ -v6) v7=no
+  ;; 
+ -v7) v7=yes
+  ;; 
+ -cp) copy=yes
+  ;;
+ nc) nc=yes; nclib=nc/subs.a nclib_MPIK=nc/subs-MPIK.a lm=yes
+     lmasa_flgs="$lmasa_flgs -dNC"
+     cp -p subs/bndasa.f subs/secmat.f subs/secm2c.f subs/lmaux.f nc
+  ;;
+ sx) sx=yes; sxlib=sx/subs.a lm=yes
+     lmasa_flgs="$lmasa_flgs -dSX"
+  ;;
+ optics) optics=yes; opticslib=optics/subs.a lm=yes
+     cp -p subs/lmasa.f subs/bndasa.f optics
+  ;;
+ fp) fp=yes;
+#     cp -p subs/rdctrl.f fp
+#     ccomp -dFP subs/rdccat.f fp/rdccat.f >/dev/null
+  ;;
+ gf) gf=yes;
+  ;;
+ pgf) gf=yes pgf=yes;
+  ;;
+ mol) mol=yes;
+#      cp -p subs/rdctrl.f mol
+#      ccomp -uLM -dLMMC subs/rdccat.f mol/rdccat.f >/dev/null
+  ;;
+ tb) tb=yes;
+  ;;
+ gwd) gwd=yes;
+  ;;
+ gw) gw=yes;
+  ;;
+ dmft) dmft=yes;
+  ;;
+ *) echo MakeMainMakefile: unrecognized package \"$package\" ... aborting; exit -1 ;;
+esac
+done
+
+cat <<EOF
+# --- Makefile to install ASA package and extensions ---
+#     invoke  'make init' to run any preprocessing steps
+#             'make ALL'  to compile libraries and executables
+#             'make install'  to install executables
+
+# The default location for installation.  Defaults to home
+prefix=@prefix@
+# Like 'prefix', but used for architecture-specific files.
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+
+# Allow configure to specify the install program.
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_INFO = install-info
+
+# Not used now
+infodir = @infodir@
+mandir = @mandir@
+
+# ---- Machine-specific compiler flags ---
+include Make.inc
+
+# Compile main programs w/out optimization (Commenting these lines causes Makefile to use the default FFLAGS)
+.f.o: 
+EOF
+echo '	$(FC) $(FFLAGS_NONE) -c $<'
+
+if test "$v7" = "yes"; then
+cat <<EOF
+
+LIBSUBS = v7input/subs.a subs/subs.a
+LIBSUBS_MPI = v7input/subs.a subs/subs-MPI.a
+LIBSUBS_MPIK = v7input/subs.a subs/subs-MPIK.a
+#SUBS = ./subs.a
+
+EOF
+else
+cat <<EOF
+
+LIBSUBS = subs/subs.a
+LIBSUBS_MPI = subs/subs-MPI.a
+#SUBS = ./subs.a
+
+EOF
+fi
+
+if test "$v7" = "yes"; then
+srcmain=lmv7.f
+else
+srcmain=lmv6.f
+fi
+
+lm=yes
+
+echo '# ---- Main programs ---'
+if test "$lm" = "yes"; then
+  echo 'blm:	blm.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmchk:	lmchk.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $nclib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmstr:	lmstr.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lm:	lm.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $nclib $sxlib $opticslib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lm-MPIK:	lm-MPIK.o $(SUBS)'
+  echo '	$(F90M) $(LKFLAGS1) $@.o $(SUBS)' $nclib_MPIK $sxlib $opticslib '$(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmdos:	lmdos.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmctl:	lmctl.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmscell:	lmscell.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmxbs:	lmxbs.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmplan:	lmplan.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'rdcmd:	rdcmd.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  ln -s -f utils/cif2init.f
+  echo 'cif2init:	cif2init.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  ln -s -f utils/cif2site.f
+  echo 'cif2site:	cif2site.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  ln -s -f utils/poscar2init.f
+  echo 'poscar2init:	poscar2init.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  ln -s -f utils/site2init.f
+  echo 'site2init:	site2init.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  ln -s -f utils/poscar2site.f
+  echo 'poscar2site:	poscar2site.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+
+  addtoall="$addtoall blm lm lmchk lmstr lmdos lmctl lmscell lmxbs lmplan rdcmd cif2site cif2init site2init poscar2site poscar2init"
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLM"
+    if test "$nc" = "yes"; then ccflgs="$ccflgs -dNC"; fi
+    if test "$sx" = "yes"; then ccflgs="$ccflgs -dSX"; fi
+    ccomp $ccflgs $srcmain lm.f >/dev/null
+    ccomp -uLM -dLMCHK $srcmain lmchk.f >/dev/null
+    ccomp -uLM -dLMSTR $srcmain lmstr.f >/dev/null
+    ccomp -uLM -dLMDOS $srcmain lmdos.f >/dev/null
+    ccomp -uLM -dLMCTL $srcmain lmctl.f >/dev/null
+    ccomp -uLM -dLMSCELL $srcmain lmscell.f >/dev/null
+    ccomp -uLM -dLMXBS $srcmain lmxbs.f >/dev/null
+    ccomp -uLM -dLMPLAN $srcmain lmplan.f >/dev/null
+    if test "$sx" = "yes";  then (cd subs ; ccomp $lmasa_flgs lmasa.f ../sx/lmasa.f > /dev/null ) fi
+    if test "$nc" = "yes";  then (cd subs ; ccomp $lmasa_flgs lmasa.f ../nc/lmasa.f > /dev/null ) fi
+    if test "$nc" = "yes";  then (cd subs ; ccomp $lmasa_flgs secmat.f ../nc/secmat.f > /dev/null ) fi
+    if test "$gf" = "yes";  then (cd subs ; ccomp -dGF -dCGF $lmasa_flgs lmasa.f ../gf/lmasa-gf.f > /dev/null ) fi
+    if test "$gwd" = "yes";  then (cd fp ; cp lmfp.f ../gwd; ccomp -dLMFGWD bndfp.f ../gwd/bndfp.f > /dev/null ) fi
+    if test "$gwd" = "yes";  then (cd fp ; cp lmfp.f ../gw; ccomp -dLMFGW bndfp.f ../gw/bndfp.f > /dev/null ) fi
+    if test "$dmft" = "yes";  then (cd fp ; ccomp -dDMFT lmfp.f ../dmft/lmfp.f > /dev/null ) fi
+    if test "$pgf" = "yes"; then (cd subs ; ccomp -dGF -uCGF -dPGF $lmasa_flgs lmasa.f ../pgf/lmasa-gf.f > /dev/null ) fi
+  fi
+fi
+
+if test "$v7" = "yes"; then
+  echo 'lm67:	lm67.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  addtoall="$addtoall lm67"
+fi
+
+if test "$gf" = "yes"; then
+  echo 'lmgf:	lmgf.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' gf/subs.a $nclib $sxlib $opticslib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmgf-MPIK:	lmgf-MPIK.o $(SUBS)'
+  echo '	$(F90M) $(LKFLAGS1) $@.o $(SUBS)' gf/subs.a $nclib_MPIK $sxlib $opticslib '$(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-dGF -dCGF"
+    if test "$nc" = "yes"; then ccflgs="$ccflgs -dNC"; fi
+    if test "$sx" = "yes"; then ccflgs="$ccflgs -dSX"; fi
+    ccomp -uLM -dLMGF $ccflgs $srcmain lmgf.f >/dev/null
+  fi
+  addtoall="$addtoall lmgf"
+fi
+
+if test "$pgf" = "yes"; then
+  echo 'lmpg:	lmpg.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' pgf/subs.a gf/subs.a $nclib $sxlib $opticslib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLM -dLMPG"
+    if test "$nc" = "yes"; then ccflgs="$ccflgs -dNC"; fi
+#   if test "$sx" = "yes"; then ccflgs="$ccflgs -dSX"; fi
+    ccomp $ccflgs $srcmain lmpg.f >/dev/null
+  fi
+  addtoall="$addtoall lmpg"
+fi
+
+if test "$fp" = "yes"; then
+  echo 'lmf:	lmf.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) fp/subs.a' $opticslib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmf-MPI:	lmf-MPI.o $(SUBS)'
+  echo '	$(F90M) $(LKFLAGS1) $@.o $(SUBS) fp/subs-MPI.a' $opticslib '$(LIBSUBS_MPI) $(LIBES_MPI) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmf-MPIK:	lmf-MPIK.o $(SUBS)'
+  echo '	$(F90M) $(LKFLAGS1) $@.o $(SUBS) fp/subs-MPIK.a' $opticslib '$(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLMF"
+#   if test "$nc" = "yes"; then ccflgs="$ccflgs -dNC"; fi
+#   if test "$sx" = "yes"; then ccflgs="$ccflgs -dSX"; fi
+    ccomp $ccflgs $srcmain lmf.f >/dev/null
+  fi
+  addtoall="$addtoall lmf"
+
+  echo 'lmfa:	lmfa.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) fp/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLMFA"
+#   if test "$nc" = "yes"; then ccflgs="$ccflgs -dNC"; fi
+#   if test "$sx" = "yes"; then ccflgs="$ccflgs -dSX"; fi
+    ccomp $ccflgs $srcmain lmfa.f >/dev/null
+  fi
+  addtoall="$addtoall lmfa"
+fi
+
+if test "$tb" = "yes"; then
+  echo 'tbe:	tbe.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) tb/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'tbe-MPIK:	tbe-MPIK.o $(SUBS)'
+  echo '	$(F90M) $(LKFLAGS1) $@.o $(SUBS) tb/subs.a' '$(LIBSUBS_MPI) $(LIBES_MPI) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -uTBE -dTBE"
+    ccomp $ccflgs $srcmain tbe.f >/dev/null
+  fi
+  addtoall="$addtoall tbe"
+fi
+
+if test "$mol" = "yes"; then
+  echo 'lmmc:	lmmc.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) mol/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -uLMMC -dLMMC"
+    ccomp $ccflgs $srcmain lmmc.f >/dev/null
+  fi
+  addtoall="$addtoall lmmc"
+fi
+
+if test "$gw" = "yes"; then
+  echo 'lmfgw:	lmfgw.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) gw/subs.a gwd/subs.a fp/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLMF -dLMFGW"
+    ccomp $ccflgs $srcmain lmfgw.f >/dev/null
+  fi
+  addtoall="$addtoall lmfgw"
+fi
+
+if test "$gwd" = "yes"; then
+  echo 'lmfgwd:	lmfgwd.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) gwd/subs.a gw/subs.a fp/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmfgwd-MPIK:	lmfgwd-MPIK.o $(SUBS)'
+  echo '	$(F90M) $(LKFLAGS1) $@.o $(SUBS) gwd/subs.a gw/subs.a fp/subs-MPIK.a $(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'lmfgws:	lmfgws.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) fp/subs.a' $opticslib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  echo 'spectral:	spectral.o'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(LKFLAGS2) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLMF -dLMFGWD"
+    ccomp $ccflgs $srcmain lmfgwd.f >/dev/null
+    ccflgs="-uLM -dLMF -dLMFGW"
+    ccomp $ccflgs $srcmain lmfgw.f >/dev/null
+    ccflgs="-uLM -dLMF -dLMFGWS"
+    ccomp $ccflgs $srcmain lmfgws.f >/dev/null
+    cp gwd/lmf2gw_0.fortran lmf2gw_0.f
+    cp gwd/lmf2gw_2.fortran lmf2gw_2.f
+  fi
+
+# 15 Aug 01 lmf2gw is stand-alone: use (FC) rather than (LK)
+  echo 'lmf2gw_0:	lmf2gw_0.o'
+  echo '	$(FC) $(LKFLAGS1) $@.o $(LKFLAGS2) -o $@'
+  echo ' '
+
+  echo 'lmf2gw_2:	lmf2gw_2.o'
+  echo '	$(FC) $(LKFLAGS1) $@.o $(LKFLAGS2) -o $@'
+  echo ' '
+
+  addtoall="$addtoall lmfgwd lmfgws spectral lmf2gw_0 lmf2gw_2"
+fi
+
+if test "$dmft" = "yes"; then
+  echo 'lmfdmft:	lmfdmft.o $(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS) dmft/subs.a fp/subs.a optics/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+  echo ' '
+  if test "$copy" = "yes"; then
+    ccflgs="-uLM -dLMF -dLMFDMFT"
+    ccomp $ccflgs $srcmain lmfdmft.f >/dev/null
+  fi
+
+  addtoall="$addtoall lmfdmft"
+fi
+
+# if test "$lmbnd" = "yes"; then
+#   echo 'lmbnd:	lmbnd.o $(SUBS)'
+#   echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $nclib $sxlib $opticslib '$(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@'
+#   echo ' '
+#   if test "$copy" = "yes"; then
+#     ccflgs="-uLM -dLMBND"
+#     if test "$nc" = "yes"; then ccflgs="$ccflgs -dNC"; fi
+#     if test "$sx" = "yes"; then ccflgs="$ccflgs -dSX"; fi
+#     ccomp $ccflgs $srcmain lmbnd.f >/dev/null
+#   fi
+#   addtoall="$addtoall lmbnd"
+# fi
+
+echo '# ---- To initialize, compile, and install ---'
+echo 'ALL:'
+if test "$v7" = "yes"; then echo '	(cd v7input; make -f Makefile)'; fi
+echo '	(cd subs; make -f Makefile)';
+if test "$nc" = "yes"; then echo '	(cd nc; make -f Makefile )'; fi
+if test "$sx" = "yes"; then echo '	(cd sx; make -f Makefile )'; fi
+if test "$optics" = "yes"; then echo '	(cd optics; make -f Makefile )'; fi
+if test "$gf" = "yes"; then echo '	(cd gf; make -f Makefile )'; fi
+if test "$pgf" = "yes"; then echo '	(cd pgf; make -f Makefile )'; fi
+if test "$fp" = "yes"; then echo '	(cd fp; make -f Makefile )'; fi
+if test "$tb" = "yes"; then echo '	(cd tb; make -f Makefile )'; fi
+if test "$mol" = "yes"; then echo '	(cd mol; make -f Makefile )'; fi
+if test "$gwd" = "yes"; then echo '	(cd gwd; make -f Makefile )'; fi
+if test "$gwd" = "yes"; then echo '	(cd gw; make -f Makefile )'; fi
+if test "$dmft" = "yes"; then echo '	(cd dmft; make -f Makefile )'; fi
+echo '	make -f Makefile' $addtoall
+echo ' '
+
+echo 'init:'
+echo '	(cd subs; make -f Makefile init)'
+#if test "$v7" = "yes"; then echo '	(cd v7input; make -f Makefile init)'; fi
+if test "$nc" = "yes"; then echo '	(cd nc; make -f Makefile init)'; fi
+if test "$sx" = "yes"; then echo '	(cd sx; make -f Makefile init)'; fi
+if test "$optics" = "yes"; then echo '	(cd optics; make -f Makefile init)'; fi
+if test "$gf" = "yes"; then echo '	(cd gf; make -f Makefile init)'; fi
+if test "$pgf" = "yes"; then echo '	(cd pgf; make -f Makefile init)'; fi
+if test "$fp" = "yes"; then echo '	(cd fp; make -f Makefile init)'; fi
+if test "$tb" = "yes"; then echo '	(cd tb; make -f Makefile init)'; fi
+if test "$mol" = "yes"; then echo '	(cd mol; make -f Makefile init)'; fi
+if test "$gwd" = "yes"; then echo '	(cd gwd; make -f Makefile init)'; fi
+if test "$gwd" = "yes"; then echo '	(cd gw; make -f Makefile init)'; fi
+if test "$dmft" = "yes"; then echo '	(cd dmft; make -f Makefile init)'; fi
+echo ' '
+
+echo 'install:'
+echo '	for p in '$addtoall' ; do \'
+echo '	  if test -x $$p; then \'
+echo '	     echo "$(INSTALL_PROGRAM) $$p $(bindir)/$$p "; \'
+echo '	     $(INSTALL_PROGRAM) $$p $(bindir)/$$p ; \'
+echo '	  else \'
+echo '	     echo executable $$p is missing ... not installed ;\'
+echo '	  fi ; \'
+echo '	done'
+echo ' '
+
+echo 'progs:'
+echo '	make -f Makefile' $addtoall
+echo ' '
+
+echo 'veryclean:'
+echo '	rm -f config.log config.status config.cleanup MakeMainMakefile~'
+echo '	for p in '$addtoall' ; do \'
+echo '	  rm -f $$p $$p.o ; \'
+echo '	done'
+echo '	(cd subs; make -f Makefile clean)'
+if test "$fp" = "yes"; then
+  echo '	(cd fp; make -f Makefile clean)'
+fi
+if test "$nc" = "yes"; then
+  echo '	(cd nc; make -f Makefile clean)'
+fi
+if test "$sx" = "yes"; then
+  echo '	(cd sx; make -f Makefile clean)'
+fi
+if test "$optics" = "yes"; then
+  echo '	(cd optics; make -f Makefile clean)'
+fi
+if test "$gf" = "yes"; then
+  echo '	(cd gf; make -f Makefile clean)'
+fi
+if test "$pgf" = "yes"; then
+  echo '	(cd pgf; make -f Makefile clean)'
+fi
+if test "$tb" = "yes"; then
+  echo '	(cd tb; make -f Makefile clean)'
+fi
+if test "$mol" = "yes"; then
+  echo '	(cd mol; make -f Makefile clean)'
+fi
+if test "$gwd" = "yes"; then
+  echo '	(cd gwd; make -f Makefile clean)'
+fi
+if test "$gw" = "yes"; then
+  echo '	(cd gw; make -f Makefile clean)'
+fi
+if test "$dmft" = "yes"; then
+  echo '	(cd dmft; make -f Makefile clean)'
+fi
+echo '	make -f Makefile' bigcheckclean
+echo ' '
+
+echo 'clean:'
+echo '	rm -f '$addtoall
+echo ' '
+
+echo 'check:'
+if test "$lm" = "yes"; then
+  echo '	testing/test.lm --quiet --noplot $(ADD0) $(POSZER)'
+fi
+if test "$fp" = "yes"; then
+  echo '	make -f Makefile checkfp'
+fi
+if test "$nc" = "yes"; then
+  echo '	make -f Makefile checknc'
+fi
+if test "$sx" = "yes"; then
+  echo '	make -f Makefile checksx'
+fi
+if test "$optics" = "yes"; then
+  echo '	make -f Makefile checkoptics'
+fi
+if test "$gf" = "yes"; then
+  echo '	make -f Makefile checkgf'
+fi
+if test "$pgf" = "yes"; then
+  echo '	make -f Makefile checkpgf'
+fi
+if test "$tb" = "yes"; then
+  echo '	make -f Makefile checktb'
+fi
+if test "$mol" = "yes"; then
+  echo '	make -f Makefile checkmol'
+fi
+if test "$gwd" = "yes"; then
+  echo '	make -f Makefile checkgwd'
+  echo '	make -f Makefile checkgw'
+fi
+if test "$dmft" = "yes"; then
+  echo '	make -f Makefile checkdmft'
+fi
+echo ' '
+
+echo 'bigcheck:'
+if test "$lm" = "yes"; then
+  echo '	testing/test.lm --quiet --noplot $(ADD0) $(POSZER)'
+else
+  echo '	(cd main; make -f Makefile check)'
+fi
+if test "$fp" = "yes"; then
+  echo '	make -f Makefile bigcheckfp'
+fi
+if test "$nc" = "yes"; then
+  echo '	make -f Makefile bigchecknc'
+fi
+if test "$sx" = "yes"; then
+  echo '	make -f Makefile bigchecksx'
+fi
+if test "$optics" = "yes"; then
+  echo '	make -f Makefile bigcheckoptics'
+fi
+if test "$gf" = "yes"; then
+  echo '	make -f Makefile bigcheckgf'
+fi
+if test "$pgf" = "yes"; then
+  echo '	make -f Makefile bigcheckpgf'
+fi
+if test "$tb" = "yes"; then
+  echo '	make -f Makefile bigchecktb'
+fi
+if test "$mol" = "yes"; then
+  echo '	make -f Makefile bigcheckmol'
+fi
+if test "$gwd" = "yes"; then
+  echo '	make -f Makefile bigcheckgwd'
+fi
+if test "$gw" = "yes"; then
+  echo '	make -f Makefile bigcheckgw'
+fi
+if test "$dmft" = "yes"; then
+  echo '	make -f Makefile bigcheckdmft'
+fi
+echo ' '
+
+echo 'bigcheckclean:'
+if test "$lm" = "yes"; then
+  echo '	testing/test.lm --quiet --noplot --clean $(ADD0) $(POSZER)'
+else
+  echo '	(cd main; make -f Makefile check)'
+fi
+if test "$fp" = "yes"; then
+  echo '	make -f Makefile bigcheckfpclean'
+fi
+if test "$nc" = "yes"; then
+  echo '	make -f Makefile bigcheckncclean'
+fi
+if test "$sx" = "yes"; then
+  echo '	make -f Makefile bigchecksxclean'
+fi
+if test "$optics" = "yes"; then
+  echo '	make -f Makefile bigcheckopticsclean'
+fi
+if test "$gf" = "yes"; then
+  echo '	make -f Makefile bigcheckgfclean'
+fi
+if test "$pgf" = "yes"; then
+  echo '	make -f Makefile bigcheckpgfclean'
+fi
+if test "$tb" = "yes"; then
+  echo '	make -f Makefile bigchecktbclean'
+fi
+if test "$mol" = "yes"; then
+  echo '	make -f Makefile bigcheckmolclean'
+fi
+if test "$gwd" = "yes"; then
+  echo '	make -f Makefile bigcheckgwdclean'
+fi
+if test "$gw" = "yes"; then
+  echo '	make -f Makefile bigcheckgwclean'
+fi
+if test "$dmft" = "yes"; then
+  echo '	make -f Makefile bigcheckdmftclean'
+fi
+echo ' '
+
+if test "$fp" = "yes"; then
+  echo 'checkfp:'
+  echo '	fp/test/test.fp --quiet --noplot $(ADD0) $(POSZER)'
+  echo '	fp/test/test.fp --quiet --noplot $(ADD0) $(POSZER) te'
+#  echo ' '
+  echo 'bigcheckfp:'
+  echo '	fp/test/test.fp --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckfpclean:'
+  echo '	fp/test/test.fp --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$nc" = "yes"; then
+  echo 'checknc:'
+  echo '	nc/test/test.so --quiet --noplot $(ADD0) $(POSZER)'
+  echo '	nc/test/test.nc --quiet --noplot $(ADD0) $(POSZER)'
+#  echo ' '
+  echo 'bigchecknc:'
+#   echo '	nc/test/test.so --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo '	nc/test/test.nc --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckncclean:'
+  echo '	nc/test/test.nc --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$sx" = "yes"; then
+  echo 'checksx:'
+  echo '	sx/test/test.sx --quiet --noplot $(ADD0) $(POSZER)'
+#  echo ' '
+  echo 'bigchecksx:'
+  echo '	sx/test/test.sx --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigchecksxclean:'
+  echo '	sx/test/test.sx --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$optics" = "yes"; then
+  echo 'checkoptics:'
+  echo '	optics/test/test.optics --quiet --noplot $(ADD0) $(POSZER)'
+#  echo ' '
+  echo 'bigcheckoptics:'
+  echo '	optics/test/test.optics --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckopticsclean:'
+  echo '	optics/test/test.optics --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$gf" = "yes"; then
+  echo 'checkgf:'
+  echo '	gf/test/test.gf --quiet --noplot $(ADD0) $(POSZER)'
+fi
+if test "$gf" = "yes" && test "$nc" = "yes"; then
+  echo '	gf/test/test.gf --quiet --noplot $(ADD0) $(POSZER) fccfe'
+fi
+if test "$gf" = "yes"; then
+#  echo ' '
+  echo 'bigcheckgf:'
+  echo '	gf/test/test.gf --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckgfclean:'
+  echo '	gf/test/test.gf --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$pgf" = "yes"; then
+  echo 'checkpgf:'
+  echo '	pgf/test/test.pgf --quiet --noplot $(ADD0) $(POSZER)'
+  if test "$nc" = "yes"; then
+  echo '	pgf/test/test.pgf --quiet --noplot $(ADD0) $(POSZER) copt 7'
+  fi
+#  echo ' '
+  echo 'bigcheckpgf:'
+  echo '	pgf/test/test.pgf --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckpgfclean:'
+  echo '	pgf/test/test.pgf --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$tb" = "yes"; then
+  echo 'checktb:'
+  echo '	tb/test/test.tb --quiet --noplot $(ADD0) $(POSZER)'
+  echo '	tb/test/test.tb --quiet --noplot $(ADD0) $(POSZER) zrt'
+#  echo ' '
+  echo 'bigchecktb:'
+  echo '	tb/test/test.tb --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigchecktbclean:'
+  echo '	tb/test/test.tb --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$mol" = "yes"; then
+  echo 'checkmol:'
+  echo '	mol/test/test.mol --quiet --noplot $(ADD0) $(POSZER)'
+  echo '	mol/test/test.mol --quiet --noplot $(ADD0) $(POSZER) h2o'
+#  echo ' '
+  echo 'bigcheckmol:'
+  echo '	mol/test/test.mol --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckmolclean:'
+  echo '	mol/test/test.mol --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$gwd" = "yes"; then
+  echo 'checkgwd:'
+  echo '	gwd/test/test.gwd --quiet --noplot $(ADD0) $(POSZER)'
+#  echo ' '
+  echo 'bigcheckgwd:'
+  echo '	gwd/test/test.gwd --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckgwdclean:'
+  echo '	gwd/test/test.gwd --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$gwd" = "yes"; then
+  echo 'checkgw:'
+  echo '	gw/test/test.gw --quiet --noplot $(ADD0) $(POSZER)'
+  echo 'bigcheckgw:'
+  echo '	gw/test/test.gw --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckgwclean:'
+  echo '	gw/test/test.gw --quiet --noplot --clean --all'
+  echo ' '
+fi
+if test "$dmft" = "yes"; then
+  echo 'checkdmft:'
+  echo '	dmft/test/test.dmft --quiet --noplot $(ADD0) $(POSZER)'
+#  echo ' '
+  echo 'bigcheckdmft:'
+  echo '	dmft/test/test.dmft --quiet --noplot --all $(ADD0) $(POSZER)'
+  echo 'bigcheckdmftclean:'
+  echo '	dmft/test/test.dmft --quiet --noplot --clean --all'
+  echo ' '
+fi
+
+exit
+echo '# ---- subs.a ----'
+echo 'subs:	$(SUBS)'
+echo ' '
+
+echo '.PRECIOUS:	$(SUBS)'
+echo ' '
+
+if test "$sx"="yes" || "$nc"="yes" ; then lst="$lst lmasa"; fi
+for i in $lst ; do
+  echo '$(SUBS)'\($i.o\)': '
+  echo '	$(FC) $(FFLAGS) -c '$i.f
+  echo '	ar rv $(SUBS)' $i.o
+  echo '	rm -f' $i.o
+  echo ' '
+done
+
+echo '$(SUBS):\'
+if test "$sx"="yes" || "$nc"="yes" ; then
+  echo '	$(SUBS)(lmasa.o) \'
+fi
+echo '	$(RANLIB) $(SUBS)'
+

@@ -1,0 +1,130 @@
+  q+band index for zero?
+ hqpe_sc: VerNum= xxx: mode=  0
+ hqpe_sc: files vxc.copt and evec.copt made for  54 qp by   1 thread(s)
+ sigma calculated with iSigMode = 3 for  12  k-points and 2 spins
+ Maximum hamiltonian rank    =   60
+ Maximum rank of <i|sigma|j> =   34
+ reading v_xc, evec ...
+  iq  is  ndimh
+   1   1    60
+   1   2    60
+   2   1    60
+   2   2    60
+   3   1    60
+   3   2    60
+   4   1    60
+   4   2    60
+   5   1    60
+   5   2    60
+   6   1    60
+   6   2    60
+   7   1    60
+   7   2    60
+   8   1    60
+   8   2    60
+   9   1    60
+   9   2    60
+  10   1    60
+  10   2    60
+  11   1    60
+  11   2    60
+  12   1    60
+  12   2    60
+ reading XCU, SEXU, SEXcoreU, SECU data
+ qp    1 spin   1 sigma calculated to   30 of   34 eseavr(1:2) =    0.185979    0.196277
+ qp    2 spin   1 sigma calculated to   30 of   34 eseavr(1:2) =    0.186315    0.200424
+ qp    3 spin   1 sigma calculated to   30 of   34 eseavr(1:2) =    0.187045    0.201037
+ qp    4 spin   1 sigma calculated to   30 of   34 eseavr(1:2) =    0.193753    0.210926
+ qp    5 spin   1 sigma calculated to   29 of   34 eseavr(1:2) =    0.201873    0.222853
+ qp    6 spin   1 sigma calculated to   27 of   34 eseavr(1:2) =    0.219647    0.252948
+ qp    7 spin   1 sigma calculated to   33 of   34 eseavr(1:2) =    0.198158    0.211431
+ qp    8 spin   1 sigma calculated to   30 of   34 eseavr(1:2) =    0.182102    0.194167
+ qp    9 spin   1 sigma calculated to   31 of   34 eseavr(1:2) =    0.194772    0.208799
+ qp   10 spin   1 sigma calculated to   31 of   34 eseavr(1:2) =    0.192091    0.205441
+ qp   11 spin   1 sigma calculated to   30 of   34 eseavr(1:2) =    0.197593    0.213059
+ qp   12 spin   1 sigma calculated to   29 of   34 eseavr(1:2) =    0.211625    0.236087
+
+ read_bzdata: 16 symops
+    12,    74 qp, tetrahedra in the irreducible BZ
+    48,   288 qp, tetrahedra in the full BZ
+ read from bzdata : nqibz2 nqibz nqsig  12  12  12
+ k-averaged eseavr =     0.193342
+ 
+ reading XCD, SEXD, SEXcoreD, SECD data
+ qp    1 spin   2 sigma calculated to   30 of   34 eseavr(1:2) =    0.192704    0.204050
+ qp    2 spin   2 sigma calculated to   29 of   34 eseavr(1:2) =    0.185708    0.199647
+ qp    3 spin   2 sigma calculated to   30 of   34 eseavr(1:2) =    0.191789    0.205686
+ qp    4 spin   2 sigma calculated to   30 of   34 eseavr(1:2) =    0.197817    0.214996
+ qp    5 spin   2 sigma calculated to   29 of   34 eseavr(1:2) =    0.205552    0.225925
+ qp    6 spin   2 sigma calculated to   27 of   34 eseavr(1:2) =    0.222070    0.254346
+ qp    7 spin   2 sigma calculated to   33 of   34 eseavr(1:2) =    0.204186    0.218171
+ qp    8 spin   2 sigma calculated to   29 of   34 eseavr(1:2) =    0.179258    0.189334
+ qp    9 spin   2 sigma calculated to   30 of   34 eseavr(1:2) =    0.195385    0.209668
+ qp   10 spin   2 sigma calculated to   31 of   34 eseavr(1:2) =    0.197623    0.211369
+ qp   11 spin   2 sigma calculated to   30 of   34 eseavr(1:2) =    0.201801    0.217314
+ qp   12 spin   2 sigma calculated to   29 of   34 eseavr(1:2) =    0.215121    0.239167
+ k-averaged eseavr =     0.195922
+ 
+ ========= Mix Sigma with prior iterations read from mixsigma file =======
+  rwsigma: Reading sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1   0.25000   0.00000   0.00000
+  ===     3  1   0.50000   0.00000   0.00000
+  ===     4  1   0.25000   0.25000   0.00000
+  ===     5  1   0.50000   0.25000   0.00000
+  ===     6  1   0.50000   0.50000   0.00000
+  ===     7  1   0.00000   0.00000   0.24173
+  ===     8  1   0.25000   0.00000   0.24173
+  ===     9  1   0.50000   0.00000   0.24173
+  ===    10  1   0.25000   0.25000   0.24173
+  ===    11  1   0.50000   0.25000   0.24173
+  ===    12  1   0.50000   0.50000   0.24173
+  ===     1  2   0.00000   0.00000   0.00000
+  ===     2  2   0.25000   0.00000   0.00000
+  ===     3  2   0.50000   0.00000   0.00000
+  ===     4  2   0.25000   0.25000   0.00000
+  ===     5  2   0.50000   0.25000   0.00000
+  ===     6  2   0.50000   0.50000   0.00000
+  ===     7  2   0.00000   0.00000   0.24173
+  ===     8  2   0.25000   0.00000   0.24173
+  ===     9  2   0.50000   0.00000   0.24173
+  ===    10  2   0.25000   0.25000   0.24173
+  ===    11  2   0.50000   0.25000   0.24173
+  ===    12  2   0.50000   0.50000   0.24173
+  === rwsigma:  sum check of sigm=   594.972568011471     
+ 
+ mixsigma: Anderson mixing sigma with mixing beta =    1.000000
+ ... No file mixsigma
+ sum sss=   611.643486155984     
+ AMIX: nmix=0 mmix=3  nelts=172800  beta=1.00000  tm= 5.00000  rmsdel=3.38D-02
+ 
+ === Write sigma to files (Binary and ASCII) ========
+  rwsigma  Writing sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1   0.25000   0.00000   0.00000
+  ===     3  1   0.50000   0.00000   0.00000
+  ===     4  1   0.25000   0.25000   0.00000
+  ===     5  1   0.50000   0.25000   0.00000
+  ===     6  1   0.50000   0.50000   0.00000
+  ===     7  1   0.00000   0.00000   0.24173
+  ===     8  1   0.25000   0.00000   0.24173
+  ===     9  1   0.50000   0.00000   0.24173
+  ===    10  1   0.25000   0.25000   0.24173
+  ===    11  1   0.50000   0.25000   0.24173
+  ===    12  1   0.50000   0.50000   0.24173
+  ===     1  2   0.00000   0.00000   0.00000
+  ===     2  2   0.25000   0.00000   0.00000
+  ===     3  2   0.50000   0.00000   0.00000
+  ===     4  2   0.25000   0.25000   0.00000
+  ===     5  2   0.50000   0.25000   0.00000
+  ===     6  2   0.50000   0.50000   0.00000
+  ===     7  2   0.00000   0.00000   0.24173
+  ===     8  2   0.25000   0.00000   0.24173
+  ===     9  2   0.50000   0.00000   0.24173
+  ===    10  2   0.25000   0.25000   0.24173
+  ===    11  2   0.50000   0.25000   0.24173
+  ===    12  2   0.50000   0.50000   0.24173
+  === rwsigma:  sum check of sigm=   594.972568011471     
+ 
+
+ ----  OK! hqpe_sc 

@@ -1,0 +1,91 @@
+# Shoenflies Gam_h Hexagonal primitive cell
+# Use rdfile on this file for symmetry lines as functions c/a
+# R.S. Lattice vectors are: (units of a), from Cracknell
+#  0         -1    0         P1
+#  sqrt(3)/2 1/2   0         P2
+#  0          0   c/a        P3
+# Recip Lattice vectors are: (units of 2pi/a)
+#  1/sqrt(3) -1    0         Q1
+#  2/sqrt(3)  0    0         Q2
+#  0          0   a/c        Q3
+
+# Alternate R.S. Lattice vectors are: (units of a)
+#  sqrt(3)/2 -1/2  0         P1
+#  0          1    0         P2
+#  0          0   c/a        P3
+# Recip Lattice vectors are: (units of 2pi/a)  (transpose of inverse of R.S.)
+#  2/sqrt(3)  0    0         Q1
+#  1/sqrt(3)  1    0         Q2
+#  0          0   a/c        Q3
+
+# Alternate R.S. Lattice vectors, transpose x and y (units of a)
+#  -1/2 sqrt(3)/2  0         P1
+#   1   0          0         P2
+#   0   0         c/a        P3
+# Recip Lattice vectors are: (units of 2pi/a)  (transpose of inverse of R.S.)
+#  0   2/sqrt(3)   0         Q1
+#  1   1/sqrt(3)   0         Q2
+#  0   0          a/c        Q3
+
+# Prettify with 
+# awk '{printf "%d %12.7f %12.7f %12.7f %12.7f %12.7f %12.7f %3s %3s\n", $1,$2,$3,$4,$5,$6,$7,$8,$10}'  filename
+
+# Bravais lattice for MnAs, Cracknell's lattice vectors
+% echo Cracknell's lattice vectors
+% const cbya=sqrt(8/3)
+% var q11=1/sqrt(3) q21=-1 q31=0  q12=2/sqrt(3) q22=0 q32=0 q13=0 q23=0 q33=1/cbya 
+
+# Bravais lattice for MnAs, Alternate lattice
+# % const cbya=1.540541
+# % var q11=2/sqrt(3) q21=0 q31=0  q12=1/sqrt(3) q22=1 q32=0 q13=0 q23=0 q33=1/cbya 
+
+# # Bravais lattice for MnAs, Alternate lattice, reverse x and y
+# % const cbya=1.557183
+# % var q11=0 q21=2/sqrt(3) q31=0  q12=1 q22=1/sqrt(3) q32=0  q13=0 q23=0 q33=1/cbya 
+
+% echo qlat:
+% echo q1 = {q11}  {q21}  {q31}
+% echo q2 = {q12}  {q22}  {q32}
+% echo q3 = {q13}  {q23}  {q33}
+
+# Cracknell p 107
+# % vec G[3]   0    0    0
+# % vec M[3]   0    1/2  0
+# % vec A[3]   0    0    1/2
+# % vec L[3]   0    1/2  1/2
+# % vec K[3]  -1/3  2/3  0
+# % vec H[3]  -1/3  2/3  1/2
+
+# Cracknell p 107; reverse x and y
+% vec G[3]  0     0    0
+% vec M[3]  1/2   0    0
+% vec A[3]  0     0    1/2
+% vec L[3]  1/2   0    1/2
+% vec K[3]  2/3  -1/3  0
+% vec H[3]  2/3  -1/3  1/2
+
+% vec X[3]   1/2  0    0
+% vec Z[3]   0    0    1/2
+% vec R[3]   0    1/2  1/2
+
+% vec GC[3]   {q11*G(1)+q12*G(2)+q13*G(3)} {q21*G(1)+q22*G(2)+q23*G(3)} {q31*G(1)+q32*G(2)+q33*G(3)}
+% vec MC[3]   {q11*M(1)+q12*M(2)+q13*M(3)} {q21*M(1)+q22*M(2)+q23*M(3)} {q31*M(1)+q32*M(2)+q33*M(3)}
+% vec AC[3]   {q11*A(1)+q12*A(2)+q13*A(3)} {q21*A(1)+q22*A(2)+q23*A(3)} {q31*A(1)+q32*A(2)+q33*A(3)}
+% vec LC[3]   {q11*L(1)+q12*L(2)+q13*L(3)} {q21*L(1)+q22*L(2)+q23*L(3)} {q31*L(1)+q32*L(2)+q33*L(3)}
+% vec KC[3]   {q11*K(1)+q12*K(2)+q13*K(3)} {q21*K(1)+q22*K(2)+q23*K(3)} {q31*K(1)+q32*K(2)+q33*K(3)}
+% vec HC[3]   {q11*H(1)+q12*H(2)+q13*H(3)} {q21*H(1)+q22*H(2)+q23*H(3)} {q31*H(1)+q32*H(2)+q33*H(3)}
+
+% echo Gamma {GC}
+% echo M     {MC}
+% echo A     {AC}
+% echo L     {LC}
+% echo K     {KC}
+% echo H     {HC}
+
+31 {KC}  {GC}      K to G
+31 {GC}  {MC}      G to M
+41 {MC}  {LC}      M to L
+31 {LC}  {AC}      L to A
+31 {AC}  {HC}      A to H
+
+0  0 0 0 0 0 0

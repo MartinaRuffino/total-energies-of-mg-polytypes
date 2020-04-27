@@ -1,0 +1,19 @@
+--- Optics package (v6.11) ---
+
+This package enables the computation of the q->0 dielectric response
+function epsilon(omega) within the ASA.  It was adapted from a program
+written by S. Rashkeev, who in turn adapted it from several other
+authors.  Rashkeev also wrote a nonlinear optics code, but it is
+not implemented here.
+
+--- Installation ---
+To install, add switch --enable-optics at configure time.
+
+--- Documentation ---
+See file doc/optics.doc for documentation.
+
+--- Test cases and examples ---
+optics/test/test.optics checks out that the package is working
+                        properly.  At present there is only one 
+                        test case (gan)
+

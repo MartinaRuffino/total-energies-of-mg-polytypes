@@ -1,0 +1,929 @@
+#!/bin/tcsh -f
+
+# This file is a shell script to test that spin-orbit coupling works
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias runrdcmd 'set retcall = \!\!:1; set rdcmdfmt = \!\!:2 ; set outfile = \!\!:3 ; set callarg = \!\!:4 ; goto runrdcmd'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias cnvt_d_fmt  'set retcall = \!\!:1; set testvar = \!\!:2 ; set testval = \!\!:3 ; goto cnvt_d_fmt'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+
+#alias mpix mpirun
+set failed = 0
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/testing $path)
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.lm: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+    case "--downfold":
+      set downfold
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--noplot*":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+    case "--verb*":
+      set verb = 1
+      breaksw
+    case "--all":
+      breaksw
+    default:
+      echo unrecognized switch $arg1
+      echo 'usage: test.so [switches] [test-list]'
+      echo '       test-list is a list of test cases, e.g., run tests 1 and 2 with'
+      echo '       "test.so 1 2 3"'
+      echo '       Switches:'
+      echo '       --list       lists the tests you can run'
+      echo '       --quiet runs tests without prompting user'
+      echo '       --no-iactive runs tests without prompting user'
+      echo '       --all        run through a default list of test cases'
+      echo '       --noplot     skip any steps that generate a plot'
+      echo '       --clean      cleans up files'
+      echo '       --verbose    script prints out extra information'
+      echo '       --downfold   invokes downfolding tests'
+      echo '       --poszer     strips (-) sign from numbers represented as 0'
+      exit -1
+  endsw
+
+end
+
+set joblist = ($argv)
+if ($#joblist == 0 ) set joblist = (1 2 3 4 5 6 7)
+
+echo $joblist | grep 1 >/dev/null
+if ($status) goto chk1e
+cat <<EOF
+
+--- Test 1.  Input file ctrl.cdte ---
+             The experimental spin-orbit splitting of the valence
+             bands is 890 meV.  Compare to -0.1868--0.2528 = 897 meV.
+             This input file is fully self-consistent
+             without spin-orbit splitting.  Thus the deviation from
+             self-consistency is a measure of how much the spin-orbit
+             coupling affects the charge density.
+             NB: test destroys or changes files *.cdte
+
+             This test repeats the calculation, but scaling the SO coupling by 1/2.
+             (Parameter CLASS_HFAC_L generates a constant scaling for all classes.)
+             The SO part of the energy is reduced to approximately 1/4 of
+             what is obtained without scaling.
+
+             To calculate the m-resolved partial DOS, do after this test completes:
+             rdcmd '-f:#rdcmd:%2f' -cat:TSTPDOS --noerr ctrl.cdte
+
+EOF
+if ($?downfold) then
+cat <<EOF
+             In the downfolding case, the ES d orbitals are downfolded.
+             In general the noncollinear result WITHOUT spin-orbit turned on
+             does not exactly reproduce the collinear result because the
+             noncollinear downfolding spin-averages the downfolding channels.
+             In this case the spin channels' potential are not distinct so
+             the noncollinear and collinear results are the same.  You can
+             verify this after running this test by comparing these jobs:
+                 lm -vnc=f -vso=f -vidx=2 cdte --pr31,20
+                 lm -vnc=t -vso=f -vidx=2 cdte --pr31,20
+
+EOF
+endif
+call query chk11 'run this test'
+chk11:
+set pass
+if ($a == "s") goto chk1e
+# ... Look for executables
+findcmd chk11a rdcmd "$path" "optional"
+chk11a:
+findcmd chk11b lm "$path" "$topdir"
+chk11b:
+findcmd chk11c lmstr "$path" "optional"
+chk11c:
+set refout=$testdir/out.cdte  testout=out.cdte testcat=TEST
+if ($?downfold) then
+set refout=$testdir/out.cdte.dnf  testout=out.cdte testcat=TESTDNF
+endif
+
+echo "$space rm -f *.cdte ; cp $testdir/{ctrl,socscl}.cdte ."
+             touch ctrl.cdte
+             rm -f *.cdte ; cp $testdir/{ctrl,socscl}.cdte .
+if ($?clean) then
+  echo "$space rm -f ctrl.cdte $testout"
+               rm -f ctrl.cdte $testout
+  goto chk1e
+endif
+echo "$space output file $refout   reference file $refout"
+echo 
+runrdcmd chk12 %11f $testout "-cat:$testcat --noerr ctrl.cdte"
+chk12:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+set refline = `zcat $refout | awk '{if ($1 == "SECMAT:") {getline;getline;print}}' | sed -n 1,1p`
+set soref = `echo $refline | awk '{print int(($6-$5)*13.6*1000)}'`
+set outline = `cat $testout | awk '{if ($1 == "SECMAT:") {getline;getline;print}}' | sed -n 1,1p`
+set sogam = `echo $outline | awk '{print int(($6-$5)*13.6*1000)}'`
+
+  set ehf1 = `cat $testout | grep '^x' | awk -v varlst="ehf" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,1p | tail -1`
+  set ehf2 = `cat $testout | grep '^x' | awk -v varlst="ehf" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,3p | tail -1`
+  set ehk1 = `cat $testout | grep '^x' | awk -v varlst="ehk" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,1p | tail -1`
+  set ehk2 = `cat $testout | grep '^x' | awk -v varlst="ehk" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,3p | tail -1`
+  set mmom1 = `cat $testout | grep '^x' | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,1p | tail -1`
+  set mmom2 = `cat $testout | grep '^x' | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,3p | tail -1`
+
+  set ehfr1 = `zcat $refout | grep '^x' | awk -v varlst="ehf" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,1p | tail -1`
+  set ehfr2 = `zcat $refout | grep '^x' | awk -v varlst="ehf" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,3p | tail -1`
+  set ehkr1 = `zcat $refout | grep '^x' | awk -v varlst="ehk" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,1p | tail -1`
+  set ehkr2 = `zcat $refout | grep '^x' | awk -v varlst="ehk" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,3p | tail -1`
+  set mmomr1 = `zcat $refout | grep '^x' | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,1p | tail -1`
+  set mmomr2 = `zcat $refout | grep '^x' | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | sed -n 1,3p | tail -1`
+
+#    echo $ehf1 $ehf2 $ehk1 $ehk2 $mmom1 $mmom2
+#    echo $ehfr1 $ehfr2 $ehkr1 $ehkr2 $mmomr1 $mmomr2
+
+
+  if (! $?quiet) then
+  echo ' '
+  echo "$space Harris energy, SO coupling        = $ehf1"
+  echo "$space corresponding reference energy    = $ehfr1"
+  set ediff = `echo $ehf1 $ehfr1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                        = $ediff"
+  echo ' '
+
+  echo "$space H-K energy, SO coupling           = $ehk1"
+  echo "$space corresponding reference energy    = $ehkr1"
+  set ediff = `echo $ehk1 $ehkr1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                        = $ediff"
+  echo ' '
+
+  echo "$space mag. moment, SO coupling          = $mmom1"
+  echo "$space corresponding reference moment    = $mmomr1"
+  set ediff = `echo $mmom1 $mmomr1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                        = $ediff"
+  echo ' '
+
+  echo "$space Harris energy, SO scaled 1/2      = $ehf2"
+  echo "$space corresponding reference energy    = $ehfr2"
+  set ediff = `echo $ehf1 $ehfr1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                        = $ediff"
+  echo ' '
+
+  echo "$space H-K energy, SO scaled 1/2         = $ehk2"
+  echo "$space corresponding reference energy    = $ehkr2"
+  set ediff = `echo $ehk1 $ehkr1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                        = $ediff"
+  echo ' '
+
+  echo "$space mag. moment, SO scaled 1/2        = $mmom2"
+  echo "$space corresponding reference moment    = $mmomr2"
+  set ediff = `echo $mmom1 $mmomr1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                        = $ediff"
+  echo ' '
+
+  set ehf0=-.3512384 ehk0=-.3512385 mmom0=0
+
+  set ediff = `echo $ehf1 $ehf0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo -n "$space H-F diff,   full SO - no coupling = $ediff"
+  set ediff = `echo $ehf2 $ehf0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo  "$space scaled SO - no coupling = $ediff"
+  set ediff = `echo $ehk1 $ehk0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo -n "$space H-K diff,   full SO - no coupling = $ediff"
+  set ediff = `echo $ehk2 $ehk0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo  "$space scaled SO - no coupling = $ediff"
+  set ediff = `echo $mmom1 $mmom0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo -n "$space mom diff,   full SO - no coupling = $ediff"
+  set ediff = `echo $mmom2 $mmom0  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo  "$space scaled SO - no coupling = $ediff"
+
+
+  endif
+
+
+if ($?quiet) goto chk15a
+echo ' '
+echo "$space Compare bands at Gamma to file $refout":
+cat $testout | awk '{if ($1 == "SECMAT:") {getline; print;getline;print;getline;print}}' | sed -n 1,3p
+echo '---'
+zcat $refout | awk '{if ($1 == "SECMAT:") {getline; print;getline;print;getline;print}}' | sed -n 1,3p
+set sodif = `echo $sogam $soref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+echo ' '
+echo "$space Spin-orbit splitting of valence bands at gamma =  $sogam meV"
+echo "$space Spin-orbit splitting of reference              =  $soref meV"
+echo "$space                                     difference =  $sodif"
+echo
+
+# call showout chk14 CPU
+# chk14:
+# call showout chk15 SV
+# chk15:
+# if ($status) echo " ... abort ...: file $testout does not contain SV line\!"
+
+call zdiffiles chk15a "CPU 1 $testout $refout"
+chk15a:
+
+# pass checks
+echo ' '
+set outline = `grep SV $testout | sed -n 1,2p | tail -1`
+set refline = `zcat $refout | grep SV | sed -n 1,2p | tail -1`
+
+set eref  = `echo $refline | awk '{print substr($6,1,9)}'`
+set etest = `echo $outline | awk '{print substr($6,1,9)}'`
+set dqref  = `echo $refline | awk '{print $3}'`
+set dqtest = `echo $outline | awk '{print $3}'`
+
+cnvt_d_fmt chk16a eref $eref
+chk16a:
+cnvt_d_fmt chk16b etest $etest
+chk16b:
+cnvt_d_fmt chk16c dqref $dqref
+chk16c:
+cnvt_d_fmt chk16d dqtest $dqtest
+chk16d:
+
+set tol = 1e-6
+compare_res chk17a "ehk" $etest $eref $tol pass
+chk17a:
+
+set tol = 1e-6
+compare_res chk17b "scaled ehk" $ehk2 $ehkr2 $tol pass
+chk17b:
+
+set tol = 1e-6
+compare_res chk17c "RMS dq" $dqtest $dqref $tol pass
+chk17c:
+
+set tol = 1
+compare_res chk17d "VB splitting at Gamma" $sogam $soref $tol pass
+chk17d:
+
+#  if ("$refline" == "$outline") then
+#    echo " ... VB splitting at Gamma equivalent? ..." yes
+#  else
+#    echo " ... VB splitting at Gamma equivalent? ..." no
+#    unset pass
+#  endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED"
+else
+    echo "$space test 1 FAILED"
+  set failed = ($failed 1)
+endif
+
+
+chk1e:
+
+echo $joblist | grep 2 >/dev/null
+if ($status) goto chk2e
+cat <<EOF
+
+--- Test 2.  Compare spin-orbit coupling in magnetic Fe ---
+             This input file is fully self-consistent
+             without spin-orbit splitting.  Thus the deviation from
+             self-consistency tells you how much the spin-orbit
+             splitting affects the charge density.
+
+EOF
+if ($?downfold) then
+cat <<EOF
+             In the downfolding case, the f orbitals are downfolded.
+             The noncollinear result WITHOUT spin-orbit turned on
+             does not exactly reproduce the collinear result because
+             the downfolded f orbitals' potential parameters are
+             spin-averaged.  However, the error it produces
+             (1e-4 in rms charge, 7e-5 Ry) is small in comparison to both
+             the effect of downfolding and the spin-orbit perturbation.
+EOF
+endif
+call query chk21 'run this test'
+chk21:
+set pass
+if ($a == "s") goto chk2e
+# ... Look for executables
+findcmd chk21a rdcmd "$path" "optional"
+chk21a:
+findcmd chk21b lm "$path" "$topdir"
+chk21b:
+findcmd chk21c lmstr "$path" "optional"
+chk21c:
+set refout=$testdir/out.feso  testout=out.feso testcat=TEST
+if ($?downfold) then
+set refout=$testdir/out.feso.dnf  testout=out.feso testcat=TESTDNF
+endif
+if ($?clean) then
+echo "$space rm -f *.{feso,feso.dnf} $testout"
+             touch ctrl.feso
+             rm -f *.{feso,feso.dnf} $testout
+  goto chk2e
+endif
+echo "$space rm -f *.feso ; cp $testdir/*.{feso,feso.dnf} ."
+             touch ctrl.feso
+             rm -f *.feso ; cp $testdir/*.{feso,feso.dnf} .
+runrdcmd chk22 %11f out.feso "-cat:$testcat --noerr ctrl.feso"
+chk22:
+echo "$space Program lm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+if ($?quiet) goto chk25a
+echo ' '
+echo "$space Compare bands at Gamma to file $refout":
+cat $testout | awk '{if ($1 == "SECMAT:") {getline; print;getline;print}}' | sed -n 1,2p
+echo '---'
+zcat $refout | awk '{if ($1 == "SECMAT:") {getline; print;getline;print}}' | sed -n 1,2p
+
+
+# call showout chk24 CPU
+# chk24:
+# call showout chk25 SV
+# chk25:
+# if ($status) echo " ... abort ...: file $testout does not contain SV line\!"
+
+echo ' '
+call zdiffiles chk25a "CPU 1 $testout $refout"
+chk25a:
+
+set refline = `zcat $refout | grep SV`
+set outline = `grep SV $testout`
+set eref  = `echo $refline | awk '{print substr($6,1,11)}'`
+set etest = `echo $outline | awk '{print substr($6,1,11)}'`
+set dqref  = `echo $refline | awk '{print substr($3,1,3)}'`
+set dqtest = `echo $outline | awk '{print substr($3,1,3)}'`
+
+# pass checks
+echo ' '
+
+set refline = `zcat $refout | grep SV`
+set outline = `grep SV $testout`
+set eref  = `echo $refline | awk '{print substr($6,1,9)}' | tail -1`
+set etest = `echo $outline | awk '{print substr($6,1,9)}' | tail -1`
+set dqref  = `echo $refline | awk '{print $3}' | tail -1`
+set dqtest = `echo $outline | awk '{print $3}' | tail -1`
+
+cnvt_d_fmt chk26a eref $eref
+chk26a:
+cnvt_d_fmt chk26b etest $etest
+chk26b:
+cnvt_d_fmt chk26c dqref $dqref
+chk26c:
+cnvt_d_fmt chk26d dqtest $dqtest
+chk26d:
+
+set etest = -0.481100
+if ($?dqtol2 == 0) set dqtol2 = 1e-6
+if ($?detol2 == 0) set detol2 = 1e-6
+
+compare_res chk27a "ehk" $etest $eref $detol2 pass
+chk27a:
+
+compare_res chk27b "RMS dq" $dqtest $dqref $dqtol2 pass
+chk27b:
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 2 PASSED"
+else
+    echo "$space test 2 FAILED"
+    set failed = ($failed 2)
+endif
+
+chk2e:
+
+echo $joblist | grep 3 >/dev/null
+if ($status) goto chk3e
+cat <<EOF
+
+--- Test 3.  Compare spin-orbit coupling in magnetic KFeSe ---
+             Test of SO coupling in a complex material.
+             The input file is adapted from the testing/ctrl.kese to check SO coupling.
+
+EOF
+call query chk31 'run this test'
+chk31:
+set pass
+if ($a == "s") goto chk3e
+# ... Look for executables
+findcmd chk31a rdcmd "$path" "optional"
+chk31a:
+findcmd chk31b lm "$path" "$topdir"
+chk31b:
+findcmd chk31c lmstr "$path" "optional"
+chk31c:
+set refout=$testdir/out.kfese  testout=out.kfese testcat=TEST
+if ($?downfold) then
+set refout=$testdir/out.kfese.dnf  testout=out.kfese testcat=TESTDNF
+endif
+if ($?clean) then
+  touch ctrl.kfese
+  echo "$space rm -f *.kfese semi.mater"
+               rm -f *.kfese semi.mater
+  goto chk3e
+endif
+
+echo "$space ... set up ASA starting potential"
+echo "$space touch ctrl.kfese; rm -f *.kfese qasa ; cp $testdir/{ctrl,shfac}.kfese $testdir/../../testing/semi.mater ."
+             touch ctrl.kfese; rm -f *.kfese qasa ; cp $testdir/{ctrl,shfac}.kfese $testdir/../../testing/semi.mater .
+echo "$space cp $testdir/../../testing/rsta.kfese.pbe rsta.kfese"
+             cp $testdir/../../testing/rsta.kfese.pbe rsta.kfese
+
+runjob chk32 "/dev/null" "lmstr ctrl.kfese -vnm=0 -vfile=0 -vlxcf=3 -vgga=3 -vstripe=1 -vz4e=0.3539 -vzes=0.19"
+chk32:
+runjob chk33 "$testout" "lm -vso=1 ctrl.kfese -vconvc=1e-6 --rs=1,0 -vnit=0 -vnsp=2 -vnm=0 -vfile=0 -vlxcf=3 -vgga=3 -vstripe=1 -vz4e=0.3539 -vzes=0.19 --iactiv=no"
+chk33:
+
+echo ""
+echo "$space ... band pass with self-consistent PBE potential (easypbe)"
+runjob chk34 ">>$testout" "lm -vso=1 ctrl.kfese -vconvc=1e-6 -vnit=1 -vnsp=2 -vnm=0 -vfile=0 -vlxcf=3 -vgga=3 -vstripe=1 -vz4e=0.3539 -vzes=0.19 --iactiv=no"
+chk34:
+echo "$space Program lm returned successfully."
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+if ($?quiet) goto chk35a
+echo ' '
+echo "$space Compare bands at Gamma to file $refout":
+cat $testout | awk '{if ($1 == "SECMAT:") {getline; print;getline;print}}' | sed -n 1,2p
+echo '---'
+zcat $refout | awk '{if ($1 == "SECMAT:") {getline; print;getline;print}}' | sed -n 1,2p
+
+
+echo ' '
+call zdiffiles chk35a "CPU 1 $testout $refout"
+chk35a:
+
+# pass checks
+echo ' '
+
+set refline = `zcat $refout | grep SV`
+set outline = `grep SV $testout`
+set eref  = `echo $refline | awk '{print substr($6,1,9)}' | tail -1`
+set etest = `echo $outline | awk '{print substr($6,1,9)}' | tail -1`
+set dqref  = `echo $refline | awk '{print $3}' | tail -1`
+set dqtest = `echo $outline | awk '{print $3}' | tail -1`
+
+cnvt_d_fmt chk36a eref $eref
+chk36a:
+cnvt_d_fmt chk36b etest $etest
+chk36b:
+cnvt_d_fmt chk36c dqref $dqref
+chk36c:
+cnvt_d_fmt chk36d dqtest $dqtest
+chk36d:
+
+if ($?dqtol3 == 0) set dqtol3 = 3e-6
+if ($?detol3 == 0) set detol3 = 3e-6
+
+compare_res chk37a "ehk" $etest $eref $detol3 pass
+chk37a:
+
+compare_res chk37b "RMS dq" $dqtest $dqref $dqtol3 pass
+chk37b:
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 3 PASSED"
+else
+    echo "$space test 3 FAILED"
+    set failed = ($failed 3)
+endif
+
+chk3e:
+
+
+echo ' '
+if ($?clean) then
+    exit 0
+else if ($#failed <= 1) then
+    echo "$space $testfile : all tests PASSED"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit -1
+endif
+
+# ---------------- zdiffiles --------------
+# File differences, with additional check for numerical differences
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+# Example: call zdiffiles chk69 "CPU 3 $testout $refout"
+exit
+zdiffiles:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffiles2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiff1 $quitjob "compare $files[1] $files[2]"
+zdiff1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffiles2:
+  if (! $?mcx) goto $quitjob   
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+#  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo 
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiff2  $quitjob "show comparison"
+zdiff2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zdiffilesx --------------
+# Identical to zdiffiles, but gmaxdif is accumulated
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+exit
+zdiffilesx:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffilesx2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiffx1 $quitjob "compare $files[1] $files[2]"
+zdiffx1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffilesx2:
+  if (! $?mcx) goto $quitjob   
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+  if (! $?gmaxdif) set gmaxdif = 0
+  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo 
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiffx2  $quitjob "show comparison"
+zdiffx2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space Compare $callarg to line in file $refout":
+  grep $callarg $testout
+  zcat $refout | grep $callarg
+  goto $quitjob
+
+# ---------------- cnvt_d_fmt --------------
+# converts exponential format #.##D## or #.##d## to #.##E##
+# usage: cnvt_d_fmt retcall testvar testval
+exit
+cnvt_d_fmt:
+  set quitjob = $retcall
+  set $testvar = `echo $testval | sed s/D/E/ | sed s/d/E/`
+  goto $quitjob
+
+# ---------------- compare_res --------------
+# Compares two numbers $testvar-$refvar and unsets $passvar if |testvar-refvar|<tol
+# usage: compares_res retcall keyword testvar refvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   refvar       : second number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar-refvar|<tol
+exit
+compare_res:
+  set quitjob=$retcall
+# echo $retcall $keyword $testvar $refvar $tol $passvar
+  echo -n "$space $keyword ($testvar) within tol ($tol) of reference ($refvar)? ... "
+  if (`echo $testvar $refvar | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- compare_res_0 --------------
+# Compares a number $testvar and unsets $passvar if |testvar|<tol
+# usage: compares_res_0 retcall keyword testvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar|<tol
+exit
+compare_res_0:
+  set quitjob=$retcall
+#  echo $retcall $keyword $testvar $tol $passvar
+ echo -n "$space $keyword ($testvar) smaller than tol ($tol)? ... "
+  if (`echo $testvar 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space $callarg  > $outfile"
+      $callarg > $outfile
+      set retval = $status
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- runrdcmd --------------
+exit
+runrdcmd:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space Invoking rdcmd will execute the following job(s):"
+    $rdcmd -f:$rdcmdfmt --n $callarg
+    echo "$space $rdcmd '-f:rdcmd:%2f' $callarg"
+                 $rdcmd '-f:rdcmd:%2f' $callarg
+    set retval = $status
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      exit
+#      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space ... the following job(s) will be executed by invoking "\""rdcmd $callarg"\"
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      echo "$space ... starting invocation of rdcmd:"
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg  >& $outfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >& $outfile
+      set retval = $status
+    endif
+  endif
+
+  if ($retval == 0) then
+    echo "$space Job(s) completed successfully; output in $outfile"
+    if ($?poszer) then
+      echo -n "         ..." ; $poszer $outfile
+    else if ($?add0) then
+      echo -n "         ..." ; $add0 $outfile
+    endif
+    goto $quitjob
+  else
+    echo "$space ...oops... the following command returned with nonzero exit status:"
+    echo -n "$space   "
+    grep $rdcmd:t{:} $outfile | tail -1 | sed 's/rdcmd:  //'
+    goto cleanup
+  endif
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space *hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  goto $retcall
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space"'*'"job $callarg[1] returned with error status $retval"
+  if ($retval != 0) echo "$space unacceptable error status ... $testfile aborting"
+  exit $retval
+
+# ---------------- List tests --------------
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] job
+
+   job  material   tests
+    1    CdTe      L.S coupling in a nonmagnetic semiconductor
+    2    Fe        L.S coupling in an elemental metallic ferromagnet
+    3    KFeSe     L.S coupling in an antiferromagnet (superconducting at low T)
+
+EOF
+exit
+

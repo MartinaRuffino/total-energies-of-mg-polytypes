@@ -1,0 +1,688 @@
+rdcmd:  echo regenerate binary rst file from rsta file
+regenerate binary rst file from rsta file
+rdcmd:  rm -f shfac.co mixm.co
+rdcmd:  lmf  co -vmet=4 -vlmf=1 -vnk=8 -vnit=0 -vw1=1 --pr31,20 --no-iactiv --rs=2,1
+ -----------------------  START LMF -----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMF:      nbas = 2  nspec = 1  vn 7.11.j  verb 31,20
+ pot:      spin-pol, XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       metal(4), tetra 
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 147.121922
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379
+         r1=  3.072   nkd= 75       q1=  2.875   nkg= 135
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 24 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z:(-1*sqrt(3)/6,-1/2,-0.8164966) r2z:(-1*sqrt(3)/6,-1/2,0.8164966) r2x
+         i*r3z::(1/3,-1/3,-1/2) r2z::(1/3,-1/3,1/2) r2x
+ MKSYM:  found 24 space group operations ... includes inversion
+ BZMESH:  50 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 544 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        2.599  1.040    2    3         2  0.650  1.300    15    1   1.040
+
+ GVLIST: gmax = 8.016 a.u. created 1273 vectors of 2880 (44%)
+         mesh has 12 x 12 x 20 divisions; length 0.392, 0.392, 0.384
+ SGVSYM: 94 symmetry stars found for 1273 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+ suham :  18 augmentation channels, 18 local potential channels  Maximum lmxa=2
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   1.70  -0.10   4.373    1.01E-06     209 
+  A        1    1.70  -0.10   4.608    2.02E-06     245 
+  A        2    1.05  -0.30   8.080    1.50E-06    1273*
+ 
+
+ iors  : read restart file (ascii, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ lmfp  : zero iterations sought ... no band pass
+
+ iors  : write restart file (binary, mesh density) 
+ Exit 0 LMF 
+ CPU time:  0.119s   Wall clock 0.171s  at  16:18:37 24.08.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  echo single pass for properties of original scall
+single pass for properties of original scall
+rdcmd:  lmf co -vmet=4 -vlmf=1 -vnk=8 -vnit=1 -vw1=1 --pr31,20 --iactiv=no --rs=1,0
+ -----------------------  START LMF -----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMF:      nbas = 2  nspec = 1  vn 7.11.j  verb 31,20
+ pot:      spin-pol, XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       metal(4), tetra 
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 147.121922
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379
+         r1=  3.072   nkd= 75       q1=  2.875   nkg= 135
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 24 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z:(-1*sqrt(3)/6,-1/2,-0.8164966) r2z:(-1*sqrt(3)/6,-1/2,0.8164966) r2x
+         i*r3z::(1/3,-1/3,-1/2) r2z::(1/3,-1/3,1/2) r2x
+ MKSYM:  found 24 space group operations ... includes inversion
+ BZMESH:  50 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 544 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        2.599  1.040    2    3         2  0.650  1.300    15    1   1.040
+
+ GVLIST: gmax = 8.016 a.u. created 1273 vectors of 2880 (44%)
+         mesh has 12 x 12 x 20 divisions; length 0.392, 0.392, 0.384
+ SGVSYM: 94 symmetry stars found for 1273 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+ suham :  18 augmentation channels, 18 local potential channels  Maximum lmxa=2
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   1.70  -0.10   4.373    1.01E-06     209 
+  A        1    1.70  -0.10   4.608    2.02E-06     245 
+  A        2    1.05  -0.30   8.080    1.50E-06    1273*
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ rhopos: try to render density everywhere positive ... nothing to change
+
+ Average es pot at rmt = 0.670737  avg sphere pot = 0.722798   vconst = -0.670737
+
+ site  1  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  2  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+
+ subzi: tetrahedron integration of bands; sampling integration of density
+        sampling integration uses:  N=0  W=0.002  ef0=-0.019106  def=0.002108
+
+ bndfp:  kpt 1 of 50, k=  0.00000  0.00000  0.00000
+ -0.6866 -0.3387 -0.1002 -0.0940 -0.0940 -0.0678 -0.0678 -0.0442 -0.0340
+ bndfp:  kpt 1 of 50, k=  0.00000  0.00000  0.00000
+ -0.7002 -0.4083 -0.2138 -0.2078 -0.2078 -0.1850 -0.1850 -0.1552 -0.1552
+ bndfp:  kpt 11 of 50, k=  0.00000  0.00000  0.07655
+ -0.6751 -0.3480 -0.1039 -0.0970 -0.0970 -0.0718 -0.0712 -0.0712 -0.0264
+ bndfp:  kpt 11 of 50, k=  0.00000  0.00000  0.07655
+ -0.6888 -0.4119 -0.2167 -0.2106 -0.2106 -0.1880 -0.1880 -0.1483 -0.1483
+ bndfp:  kpt 21 of 50, k=  0.00000  0.00000  0.15309
+ -0.6414 -0.3820 -0.1176 -0.1138 -0.1016 -0.1016 -0.0799 -0.0799 -0.0089
+ bndfp:  kpt 21 of 50, k=  0.00000  0.00000  0.15309
+ -0.6554 -0.4287 -0.2246 -0.2149 -0.2149 -0.1956 -0.1956 -0.1728 -0.1327
+ bndfp:  kpt 31 of 50, k=  0.00000  0.00000  0.22964
+ -0.5877 -0.4442 -0.1400 -0.1272 -0.1026 -0.1026 -0.0901 -0.0901  0.0114
+ bndfp:  kpt 31 of 50, k=  0.00000  0.00000  0.22964
+ -0.6025 -0.4716 -0.2340 -0.2232 -0.2158 -0.2158 -0.2047 -0.2047 -0.1147
+ bndfp:  kpt 41 of 50, k=  0.00000  0.00000  0.30619
+ -0.5187 -0.5187 -0.1389 -0.1389 -0.0985 -0.0985 -0.0985 -0.0985  0.0298
+ bndfp:  kpt 41 of 50, k=  0.00000  0.00000  0.30619
+ -0.5365 -0.5365 -0.2381 -0.2381 -0.2122 -0.2122 -0.2122 -0.2122 -0.0984
+
+ Interpolate to Fermi energy for qval=   18.000
+ trial Fermi energies:     -0.02121    -0.01911    -0.01700
+ band occupations:         17.97166    18.00024    18.05890
+ magnetic moment:          -3.26271    -3.23414    -3.17548
+ weights from quad fit:     0.00275     0.99997    -0.00272
+ interpolated charge:      17.97166    18.00024    18.05890  ->   18.00000
+ eigenvalue sum:           -3.63525    -3.63579    -3.63682  ->   -3.63578
+ entropy term:             -0.00001    -0.00004    -0.00007  ->   -0.00004
+ interpolated moment:      -3.26271    -3.23414    -3.17548  ->   -3.23437
+ old energy window:   ef=  -0.01911   plusminus  0.00211
+ new energy window:   ef=  -0.01912   plusminus  0.00100
+ efldos:  Ef = -0.019153  sumev = -3.635830  ebot = -0.704500  DOS(Ef) = 20.66
+ ipol:  sev=   -3.635826   ef=   -0.019117
+ dos:   sev=   -3.635830   ef=   -0.019153
+ use:   sev=   -3.635830   ef=   -0.019153
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.021612;  18.000000 electrons;  D(Ef):   24.307
+         Sum occ. bands:   -3.6350368  incl. Bloechl correction:   -0.004077
+         Mag. moment:      -3.214440
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    8.978005    3.814245    5.163760     -1.608274   -0.027060   -1.581214
+   2    8.978005    3.814245    5.163760     -1.608274   -0.027060   -1.581214
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336894   -0.515235    4.618487    4.618436    4.500000    4.618436
+ spn 2 0    0.321151   -0.555680    4.602779    4.602758    4.500000    4.602758
+ 1     0    0.423380   -0.454652    4.335305    4.335285    4.250000    4.335285
+ spn 2 0    0.360475   -0.501874    4.321895    4.321853    4.250000    4.321853
+ 2     0    2.924592   -0.233356    3.613612    3.613631    3.147584    3.613631
+ spn 2 0    4.611514   -0.213410    3.860512    3.860539    3.147584    3.860539
+
+ site    2   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336894   -0.515235    4.618487    4.618436    4.500000    4.618436
+ spn 2 0    0.321151   -0.555680    4.602779    4.602758    4.500000    4.602758
+ 1     0    0.423380   -0.454652    4.335305    4.335285    4.250000    4.335285
+ spn 2 0    0.360475   -0.501874    4.321895    4.321853    4.250000    4.321853
+ 2     0    2.924592   -0.233356    3.613612    3.613631    3.147584    3.613631
+ spn 2 0    4.611514   -0.213410    3.860512    3.860539    3.147584    3.860539
+
+ Harris energy:
+ sumev=       -3.635037  val*vef=    -240.417873   sumtv=     236.782836
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    5408.445824
+ rhoeps=    -229.188459     utot=  -10980.333934    ehar=   -5564.293733
+
+ ekin=5645.255629  rho*v=-11209.549391  ehf=-5564.293733  ehks=-5564.293762
+  
+ mixing: mode=B  nmix=3  it 1 of 5  beta=.7  elind=1.887  wgt=1,1
+ mixrho:  sought 3 iter from file mixm; read 0.  RMS DQ=6.59e-5
+ charges:       old           new         screened      rms diff       lin mix
+ smooth       7.674610      7.672477      7.672477      0.000214      7.673117
+ mmom        -0.072159     -0.071948                                 -0.072011
+ site    1    5.162695      5.163760      5.163760      0.000031      5.163440
+ mmom        -1.580826     -1.581214                                 -1.581098
+ site    2    5.162695      5.163760      5.163760      0.000031      5.163440
+ mmom        -1.580826     -1.581214                                 -1.581098
+ AMIX: nmix=0 mmix=8  nelts=11140  beta=0.7  tm=5  rmsdel=3.29e-5
+ add q=  0.000002 to preserve neutrality
+ unscreened rms difference:  smooth  0.000215   local  0.000031
+   screened rms difference:  smooth  0.000214   local  0.000031   tot  0.000066
+
+   it  1  of  1    ehf=      -0.988933   ehk=      -0.988962
+x met=4 lmf=1 nk=8 nit=1 w1=1 mmom=-3.2343769 ehf=-.9889331 ehk=-.9889617
+ Exit 0 LMF 
+ CPU time:  1.084s   Wall clock 1.147s  at  16:18:38 24.08.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  echo make supercell site file
+make supercell site file
+rdcmd:  echo m 2 0 0 1 2 0 0 0 1 | lmscell co -vmet=4 -vlmf=1 -vnk=8 -vnit=1 -vw1=1 --pr31,20 --wsite~map~fn=sitex
+ -----------------------  START LMSCELL -----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMSCELL:  nbas = 2  nspec = 1  vn 7.11.j  verb 31,20
+ special:
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 147.121922
+
+ LATTC:  as= 1.000   tol=2.22507e-308   alat= 4.70314   awald= 0.189
+         r1= 30.589   nkd= 84763    q1=  8.171   nkg= 3249
+
+ Enter lattice vectors of supercell, or ? for help:
+
+ Basis vectors of supercell:
+
+               plx                            plx/plat                           qlx
+   0.00000  -2.00000   0.00000      2.00000   1.00000   0.00000      0.00000  -0.50000   0.00000
+   1.73205   0.00000   0.00000      0.00000   2.00000   0.00000      0.57735   0.00000   0.00000
+   0.00000   0.00000   1.63299      0.00000   0.00000   1.00000      0.00000   0.00000   0.61237
+  
+     1  A          0.577350  -1.000000   0.816497
+     1  A          0.577350   0.000000   0.816497
+     1  A          1.443376  -0.500000   0.816497
+     1  A          1.443376  -1.500000   0.816497
+     2  A          0.000000   0.000000   0.000000
+     2  A          0.866025  -0.500000   0.000000
+     2  A          0.000000  -1.000000   0.000000
+     2  A          0.866025  -1.500000   0.000000
+
+ cell vol=  1.414214     scell vol=    5.656854     ratio=   4.00
+ cell nbas=        2     scell nbas=          8     ratio=   4.00
+
+ Found 4 q points in original cell that map to q=0:
+             q (2*pi/a)                    q (multiples of qlat)
+   0.577350   0.000000   0.000000      0.000000   0.500000   0.000000
+   0.000000   0.000000   0.000000      0.000000   0.000000   0.000000
+   0.577350  -0.500000   0.000000      0.500000   0.250000   0.000000
+   1.154701  -0.500000   0.000000      0.500000   0.750000   0.000000
+
+ iosits: wrote to file 'sitex', 8 sites
+ Exit 0 LMSCELL 
+ CPU time:  0.080s   Wall clock 0.138s  at  16:18:38 24.08.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  echo make supercell rst file
+make supercell rst file
+rdcmd:  lmf co -vmet=4 -vlmf=1 -vnk=8 -vnit=1 -vw1=1 --pr31,20 --iactiv --rs=2  '--rsedit~rs~scell sitex'
+ -----------------------  START LMF -----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMF:      nbas = 2  nspec = 1  vn 7.11.j  verb 31,20
+ pot:      spin-pol, XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       metal(4), tetra 
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 147.121922
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379
+         r1=  3.072   nkd= 75       q1=  2.875   nkg= 135
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 24 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z:(-1*sqrt(3)/6,-1/2,-0.8164966) r2z:(-1*sqrt(3)/6,-1/2,0.8164966) r2x
+         i*r3z::(1/3,-1/3,-1/2) r2z::(1/3,-1/3,1/2) r2x
+ MKSYM:  found 24 space group operations ... includes inversion
+ BZMESH:  50 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 544 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        2.599  1.040    2    3         2  0.650  1.300    15    1   1.040
+
+ GVLIST: gmax = 8.016 a.u. created 1273 vectors of 2880 (44%)
+         mesh has 12 x 12 x 20 divisions; length 0.392, 0.392, 0.384
+ SGVSYM: 94 symmetry stars found for 1273 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+ suham :  18 augmentation channels, 18 local potential channels  Maximum lmxa=2
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   1.70  -0.10   4.373    1.01E-06     209 
+  A        1    1.70  -0.10   4.608    2.02E-06     245 
+  A        2    1.05  -0.30   8.080    1.50E-06    1273*
+ 
+
+
+ Entering the restart file editor. Parsing command-line options ...
+
+ Option : rs
+ rsedit: read restart file "rst"
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+         file has nbas = 2  nat = 2  nspec = 1
+
+ Density from rs file:
+ Smooth density: vol=147.12  n123 = 12 12 20  qsm = 7.674610  mag. mom = -0.072159
+
+ Site parameters and charges:
+   site          z     rmt     nr   a  lmxl   qtrue     mtrue     q2        m2
+   1 A         27.0  2.59928  993 0.010  2   8.97788  -1.60798   3.81519  -0.02715
+   2 A         27.0  2.59928  993 0.010  2   8.97788  -1.60798   3.81519  -0.02715
+
+ Option : scell sitex
+ scell has 2 sites with lattice parameter 4.703135 = 1*alat
+ plx  0.000000 -2.000000 0.000000 1.732051 0.000000 0.000000 0.000000 0.000000 1.632993
+ plat 0.000000 -1.000000 0.000000 0.866025 0.500000 0.000000 0.000000 0.000000 1.632993
+ Volume ratio 4
+
+ configure supercell lattice and mesh parameters
+
+                Plat                                  Qlat
+   0.000000  -2.000000   0.000000        0.000000  -0.500000   0.000000
+   1.732051   0.000000   0.000000        0.577350   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 588.487690
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.239
+         r1=  4.457   nkd= 73       q1=  1.629   nkg= 99
+
+ MSHSIZ: mesh has 25 x 22 x 20 divisions; length 0.376, 0.370, 0.384
+         generated from gmax = 8.016 a.u. : 5117 vectors of 11000 (46%)
+
+ CHGMSH: remake f (12 * 12 * 20)  to f (25 * 22 * 20)  in supercell,  opt=10
+         basis vectors of supercell:
+              plax                           plax/plat                          qlax
+   0.00000  -2.00000   0.00000      2.00000   1.00000   0.00000      0.00000  -0.50000   0.00000
+   1.73205   0.00000   0.00000      0.00000   2.00000   0.00000      0.57735   0.00000   0.00000
+   0.00000   0.00000   1.63299      0.00000   0.00000   1.00000      0.00000   0.00000   0.61237
+
+ iors  : write restart file (binary, mesh density) 
+ Exit 0 wrote restart file rst2 
+ CPU time:  0.111s   Wall clock 0.159s  at  16:18:38 24.08.2017  on  phpdl1.ph.kcl.ac.uk
+rdcmd:  cp rst2.co rst.co
+rdcmd:  lmf -cstrx=scell co -vmet=4 -vlmf=1 -vnk=8 -vnit=1 -vw1=1 --pr31,20 --iactiv=no
+ -----------------------  START LMF -----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMF:      nbas = 8  nspec = 1  vn 7.11.j  verb 31,20
+ pot:      spin-pol, XC:BH
+ float:    float P v6-style, v6-ebar
+ autoread: none
+ bz:       metal(4), tetra 
+
+                Plat                                  Qlat
+   0.000000  -2.000000   0.000000        0.000000  -0.500000   0.000000
+   1.732051   0.000000   0.000000        0.577350   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 588.487690
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.239
+         r1=  4.457   nkd= 73       q1=  1.629   nkg= 99
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(sqrt(3)/3,1,-0.8164966) r2z:(sqrt(3)/3,1,0.8164966) r2x
+         i::(-1/2,1/3,-1/2) r2z::(-1/2,1/3,1/2) r2x
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  1 species split into 3 classes
+ Species  Class      Sites...
+ A        1:A        1 5
+          2:A2       2 7
+          3:A3       3 4 6 8
+ BZMESH:  125 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1536 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ A        2.599  1.040    2    3         2  0.650  1.300    15    1   1.040
+
+ lmfp : shortened basis vectors ... 
+
+ MSHSIZ: mesh has 24 x 22 x 20 divisions; length 0.392, 0.370, 0.384
+         generated from gmax = 8.0 a.u. : 5085 vectors of 10560 (48%)
+
+ GVLIST: gmax = 8 a.u. created 5085 vectors of 10560 (48%)
+         mesh has 24 x 22 x 20 divisions; length 0.392, 0.370, 0.384
+ SGVSYM: 777 symmetry stars found for 5085 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 72 0 0 0
+ suham :  72 augmentation channels, 72 local potential channels  Maximum lmxa=2
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  A        0*   1.70  -0.10   4.373    1.01E-06     833 
+  A        1    1.70  -0.10   4.608    1.08E-06     953 
+  A        2    1.05  -0.30   8.080    1.41E-06    5085*
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         remesh density from    25  *  22  *  20    to    24  *  22  *  20
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ rhopos: try to render density everywhere positive ... nothing to change
+
+ Average es pot at rmt = 0.670737  avg sphere pot = 0.722798   vconst = -0.670737
+
+ site  1  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  2  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  3  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  4  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  5  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  6  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  7  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+ site  8  z= 27.0  rmt= 2.59928  nr=993   a=0.010  nlml= 9  rg=0.650  Vfloat=T
+ sm core charge = 0.179853 (sphere) + 0.002864 (spillout) = 0.182718
+ potential shift to crystal energy zero:    0.009196
+
+
+ subzi: tetrahedron integration of bands; sampling integration of density
+        sampling integration uses:  N=0  W=0.002  ef0=-0.019106  def=0.002108
+
+ bndfp:  kpt 1 of 125, k=  0.00000  0.00000  0.00000
+ -0.6866 -0.3387 -0.3133 -0.3129 -0.3129 -0.2871 -0.2643 -0.2431 -0.2431
+ bndfp:  kpt 1 of 125, k=  0.00000  0.00000  0.00000
+ -0.7002 -0.4083 -0.3785 -0.3741 -0.3561 -0.3561 -0.3516 -0.3328 -0.3328
+ bndfp:  kpt 11 of 125, k=  0.14434  0.00000  0.00000
+ -0.6464 -0.3910 -0.3152 -0.3152 -0.3110 -0.2648 -0.2626 -0.2626 -0.2547
+ bndfp:  kpt 11 of 125, k=  0.14434  0.00000  0.00000
+ -0.6602 -0.4262 -0.3839 -0.3716 -0.3716 -0.3557 -0.3514 -0.3514 -0.3431
+ bndfp:  kpt 21 of 125, k=  0.28868  0.00000  0.00000
+ -0.5347 -0.5347 -0.3133 -0.3133 -0.2871 -0.2871 -0.2643 -0.2643 -0.2602
+ bndfp:  kpt 21 of 125, k=  0.28868  0.00000  0.00000
+ -0.5511 -0.5511 -0.3785 -0.3785 -0.3741 -0.3741 -0.3516 -0.3516 -0.3443
+ bndfp:  kpt 31 of 125, k=  0.07217  0.00000  0.07655
+ -0.6650 -0.3404 -0.3389 -0.3126 -0.3126 -0.2804 -0.2478 -0.2478 -0.2472
+ bndfp:  kpt 31 of 125, k=  0.07217  0.00000  0.07655
+ -0.6788 -0.4051 -0.3988 -0.3670 -0.3661 -0.3661 -0.3306 -0.3293 -0.3293
+ bndfp:  kpt 41 of 125, k=  0.21651  0.00000  0.07655
+ -0.5875 -0.4546 -0.3211 -0.3211 -0.2894 -0.2800 -0.2800 -0.2582 -0.2450
+ bndfp:  kpt 41 of 125, k=  0.21651  0.00000  0.07655
+ -0.6022 -0.4778 -0.3891 -0.3891 -0.3662 -0.3662 -0.3611 -0.3436 -0.3286
+ bndfp:  kpt 51 of 125, k=  0.00000  0.00000  0.15309
+ -0.6414 -0.3820 -0.3306 -0.3012 -0.3012 -0.2888 -0.2548 -0.2548 -0.2154
+ bndfp:  kpt 51 of 125, k=  0.00000  0.00000  0.15309
+ -0.6554 -0.4287 -0.4031 -0.3695 -0.3537 -0.3537 -0.3402 -0.3402 -0.3023
+ bndfp:  kpt 61 of 125, k=  0.14434  0.00000  0.15309
+ -0.6026 -0.3753 -0.3509 -0.3194 -0.3194 -0.2822 -0.2688 -0.2688 -0.2292
+ bndfp:  kpt 61 of 125, k=  0.14434  0.00000  0.15309
+ -0.6169 -0.4212 -0.3996 -0.3877 -0.3877 -0.3587 -0.3479 -0.3479 -0.3166
+ bndfp:  kpt 71 of 125, k=  0.28868  0.00000  0.15309
+ -0.4973 -0.4973 -0.3306 -0.3306 -0.2889 -0.2889 -0.2888 -0.2888 -0.2154
+ bndfp:  kpt 71 of 125, k=  0.28868  0.00000  0.15309
+ -0.5159 -0.5159 -0.4031 -0.4031 -0.3695 -0.3695 -0.3481 -0.3481 -0.3023
+ bndfp:  kpt 81 of 125, k=  0.07217  0.00000  0.22964
+ -0.5782 -0.4357 -0.3353 -0.3033 -0.2986 -0.2986 -0.2693 -0.2693 -0.2124
+ bndfp:  kpt 81 of 125, k=  0.07217  0.00000  0.22964
+ -0.5931 -0.4633 -0.4043 -0.3768 -0.3670 -0.3670 -0.3437 -0.3437 -0.3071
+ bndfp:  kpt 91 of 125, k=  0.21651  0.00000  0.22964
+ -0.5073 -0.3988 -0.3761 -0.3259 -0.3259 -0.3149 -0.2976 -0.2976 -0.2103
+ bndfp:  kpt 91 of 125, k=  0.21651  0.00000  0.22964
+ -0.5245 -0.4338 -0.4075 -0.3990 -0.3990 -0.3727 -0.3727 -0.3717 -0.3058
+ bndfp:  kpt 101 of 125, k=  0.00000  0.00000  0.30619
+ -0.5187 -0.5187 -0.3195 -0.3195 -0.2760 -0.2760 -0.2760 -0.2760 -0.2005
+ bndfp:  kpt 101 of 125, k=  0.00000  0.00000  0.30619
+ -0.5365 -0.5365 -0.3936 -0.3936 -0.3480 -0.3480 -0.3480 -0.3480 -0.2985
+ bndfp:  kpt 111 of 125, k=  0.14434  0.00000  0.30619
+ -0.4838 -0.4838 -0.3324 -0.3324 -0.3018 -0.3018 -0.3018 -0.3018 -0.1925
+ bndfp:  kpt 111 of 125, k=  0.14434  0.00000  0.30619
+ -0.5026 -0.5026 -0.3941 -0.3941 -0.3752 -0.3752 -0.3752 -0.3752 -0.2906
+ bndfp:  kpt 121 of 125, k=  0.28868  0.00000  0.30619
+ -0.3983 -0.3983 -0.3983 -0.3983 -0.3195 -0.3195 -0.3195 -0.3195 -0.2005
+ bndfp:  kpt 121 of 125, k=  0.28868  0.00000  0.30619
+ -0.4277 -0.4277 -0.4277 -0.4277 -0.3936 -0.3936 -0.3936 -0.3936 -0.2985
+
+ Interpolate to Fermi energy for qval=   72.000
+ trial Fermi energies:     -0.02121    -0.01911    -0.01700
+ band occupations:         72.03276    72.21342    72.37184
+ magnetic moment:         -12.72305   -12.62177   -12.51863
+ mshn3p: qval outside window; extrapolating
+ weights from quad fit:     1.26806    -0.36696     0.09889
+ interpolated charge:      72.03276    72.21342    72.37184  ->   72.00000
+ eigenvalue sum:          -14.54007   -14.54369   -14.54658  ->  -14.53938
+ entropy term:             -0.00015    -0.00017    -0.00015  ->   -0.00015
+ interpolated moment:     -12.72305   -12.62177   -12.51863  ->  -12.73999
+ old energy window:   ef=  -0.01911   plusminus  0.00211
+ new energy window:   ef=  -0.02157   plusminus  0.00493
+ efldos:  Ef = -0.021709  sumev = -14.539532  ebot = -0.704500  DOS(Ef) = 67.87
+ ipol:  sev=  -14.539530   ef=   -0.021570
+ dos:   sev=  -14.539532   ef=   -0.021709
+ use:   sev=  -14.539532   ef=   -0.021709
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.022254;  72.000000 electrons;  D(Ef):   88.618
+         Sum occ. bands:  -14.5391212  incl. Bloechl correction:   -0.003245
+         Mag. moment:     -12.715029
+
+ Saved qp weights ...
+
+ ... Generating total DOS
+
+ mkrout:  Qtrue      sm,loc       local        true mm   smooth mm    local mm
+   1    8.977963    3.812468    5.165495     -1.583707   -0.022721   -1.560986
+   2    8.977963    3.812468    5.165495     -1.583707   -0.022721   -1.560986
+   3    8.977963    3.812468    5.165495     -1.583707   -0.022721   -1.560986
+   4    8.977963    3.812468    5.165495     -1.583707   -0.022721   -1.560986
+   5    8.977963    3.812467    5.165496     -1.583707   -0.022721   -1.560986
+   6    8.977963    3.812467    5.165496     -1.583706   -0.022720   -1.560986
+   7    8.977963    3.812467    5.165496     -1.583707   -0.022721   -1.560986
+   8    8.977963    3.812468    5.165496     -1.583706   -0.022720   -1.560986
+
+ Symmetrize density..
+
+ Make new boundary conditions for phi,phidot..
+
+ site    1   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    2   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    3   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    4   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    5   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    6   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    7   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ site    8   species   1:A       
+ l  idmod     ql         ebar        pold        ptry        pfree        pnew
+ 0     0    0.336642   -0.515564    4.618487    4.618242    4.500000    4.618242
+ spn 2 0    0.320839   -0.555714    4.602779    4.602737    4.500000    4.602737
+ 1     0    0.421928   -0.455212    4.335305    4.335084    4.250000    4.335084
+ spn 2 0    0.359364   -0.502288    4.321895    4.321713    4.250000    4.321713
+ 2     0    2.938560   -0.232232    3.613612    3.616044    3.147584    3.616044
+ spn 2 0    4.600632   -0.214060    3.860512    3.859568    3.147584    3.859568
+
+ Harris energy:
+ sumev=      -14.539121  val*vef=    -961.671355   sumtv=     947.132233
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=   21633.783296
+ rhoeps=    -916.753745     utot=  -43921.335737    ehar=  -22257.173953
+
+ ekin=22581.106280  rho*v=-44838.280287  ehf=-22257.173953  ehks=-22257.174007
+  
+ mixing: mode=B  nmix=3  it 1 of 5  beta=.7  elind=1.887  wgt=1,1
+ mixrho:  expecting 44540 elements but found 11140 ... discarding file
+ mixrho:  sought 3 iter from file mixm; read 0.  RMS DQ=1.40e-3
+ charges:       old           new         screened      rms diff       lin mix
+ smooth      30.698439     30.676022     30.676022      0.000073     30.682747
+ mmom        -0.288637     -0.252114                                 -0.263071
+ site    1    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    2    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    3    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    4    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    5    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    6    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    7    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ site    8    5.162695      5.165495      5.165495      0.000601      5.164655
+ mmom        -1.580826     -1.560986                                 -1.566938
+ AMIX: nmix=0 mmix=8  nelts=44540  beta=0.7  tm=5  rmsdel=6.98e-4
+ add q=  0.000010 to preserve neutrality
+ unscreened rms difference:  smooth  0.000091   local  0.000601
+   screened rms difference:  smooth  0.000073   local  0.000601   tot  0.001395
+
+ iors  : write restart file (binary, mesh density) 
+
+   it  1  of  1    ehf=      -3.954753   ehk=      -3.954807
+x met=4 lmf=1 nk=8 nit=1 w1=1 mmom=-12.7400015 ehf=-3.9547526 ehk=-3.9548069
+ Exit 0 LMF 
+ CPU time:  30.611s   Wall clock 30.665s  at  16:19:09 24.08.2017  on  phpdl1.ph.kcl.ac.uk

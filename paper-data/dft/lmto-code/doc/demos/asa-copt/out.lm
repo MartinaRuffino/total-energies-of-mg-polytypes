@@ -1,0 +1,1242 @@
+<HTML><pre>
+ -----------------------  START LM -----------------------
+
+ LM:       nbas = 4  nspec = 2  vn 7.11  verb 31,20
+ special:  forces, scr-rho-out(model eps)
+ pot:      spin-pol, XC:BH
+ bz:       metal, tetra, invit 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 7.1866  Cell vol = 371.167908
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 7.18660   awald= 0.278
+         r1=  2.896   nkd=  93      q1=  3.440   nkg= 171
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ SFILL:  automatic scaling of sphere radii.  Constrain rmax<=3.3
+ SCLWSR:  vol = 371.168 a.u..   Initial sphere packing = 71.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  12.1   0.0   0.0 %    omax2=  22.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Pt          2.613200    2.928343    1.120597
+   2   Co          2.468493    2.766185    1.120597
+ BZMESH:  35 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 250 inequivalent ones found
+
+ GETZV:  37 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt         0.000000   0.000000   0.000000   0.000000  -0.669284
+ Co         0.000000   0.000000   0.000000   0.000000  -0.704057
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.694203 (up-dn=-0.011134)
+ cpudel    ...   Time this iter:  time(s):  0.116    total:  0.116s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7830 -0.5668 -0.5639 -0.5639 -0.5323 -0.5323 -0.5323 -0.4334 -0.4334
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7512 -0.4832 -0.4832 -0.4550 -0.4215 -0.4215 -0.4215 -0.2999 -0.2999
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.179472;  37.000000 electrons;  D(Ef):   33.076
+         Sum occ. bands:  -13.9722102  incl. Bloechl correction:   -0.002378
+         Mag. moment:       3.112596
+
+ Saved qp weights ...
+
+ LM: ehf=-45153.0153242  ehk=-45142.2853141  sumev=-13.9722102  delsev=0.32328|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.93e0  screened dq=1.81e0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=4.90e-1
+ AMIX: nmix=0 mmix=8  nelts=56  beta=0.3  tm=10  rmsdel=4.9e-1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.504824  mom=0.22117  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.06798  mom=1.77402  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.504824   0.000000   0.365552   0.020767  -0.717946
+ Co         0.067980   0.000000   0.006120   0.055271  -0.632169
+ (warning)  system has net charge: q= -0.300883
+ Sum Q=-0.300883  Emad=0.000394(-0.091646)  Vmtz=-0.656477 (up-dn=-0.006984)
+ Magnetization from sphere program: 5.543244  from output rho: 3.112596
+ SV:   1 4.895D-01 0.3000 2.907E-01  -45142.28531408 3.112596 L
+
+   it  1  of 30    ehf=  -45153.015324   ehk=  -45142.285314
+i nit=30 mmom=3.1125964 ehf=-45153.0153242 ehk=-45142.2853141
+ cpudel    ...   Time this iter:  time(s):  0.244    total:  0.360s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 2 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7509 -0.5763 -0.5763 -0.5087 -0.5087 -0.5087 -0.3909 -0.2570 -0.2570
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7266 -0.5523 -0.5523 -0.4814 -0.4814 -0.4814 -0.3123 -0.1566 -0.1566
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.064733;  37.000000 electrons;  D(Ef):   60.971
+         Sum occ. bands:  -10.7878783  incl. Bloechl correction:   -0.003089
+         Mag. moment:       6.170955
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.5896581  ehk=-45151.6397544  sumev=-10.7878783  delsev=0.26407|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=6.73e-1  screened dq=6.33e-1
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=1.62e-1  last it=4.90e-1
+ broyj:  start  beta=0.3  w0=0.01  isw=0  gmax=0.8
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.247843  mom=0.21438  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.056924  mom=1.84163  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.247843   0.000000   0.168014  -0.001258  -0.734201
+ Co         0.056924   0.000000  -0.023226   0.017932  -0.686032
+ (warning)  system has net charge: q= -0.077070
+ Sum Q=-0.077070  Emad=0.001687(-0.022804)  Vmtz=-0.699683 (up-dn=-0.002017)
+ Magnetization from sphere program: 5.739255  from output rho: 6.170955
+ SV:   2 1.621D-01 1.0000 9.434E-02  -45151.63975444 6.170955 B 0.0100
+
+   it  2  of 30    ehf=  -45152.589658   ehk=  -45151.639754
+ From last iter    ehf=  -45153.015324   ehk=  -45142.285314
+ diffe(q)=  0.425666 (0.162113)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=6.1709552 ehf=-45152.5896581 ehk=-45151.6397544
+ cpudel    ...   Time this iter:  time(s):  0.254    total:  0.614s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 3 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7738 -0.5523 -0.5523 -0.4796 -0.4796 -0.4796 -0.4492 -0.3112 -0.3112
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7520 -0.5203 -0.5203 -0.4372 -0.4372 -0.4372 -0.3649 -0.2056 -0.2056
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.119865;  37.000000 electrons;  D(Ef):   89.604
+         Sum occ. bands:  -11.7024384  incl. Bloechl correction:   -0.003057
+         Mag. moment:       6.033750
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4287913  ehk=-45152.2920122  sumev=-11.7024384  delsev=0.37623|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=4.06e-1  screened dq=3.93e-1
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=8.93e-2  last it=1.62e-1
+ broyj:  ir=2  dxmax=0.21  gmax=0.41  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.073056  mom=0.2349  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.043974  mom=1.88804  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.073056   0.000000   0.036299  -0.013597  -0.745658
+ Co         0.043974   0.000000  -0.037137  -0.005342  -0.722052
+ (warning)  system has net charge: q=  0.058866
+ Sum Q=0.058866  Emad=0.000144(-0.003776)  Vmtz=-0.728741 (up-dn=0.004516)
+ Magnetization from sphere program: 5.899009  from output rho: 6.033750
+ SV:   3 8.927D-02 1.0000 9.201E-02  -45152.29201216 6.033750 B 1.00
+
+   it  3  of 30    ehf=  -45152.428791   ehk=  -45152.292012
+ From last iter    ehf=  -45152.589658   ehk=  -45151.639754
+ diffe(q)=  0.160867 (0.089271)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=6.0337496 ehf=-45152.4287913 ehk=-45152.2920122
+ cpudel    ...   Time this iter:  time(s):  0.260    total:  0.874s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 4 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7862 -0.5438 -0.5438 -0.4787 -0.4735 -0.4735 -0.4735 -0.3345 -0.3345
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7685 -0.5040 -0.5040 -0.4150 -0.4150 -0.4150 -0.3910 -0.2232 -0.2232
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.140425;  37.000000 electrons;  D(Ef):   78.361
+         Sum occ. bands:  -12.0431175  incl. Bloechl correction:   -0.003434
+         Mag. moment:       5.842653
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4001858  ehk=-45152.3758342  sumev=-12.0431175  delsev=0.24925|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=2.16e-1  screened dq=2.16e-1
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=5.07e-2  last it=8.93e-2
+ broyj:  ir=2  dxmax=0.058  gmax=0.23  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.100549  mom=0.2779  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.043073  mom=1.86662  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.100549   0.000000   0.058446  -0.010227  -0.747220
+ Co         0.043073   0.000000  -0.031675  -0.000533  -0.717513
+ (warning)  system has net charge: q=  0.028669
+ Sum Q=0.028669  Emad=0.000480(-0.004985)  Vmtz=-0.725932 (up-dn=0.005951)
+ Magnetization from sphere program: 5.877769  from output rho: 5.842653
+ SV:   4 5.066D-02 1.0000 2.671E-02  -45152.37583416 5.842653 B 1.00
+
+   it  4  of 30    ehf=  -45152.400186   ehk=  -45152.375834
+ From last iter    ehf=  -45152.428791   ehk=  -45152.292012
+ diffe(q)=  0.028605 (0.050663)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.842653 ehf=-45152.4001858 ehk=-45152.3758342
+ cpudel    ...   Time this iter:  time(s):  0.243    total:  1.12s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 5 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7827 -0.5440 -0.5440 -0.4713 -0.4713 -0.4713 -0.4674 -0.3238 -0.3238
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7662 -0.5067 -0.5067 -0.4175 -0.4175 -0.4175 -0.3815 -0.2132 -0.2132
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129184;  37.000000 electrons;  D(Ef):   81.570
+         Sum occ. bands:  -11.8255735  incl. Bloechl correction:   -0.003317
+         Mag. moment:       5.877447
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4010559  ehk=-45152.3989484  sumev=-11.8255735  delsev=0.17565|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.43e-1  screened dq=1.40e-1
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=3.04e-2  last it=5.07e-2
+ broyj:  ir=2  dxmax=0.066  gmax=0.16  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.084265  mom=0.29782  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.037478  mom=1.85937  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.084265   0.000000   0.048309  -0.009242  -0.749280
+ Co         0.037478   0.000000  -0.028084  -0.000987  -0.720455
+ (warning)  system has net charge: q=  0.028170
+ Sum Q=0.028170  Emad=0.000334(-0.003614)  Vmtz=-0.728624 (up-dn=0.008137)
+ Magnetization from sphere program: 5.875919  from output rho: 5.877447
+ SV:   5 3.043D-02 1.0000 2.508E-02  -45152.39894840 5.877447 B 1.00
+
+   it  5  of 30    ehf=  -45152.401056   ehk=  -45152.398948
+ From last iter    ehf=  -45152.400186   ehk=  -45152.375834
+ diffe(q)= -0.000870 (0.030429)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8774473 ehf=-45152.4010559 ehk=-45152.3989484
+ cpudel    ...   Time this iter:  time(s):  0.205    total:  1.32s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 6 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7825 -0.5435 -0.5435 -0.4706 -0.4706 -0.4706 -0.4674 -0.3235 -0.3235
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7678 -0.5062 -0.5062 -0.4164 -0.4164 -0.4164 -0.3819 -0.2123 -0.2123
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.128140;  37.000000 electrons;  D(Ef):   81.336
+         Sum occ. bands:  -11.8093687  incl. Bloechl correction:   -0.003356
+         Mag. moment:       5.891696
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4007006  ehk=-45152.3991472  sumev=-11.8093687  delsev=0.09943|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=8.54e-2  screened dq=8.25e-2
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=1.81e-2  last it=3.04e-2
+ broyj:  ir=2  dxmax=0.094  gmax=0.092  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.055695  mom=0.33085  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.026631  mom=1.85132  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.055695   0.000000   0.031026  -0.007013  -0.752573
+ Co         0.026631   0.000000  -0.020634  -0.001379  -0.724280
+ (warning)  system has net charge: q=  0.024198
+ Sum Q=0.024198  Emad=0.000140(-0.001688)  Vmtz=-0.732298 (up-dn=0.011383)
+ Magnetization from sphere program: 5.884800  from output rho: 5.891696
+ SV:   6 1.809D-02 1.0000 3.606E-02  -45152.39914716 5.891696 B 1.00
+
+   it  6  of 30    ehf=  -45152.400701   ehk=  -45152.399147
+ From last iter    ehf=  -45152.401056   ehk=  -45152.398948
+ diffe(q)=  0.000355 (0.018093)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8916964 ehf=-45152.4007006 ehk=-45152.3991472
+ cpudel    ...   Time this iter:  time(s):  0.213    total:  1.53s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 7 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7821 -0.5431 -0.5431 -0.4703 -0.4703 -0.4703 -0.4683 -0.3243 -0.3243
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7701 -0.5056 -0.5056 -0.4150 -0.4150 -0.4150 -0.3831 -0.2119 -0.2119
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.127661;  37.000000 electrons;  D(Ef):   80.835
+         Sum occ. bands:  -11.8130543  incl. Bloechl correction:   -0.003419
+         Mag. moment:       5.897355
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4001098  ehk=-45152.3993601  sumev=-11.8130543  delsev=-0.0087|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.61e-2  screened dq=8.14e-3
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=2.60e-3  last it=1.81e-2
+ broyj:  ir=2  dxmax=0.0035  gmax=0.011  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.051438  mom=0.335  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.024094  mom=1.85118  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.051438   0.000000   0.028898  -0.006233  -0.752859
+ Co         0.024094   0.000000  -0.018498  -0.001078  -0.723807
+ (warning)  system has net charge: q=  0.020845
+ Sum Q=0.020845  Emad=0.000121(-0.001412)  Vmtz=-0.732040 (up-dn=0.011596)
+ Magnetization from sphere program: 5.888544  from output rho: 5.897355
+ SV:   7 2.600D-03 1.0000 1.606E-03  -45152.39936012 5.897355 B 1.00
+
+   it  7  of 30    ehf=  -45152.400110   ehk=  -45152.399360
+ From last iter    ehf=  -45152.400701   ehk=  -45152.399147
+ diffe(q)=  0.000591 (0.002600)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8973549 ehf=-45152.4001098 ehk=-45152.3993601
+ cpudel    ...   Time this iter:  time(s):  0.214    total:  1.75s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 8 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7819 -0.5431 -0.5431 -0.4705 -0.4705 -0.4705 -0.4686 -0.3248 -0.3248
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7699 -0.5056 -0.5056 -0.4150 -0.4150 -0.4150 -0.3833 -0.2122 -0.2122
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.128014;  37.000000 electrons;  D(Ef):   80.704
+         Sum occ. bands:  -11.8215988  incl. Bloechl correction:   -0.003422
+         Mag. moment:       5.898551
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4001640  ehk=-45152.3996095  sumev=-11.8215988  delsev=-0.0077|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.40e-2  screened dq=6.33e-3
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=2.01e-3  last it=2.60e-3
+ broyj:  ir=2  dxmax=0.0096  gmax=0.0087  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.037939  mom=0.34695  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.016609  mom=1.85054  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.037939   0.000000   0.021879  -0.004032  -0.753537
+ Co         0.016609   0.000000  -0.012349  -0.000341  -0.722342
+ (warning)  system has net charge: q=  0.011888
+ Sum Q=0.011888  Emad=0.000068(-0.000723)  Vmtz=-0.731182 (up-dn=0.012149)
+ Magnetization from sphere program: 5.898586  from output rho: 5.898551
+ SV:   8 2.015D-03 1.0000 4.145E-03  -45152.39960949 5.898551 B 1.00
+
+   it  8  of 30    ehf=  -45152.400164   ehk=  -45152.399609
+ From last iter    ehf=  -45152.400110   ehk=  -45152.399360
+ diffe(q)= -0.000054 (0.002015)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8985508 ehf=-45152.400164 ehk=-45152.3996095
+ cpudel    ...   Time this iter:  time(s):  0.217    total:  1.97s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 9 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7811 -0.5429 -0.5429 -0.4705 -0.4705 -0.4705 -0.4688 -0.3253 -0.3253
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7694 -0.5050 -0.5050 -0.4145 -0.4145 -0.4145 -0.3835 -0.2125 -0.2125
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.128468;  37.000000 electrons;  D(Ef):   80.323
+         Sum occ. bands:  -11.8264570  incl. Bloechl correction:   -0.003430
+         Mag. moment:       5.896592
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4002660  ehk=-45152.4000757  sumev=-11.8264570  delsev=-0.0050|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=8.81e-3  screened dq=3.88e-3
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.01e-3  last it=2.01e-3
+ broyj:  ir=2  dxmax=0.0027  gmax=4e-3  wc=1.3
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.032595  mom=0.35081  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.013946  mom=1.84949  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.032595   0.000000   0.018955  -0.003307  -0.753679
+ Co         0.013946   0.000000  -0.010250  -0.000166  -0.721760
+ Sum Q=0.009243  Emad=0.000050(-0.000523)  Vmtz=-0.730806 (up-dn=0.012275)
+ Magnetization from sphere program: 5.899278  from output rho: 5.896592
+ SV:   9 1.008D-03 1.0000 1.207E-03  -45152.40007574 5.896592 B 1.33
+
+   it  9  of 30    ehf=  -45152.400266   ehk=  -45152.400076
+ From last iter    ehf=  -45152.400164   ehk=  -45152.399609
+ diffe(q)= -0.000102 (0.001008)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8965924 ehf=-45152.400266 ehk=-45152.4000757
+ cpudel    ...   Time this iter:  time(s):  0.225    total:  2.19s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 10 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7808 -0.5425 -0.5425 -0.4701 -0.4701 -0.4701 -0.4686 -0.3251 -0.3251
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7691 -0.5045 -0.5045 -0.4140 -0.4140 -0.4140 -0.3832 -0.2123 -0.2123
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.128239;  37.000000 electrons;  D(Ef):   80.198
+         Sum occ. bands:  -11.8142513  incl. Bloechl correction:   -0.003432
+         Mag. moment:       5.895724
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4002521  ehk=-45152.4001320  sumev=-11.8142513  delsev=-0.0047|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=6.99e-3  screened dq=3.16e-3
+ ENUTOD: Set EB=0 to make q2>0
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=7.89e-4  last it=1.01e-3
+    ...  deleting file mixm : nkill=10
+ broyj:  ir=2  dxmax=0.0059  gmax=3e-3  wc=1.7
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.019863  mom=0.35958  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.007704  mom=1.84637  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.019863   0.000000   0.011937  -0.001629  -0.753987
+ Co         0.007704   0.000000  -0.005361   0.000209  -0.720420
+ Sum Q=0.003250  Emad=0.000019(-0.000181)  Vmtz=-0.729932 (up-dn=0.012482)
+ Magnetization from sphere program: 5.898696  from output rho: 5.895724
+ SV:  10 7.890D-04 1.0000 2.756E-03  -45152.40013202 5.895724 B 1.69
+
+   it 10  of 30    ehf=  -45152.400252   ehk=  -45152.400132
+ From last iter    ehf=  -45152.400266   ehk=  -45152.400076
+ diffe(q)=  0.000014 (0.000789)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8957242 ehf=-45152.4002521 ehk=-45152.400132
+ cpudel    ...   Time this iter:  time(s):  0.213    total:  2.40s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 11 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7799 -0.5415 -0.5415 -0.4692 -0.4692 -0.4692 -0.4679 -0.3244 -0.3244
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7682 -0.5032 -0.5032 -0.4127 -0.4127 -0.4127 -0.3827 -0.2117 -0.2117
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.127697;  37.000000 electrons;  D(Ef):   79.878
+         Sum occ. bands:  -11.7838203  incl. Bloechl correction:   -0.003437
+         Mag. moment:       5.893147
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4002068  ehk=-45152.4001915  sumev=-11.7838203  delsev=-0.0045|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=3.01e-3  screened dq=2.02e-3
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=4.40e-3  last it=7.89e-4
+ AMIX: nmix=0 mmix=8  nelts=56  beta=0.3  tm=10  rmsdel=4.4e-3
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.019044  mom=0.36006  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.00734  mom=1.84566  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.019044   0.000000   0.011468  -0.001539  -0.753941
+ Co         0.007340   0.000000  -0.005088   0.000219  -0.720351
+ Sum Q=0.002975  Emad=0.000017(-0.000165)  Vmtz=-0.729870 (up-dn=0.012402)
+ Magnetization from sphere program: 5.897023  from output rho: 5.893147
+ SV:  11 4.404D-03 0.3000 2.561E-04  -45152.40019152 5.893147 L
+
+   it 11  of 30    ehf=  -45152.400207   ehk=  -45152.400192
+ From last iter    ehf=  -45152.400252   ehk=  -45152.400132
+ diffe(q)=  0.000045 (0.004404)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8931474 ehf=-45152.4002068 ehk=-45152.4001915
+ cpudel    ...   Time this iter:  time(s):  0.204    total:  2.61s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 12 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5414 -0.5414 -0.4691 -0.4691 -0.4691 -0.4679 -0.3243 -0.3243
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7682 -0.5031 -0.5031 -0.4126 -0.4126 -0.4126 -0.3827 -0.2117 -0.2117
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.127742;  37.000000 electrons;  D(Ef):   79.965
+         Sum occ. bands:  -11.7819683  incl. Bloechl correction:   -0.003438
+         Mag. moment:       5.891883
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4013300  ehk=-45152.4012923  sumev=-11.7819683  delsev=-0.0070|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=3.20e-3  screened dq=2.10e-3
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=3.11e-3  last it=4.40e-3
+ broyj:  start  beta=0.3  w0=0.01  isw=0  gmax=0.012
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.018015  mom=0.35966  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.006968  mom=1.84527  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.018015   0.000000   0.010836  -0.001468  -0.754105
+ Co         0.006968   0.000000  -0.004841   0.000197  -0.720395
+ Sum Q=0.002890  Emad=0.000015(-0.000148)  Vmtz=-0.729948 (up-dn=0.012497)
+ Magnetization from sphere program: 5.895480  from output rho: 5.891883
+ SV:  12 3.109D-03 1.0000 3.883E-04  -45152.40129228 5.891883 B 0.0100
+
+   it 12  of 30    ehf=  -45152.401330   ehk=  -45152.401292
+ From last iter    ehf=  -45152.400207   ehk=  -45152.400192
+ diffe(q)= -0.001123 (0.003109)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8918832 ehf=-45152.40133 ehk=-45152.4012923
+ cpudel    ...   Time this iter:  time(s):  0.210    total:  2.82s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 13 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7799 -0.5415 -0.5415 -0.4692 -0.4692 -0.4692 -0.4681 -0.3246 -0.3246
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7682 -0.5032 -0.5032 -0.4128 -0.4128 -0.4128 -0.3829 -0.2119 -0.2119
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.128039;  37.000000 electrons;  D(Ef):   79.960
+         Sum occ. bands:  -11.7896064  incl. Bloechl correction:   -0.003438
+         Mag. moment:       5.890966
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4017722  ehk=-45152.4017338  sumev=-11.7896064  delsev=-0.0051|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=3.42e-3  screened dq=2.53e-3
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=2.28e-3  last it=3.11e-3
+ broyj:  ir=2  dxmax=0.0071  gmax=0.0082  wc=1
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.015223  mom=0.35767  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.005939  mom=1.84463  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.015223   0.000000   0.009131  -0.001265  -0.754738
+ Co         0.005939   0.000000  -0.004147   0.000147  -0.720553
+ Sum Q=0.002595  Emad=0.000011(-0.000106)  Vmtz=-0.730241 (up-dn=0.012977)
+ Magnetization from sphere program: 5.891564  from output rho: 5.890966
+ SV:  13 2.278D-03 1.0000 1.439E-03  -45152.40173379 5.890966 B 1.00
+
+   it 13  of 30    ehf=  -45152.401772   ehk=  -45152.401734
+ From last iter    ehf=  -45152.401330   ehk=  -45152.401292
+ diffe(q)= -0.000442 (0.002278)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8909662 ehf=-45152.4017722 ehk=-45152.4017338
+ cpudel    ...   Time this iter:  time(s):  0.223    total:  3.04s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 14 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7801 -0.5419 -0.5419 -0.4698 -0.4698 -0.4698 -0.4688 -0.3255 -0.3255
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7686 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3836 -0.2128 -0.2128
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.128918;  37.000000 electrons;  D(Ef):   79.887
+         Sum occ. bands:  -11.8159906  incl. Bloechl correction:   -0.003436
+         Mag. moment:       5.889531
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4019823  ehk=-45152.4019626  sumev=-11.8159906  delsev=0.00428|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=3.27e-3  screened dq=2.68e-3
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=9.80e-4  last it=2.28e-3
+ broyj:  ir=2  dxmax=0.0017  gmax=0.0044  wc=1.4
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.014216  mom=0.35648  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.005532  mom=1.84471  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.014216   0.000000   0.008534  -0.001175  -0.754996
+ Co         0.005532   0.000000  -0.003857   0.000143  -0.720585
+ Sum Q=0.002380  Emad=0.000010(-0.000093)  Vmtz=-0.730337 (up-dn=0.013247)
+ Magnetization from sphere program: 5.890603  from output rho: 5.889531
+ SV:  14 9.797D-04 1.0000 6.860E-04  -45152.40196261 5.889531 B 1.36
+
+   it 14  of 30    ehf=  -45152.401982   ehk=  -45152.401963
+ From last iter    ehf=  -45152.401772   ehk=  -45152.401734
+ diffe(q)= -0.000210 (0.000980)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8895312 ehf=-45152.4019823 ehk=-45152.4019626
+ cpudel    ...   Time this iter:  time(s):  0.219    total:  3.26s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 15 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7801 -0.5421 -0.5421 -0.4701 -0.4701 -0.4701 -0.4691 -0.3258 -0.3258
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7688 -0.5038 -0.5038 -0.4135 -0.4135 -0.4135 -0.3838 -0.2130 -0.2130
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129177;  37.000000 electrons;  D(Ef):   79.856
+         Sum occ. bands:  -11.8246933  incl. Bloechl correction:   -0.003436
+         Mag. moment:       5.889400
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4019764  ehk=-45152.4019651  sumev=-11.8246933  delsev=0.00850|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=2.60e-3  screened dq=2.02e-3
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=6.94e-4  last it=9.80e-4
+ broyj:  ir=2  dxmax=0.0031  gmax=0.0032  wc=1.9
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.012225  mom=0.35442  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.00468  mom=1.8449  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.012225   0.000000   0.007376  -0.000973  -0.755408
+ Co         0.004680   0.000000  -0.003231   0.000153  -0.720581
+ Sum Q=0.001817  Emad=0.000007(-0.000068)  Vmtz=-0.730451 (up-dn=0.013748)
+ Magnetization from sphere program: 5.889127  from output rho: 5.889400
+ SV:  15 6.942D-04 1.0000 1.233E-03  -45152.40196508 5.889400 B 1.92
+
+   it 15  of 30    ehf=  -45152.401976   ehk=  -45152.401965
+ From last iter    ehf=  -45152.401982   ehk=  -45152.401963
+ diffe(q)=  0.000006 (0.000694)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8894001 ehf=-45152.4019764 ehk=-45152.4019651
+ cpudel    ...   Time this iter:  time(s):  0.219    total:  3.48s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 16 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7801 -0.5423 -0.5423 -0.4703 -0.4703 -0.4703 -0.4694 -0.3262 -0.3262
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7690 -0.5040 -0.5040 -0.4137 -0.4137 -0.4137 -0.3841 -0.2133 -0.2133
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129513;  37.000000 electrons;  D(Ef):   79.802
+         Sum occ. bands:  -11.8362060  incl. Bloechl correction:   -0.003438
+         Mag. moment:       5.889321
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4019719  ehk=-45152.4019676  sumev=-11.8362060  delsev=0.01551|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.39e-3  screened dq=7.95e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=3.02e-4  last it=6.94e-4
+ broyj:  ir=2  dxmax=5e-4  gmax=8.8e-4  wc=4.4
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.011672  mom=0.3542  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.004411  mom=1.84496  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.011672   0.000000   0.007071  -0.000901  -0.755443
+ Co         0.004411   0.000000  -0.003021   0.000168  -0.720530
+ Sum Q=0.001560  Emad=0.000006(-0.000061)  Vmtz=-0.730424 (up-dn=0.013840)
+ Magnetization from sphere program: 5.889075  from output rho: 5.889321
+ SV:  16 3.019D-04 1.0000 2.120E-04  -45152.40196763 5.889321 B 4.43
+
+   it 16  of 30    ehf=  -45152.401972   ehk=  -45152.401968
+ From last iter    ehf=  -45152.401976   ehk=  -45152.401965
+ diffe(q)=  0.000004 (0.000302)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8893215 ehf=-45152.4019719 ehk=-45152.4019676
+ cpudel    ...   Time this iter:  time(s):  0.181    total:  3.66s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 17 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7800 -0.5422 -0.5422 -0.4703 -0.4703 -0.4703 -0.4694 -0.3262 -0.3262
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7689 -0.5040 -0.5040 -0.4136 -0.4136 -0.4136 -0.3841 -0.2133 -0.2133
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129481;  37.000000 electrons;  D(Ef):   79.790
+         Sum occ. bands:  -11.8351405  incl. Bloechl correction:   -0.003439
+         Mag. moment:       5.889374
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4019844  ehk=-45152.4019812  sumev=-11.8351405  delsev=0.01626|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.09e-3  screened dq=5.16e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=2.09e-4  last it=3.02e-4
+ broyj:  ir=2  dxmax=5.5e-4  gmax=6.5e-4  wc=6.4
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.010791  mom=0.35417  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003964  mom=1.84499  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.010791   0.000000   0.006593  -0.000777  -0.755462
+ Co         0.003964   0.000000  -0.002666   0.000200  -0.720428
+ Sum Q=0.001101  Emad=0.000005(-0.000051)  Vmtz=-0.730356 (up-dn=0.013942)
+ Magnetization from sphere program: 5.889136  from output rho: 5.889374
+ SV:  17 2.092D-04 1.0000 2.554E-04  -45152.40198123 5.889374 B 6.39
+
+   it 17  of 30    ehf=  -45152.401984   ehk=  -45152.401981
+ From last iter    ehf=  -45152.401972   ehk=  -45152.401968
+ diffe(q)= -0.000013 (0.000209)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8893742 ehf=-45152.4019844 ehk=-45152.4019812
+ cpudel    ...   Time this iter:  time(s):  0.183    total:  3.84s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 18 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7799 -0.5421 -0.5421 -0.4702 -0.4702 -0.4702 -0.4693 -0.3261 -0.3261
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7689 -0.5039 -0.5039 -0.4135 -0.4135 -0.4135 -0.3840 -0.2132 -0.2132
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129396;  37.000000 electrons;  D(Ef):   79.769
+         Sum occ. bands:  -11.8320836  incl. Bloechl correction:   -0.003440
+         Mag. moment:       5.889424
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020015  ehk=-45152.4020005  sumev=-11.8320836  delsev=0.01670|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=7.27e-4  screened dq=2.99e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=1.22e-4  last it=2.09e-4
+ broyj:  ir=2  dxmax=1.3e-4  gmax=3.6e-4  wc=11
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.010489  mom=0.3544  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003801  mom=1.84494  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.010489   0.000000   0.006434  -0.000730  -0.755447
+ Co         0.003801   0.000000  -0.002533   0.000215  -0.720383
+ Sum Q=0.000914  Emad=0.000005(-0.000048)  Vmtz=-0.730320 (up-dn=0.013942)
+ Magnetization from sphere program: 5.889225  from output rho: 5.889424
+ SV:  18 1.222D-04 1.0000 6.727E-05  -45152.40200050 5.889424 B 10.9
+
+   it 18  of 30    ehf=  -45152.402002   ehk=  -45152.402000
+ From last iter    ehf=  -45152.401984   ehk=  -45152.401981
+ diffe(q)= -0.000017 (0.000122)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8894239 ehf=-45152.4020015 ehk=-45152.4020005
+ cpudel    ...   Time this iter:  time(s):  0.192    total:  4.04s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 19 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7799 -0.5421 -0.5421 -0.4701 -0.4701 -0.4701 -0.4693 -0.3261 -0.3261
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7689 -0.5039 -0.5039 -0.4135 -0.4135 -0.4135 -0.3840 -0.2132 -0.2132
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129354;  37.000000 electrons;  D(Ef):   79.762
+         Sum occ. bands:  -11.8304299  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.889398
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020049  ehk=-45152.4020041  sumev=-11.8304299  delsev=0.01636|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=6.09e-4  screened dq=2.55e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=9.66e-5  last it=1.22e-4
+ broyj:  ir=2  dxmax=2.6e-4  gmax=3.3e-4  wc=14
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.00986  mom=0.35496  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003462  mom=1.8448  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009860   0.000000   0.006102  -0.000632  -0.755419
+ Co         0.003462   0.000000  -0.002258   0.000245  -0.720293
+ Sum Q=0.000526  Emad=0.000004(-0.000042)  Vmtz=-0.730247 (up-dn=0.013926)
+ Magnetization from sphere program: 5.889368  from output rho: 5.889398
+ SV:  19 9.661D-05 1.0000 1.467E-04  -45152.40200407 5.889398 B 13.8
+
+   it 19  of 30    ehf=  -45152.402005   ehk=  -45152.402004
+ From last iter    ehf=  -45152.402002   ehk=  -45152.402000
+ diffe(q)= -0.000003 (0.000097)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8893977 ehf=-45152.4020049 ehk=-45152.4020041
+ cpudel    ...   Time this iter:  time(s):  0.197    total:  4.23s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 20 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5420 -0.5420 -0.4701 -0.4701 -0.4701 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7688 -0.5038 -0.5038 -0.4134 -0.4134 -0.4134 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129281;  37.000000 electrons;  D(Ef):   79.747
+         Sum occ. bands:  -11.8273272  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.889296
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020094  ehk=-45152.4020093  sumev=-11.8273272  delsev=0.01554|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=3.78e-4  screened dq=1.87e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=5.86e-5  last it=9.66e-5
+    ...  deleting file mixm : nkill=10
+ broyj:  ir=2  dxmax=1.2e-4  gmax=2.2e-4  wc=23
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.009622  mom=0.35524  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003337  mom=1.84471  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009622   0.000000   0.005975  -0.000597  -0.755414
+ Co         0.003337   0.000000  -0.002157   0.000256  -0.720262
+ Sum Q=0.000388  Emad=0.000004(-0.000040)  Vmtz=-0.730224 (up-dn=0.013911)
+ Magnetization from sphere program: 5.889361  from output rho: 5.889296
+ SV:  20 5.860D-05 1.0000 6.152E-05  -45152.40200927 5.889296 B 22.8
+
+   it 20  of 30    ehf=  -45152.402009   ehk=  -45152.402009
+ From last iter    ehf=  -45152.402005   ehk=  -45152.402004
+ diffe(q)= -0.000004 (0.000059)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8892964 ehf=-45152.4020094 ehk=-45152.4020093
+ cpudel    ...   Time this iter:  time(s):  0.181    total:  4.41s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 21 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5420 -0.5420 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7688 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129267;  37.000000 electrons;  D(Ef):   79.740
+         Sum occ. bands:  -11.8265227  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.889219
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020094  ehk=-45152.4020092  sumev=-11.8265227  delsev=0.01523|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=2.90e-4  screened dq=1.52e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=4.49e-5  last it=5.86e-5
+ AMIX: nmix=0 mmix=8  nelts=56  beta=0.3  tm=10  rmsdel=4.49e-5
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.009539  mom=0.35535  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003295  mom=1.84466  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009539   0.000000   0.005930  -0.000585  -0.755416
+ Co         0.003295   0.000000  -0.002124   0.000259  -0.720254
+ Sum Q=0.000346  Emad=0.000004(-0.000039)  Vmtz=-0.730219 (up-dn=0.013902)
+ Magnetization from sphere program: 5.889317  from output rho: 5.889219
+ SV:  21 4.494D-05 0.3000 2.514E-05  -45152.40200917 5.889219 L
+
+   it 21  of 30    ehf=  -45152.402009   ehk=  -45152.402009
+ From last iter    ehf=  -45152.402009   ehk=  -45152.402009
+ diffe(q)=  0.000000 (0.000045)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8892189 ehf=-45152.4020094 ehk=-45152.4020092
+ cpudel    ...   Time this iter:  time(s):  0.185    total:  4.60s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 22 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5420 -0.5420 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7688 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129269;  37.000000 electrons;  D(Ef):   79.738
+         Sum occ. bands:  -11.8264346  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.889174
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020087  ehk=-45152.4020085  sumev=-11.8264346  delsev=0.01514|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=2.57e-4  screened dq=1.29e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=3.69e-5  last it=4.49e-5
+ broyj:  start  beta=0.3  w0=0.01  isw=0  gmax=1.3e-4
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.009465  mom=0.35544  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003258  mom=1.84461  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009465   0.000000   0.005889  -0.000575  -0.755418
+ Co         0.003258   0.000000  -0.002095   0.000261  -0.720247
+ Sum Q=0.000310  Emad=0.000004(-0.000038)  Vmtz=-0.730214 (up-dn=0.013896)
+ Magnetization from sphere program: 5.889273  from output rho: 5.889174
+ SV:  22 3.692D-05 1.0000 2.100E-05  -45152.40200854 5.889174 B 0.0100
+
+   it 22  of 30    ehf=  -45152.402009   ehk=  -45152.402009
+ From last iter    ehf=  -45152.402009   ehk=  -45152.402009
+ diffe(q)=  0.000001 (0.000037)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.889174 ehf=-45152.4020087 ehk=-45152.4020085
+ cpudel    ...   Time this iter:  time(s):  0.185    total:  4.78s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 23 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5420 -0.5420 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7688 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129270;  37.000000 electrons;  D(Ef):   79.736
+         Sum occ. bands:  -11.8263440  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.889136
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020083  ehk=-45152.4020081  sumev=-11.8263440  delsev=0.01509|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=2.28e-4  screened dq=1.12e-4
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=3.13e-5  last it=3.69e-5
+ broyj:  ir=2  dxmax=1.4e-4  gmax=1.1e-4  wc=43
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.009172  mom=0.35577  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.003112  mom=1.84444  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009172   0.000000   0.005729  -0.000536  -0.755426
+ Co         0.003112   0.000000  -0.001980   0.000271  -0.720219
+ Sum Q=0.000165  Emad=0.000004(-0.000036)  Vmtz=-0.730196 (up-dn=0.013876)
+ Magnetization from sphere program: 5.889088  from output rho: 5.889136
+ SV:  23 3.132D-05 1.0000 7.915E-05  -45152.40200812 5.889136 B 42.7
+
+   it 23  of 30    ehf=  -45152.402008   ehk=  -45152.402008
+ From last iter    ehf=  -45152.402009   ehk=  -45152.402009
+ diffe(q)=  0.000000 (0.000031)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8891359 ehf=-45152.4020083 ehk=-45152.4020081
+ cpudel    ...   Time this iter:  time(s):  0.193    total:  4.98s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 24 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5419 -0.5419 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7687 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+ Exit -1 DIAGNO: tinvit cannot find all evecs
+ CPU time:    5.063s   Wall clock    5.095s   12:19:38 23.04.2014        on phpdl1.ph.kcl.ac.uk
+ -----------------------  START LM -----------------------
+
+ LM:       nbas = 4  nspec = 2  vn 7.11  verb 31,20
+ special:  forces, scr-rho-out(model eps)
+ pot:      spin-pol, XC:BH
+ bz:       metal, tetra, invit 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 7.1866  Cell vol = 371.167908
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 7.18660   awald= 0.278
+         r1=  2.896   nkd=  93      q1=  3.440   nkg= 171
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+
+ SFILL:  automatic scaling of sphere radii.  Constrain rmax<=3.3
+ SCLWSR:  vol = 371.168 a.u..   Initial sphere packing = 71.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  12.1   0.0   0.0 %    omax2=  22.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Pt          2.613200    2.928343    1.120597
+   2   Co          2.468493    2.766185    1.120597
+ BZMESH:  35 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 250 inequivalent ones found
+
+ GETZV:  37 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009172   0.000000   0.005729  -0.000536  -0.755426
+ Co         0.003112   0.000000  -0.001980   0.000271  -0.720219
+ Sum Q=0.000165  Emad=0.000004(-0.000036)  Vmtz=-0.730196 (up-dn=0.013876)
+ cpudel    ...   Time this iter:  time(s):  0.116    total:  0.116s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 1 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5419 -0.5419 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7687 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129273;  37.000000 electrons;  D(Ef):   79.729
+         Sum occ. bands:  -11.8259475  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.888994
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020599  ehk=-45152.4020068  sumev=-11.8259475  delsev=0.01492|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.23e-4  screened dq=6.17e-5
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=1.68e-5
+ broyj:  ir=2  dxmax=3.7e-5  gmax=6.8e-5  wc=79
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.009087  mom=0.35584  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.00307  mom=1.8444  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.009087   0.000000   0.005682  -0.000524  -0.755428
+ Co         0.003070   0.000000  -0.001947   0.000273  -0.720210
+ Sum Q=0.000123  Emad=0.000004(-0.000035)  Vmtz=-0.730191 (up-dn=0.013874)
+ Magnetization from sphere program: 5.889027  from output rho: 5.888994
+ SV:   1 1.683D-05 1.0000 2.181E-05  -45152.40200680 5.888994 B 79.4
+
+   it  1  of 30    ehf=  -45152.402060   ehk=  -45152.402007
+i nit=30 mmom=5.8889939 ehf=-45152.4020599 ehk=-45152.4020068
+ cpudel    ...   Time this iter:  time(s):  0.186    total:  0.302s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+ --- BNDASA : iteration 2 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5419 -0.5419 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7687 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129272;  37.000000 electrons;  D(Ef):   79.726
+         Sum occ. bands:  -11.8257972  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.888959
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020067  ehk=-45152.4020066  sumev=-11.8257972  delsev=0.01490|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=9.14e-5  screened dq=4.66e-5
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=1.31e-5  last it=1.68e-5
+ broyj:  ir=2  dxmax=9.5e-5  gmax=5.4e-5  wc=100
+
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.008875  mom=0.35601  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.002964  mom=1.84429  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.008875   0.000000   0.005566  -0.000495  -0.755435
+ Co         0.002964   0.000000  -0.001863   0.000280  -0.720189
+ Sum Q=0.000018  Emad=0.000003(-0.000033)  Vmtz=-0.730177 (up-dn=0.013872)
+ Magnetization from sphere program: 5.888876  from output rho: 5.888959
+ SV:   2 1.307D-05 1.0000 5.425E-05  -45152.40200658 5.888959 B 102
+
+   it  2  of 30    ehf=  -45152.402007   ehk=  -45152.402007
+ From last iter    ehf=  -45152.402060   ehk=  -45152.402007
+ diffe(q)=  0.000053 (0.000013)    tol= 0.000100 (0.000010)   more=T
+i nit=30 mmom=5.8889592 ehf=-45152.4020067 ehk=-45152.4020066
+ cpudel    ...   Time this iter:  time(s):  0.186    total:  0.488s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 7 0 21
+
+<A name="lastit"></A>
+ --- BNDASA : iteration 3 ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7798 -0.5419 -0.5419 -0.4700 -0.4700 -0.4700 -0.4692 -0.3260 -0.3260
+ SECMAT:  kpt 1 of 35, k=  0.00000  0.00000  0.00000
+ -0.7687 -0.5037 -0.5037 -0.4133 -0.4133 -0.4133 -0.3839 -0.2131 -0.2131
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.129269;  37.000000 electrons;  D(Ef):   79.721
+         Sum occ. bands:  -11.8253939  incl. Bloechl correction:   -0.003441
+         Mag. moment:       5.888879
+
+ Saved qp weights ...
+
+ LM: ehf=-45152.4020065  ehk=-45152.4020067  sumev=-11.8253939  delsev=0.01489|
+ SCRMOM: screen output rho using model response, elind=1.440 (input elind=-0.7)
+ SCRMOM: unscreened dq=1.96e-5  screened dq=1.66e-5
+  
+ mixing: mode=B  nmix=2  beta=.3  kill=10
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=5.10e-6  last it=1.31e-5
+ broyj:  ir=2  dxmax=1.1e-5  gmax=1.5e-5  wc=260
+
+<A name="moms"></A>
+ GETZV:  37 valence electrons
+ATOM=Pt   Z=78  Qc=68  R=2.928343  Qv=-0.008856  mom=0.35601  a=0.025  nr=481
+ATOM=Co   Z=27  Qc=18  R=2.766185  Qv=0.002955  mom=1.84428  a=0.025  nr=393
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt        -0.008856   0.000000   0.005556  -0.000493  -0.755435
+ Co         0.002955   0.000000  -0.001855   0.000281  -0.720187
+ Sum Q=0.000008  Emad=0.000003(-0.000033)  Vmtz=-0.730176 (up-dn=0.013873)
+ Magnetization from sphere program: 5.888866  from output rho: 5.888879
+ SV:   3 5.103D-06 1.0000 5.088E-06  -45152.40200668 5.888879 B 262
+
+   it  3  of 30    ehf=  -45152.402007   ehk=  -45152.402007
+ From last iter    ehf=  -45152.402007   ehk=  -45152.402007
+ diffe(q)=  0.000000 (0.000005)    tol= 0.000100 (0.000010)   more=F
+c nit=30 mmom=5.8888785 ehf=-45152.4020065 ehk=-45152.4020067
+ cpudel    ...   Time this iter:  time(s):  0.163    total:  0.651s
+
+ Jolly good show !  You converged to rms DQ=  0.000005
+ Exit 0 LM 
+ CPU time:    0.651s   Wall clock    0.694s   12:19:39 23.04.2014        on phpdl1.ph.kcl.ac.uk
+
+
+
+
+
+</pre>
+</HTML>

@@ -1,0 +1,4 @@
+% repeat i=2:18:2
+% var j=i/10
+j 9*exp(-j)-8*exp(2*j) (9*cos(j)+8*cos(2*j)-7*sin(2*j))/j
+%end

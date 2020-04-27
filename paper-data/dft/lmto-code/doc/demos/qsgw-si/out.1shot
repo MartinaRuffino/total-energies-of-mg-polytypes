@@ -1,0 +1,24 @@
+  lmgw1-shot: wrote to file version: fpgw sep12 lmf LM 7.11 FP 7.11
+  lmgw1-shot: invoking /home/ms4/bin/lmgw --insul=4 --ht si
+    lmgw  14:18:04 : invoking echo 0 |/home/ms4/bin/lmfgwd --gwcode=2 --no-iactive si >llmfgw00
+    lmgw  14:18:05 : invoking echo 1 |/home/ms4/bin/code2/qg4gw >lqg4gw
+    lmgw  14:18:05 : invoking echo 1 |/home/ms4/bin/lmfgwd --gwcode=2 --no-iactive si >llmfgw01
+ OK! lmfgwd mode=1 
+    lmgw  14:18:06 : invoking echo si|/home/ms4/bin/lmf2gw_2 >llmf2gw
+    lmgw  14:18:06 : invoking echo 0 |/home/ms4/bin/code2/rdata4gw_v2 >lrdata4gw
+    lmgw  14:18:06 : invoking echo 1|/home/ms4/bin/code2/heftet   >leftet
+    lmgw  14:18:06 : invoking echo 0|/home/ms4/bin/code2/hchknw >lchknw
+    lmgw  14:18:06 : invoking echo 3|/home/ms4/bin/code2/hbasfp0 >lbasC
+    lmgw  14:18:07 : invoking echo 0|/home/ms4/bin/code2/hvccfp0 >lvccC
+    lmgw  14:18:14 : invoking echo 3|/home/ms4/bin/code2/hsfp0 >lsxC
+    lmgw  14:18:16 : invoking echo 0|/home/ms4/bin/code2/hbasfp0 >lbas
+    lmgw  14:18:17 : invoking echo 0|/home/ms4/bin/code2/hvccfp0 >lvcc
+    lmgw  14:18:23 : invoking echo 11|/home/ms4/bin/code2/hsfp0 >lsx
+    lmgw  14:18:25 : invoking echo 11|/home/ms4/bin/code2/hx0fp0 >lx0
+    lmgw  14:19:24 : invoking echo 12|/home/ms4/bin/code2/hsfp0  >lsc
+    lmgw  14:19:47 : invoking echo 4 | /home/ms4/bin/code2/hqpe >lqpe
+    lmgw  14:19:47 : exit with wall clock time ... 1.7m (0.0h)
+  lmgw1-shot:  (nbloch=195(136),ndimh=50,time=1+0m,X86_64-2.5) Mon Jun 2 14:19:52 BST 2014 elapsed wall time 1.7m phpdl1
+    savegwfiles --job="/home/ms4/bin/lmgw1-shot --autoht --insul=4 -job= si-test si" --mkdir si si-test
+savegw: the following files were copied to si-test
+job version llmfgw00 GWinput ctrl.preprocessed.si save.si QPU TOTE.UP TOTE2.UP dat

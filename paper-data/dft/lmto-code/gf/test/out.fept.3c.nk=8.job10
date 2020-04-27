@@ -1,0 +1,122 @@
+         /home/ms4/lm/lmgf fept -vnk=8 -vnsp=2 --rs=1,0 -vso=1 -vidxp=1 -vidxf=1 -vsharm=1 -vgfmod=10 --no-iactiv -ef=-0.081325+.000
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 2  nspec = 2  verb 31
+ special:  sharm(m=-l:l), scr-rho-out(model eps),  transverse J
+ pot:      spin-pol
+ libxc     GGA X (Perdew, Burke & Ernzerhof) + GGA C (Perdew, Burke & Ernzerhof)
+ noncoll:  Non-coll, L.S coupling
+ bz:       metal(3), tetra 
+ susite:   (warning) no file eula ... nothing read
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.373094        0.000000   0.000000   0.728282
+   alat = 5.147289  Cell vol = 187.256107
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.14729   awald= 0.350   lmax=6
+         r1=  3.326   nkd= 113      q1=  3.211   nkg= 197
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is tetragonal with 16 symmetry operations.
+ SYMCRY: crystal invariant under 16 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i r2(1,1,0)
+         r4z i r2(1,1,0)
+ SOGRP:  of 16 symops, 8 retained with z preserved
+ GROUPG: the following are sufficient to generate the space group:
+         r4z i
+         r4z i
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+
+ SFILL:  automatic scaling of sphere radii, omax = 20, 26, 24%  Constrain rmax<=3.3
+ SCLWSR:  mode = 0  vol = 187.256 a.u.   Initial sphere packing = 73.1%  scaled to 100%
+ constr omax1=  20.0  26.0  24.0 %    omax2=  40.0  60.0  60.0 %
+ actual omax1=  11.0   0.0   0.0 %    omax2=  20.2   0.0   0.0 %
+
+ spec  name        old rmax    new rmax     ratio
+   1   Fe          2.499366    2.775067    1.110308
+   2   Pt          2.573644    2.857539    1.110308
+ BZMESH: 90 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 1368 inequivalent ones found
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ EXASA: make transverse exchange J (LW)
+
+ Override file fermi level, use ef= -0.081325, delef= -0.010024
+
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 32 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+          Euler angles:
+   ib   alpha      beta     gamma     class         spin quantization axis
+    1  0.000000  0.000000  0.000000   Fe         0.000000  0.000000  1.000000
+    2  0.000000  0.000000  0.000000   Pt         0.000000  0.000000  1.000000
+  
+ ZMESH: nz=16 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.01,-0.0813
+
+ DLM: p(x) = 0.000 cos(t)
+ RDOMG : read omega files, 0 sites, 16 energy points
+
+ Site list has 2 site(s), 2 components
+
+ done iz=1  z = (-1.009933,0.004591)
+ done iz=6  z = (-0.810159,0.190833)
+ done iz=11  z = (-0.20399,0.15722)
+
+ Sum rule: ib  1   pTpT = -196.8169, -76.2332; -p(T+ - T-) = -196.6085, -76.3337
+
+ Sum rule: ib  1   lifetime (mRy) = *********,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =  -2.796513609902197E-017 Re Sum7  -1.72992857007257     
+ warning : sum rule mismatch
+
+ Sum rule: ib  2   pTpT =   -6.9392,  -2.1508; -p(T+ - T-) =   -6.0049,  -2.1290
+
+ Sum rule: ib  2   lifetime (mRy) = -232.2891,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =  -2.082649858484386E-016 Re Sum7 -0.232289108544016     
+ warning : sum rule mismatch
+ done iz=16  z = (-0.08137,0.00322)
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         -76.233     -84.272       8.039       7.938     835.3
+   2          -2.151      -3.783       1.632       1.654     174.0
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1       -0.220 -0.115 -0.057 -0.120  1.843  0.851  0.981  2.553  2.337 -0.003 -0.001 -0.004  0.002 -0.003 -0.001 -0.004
+   2       -0.001 -0.451  0.063  0.777  1.481  1.128  0.592 -0.376 -1.534 -0.003 -0.007 -0.012  0.000 -0.015 -0.007 -0.003
+
+ Moments and charges for ef=-0.081325:
+        ATOM=Fe       P=  4.6512407  4.3890160  3.8835126  4.1300000
+                          4.6436496  4.3921204  3.5961349  4.1300000
+                      Q=  0.3186229 -0.0018712  0.0068197
+                          0.3978177 -0.0056813  0.0073698
+                          4.7724320  0.0070042  0.0491581
+                          0.0622534 -0.0121276  0.0032497
+                          0.3132297 -0.0038168  0.0069730
+                          0.4130911 -0.0064058  0.0086705
+                          1.8567246  0.0209962  0.0272019
+                          0.0584539 -0.0099207  0.0025049
+        ATOM=Pt       P=  6.7251804  6.3791354  5.8763868  5.1300000
+                          6.7377592  6.4134782  5.8505783  5.1300000
+                      Q=  0.3875354 -0.0018408  0.0085280
+                          0.3749928 -0.0083391  0.0071920
+                          4.2698964  0.0078552  0.0815626
+                          0.0677055 -0.0010045  0.0007894
+                          0.4116757 -0.0024957  0.0080508
+                          0.4508996 -0.0082264  0.0092527
+                          3.8309387  0.0012943  0.0501179
+                          0.0564913  0.0024253  0.0008908
+
+ Class   dq     amom      Class   dq     amom
+   1   0.1926  2.9096  |    2  -0.1499  0.3501  |
+ Sum of sphere charges = 0.042761
+ Exit 0 LMGF 
+ CPU time:  5.823s   Wall clock 5.855s  at  14:55:18 22.07.2018  on  ellery

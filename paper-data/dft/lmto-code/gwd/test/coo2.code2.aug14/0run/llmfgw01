@@ -1,0 +1,195 @@
+starting job /opt/openmpi-1.4.4-intel11/bin/mpirun -stdin /dev/null -np 4 /home/ms4/bin/lmfgwd --jobgw=1 --gwcode=2 --no-iactive -vasa=f -vlmf=t -vnsp=1 -vnit=20 -vlmxb=3 -vnl=5 -vbzj=0 -vmetal=5 -vles=10 -vnk=10 -vnkgw=4 -vconvc=1d-5 -vbeta=.3 --pr31,30 -vehmax=-.55 -vlfc=1 -vlfb=1 -vlfa=1 -vbigbas=1 -vtppc=3 -vtpdc=4 coo2
+ -----------------------  START LMFGWD -----------------------
+#rf  177: ()CoO2 in the trigonal structure
+#rf  317: Co parms : Z=27 eref=-2781.6569
+#rf  317: O parms : Z=8 eref=-149.1822
+
+ LMFGWD:   nbas = 3(+1)  nspec = 3  vn 7.11.c  verb 31,30
+ special:  forces
+ pot:      XC:BH, read Sigma
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(5), tetra 
+
+                Plat                                  Qlat
+   1.000000   0.000000   2.651390        0.666667   0.000000   0.125720
+  -0.500000   0.866025   2.651390       -0.333333   0.577350   0.125720
+  -0.500000  -0.866025   2.651390       -0.333333  -0.577350   0.125720
+   alat = 3.0226  Cell vol = 190.224974
+
+ LATTC:  as= 2.000   tol=1.00E-10   alat= 3.02260   awald= 0.348
+         r1=  6.179   nkd= 151      q1=  2.051   nkg= 263
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is rhombohedral with 12 symmetry operations.
+ SYMCRY: crystal invariant under 12 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z r2(sqrt(3)/2,1/2,0)
+         i*r3z r2(sqrt(3)/2,1/2,0)
+ MKSYM:  found 12 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ C1       1.920  0.768    4    3         4  0.480  0.960    15    1   0.768
+ A1       1.550  0.620    4    3         4  0.388  0.775    15    0   0.620
+ EA1      0.000  0.000   -1   -1        -1  0.000  0.000    15    0   0.000
+
+ MSHSIZ: mesh has 30 x 30 x 30 divisions; length 0.286, 0.286, 0.286
+         generated from gmax = 11.0 a.u. : 4253 vectors of 27000 (15%)
+
+ GVLIST: gmax = 11 a.u. created 4253 vectors of 27000 (15%)
+         mesh has 30 x 30 x 30 divisions; length 0.286, 0.286, 0.286
+ SGVSYM: 448 symmetry stars found for 4253 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 92 0 84 124
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      57     0    27    57    84      16
+   2      27     0    57    27    84      16
+   3       8     0     0     8     8      92
+  all     92     0    84    92   176     124
+ suham :  75 augmentation channels, 75 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       0*   1.90  -0.55   3.913    1.00E-06     201 
+  C1       1    1.90  -0.55   4.108    1.08E-06     233 
+  C1       2    1.05  -0.55   8.080    1.04E-06    1683 
+  C1       3    1.80  -0.55   4.780    1.03E-06     349 
+  C1       0    1.90  -1.45   3.913    1.00E-06     201 
+  C1       1    1.90  -2.00   4.108    1.08E-06     233 
+  C1       2    1.00  -1.45   8.508    1.06E-06    1971 
+  A1       0    0.80  -0.50   9.292    1.07E-06    2591 
+  A1       1*   0.80  -0.55  10.038    1.02E-06    3241 
+  A1       2*   0.80  -0.55  10.773    1.07E-06    4011 
+  A1       3    0.80  -0.55  11.495    5.21E-06    4253*
+  A1       0    0.80  -1.50   9.292    1.07E-06    2591 
+  A1       1*   0.80  -1.35  10.038    1.02E-06    3241 
+  A1       2    0.80  -1.35  10.773    1.07E-06    4011 
+  EA1      0*   1.90  -0.55   3.913    1.00E-06     201 
+  EA1      1*   1.90  -0.55   4.108    1.08E-06     233 
+  EA1      2    1.90  -0.55   4.306    1.73E-06     263 
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ bndfp (warning): no sigm file found ... DFT calculation only
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ avg es pot at rmt= 0.235558  avg sphere pot= 0.282534  vconst=-0.235558
+
+ smooth rhoves     72.579636   charge    16.139789
+
+ elocp:
+
+ Fit local orbitals to sm hankels, species C1, rmt=1.92
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  1  low    3.939   -4.147209   -3.072719   0.83245  -6.17280   0.02096   -3.072719 
+
+ locpot:
+
+ site  1  z= 27.0  rmt= 1.92000  nr=623   a=0.015  nlml=25  rg=0.480  Vfloat=T
+ sm core charge = 0.262093 (sphere) + 0.005242 (spillout) = 0.267334
+ potential shift to crystal energy zero:    0.000243
+
+ site  2  z=  8.0  rmt= 1.55000  nr=441   a=0.015  nlml=25  rg=0.388  Vfloat=T
+ potential shift to crystal energy zero:    0.001799
+
+ site  3  z=  8.0  rmt= 1.55000  nr=441   a=0.015  nlml=25  rg=0.388  Vfloat=T
+ potential shift to crystal energy zero:    0.001799
+
+ Energy terms:             smooth           local           total
+   rhoval*vef            -31.378151      -318.786779      -350.164930
+   rhoval*ves           -154.524117      -159.219910      -313.744027
+   psnuc*ves             299.683389    -12095.891582    -11796.208192
+   utot                   72.579636     -6127.555746     -6054.976109
+   rho*exc                 0.000000      -131.018627      -131.018627
+   rho*vxc                 0.000000      -173.439214      -173.439214
+   valence chg            16.139789        10.860211        27.000000
+   core charge            16.000000         0.000000        16.000000
+
+ Charges:  valence    27.00000   cores    16.00000   nucleii   -43.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ avg es pot at rmt= 0.235558  avg sphere pot= 0.282534  vconst=-0.235558
+
+ smooth rhoves     72.579636   charge    16.139789
+ smooth rhoeps =  -15.657039   rhomu =  -20.449776  avg vxc =   -0.858957 
+
+ elocp:
+
+ Fit local orbitals to sm hankels, species C1, rmt=1.92
+  l  type    Pnu      Eval        K.E.       Rsm       Eh      Q(r>rmt)    Fit K.E.
+  1  low    3.939   -4.147212   -3.072739   0.83245  -6.17273   0.02096   -3.072739 
+
+ locpot:
+
+ site  1  z= 27.0  rmt= 1.92000  nr=623   a=0.015  nlml=25  rg=0.480  Vfloat=T
+ writing sphere density to file rhoMT.1 ...
+ sm core charge = 0.262093 (sphere) + 0.005242 (spillout) = 0.267334
+ potential shift to crystal energy zero:    0.000243
+
+ site  2  z=  8.0  rmt= 1.55000  nr=441   a=0.015  nlml=25  rg=0.388  Vfloat=T
+ writing sphere density to file rhoMT.2 ...
+ potential shift to crystal energy zero:    0.001799
+
+ site  3  z=  8.0  rmt= 1.55000  nr=441   a=0.015  nlml=25  rg=0.388  Vfloat=T
+ writing sphere density to file rhoMT.3 ...
+ potential shift to crystal energy zero:    0.001799
+
+ Energy terms:             smooth           local           total
+   rhoval*vef            -51.467959      -318.786779      -370.254738
+   rhoval*ves           -154.524117      -159.219910      -313.744027
+   psnuc*ves             299.683389    -12095.891582    -11796.208192
+   utot                   72.579636     -6127.555746     -6054.976109
+   rho*exc               -15.657039      -131.018627      -146.675667
+   rho*vxc               -20.449776      -173.439214      -193.888990
+   valence chg            16.139789        10.860211        27.000000
+   core charge            16.000000         0.000000        16.000000
+
+ Charges:  valence    27.00000   cores    16.00000   nucleii   -43.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ Start first of two band passes ...
+
+ sugcut:  make orbital-dependent cutoffs for local orbitals, tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  C1       1    0.83  -6.17   9.634    1.00E-06    2863 
+ 
+
+ gw setup, job 1 code  2
+
+ ... Generate radial wave functions (file gwa)
+
+ getcor:  qcore= 12.00  qsc= 18.00  konf = 4  3* 3  4  5 
+ sum q=12.00  sum ec= -1591.44101851  sum tc=  2550.70163354  rho(rmax) 0.00061
+ getcor:  qcore=  2.00  qsc=  2.00  konf = 2  2  3  4  5 
+ sum q= 2.00  sum ec=   -73.50662512  sum tc=   115.28695884  rho(rmax) 0.00000
+ getcor:  qcore=  2.00  qsc=  2.00  konf = 2  2  3  4  5 
+ sum q= 2.00  sum ec=   -73.50662512  sum tc=   115.28695884  rho(rmax) 0.00000
+
+ ... Make w.f. and matrix elements, 192 qp (93 irr): file(s) gwb, vxc, evec
+
+ dstrbpx: 192 elts, 4 processors.  wtarg=23.2  wmax=24
+ sugw:  kpt 1 of 192, k=  0.00000  0.00000  0.00000
+ -4.1545 -4.1545 -4.1501 -1.3286 -1.1053 -0.3324 -0.2927 -0.2925  0.0345
+ sugw:  kpt 21 of 192, k=  0.08333  0.14434  0.06286
+ -4.1582 -4.1553 -4.1496 -1.2632 -1.1259 -0.3081 -0.2572 -0.2494 -0.1732
+ sugw:  kpt 41 of 192, k=  0.16667  0.28868  0.12572
+ -4.1618 -4.1562 -4.1490 -1.1662 -1.1623 -0.3953 -0.2478 -0.2251 -0.1091
+ sugw:  kpt 71 of 192, k=  -0.24167  -0.14434  0.09586
+ -4.1604 -4.1574 -4.1490 -1.1875 -1.1448 -0.3091 -0.2995 -0.2161 -0.1624
+ 
+ Exit 0 bndfp 
+ CPU time:   11.066s   Wall clock   11.173s   02:05:18 09.11.2014        on phpdl1.ph.kcl.ac.uk
+
+ MPI Wall-clock time: 11.173s. Resolution 0.000001s
+

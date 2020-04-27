@@ -1,0 +1,202 @@
+         lmgf fe -vnk=16 -vccor=f -vtwoc=f -vfile=f -vgfmod=10 --no-iactiv -vef=-0.054068
+ ----------------------  START LMGF  ----------------------
+ HEADER Study of Fe
+
+ LMGF:     nbas = 1  nspec = 1  verb 31,20
+ special:  transverse J
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gam-rep, Q2:Power-moments
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 5.406  Cell vol = 78.994732
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 5.40600   awald= 0.466   lmax=6
+         r1=  2.467   nkd= 137      q1=  4.689   nkg= 201
+
+ SGROUP: 48 symmetry operations from 3 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH: 145 irreducible QP from 4096 ( 16 16 16 )  shift= F F F
+ TETIRR: sorting 24576 tetrahedra ... 4715 inequivalent ones found
+
+ EXASA: (gamma repsn) make transverse exchange J (LW)
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 9 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+  
+ ZMESH: nz=13 (real axis: Im(z)=1e-3)  e1,e2=-0.05407,-0.006068  wz=1
+         Energy contour mode 2 selected.
+        *Note : This mode generates the energy derivative of J, dJ/dE
+         All quantities labeled as J below actually 
+         correspond to energy derivatives, dJ/dE,
+         and are written for each point on the contour.
+ GFASA:  reading initial shfac file
+
+ ioextf:   reading site-dependent, lm-dependent file "shfac", 3 components
+
+ Sum rule: ib  1   pTpT = -523.6590, 280.9759; -p(T+ - T-) = -523.6590, 280.9759
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         280.976    -246.258     527.234     527.234   55474.7
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        2.436  0.900  0.900  0.900169.362169.362  7.007169.362  7.007
+
+ done iz=1  z = (-0.054068,0.001)
+
+ Sum rule: ib  1   pTpT = -736.8877, 233.4646; -p(T+ - T-) = -736.8877, 233.4646
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         233.465    -334.140     567.604     567.604   59722.4
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        1.098  0.254  0.254  0.254183.835183.835  7.119183.835  7.119
+
+ Sum rule: ib  1   pTpT = -692.4581, 345.1285; -p(T+ - T-) = -692.4581, 345.1285
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         345.128    -169.662     514.791     514.791   54165.4
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        0.476 -0.036 -0.036 -0.036169.183169.183  3.436169.183  3.436
+
+ Sum rule: ib  1   pTpT = -873.5868, 139.5804; -p(T+ - T-) = -873.5868, 139.5804
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         139.580    -162.417     301.997     301.997   31775.7
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        2.789 -0.488 -0.488 -0.488 96.422 96.422  5.703 96.422  5.703
+
+ Sum rule: ib  1   pTpT = -817.0039,  13.1230; -p(T+ - T-) = -817.0039,  13.1230
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1          13.123    -116.116     129.239     129.239   13598.3
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        1.309 -0.233 -0.233 -0.233 42.157 42.157  1.079 42.157  1.079
+
+ Sum rule: ib  1   pTpT = -886.9835,-126.3949; -p(T+ - T-) = -886.9835,-126.3949
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1        -126.395    -285.052     158.657     158.657   16693.6
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        1.242 -1.716 -1.716 -1.716 50.316 50.316  5.806 50.316  5.806
+ done iz=6  z = (-0.034068,0.001)
+
+ Sum rule: ib  1   pTpT = -627.2526,-243.1087; -p(T+ - T-) = -627.2526,-243.1087
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1        -243.109    -384.167     141.058     141.058   14841.9
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1       -0.827 -2.415 -2.415 -2.415 46.803 46.803  4.361 46.803  4.361
+
+ Sum rule: ib  1   pTpT = -651.2642,-280.4276; -p(T+ - T-) = -651.2642,-280.4276
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1        -280.428    -355.338      74.911      74.911    7882.0
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        0.128  0.459  0.459  0.459 24.013 24.013  0.684 24.013  0.684
+
+ Sum rule: ib  1   pTpT = -354.8658, -79.1741; -p(T+ - T-) = -354.8658, -79.1741
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1         -79.174    -132.690      53.516      53.516    5630.9
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        1.818  0.710  0.710  0.710 18.500 18.500 -2.966 18.500 -2.966
+
+ Sum rule: ib  1   pTpT = -747.8847,  35.7538; -p(T+ - T-) = -747.8847,  35.7538
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1          35.754     -22.078      57.832      57.832    6085.0
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        3.448  3.111  3.111  3.111 22.809 22.809-11.688 22.809-11.688
+
+ Sum rule: ib  1   pTpT = -743.5541,-141.8865; -p(T+ - T-) = -743.5541,-141.8865
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1        -141.887    -170.141      28.254      28.254    2972.9
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        0.638  0.188  0.188  0.188  8.880  8.880  0.205  8.880  0.205
+ done iz=11  z = (-0.014068,0.001)
+
+ Sum rule: ib  1   pTpT = -586.1289,-142.7237; -p(T+ - T-) = -586.1289,-142.7237
+
+ Sum rule: ib  1   lifetime (mRy) =    0.0000,   0.0000; N/A =    0.0000,   0.0000
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1        -142.724    -158.825      16.102      16.102    1694.2
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        0.268 -0.027 -0.027 -0.027  2.416  2.416  4.334  2.416  4.334
+
+ Sum rule: ib  1   pTpT = -619.9040,-166.9091; -p(T+ - T-) = -619.9040,-166.9091
+
+ Sum rule: ib  1   lifetime (mRy) = -104.4210,   0.0000; N/A =    0.0000,   0.0000
+ Lifetime =  -4.632944792514960E-016 Re Sum7 -0.104421032561893     
+
+ Sum J_ij for all pairs connected to listed sites (mRy)
+ site comp  Sum J_ij       J_00       J_0(ij)     J_0(i)  2/3 J_0 (K)
+   1        -166.909    -213.064      46.155      46.155    4856.4
+
+ J_0 resolved by L (mRy), from Jij
+ site,cmp L  1      2      3     ...
+   1        1.108  0.529  0.529  0.529 11.480 11.480  4.510 11.480  4.510
+ done iz=13  z = (-0.006068,0.001)
+ Exit 0 LMGF 
+ CPU time:  1.733s   Wall clock 1.776s  at  15:38:23 22.07.2018  on  ellery

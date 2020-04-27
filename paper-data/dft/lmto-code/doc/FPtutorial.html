@@ -1,0 +1,963 @@
+<!DOCTYPE html><html>
+
+<head>
+<title>FP tutorial</title>
+<style>
+
+/* For hyperlinks */
+a:link {color:#FF0000;}      /* unvisited link */
+a:link {color:#222288;}      /* unvisited link */
+a:visited {color:#228822;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+body {
+       background-color:#ffffgg;
+     }
+ h1 {
+      color:#880000;
+      text-align:center;
+      font-size:12px;
+    }
+ h2 {
+      color:#bb3300;
+      font-size:120%;
+      font-weight:normal;
+      font-style:italic;
+    }
+
+ h3 {
+      color:#33bb00;
+      font-size:110%;
+      font-weight:normal;
+      font-style:italic;
+      text-indent: 0.5em;
+    }
+
+ h4 {
+      color:#000000;
+      font-size:100%;
+      font-weight:bold;
+      text-indent: 1.0em;
+    }
+
+ h5 {
+      color:#444488;
+      font-size:100%;
+      font-weight:bold;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+ hn {
+      color:#000000;
+      font-size:100%;
+      font-weight:normal;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+  P {
+<!--  font-family:"Times New Roman"; -->
+<!--  font-size:12px; -->
+<!--  color: red; -->
+    }
+
+  q {
+      color: red;
+    }
+
+  a {
+        color: blue;
+    }
+
+  tlarge {
+       <font-size="+1">
+    }
+
+</style>
+
+<!-- Enables the use of latex -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+</head>
+
+
+<h1><B><FONT size="+2">Tutorial for the full-potential LDA program <b>lmf</b> (v7.10)</FONT></B></h1>
+
+<h2><A name="intro"></A>1. Purpose</h2>
+
+This tutorial demonstrates the all-electron, full-potential
+LDA program <b>lmf</b>.  It
+<DL>
+
+<DD> <A href="#inputfile">&loz;</A> describes how to build the input file, by
+     <A href="input-file-style.html">categories</A>.  You can
+     <A href="Building_FP_input_file.html">build input files automatically</A>
+     from structural data, but this section is worth going through nevertheless.
+
+<DD> <A href="#preliminaries">&loz;</A> Some checks are made and a band pass is explained.
+
+<DD> <A href="#optimizebasis">&loz;</A> The basis set is tuned.
+
+<DD> <A href="#selfconsistency">&loz;</A> explains the output of a self-consistent calculation, and how
+     to create energy bands and density-of-states
+
+<DD> <A href="#shearconstant">&loz;</A> shows how to compute shear constants
+<i>c</i><sub>11</sub>&minus;&nbsp;<i>c</i><sub>12</sub></h2> and <i>c</i><sub>44</sub> in Al.
+</DL>
+
+A corresponding tutorial for the ASA program
+<b>lm</b> is found in the <A href="ASAtutorial.html">ASA tutorial</A>.
+<P><FONT color="#0000bb"><I>*Note</I>&nbsp;</FONT>
+This tutorial assumes that you installed the executables (e.g. <b>lmchk</b>, <b>lmfa</b>,
+<b>lmf</b>) and that they are in your path.<BR>
+
+<P> It also assumes you have read the
+<A href="lmto.html">ASA documentation</A> and the
+<A href="fp.html">FP documentation</A>,
+how the <A href="input-file-style.html">input file is structured</A>
+and that you have already gone through the
+<A href="ASAtutorial.html">ASA tutorial</A>, and that you understand 
+how the <A href="file-preprocessor.html">file preprocessor</A> works.
+
+In this tutorial two of the three elastic constants in Al are calculated.  Output files are
+in <A href="FPsamples/ctrl.al">doc/FPsamples</A>.
+<A href="#inputfile">Build the input file yourself</A>,
+or copy <FONT size="+1"><tt>ctrl.al</tt></FONT> from
+ <A href="FPsamples/ctrl.al">doc/FPsamples</A> and skip immediately to the
+<A href="#optimizebasis">electronic structure calculations</A>.
+
+<P> <b>lmf</b> has many other useful features not described in this
+tutorial.  Look at <A href="#othersamples">this page</A> for information about
+other tools and kinds of calculations available.
+
+<h2><A name="inputfile"></A>2. Building the input file</h2>
+
+<P> Start in the top-level directory.
+This sample helps you create a complete input file for elemental Al,
+including optimizing the parameters for the basis set.  The file is
+then used to compute a shear constant.  You may create some
+or all of your own input file from scratch; or you can just copy file
+<A href="FPsamples/ctrl.al">doc/FPsamples/ctrl.al</A> to the top-level
+directory.
+
+<P> Many categories are nearly identical to those in the
+<A href="ASAtutorial.html">ASA tutorial</A>:
+
+<UL>
+
+<LI> create category <A href="tokens.html#VERScat">VERS</A>.
+     <b>lmf</b> requires token <FONT size="+1"><tt>FP:7</tt></FONT>
+     <BR><BR>
+
+<LI> (optional) create the <A href="tokens.html#HEADERcat">HEADER</A> category.
+     <BR><BR>
+
+<LI> Set up the crystal structure, categories
+     <A href="tokens.html#STRUCcat">STRUC</A> and
+     <A href="tokens.html#SITEcat">SITE</A>.
+     <P> Al is fcc, with a
+     lattice constant 7.606 a.u. at 0K.  The input file could have read
+       <pre>  STRUC ALAT=7.606  </pre>
+     but instead the template <A href="FPsamples/ctrl.al">doc/FPsamples</A> declares a symbolic variable &nbsp;`<FONT size="+1"><tt>a</tt></FONT>'&nbsp; in the
+     <A href="tokens.html#CONSTcat">CONST</A> category and uses
+       <pre>  STRUC ALAT=a  </pre>
+     Doing it this way enables you to alter the lattice constant via the command-line, e.g. with switch &nbsp;<FONT size="+1"><tt>-va=7.1</tt></FONT>.
+
+<A name="spec"></A>
+<LI> Build the <A href="tokens.html#SPECcat"><FONT size="+1"><tt>SPEC</tt></FONT></A> to supply chemical species information.
+     <A href="tokens.html#STRUCcat"><FONT size="+1"><tt>STRUC</tt></FONT></A>,
+     <A href="tokens.html#SITEcat"><FONT size="+1"><tt>SITE</tt></FONT></A>,
+     <A href="tokens.html#SPECcat"><FONT size="+1"><tt>SPEC</tt></FONT></A>
+     are all described in the <A href="ASAtutorial.html#STRUC">ASA tutorial</A>;
+     see <A href="ASAtutorial.html#SPEC">SPEC</A>
+     there for a discussion of the choice muffin tin radius.  In the
+     present case, we choose <FONT size="+1"><tt>RMT=0.91*avw</tt></FONT>&nbsp; (<FONT size="+1"><tt>avw</tt></FONT>=space-filling radius
+     appropriate to the ASA).  This makes sphere overlaps ~0.6%,
+     as can be verified with <A href="#preliminaries"><b>lmchk</b></A>.  Strictly speaking spheres should not
+     overlap (geometry violation), but because of the special way the
+     local densites are handled, overlaps of up to 10% or so make
+     negligible errors.  The main drawback is that <A href="#selfconsistency">self-consistency</A> 
+     tends to be more difficult when overlaps extend to 10%.
+
+<A name="basis"></A>
+     <P> The principal complication <b>lmf</b> has over the ASA is the need to specify
+     the shape of the <A href="fp.html#smoothH">smoothed Hankel envelope functions</A> which define the basis.
+     (A smoothed Hankel is a <A href="nfp-doc.ps">convolution of a Gaussian and a Hankel function</A>).
+     Each <i>s</i>,&nbsp;<i>p</i>,&nbsp;<i>d</i>,... orbital has
+     <A href="fp.html#spec">two independent parameters</A> (Gaussian
+     smoothing radius and Hankel energy), which you are free to
+     choose.  The extra freedom is advantageous in that they offer
+     more flexibility than do ordinary Hankel functions; also they are
+     smoother and regular at the origin.  On the flip side, there is
+     no obvious <i>a priori</i> way to choose these parameters, which
+     make it cumbersome to find an optimal basis.  The simplest way is to choose
+     these parameters is to follow the automatic procedure described 
+     <A href="Building_FP_input_file.html#autobas">on this page</A>.
+
+     <P> When choosing parameters by hand, a reasonable default
+     is to set the smoothing radius (see <FONT size="+1"><tt>RSMH</tt></FONT> below)
+     to 2/3 of the augmentation radius for <i>s</i> and <i>p</i> orbitals, and
+     about 1 or so for transition metal <i>d</i> orbtals.
+     To improve on the basis it is recommended you avail yourself of the
+     basis optimizer.  See
+     <A href="FPoptbas.html">here</A> for a (somewhat outdated) tutorial; it is also covered
+     <A href="#optimizebasis">later in the present tutorial</A>.
+
+     <P> <FONT size="+1"><tt>doc/FPsamples/ctrl.al</tt></FONT>&nbsp; uses by default a minimal basis of <i>spd</i> orbitals,
+     defined in the following lines:
+<pre>
+   % const rsm1=1.8 rsmd1=1.8 ed1=-.1                 &larr; The const directive is described in the <A href="file-preprocessor.html#constdef">preprocessor documentation</A>
+     RSMH={rsm1},{rsm1},{rsmd1} EH=-.1,-.1,{ed1}      &larr; The contents of curly brackets are <A href="file-preprocessor.html#expressions">evaluated as expressions</A>
+</pre>
+     <FONT size="+1"><tt>1.8</tt></FONT> is <FONT size="+1"><tt>2/3</tt></FONT> of the MT radius, <FONT size="+1"><tt>2.7</tt></FONT>.
+     Al is an easy case: all states are nearly free electron-like.
+     When we optimize the basis later, we will see that it is good
+     choice.  The choice of <FONT size="+1"><tt>EH</tt></FONT> is
+     usually less important (unless a state is very deep, such as the
+     Oxygen <i>s</i> state); typically choose a small negative number,
+     e.g. &minus;0.1.
+     <P>     Note the additional lines in <FONT size="+1"><tt>doc/FPsamples/ctrl.al</tt></FONT>:
+<pre>
+   %ifdef bigbas
+   % const rsm2=1.8
+     RSMH2={rsm2},0,{rsmd1} EH2=-1,-1,-1
+   %endif
+</pre>
+     If &nbsp;<FONT size="+1"><tt>bigbas</tt></FONT>&nbsp; is nonzero (either by
+     changing <FONT size="+1"><tt>ctrl.al</tt></FONT> or by invoking <b>lmf</b>
+     with <FONT size="+1"><tt>-vbigbas=1</tt></FONT>), the basis set
+     is enlarged from <i>spd</i> to <i>spdsd</i>.  <BR>
+     <FONT size="+1"><tt>RSMH2</tt></FONT> has nonzero values in the <i>s</i> and <i>d</i>
+     channels only; channels for which <FONT size="+1"><tt>RSMH2=0</tt></FONT> are excluded from the basis.
+     <P>
+     When you use <FONT size="+1"><tt>RSMH2</tt></FONT> you should set <FONT size="+1"><tt>EH2</tt></FONT> to about 0.8 or 1 Ry deeper than
+     <FONT size="+1"><tt>EH1</tt></FONT>; otherwise the basis becomes too linearly dependent.
+     <BR>
+
+<A name="GMAX"></A>
+<LI> create the <A href="tokens.html#HAMcat">HAM</A> category.
+     Most important here is <FONT size="+1"><tt>GMAX</tt></FONT>, which specifies the cutoff in
+     <b>G</b> vectors for the interstitial density.
+     A uniform mesh of <FONT size="+1"><tt>G</tt></FONT> vectors
+     is generated; it keeps those for which <FONT size="+1"><tt>G&lt;GMAX</tt></FONT>.  This number is important
+     because execution efficiency depends on it (though for one atom/cell, efficiency isn't important).
+     It is exactly analogous to <FONT size="+1"><tt>GMAX</tt></FONT>
+     you must specify when using a plane-wave (pseudopotential or augmented plane wave) basis,
+     except that here it is used for the density only, not both density and basis.
+
+     <P> You must specify one of <FONT size="+1"><tt>GMAX</tt></FONT> or <FONT size="+1"><tt>FTMESH</tt></FONT>.  <b>lmf</b>
+     first looks for <FONT size="+1"><tt>GMAX</tt></FONT>; if it isn't found, <FONT size="+1"><tt>FTMESH</tt></FONT> is sought.
+     If <i>neither</i> is found, <b>lmf</b> stops.
+     Both are present in 
+     <A href="FPsamples/ctrl.al">doc/FPsamples/ctrl.al</A>,
+     but only <FONT size="+1"><tt>GMAX</tt></FONT> is used since it is sought first.  It turns out
+     that both modes will specify a mesh with 10 divisions along each axis: <FONT size="+1"><tt>FTMESH=10 10 10</tt></FONT>.
+     <P>
+
+<A name="OPTIONS"></A>
+<LI> Create the <A href="tokens.html#OPTIONScat">OPTIONS</A> category.
+     Of note here is this text: <FONT size="+1"><tt>HF={hf}</tt></FONT>. &nbsp;
+     `<FONT size="+1"><tt>hf</tt></FONT>'&nbsp; is an algebraic variable set by the <A href="file-preprocessor.html#constdef"><FONT size="+1"><tt> const</tt></FONT> preprocessor directive</A>:
+<pre>
+   % const hf=f
+</pre>
+     This will create &nbsp;<FONT size="+1"><tt>hf</tt></FONT>&nbsp; and initialize it to zero.
+     However, if you assign &nbsp;<FONT size="+1"><tt>hf</tt></FONT>&nbsp; in some prior directive on the command line (using e.g. <FONT size="+1"><tt>-vhf=1</tt></FONT>),
+     the &nbsp;`<FONT size="+1"><tt>const</tt></FONT>'&nbsp; will not override its value.
+     Note that <A href="FPsamples/ctrl.al">doc/FPsamples/ctrl.al</A>,
+     uses &nbsp;<FONT size="+1"><tt>hf</tt></FONT>&nbsp; in this line
+<pre>
+   OPTIONS NSPIN=1 REL=t XCFUN=2 HF={hf}
+</pre>
+     With a command-line switch &nbsp;<FONT size="+1"><tt>-vhf=1</tt></FONT>&nbsp;
+     we can make non self-consistent calculations, which yield approximate energies via the
+     <A href="http://link.aps.org/doi/10.1103/PhysRevB.39.12520">Harris-Foulkes functional</A>.  We will use this feature to
+     optimize the basis set (see discussion of <A href="#basisoptimization">basis
+     optimization</A> below).
+     <BR><BR>
+
+<LI> create the <A href="tokens.html#BZcat">BZ</A> category.  Note the following:
+     <BR><BR>
+     <OL>
+     <LI> <FONT size="+1"><tt>NKABC</tt></FONT> and <FONT size="+1"><tt>BJOB</tt></FONT> specify the <i>k</i>-point mesh.
+     <BR><BR>
+
+     <LI> <FONT size="+1"><tt>SAVDOS</tt></FONT>, <FONT size="+1"><tt>NPTS</tt></FONT>, and <FONT size="+1"><tt>DOS</tt></FONT> specify that the total density-of-states
+          is to be created each time the Fermi level is determined.
+     <BR><BR>
+
+     <LI> <FONT size="+1"><tt>W=.002 EF0=0 DELEF=.1</tt></FONT> are only relevant for
+          sampling, so they aren't used in this tutorial, which uses
+          tetrahedron integration (<FONT size="+1"><tt>TETRA=t</tt></FONT>).
+     <BR><BR>
+
+     <LI> when <FONT size="+1"><tt>HF=t</tt></FONT>, we also use <FONT size="+1"><tt>NEVMX=-1</tt></FONT> to suppress generation
+          of the output density through this construct:
+    <pre>
+    % ifdef hf
+      NEVMX=-1
+    % endif
+    </pre>
+          The preprocessor will include the line `<FONT size="+1"><tt>NEVMX=-1</tt></FONT>' in
+          the input file only when <FONT size="+1"><tt>hf</tt></FONT> is nonzero.
+     <BR><BR>
+
+     <LI> We choose <FONT size="+1"><tt>METAL=2</tt></FONT>; see documentation for the <A href="tokens.html#BZcat">BZ category</A>.
+          <BR> <FONT color="#0000bb"><I>*Note</I>&nbsp;</FONT> <FONT size="+1"><tt>METAL=5</tt></FONT> is usually a better choice, provided you are not limited by memory.
+     </OL>
+     <BR>
+
+<LI> The <A href="tokens.html#EWALDcat">EWALD</A> category is optional
+     is included here only for pedagogical purposes.
+<BR><BR>
+
+<LI> The <A href="tokens.html#ITERcat">ITER</A> category controls the
+     number of iterations, convergence citeria, and the how earlier densities
+     are mixed with the current one,
+     which you can set through <FONT size="+1"><tt>MIX</tt></FONT>.  See
+     <A href="tokens.html#mixing">here</A> for a description.
+     This input file uses <FONT size="+1"><tt>MIX=A3</tt></FONT>, which tells <b>lmf</b> to use Anderson mixing
+     with up to three prior pairs of (input,output) density.
+     But there are
+     <A href="tokens.html#mixing">many possible modifications</A>.
+     Unfortunately there
+     is no good general prescription for <FONT size="+1"><tt>MIX</tt></FONT>: cases with
+     combined "hard" and "soft" degrees of freedom can be hard to
+     stabilize (magnetic systems are often that way).
+     Broyden mixing tends to work best, but like a racehorse it can be jittery.
+     In the <b>lmf</b> context, <FONT size="+1"><tt>MIX</tt></FONT>
+     is best used in conjunction with <FONT size="+1"><tt>ELIND</tt></FONT>; see discussion of <FONT size="+1"><tt>ELIND</tt></FONT>
+     in <A href="tokens.html#HAMcat">HAM</A>.
+
+     <BR>For examples run these scripts:
+     <pre>   testing/test.lm mix    (for the ASA program <b>lm</b>) </pre>
+     <pre>   fp/test/test.fp copt   (for the FP program <b>lmf</b>) </pre>
+     <A href="tokens.html#ITERcat">CONV</A> and
+     <A href="tokens.html#ITERcat">CONVC</A> control the convergence criteria in
+     energy and charge, respectively.  (You can use one or the other or both.)
+     In
+     <A href="FPsamples/ctrl.al">doc/FPsamples/ctrl.al</A> both are
+     set to very strict values, because the shear constant which we are
+     going to calculate involves small energy changes.
+<BR>
+
+</UL>
+This completes the creation of the input file, except that so far
+we just took a guess at the selection of basis set.
+
+<h2><A name="preliminaries"></A>3. Getting Started : Analyzing the results of a Band Pass</h2>
+
+Start with <b>lmchk</b> just to verify some things.
+
+<P>
+<UL>
+<LI> Verify that the preprocessor works as advertised: try
+       <pre>   lmchk al --showp </pre>
+     For example, the line containing &nbsp;<FONT size="+1"><tt>RSMH=</tt></FONT>&nbsp; should have been turned into
+       <pre>   RSMH=1.8,1.8,1.8 EH=-.1,-.1,-.1 </pre>
+
+<LI> Invoke
+       <pre>   lmchk al </pre>
+     and verify from the
+     <A href="FPsamples/out.al.lmchk">output</A> that the sphere
+     overlaps about 0.6% (a safe number) and that sum-of-sphere
+     volumes equals about 75% of the total.  That is a pretty large packing
+     fraction, as a consequence of the close packing of the fcc structure.
+
+<P><A name="lmfa"></A>
+<LI> Invoke <b>lmfa</b> to generate densities for the free atom.  Atomic densities will be overlapped to make a first trial density for the solid (Mattheis construction).
+       <pre>   lmfa al </pre>
+     <b>lmfa</b>'s main function is to generate atomic densities and store them in
+     &nbsp;<FONT size="+1"><tt>atm.<i>ext</i></tt></FONT>.
+
+     Look at the <A href="FPsamples/out.al.lmfa">standard output</A>:
+     <OL>
+     <LI> The atomic density is represented inside the MT spheres on a 
+          shifted logarithmic radial mesh:
+          the <i>i</i><sup>th</sup> mesh point is
+          <i>r<sub>i</sub></i> = <i>b</i>[exp(<i>a</i>(<i>i</i>&minus;1)&minus;1].
+          The mesh is determined by the MT radius, mesh spacing parameter and number of points
+          (<A href="FPsamples/out.al.lmfa#species"><FONT size="+1"><tt>rmt, a, and nr</tt></FONT></A>).
+          
+     <LI> The atomic density is completely determined by the charges in each <i>l</i>
+          channel (<FONT size="+1"><tt>2,1,0</tt></FONT> for <i>spd</i>).
+          These are automatically supplied from an internal default; alternatively you
+          can specify them with <FONT size="+1"><tt><A href="tokens.html#SPECcat">SPEC_ATOM_Q</A></tt></FONT>.
+          Self-consistency is reach after 47 iterations; then
+          <A href="FPsamples/out.al.lmfa#energies">total energies and atomic levels</A> and other
+          information about the atomic wave functions are printed out, e.g.
+          the charge spilling outside the MT radius.
+          Total energy is needed to compute the heat formation of a crystal from the free-atom constituents.
+          <BR> <FONT color="#0000bb"><I>*Note</I>&nbsp;</FONT>
+          When calculating cohesive energies (the change in energy on forming a solid from separate atoms),
+          the proper reference energy must be computed for the spin polarized case.
+          That is how the number in the input file
+          (<FONT size="+1"><tt>EREF=-483.5463</tt></FONT>) was
+          computed.  It is slightly lower than what <b>lmfa</b>
+          generates here for the nonmagnetic atom
+          (<FONT size="+1"><tt>-483.5325 Ry</tt></FONT>).
+
+     <LI> Optimal values for envelope parameters <A href="FPsamples/out.al.lmfa#rsmh"><FONT size="+1"><tt>RSMH</tt></FONT> and <FONT size="+1"><tt>EH</tt></FONT></A>
+          were detemined numerically by minimizing the total energy with respect to them.
+          They are optimal, unfortunately, for the free atom only; but the
+          choices are not bad and you can use the optimizer to improve them. 
+          <br> Also you can have the <b>lmfa</b> save these parameters and <b>lmf</b> read them,
+          and save the trouble of estimating them yourself.
+          This is accomplished with tokens in
+          <A href="tokens.html#HAMcat">HAM_AUTOBAS</A>. See
+          <A href="Building_FP_input_file.html#autobas">this tutorial</A> for an example.
+
+     <LI> The density for <FONT size="+1"><tt><i>r</i>&gt;rmt</tt></FONT> is
+          fit to a linear combination of smoothed Hankels of various energies with a fixed
+          smoothing radius specified by <A href="fp.html#spec">SPEC_RSMFA</A>. Coefficients are stored
+          in file &nbsp;<FONT size="+1"><tt>atm.al</tt></FONT>.
+
+     <LI> In this setup the core is allowed to spill into the
+          interstitial (interstitial charge 
+          <FONT size="+1"><tt>q=3.59e-4</tt></FONT>).  The core tails are
+          fit to a single smoothed Hankel with smoothing radius
+          specified by <A href="fp.html#spec">SPEC_RFOCA</A>.  Its
+          contribution to the interstitial density will be included.
+
+     </OL>
+
+<A name="lmf"></A><BR>
+
+<LI> Invoke <b>lmf</b> in a
+     <A href="#OPTIONS">non self-consistent mode</A> 
+     <pre>  lmf al -vhf=1 </pre>
+     <FONT color="#0000bb"><I>*Note</I>&nbsp;</FONT>
+     You can change how much text is output with token <A href="IOcat">IO_VERBOSE</A>.
+     The default verbosity (<FONT size="+1"><tt>31</tt></FONT>) is relatively terse.<BR><BR>
+
+     Note the following points in the output file (it was doctored
+     slightly to incorporate some hyperlinks)
+     <OL>
+     <LI> The
+          <A href="FPsamples/out.al.lmf.hf#start">first stages </A>
+          of the output (symmetry group, k-points) follow the <A href="ASAtutorial.html#lm">ASA tutorial</A>.
+
+          <BR> <FONT size="+1"><tt>XC:BH</tt></FONT>   &larr means the Barth Hedin exchange correlation functional is used.
+          <BR> <FONT size="+1"><tt>Autoread:none</tt></FONT> &larr the basis set is taken 
+          from the input file. This line looks different if you <A href="Building_FP_input_file.html#autobas">read basis information from a file</A>.
+          <BR> <FONT size="+1"><tt> bz: metal(2), tetra,
+          invit </tt></FONT> &larr the system is to be
+          treated as a metal using <A href="bzintegration.html">tetrahedron integration</A>.<BR><BR>
+
+     <LI> Lattice data and symmetry operations are printed next.  In this case no symmetry was specified and
+          48 operations were found automatically.<BR><BR>
+
+     <LI> Next follows a
+          <A href="FPsamples/out.al.lmf.hf#specparm">table</A>
+          of important species data.  It is advisable to pay some
+          attention to these parameters, as they can affect the
+          results.  In general, apart from the MT radius, and the augmentation <FONT size="+1"><tt>lmxa</tt></FONT>
+          which you must supply, most parameters have good internal defaults.
+
+     <UL>
+
+     <LI> The augmentation <I>l</I>-cutoff <FONT size="+1"><tt>lmxa</tt></FONT>
+          can be set very low in this FP program.  The reason for this
+          is is rather subtle and is connected with the special way
+          augmentation is done; see
+          the <A href="nfp-doc.ps">manual</A> describing
+          this method.  It has some elements in common with what amounts to augmentation in the PAW method:
+          this form offers a justification for the <i>a posteriori</i> fact that
+          pseudopotential <i>l</i>-cutoffs can be much lower than corresponding cutoffs in usual all-electron implementations.
+          Try seeing what happens by increasing <FONT size="+1"><tt>lmxa</tt></FONT> to 3 or 4. 
+          <FONT size="+1"><tt>lmxa=2</tt></FONT> is acceptable here; a
+          more typical value is 3; it should be 4 for transition metal
+          elements and 6 for <i>f</i> elements.
+
+     <LI> The choice of <FONT size="+1"><tt>rmt</tt></FONT> was mentioned
+          <A href="#spec">previously</A> and is discussed in the
+          <A href="ASAtutorial.html#SPEC">ASA tutorial</A>. <BR>
+
+     <LI> See the <A href="fp.html#spec">FP documentation</A> for a
+          discussion of augmentation smoothing radius &nbsp;<FONT size="+1"><tt>rsma</tt></FONT>, and the
+          polynomial cutoff <FONT size="+1"><tt>kmxa</tt></FONT> connected with it.
+          <BR> <FONT color="#0000bb"><I>*Note</I>&nbsp;</FONT> The
+          internal default for &nbsp;<FONT size="+1"><tt>kmxa</tt></FONT>&nbsp; is
+          usually adequate for the LMTO basis set.  If you include
+          plane waves in the basis, this number should increase
+          (the internal default increases).  Even so this cutoff should be monitored especially
+          if you use a relatively high PW cutoff, e.g. 5 Ry.
+
+     <LI> Although the density <I>l</I>-cutoff &nbsp;<FONT size="+1"><tt>lmxl</tt></FONT>&nbsp; is distinct
+          from the augmentation <I>l</I>-cutoff &nbsp;<FONT size="+1"><tt>lmxa</tt></FONT>,
+          usually you just choose <FONT size="+1"><tt>lmxl=lmxa</tt></FONT>.
+          That's the default unless you specify otherwise.
+
+     <LI> Parameter &nbsp;<FONT size="+1"><tt>rg</tt></FONT>&nbsp; corresponds to token
+          <A href="fp.html#spec">RSMG</A>.
+
+     <LI> Parameters <FONT size="+1"><tt>rsmv</tt></FONT> and <FONT size="+1"><tt>kmxv</tt></FONT> are connected with how
+          the program manages the electrostatic interaction between spheres and interstitial.  They not usually of interest.
+
+     <LI> <FONT size="+1"><tt>foca</tt></FONT> corresponds to token
+          <A href="fp.html#spec">LFOCA</A>.
+          <FONT size="+1"><tt>LFOCA=1</tt></FONT> is safest; <FONT size="+1"><tt>LFOCA=2</tt></FONT> is a perturbative approximation
+          and is more efficient, and corresponds approximately to the
+          "nonlinear core correction" common in pseudopotential
+          programs.  The difference can be important if the atom has
+          shallow core states.  In this case, choosing <FONT size="+1"><tt>LFOCA=1</tt></FONT> or <FONT size="+1"><tt>2</tt></FONT>
+          changes the total energy by less than 10<sup>&minus;6</sup> Ry.
+
+     <LI> For either choice of &nbsp;<FONT size="+1"><tt>lfoca</tt></FONT>&nbsp; there is a corresponding
+          smoothing radius <FONT size="+1"><tt>rfoca</tt></FONT>, specified by
+          <A href="fp.html#spec">RFOCA</A>.
+          Choosing <FONT size="+1"><tt>rfoca</tt></FONT> large makes the density smoother and easier to manage, but 
+          degrades the quality of fit of the core density, which in
+          turn will affect the total energy somewhat.  For example it
+          will create some dependence of the total energy on choice of
+          MT radius.  Choosing <FONT size="+1"><tt>rfoca</tt></FONT>
+          more sharply peaks the (smoothed) core density, and puts
+          greater demands on the quality of the interstitial mesh
+          density, which slows down the calculation.
+     </UL>
+
+<A name="meshdensity"></A><BR>
+     <LI> Next follows the setting of the
+          <A href="FPsamples/out.al.lmf.hf#meshparm">mesh density</A>
+          which you do by one of the tokens
+          <A href="tokens.html#HAMcat">GMAX</A> or
+          <A href="tokens.html#HAMcat">FTMESH</A> in HAM.
+
+          Finer meshes are more accurate, but the computation time
+          scales in proportion to the total number of points.
+          Column "<FONT size="+1"><tt>last term</tt></FONT>" is an estimate of the error in the envelope
+          function when expanded in plane waves.  It should not be too large:
+          10<sup>&minus;5</sup> is usually quite acceptable.  If it is too large,
+          the FT mesh should be increased (larger <FONT size="+1"><tt>GMAX</tt></FONT> or <FONT size="+1"><tt>FTMESH</tt></FONT>).
+          If the numbers in the "cutoff" column are all small compared
+          to the total number of <b>G</b> vectors in the the mesh, you
+          can safely reduce the fineness of the mesh.  This
+          particular choice of <FONT size="+1"><tt>gmax=7</tt></FONT> is extremely conservative:
+          a.u. generated 10&times;10&times;10 divisions, or 609 G vectors.
+          The <FONT size="+1"><tt>cutoff</tt></FONT> column of the table show
+          many G vectors are needed for each orbital to be converged
+          with the specified tolerance (you specify tolerance with
+          <A href="tokens.html#HAMcat">TOL</A>).  It is evident from the table
+          that the most G vectors any orbital needs is less than 200,
+          far less than the 609 possible with gmax=7.  In this case,
+          reducing <FONT size="+1"><tt>gmax</tt></FONT> to as low as 4 reduces the maximum number of G
+          vectors to 113, and changes the total energy by ~10<sup>&minus;5</sup> Ry.
+
+          In general the mesh density must be fine as the most strongly peaked orbital in the basis.
+          <A href="Building_FP_input_file.html#gmax">This tutorial</A>
+          shows how mesh requirements are strongly affected by the
+          character of states entering into the basis, and how you can use
+          <b>lmfa</b> to select a reasonable value for you.
+
+<BR><BR>
+     <LI> The lines around 
+          <FONT size="+1"><tt><A href="FPsamples/out.al.lmf.hf#meshparm">Makidx</A></tt></FONT> show the dimensions of 
+          the hamiltonian.  In the present FP context, the
+          only meaningful number is the `<FONT size="+1"><tt>Low</tt></FONT>'
+          dimension.  This calculation uses a standard minimal basis of 9 <I>spd</I> orbitals.
+<BR><BR>
+     <LI> Next <strong>lmf</strong> looks for an
+          <A href="fp.html#programs">input density</A>.
+          It can start from free-atom files or from a restart file.
+          Unless you specify with command-line switch <A
+          href="Command-line-options.html#section1lmf">--rs=</A>, <b>lmf</b> will:
+
+          <UL>
+          <LI> try to read from (binary) restart file <FONT size="+1"><tt>rst.<I>ext</I></tt></FONT>.
+
+          <LI> If this fails, it will to read
+          <A href="#lmfa"><FONT size="+1"><tt>atm.<i>ext</i></tt></FONT></A> and create a density by overlapping free-atom charges.
+          That is what is done
+          <A href="FPsamples/out.al.lmf.hf#startingrho">here</A> as no <FONT size="+1"><tt>rst</tt></FONT> file is yet available.
+          <LI> If this also fails, <b>lmf</b> aborts.
+
+          </UL>
+
+     <BR>
+     <LI> Next <b>lmf</b> begins the
+          <A href="FPsamples/out.al.lmf.hf#iteration1">iterations cycle</A>.
+          First the interstitial potential is created, followed by
+          local potentials and potential parameters for each site
+          in the lattice (there is only one site in this example).
+<BR><BR>
+     <LI> Next follows a
+          <A href="FPsamples/out.al.lmf.hf#iteration1table1">table</A>
+          summarizing the charge, magnetic moment (in the spin
+          polarized case) and all parameters needed to compute the
+          total energy, except the eigenvalue sum, which it determines
+          after a band pass.
+          <BR><BR>
+
+          
+     <LI> <A name="metal"></A> Next follows the
+          <A href="FPsamples/out.al.lmf.hf#bzint">Brillouin zone</A>
+          integration over k-points.  Because the input file
+          chose tetrahedron integration with
+          <A href="tokens.html#BZcat">METAL=2</A>, <strong>lmf</strong>
+          tries to read k-point weights from the &nbsp;`<FONT size="+1"><tt>wkp</tt></FONT>'&nbsp; file, so that it
+          can <i>use weights from a prior iteration</i> for the present band pass.  Since
+          the file doesn't have the right number of k-points,
+          <strong>lmf</strong> makes a special band pass to create
+          the weights.  Use
+          <A href="tokens.html#BZcat">METAL=3</A> if you want <b>lmf</b> to create
+          the weights every band pass.  This is safer, because there
+          is a guaranteed connection between the weights and the
+          eigenvalues, but slower because two passes are required each
+          iteration.  The recommended choice is <FONT size="+1"><tt>METAL=5</tt></FONT>: 
+          it combines the best of <FONT size="+1"><tt>METAL=2</tt></FONT> and <FONT size="+1"><tt>METAL=3</tt></FONT>.
+          But this mode keeps eigenvectors in memory, 
+          and is more memory intensive, so don't use &nbsp;<FONT size="+1"><tt>METAL=5</tt></FONT>&nbsp; for large systems.
+	  <BR><BR>
+
+     <LI> The determination of the
+          <A href="FPsamples/out.al.lmf.hf#efermi">Fermi level</A>
+          proceeds in the same way as in the ASA; see the
+          <A href="ASAtutorial.html#efermi">ASA tutorial</A>, and also <A href="bzintegration.html">this page</A> for a 
+          detailed discussion of the tetrahedron method for Brillouin zone integration.
+          Note that the total density-of-states was made.  This is because <FONT size="+1"><tt>BZ_SAVDOS=t</tt></FONT>.
+          Setting this token causes the DOS to be generated and written to <FONT size="+1"><tt>dos.<i>ext</i></tt></FONT>.
+          <BR><BR>
+
+     <LI> The Harris-Foulkes total energy is calculated (it requires
+          only the input density and band energy to evaluate).  This is a
+          <A href="#OPTIONS">non self-consistent</A> calculation, so no output
+          density is generated and the program stops.
+    </UL>
+
+<h2><A name="optimizebasis"></A>4. Optimizing the Basis Set</h2>
+
+     <LI> You can make the basis most optimal by minimizing the total
+          energy with respect to all parameters <FONT size="+1"><tt>RSMH</tt></FONT> and <FONT size="+1"><tt>EH</tt></FONT>.
+          You can in fact do so as explained in
+          <A href="FPoptbas.html">this tutorial</A>.  But experience has shown 
+          that energies are usually rather insensitive
+          to <FONT size="+1"><tt>EH</tt></FONT> and anyway, for
+          theoretical reasons, <FONT size="+1"><tt>EH</tt></FONT> should not be too negative.
+          In practice you can optimize <FONT size="+1"><tt>RSMH</tt></FONT> efficiently, and
+          it is not necessary to to more.  Do this with:
+          <pre>   lmf al --optbas </pre>
+          You should find that the optimization reduced the Harris Foulkes energy from
+          <FONT size="+1"><tt>ehf=-0.2924</tt></FONT> to <FONT size="+1"><tt>ehf=-0.2926</tt></FONT> Ry.
+          This difference is too small to bother with.
+          Usually the improvement is subtsantially larger, and you take the result
+          of the optimized calculation (saved in <FONT size="+1"><tt>basp2.<i>ext</i></tt></FONT>)
+          and copy them to your input file.  Or, you can have lmf automatically
+          read these parameters from file <FONT size="+1"><tt>basp</tt></FONT>;
+          tokens in <FONT size="+1"><tt>HAM_AUTOBAS</tt></FONT>
+          control what <b>lmf</b> reads from this file, and what <b>lmfa</b> writes to it.
+          See 
+          <A href="Building_FP_input_file.html#autobas">this tutorial</A> for an example.
+
+          <P> We might consider the effect of enlarging the basis, which as we noted we
+          can do from the commmand line with <FONT size="+1"><tt>-vbigbas=1</tt></FONT>.  Do this:
+          <pre>   lmf al -vbigbas=1 -vhf=1 </pre>
+          and you will see that the HF energy is now <FONT size="+1"><tt>ehf=-.2943</tt></FONT>:
+          the additional basis improves the energy by 1.9mRy in this case, again probably too small
+          to worry about.
+
+<BR>
+
+<h2><A name="selfconsistency"></A>5. Self-consistent LDA calculation</h2>
+
+In the <A href="#preliminaries">preliminaries</A> we built a trial density with a Mattheis construction, and made a band pass with it.
+Now we can do a self-consistent calculation
+<pre>   lmf al > out </pre>
+
+Up to the calculation of the Fermi level <A href="FPsamples/out.al.lmf#efermi">Fermi level</A> the output will be essentially the same.
+
+<P> Now the <A href="FPsamples/out.al.lmf#outrho">output density</A>
+is generated.  With the output density, the HKS energy functional can
+be evaluated.  Also the log derivative parameters P are floated to the
+band centers-of-gravity.  How the P's are floated is prescribed by
+tokens <A href="tokens.html#SPECcat">IDMOD</A>; there is a
+corresponding ASA counterpart discussed in the <A
+href="lmto.html#section2">ASA overview</A>.  
+
+<P> A <A href="FPsamples/out.al.lmf#mixrho">new density</A> is constructed as
+follows:
+
+          <UL>
+
+          <LI> The <I>output density</I> is screened using the model
+               Lindhard function, provided the Lindhard parameter
+               <A href="tokens.html#HAMcat">ELIND</A> is nonzero:
+               <pre> nout* = nin  + eps^-1 (nout-nin) </pre>
+
+          <LI> An estimate for the self-consistent density is made
+               by mixing <FONT size="+1"><tt>nin</tt></FONT> and <FONT size="+1"><tt>nout*</tt></FONT> using some
+               <A href="tokens.html#mixing">mixing scheme</A> .
+
+          </UL>
+
+     <LI> The resultant density is
+          <A href="FPsamples/out.al.lmf#iors">saved</A>
+          in <FONT size="+1"><tt>rst.<i>ext</i></tt></FONT>, unless you specify otherwise using
+          <A href="Command-line-options.html#section1lmf">--rs=</A>.
+
+<P>
+     <LI> At the end of the iteration, the total energies are printed
+          and checks are made whether self-consistency is achieved to
+          tolerances specified by
+          <A href="tokens.html#ITERcat">ITER_CONV</A> and
+          <A href="tokens.html#ITERcat">ITER_CONVC</A>.
+          The <FONT size="+1"><tt>RMS DQ</tt></FONT> generated at the
+          <A href="FPsamples/out.al.lmf#mixrho">mixing step</A>
+          is the measure compared against tolerance
+          <A href="tokens.html#ITERcat">CONVC</A>; the
+          change in energy from one iteration to the next is
+          tested against tolerance
+          <A href="tokens.html#ITERcat">CONV</A>.
+          Both tolerances must be satisfied, unless you set <FONT size="+1"><tt>CONV=0</tt></FONT> or <FONT size="+1"><tt>CONVC=0</tt></FONT>
+          (0 tolerance tells <b>lmf</b> not to test that parameter).
+          
+          Since only one iteration has been completed
+          <A href="FPsamples/out.al.lmf#endofiter1">so far</A>,
+          there is no way to test the <FONT size="+1"><tt>CONV</tt></FONT>, so no tests
+          are made.  <b>lmf</b> proceeds without checks
+          to the second iteration; from the 
+          <A href="FPsamples/out.al.lmf#endofiter2">second iteration</A> onwards
+          convergence checks are made.
+<BR><BR>
+          Because Al is rather well approximated by free electron gas,
+          the Lindhard function is an excellent approximation to the
+          true dielectric function, and the iterations converge rapidly
+          to self-consistency.  However, because the
+          tolerances were set <A href="#mix">very small</A>, self-consistency is achieved 
+          only after 
+          <A href="FPsamples/out.al.lmf#endofiter6">six iterations</A>.  To see 
+          how the <FONT size="+1"><tt>RMS DQ</tt></FONT> evolves, do
+          <pre> grep 'RMS DQ' out </pre>
+          You should see a table like this:
+<pre>
+ mixrho:  sought 3 iter from file mixm; read 0.  RMS DQ=8.57e-3
+ mixrho:  sought 3 iter from file mixm; read 1.  RMS DQ=5.48e-4  last it=8.57e-3
+ mixrho:  sought 3 iter from file mixm; read 2.  RMS DQ=1.29e-4  last it=5.48e-4
+ mixrho:  sought 3 iter from file mixm; read 3.  RMS DQ=6.44e-6  last it=1.29e-4
+ mixrho:  sought 3 iter from file mixm; read 4.  RMS DQ=4.24e-7  last it=6.44e-6
+ mixrho:  sought 3 iter from file mixm; read 4.  RMS DQ=4.97e-8  last it=4.24e-7
+</pre>
+
+
+         The code calculates two energy functionals, the Hohenberg-Kohn and Harris-Foulkes functional.
+         Both energies printed at the end of each iteration.
+         The HF energy is more binding than the HK after the
+         <A href="FPsamples/out.al.lmf#endofiter1">first iteration</A>; at
+         <A href="FPsamples/out.al.lmf#endofiter5">self-consistency</A> they are the same.
+	 The HK energy is variational; it should approach the self-consistent value from above.
+         Usually (but not always) the HF energy approaches it from below.
+         Thus the difference in the two is an additional measure of deviation from self-consistency.
+         Moniter the convergence the two with: <pre> grep ehf=- out </pre>
+         You should see the following table:
+<pre>
+  h ehf=-.2923995 ehk=-.2897842
+  i ehf=-.2905176 ehk=-.2903167
+  i ehf=-.2904201 ehk=-.2904115
+  i ehf=-.2904344 ehk=-.2904343
+  i ehf=-.2904324 ehk=-.2904322
+  c ehf=-.2904324 ehk=-.2904322
+</pre>
+The HF and HK energy functionals are completely different; that they converge
+to (nearly) the same answer is a test of the validity of the implementation.
+
+<P> These lines are also written to the <A href="lmto.html#section5">save file</A>;
+a very convenient tool
+<A href="Building_FP_input_file.html#vextract"><FONT size="+1"><tt>vextract</tt></FONT></A>
+is designed to be used with it, as can be seen when evaluating the
+<A href="#shearconstant">shear constant</A> below.
+
+<h2><A name="othersamples"></A>6. Other things to read and do</h2>
+
+<P> A panopoly of other tools are available, including a tools to
+<A href="Building_FP_input_file.html">automatically generate the input file</A>,
+and tools to do a variety of other kinds of calculations.   You can see many of them by invoking
+<FONT size="+1"><tt>fp/testing/test.fp</tt></FONT>: this script serves
+both to test that the code works as it should, and to showcase
+program features.  To see the test cases on offer with a brief
+description of their purpose, run from the top-level directory:
+<pre>
+  fp/test/test.fp --list
+</pre>
+
+<A name="bands"></A>
+<P> You can generate and plot the energy bands using <b>lmf</b>.
+It proceeds in the same way as in the <A href="ASAtutorial.html#bands">ASA tutorial</A>.
+Generate the band file this way:
+   <pre>
+   cp startup/syml.fcc ./syml.al
+   lmf al --band:fn=syml </pre>
+   </pre>
+Plot the bands as in the ASA tutorial, or look at this 
+<A href="generating-energy-bands.html">this tutorial</A>.
+
+<P> The generation of the core-level spectroscopy, Mulliken analysis or density-of-states is done
+first by invoking <b>lmf</b> with the appropriate
+<A href="fp.html#section3">command-line switch</A>, followed by
+<b>lmdos</b>.  The <b>lmdos</b> step is illustrated (including a way
+to plot results) in the <A href="ASAtutorial.html#dos">ASA
+tutorial</A>.  
+
+<P> To compute the density of states, see
+<A href="generating-density-of-states.html">this tutorial</A>.
+To compute core-level EELS spectra or Mulliken analysis in Fe, try running
+<pre>   fp/test/test.fp fe 2 </pre>
+
+To compute total or partial DOS in hcp Co, try running
+<pre>   fp/test/test.fp co 2 </pre>
+
+<P> <A href="siged-tutorial.html#AsAntisiteLatticeRelaxation">Another
+tutorial</A> goes through a lattice relaxation of an As antisite
+defect in the LDA.  It also shows how quasiparticle
+self-consistent <i>GW</i> self-energies can be incorporated
+into <b>lmf</b> to obtain a quasiparticle description of the defect
+level.  This tutorial also shows how to use <b>lmf</b> to
+calculate the
+<A href="siged-tutorial.html#SOcoupling"> spin orbit coupling and
+magnetic anisotropy</A> in Fe.  Quasiparticle self-consistent
+<i>GW</i> self-energies can be incorporated there as well.  While
+QS<i>GW</i> significantly improves on the LDA band structure, it is
+not yet known whether they improve on the LDA's prediction of the
+anisotropy.
+
+
+<h2><A name="shearconstant"></A>7. Shear constants</h2>
+
+This section shows how to calculate two of the three independent shear constants in Al.
+We first calculate
+<i>c</i><sub>11</sub>&minus;&nbsp;<i>c</i><sub>12</sub></h2>, which we will
+do by computing the total energy at different lattice distortions,
+and fitting the curvature of the total energy.
+
+The tetragonal distortion is conveniently generated using the line
+        <pre>         SHEAR=0 0 1 1+dist </pre>
+
+which distorts the lattice in a way that conserves volume to all
+orders (this is useful because it tends to be less error-prone).
+The direction of distortion is set by the first three parameters;
+the lattice will be sheared along (001).
+
+<BR><BR>
+The first difficulty is that our specification of the FT mesh using
+token <FONT size="+1"><tt>GMAX</tt></FONT> may cause the program to switch meshes for
+as parameter <I>dist</I> changes.  This is a bad idea, since we want to
+resolve very small energy differences.  So, the first step is
+to comment out the line with <FONT size="+1"><tt>GMAX=gmax</tt></FONT> in the input
+and use instead:
+   <pre>   FTMESH=10 10 10 </pre>
+
+The second difficulty is that the shear constants in Al are difficult
+to converge, because they require many <i>k</i>-points.  The following
+steps are written in `<FONT size="+1"><tt>tcsh</tt></FONT>'
+and compute the self-consistent total energy parameterically as a function of
+`<FONT size="+1"><tt>dist</tt></FONT>':
+<pre>
+   rm -f out save.al
+   foreach x ( -0.04 -0.03 -0.02 -0.01 0 0.01 0.02 0.03 0.04)
+     rm -f mixm.al wkp.al
+     lmf al -vdist=$x -vnk=24 --pr20,20 >>out
+   end
+</pre>
+Note that the mixing file eigenvalue weights file (<FONT size="+1"><tt>mixm.al</tt></FONT> and
+<FONT size="+1"><tt>wkp.al</tt></FONT>) are deleted for each new shear calculation.
+File <FONT size="+1"><tt>save.al</tt></FONT> contains total energies <FONT size="+1"><tt>ehf</tt></FONT> for 9 values of
+<FONT size="+1"><tt>dist</tt></FONT> using 24 divisions of <FONT size="+1"><tt>k</tt></FONT>-points.  (To properly converge the
+calculation use <FONT size="+1"><tt>nk=32</tt></FONT> or even <FONT size="+1"><tt>nk=40</tt></FONT>.)
+
+<P> Extracting <FONT size="+1"><tt>ehf</tt></FONT> and <FONT size="+1"><tt>ehk</tt></FONT> 
+parametrically as a function of <FONT size="+1"><tt>dist</tt></FONT> is very easy with the 
+<A href="Building_FP_input_file.html#vextract"><FONT size="+1"><tt>vextract</tt></FONT></A> tool:
+<pre>   cat save.al | startup/vextract c dist ehf > dat </pre>
+The key '<FONT size="+1"><tt>c</tt></FONT>' tells <FONT size="+1"><tt>vextract</tt></FONT> that you want
+lines beginning only with '<FONT size="+1"><tt>c</tt></FONT>':  these lines correspond to band passes when 
+<A href="Building_FP_input_file.html#vextract">self-consistency</A>
+was reached.  You can use any regular expression for the key.  You can
+ask <FONT size="+1"><tt>vextract</tt></FONT> to extract any quantity
+associated with a variable in the file.
+
+<P> File &nbsp;`<FONT size="+1"><tt>dat</tt></FONT>'&nbsp; should look something very nearly like:
+<pre>
+  -.04 -.2901536
+  -.03 -.290358
+  -.02 -.2904993
+  -.01 -.2905869
+  0 -.2906165
+  .01 -.2905871
+  .02 -.2905041
+  .03 -.2903603
+  .04 -.2901537
+</pre>
+Fitting a sixth-order polynomial through these points, we obtain as
+the second derivative of <FONT size="+1"><tt>ehf</tt></FONT> with respect to <FONT size="+1"><tt>dist</tt></FONT>:
+<pre>   E'' = .578 Ry </pre>
+With a little algebra, and converting from atomic Ry units to
+ergs/cm<sup>3</sup> it is easy to show that
+<pre>
+         vol = a^3/4 = 110 a.u.
+    1Ry/a0^3 = 147e12 erg/cm^3
+    c11-c12  = (2/3*147/vol)*E'' (10^12 erg/cm^3)
+             = 0.514 x 10^12 erg/cm^3
+</pre>
+which is 6% less than the experimental 0K value, 0.55 &times; 10<sup>12</sup> erg/cm<sup>3</sup>.
+
+<P> A trigonal shear will yield <i>c</i><sub>44</sub>.  To compute it, replace the <FONT size="+1"><tt>SHEAR</tt></FONT> token
+with:
+<pre>         SHEAR=1 1 1 1+dist </pre>
+Now the lattice is sheared along the [111] direction.
+
+Repeat the preceding command sequence with this substitution, and you
+should find file &nbsp;`<FONT size="+1"><tt>dat</tt></FONT>'&nbsp; looking something very nearly like:
+<pre>
+  -.04 -.2900159
+  -.03 -.2902898
+  -.02 -.2904768
+  -.01 -.2905849
+  0 -.2906164
+  .01 -.2905768
+  .02 -.2904718
+  .03 -.2902827
+  .04 -.290012
+</pre>
+Fitting a sixth-order polynomial through these points, we obtain as
+the second derivative of <FONT size="+1"><tt>ehf</tt></FONT> with respect to <FONT size="+1"><tt>dist</tt></FONT>:
+<pre>   E'' = .684 Ry </pre>
+In this case,
+<pre>
+    c44 = (1/3*147/vol)*E'' (10^12 erg/cm^3)
+        = 0.304 x 10^12 erg/cm^3
+</pre>
+which is about 6% smaller than the extrapolation to 0K of the
+experimental value, 0.32 &times; 10<sup>12</sup> erg/cm<sup>3</sup>.
+Both of these elastic
+constants depend on the fitting procedure with an uncertainty of about
+5%.  A careful calculation would use more points <FONT size="+1"><tt>dist</tt></FONT> and
+increase <FONT size="+1"><tt>nk</tt></FONT>.
+
+The final shear constant, the bulk modulus, you can calculate by
+varying the lattice constant.  We do not do it here, but if you do
+this, you are advised to use token <FONT
+size="+1"><tt>STRUC_DALAT</tt></FONT>, rather than change <FONT size="+1"><tt>ALAT</tt></FONT> (see the following note).
+
+<P> <FONT color="#0000bb"><I>*Note</I>&nbsp;</FONT> that <A href="FPsamples/ctrl.al"><FONT size="+1"><tt>doc/FPsamples/ctrl.al</tt></FONT></A> includes 
+a token <FONT size="+1"><tt>DALAT</tt></FONT>, which it sets to 0.  The actual lattice constant is <FONT size="+1"><tt>ALAT+DALAT</tt></FONT>.
+Do it this way because some parameters change with <FONT size="+1"><tt>ALAT</tt></FONT>, but are
+kept frozen when <FONT size="+1"><tt>DALAT</tt></FONT> varies.  A calculation of <i>B</i> yields
+0.85&times; 10<sup>12</sup> erg/cm<sup>3</sup> when evaluated at the
+LDA mininum energy lattice constant (7.53 a.u., about 1% smaller than the experiment),
+and 0.72 &times; 10<sup>12</sup> erg/cm<sup>3</sup> when evaluated at the experimental
+lattice constant.  Because the lattice constant is slightly wrong
+there is an ambiguity as to which value is appropriate to compare against experiment.
+The experimental value extrapolated to 0K is 
+0.81&times; 10<sup>12</sup> erg/cm<sup>3</sup>. 
+
+</HTML>
+

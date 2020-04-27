@@ -1,0 +1,667 @@
+ ----------------------  START LMPG  ----------------------
+ HEADER CoPt (24yz)
+
+ LMPG:     nbas = 24  nspec = 2  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      Q2:Power-moments
+ bz:       metal, tetra, invit 
+ pgf:      self-consistency  via LU decmpsn
+
+ PGFSET: 5 principal layers, 24+4+4 sites.  Normal: 1 0 0
+   PL |   0   1   2   3   4
+ size |   4   4   6   6   4
+  PLV |   0   0   0   0   0
+ Basis reordered by increasing PL:
+   PL  1  1  1  1  2  2  2  2  3  3  3  3  3  3  4  4  4  4
+ Site 21 22 23 24 17 18 19 20  1  4 13 14 15 16  2  3  5  6
+   PL  4  4  5  5  5  5
+ Site  7  8  9 10 11 12
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   6.000000   0.000000   0.000000 Plat(3) as input
+   1.000000   0.000000   0.000000 PlatL:  angle (deg) with Plat(3) = 0
+   1.000000   0.000000   0.000000 PlatR:  angle (deg) with Plat(3) = 0
+  10.000000   0.000000   0.000000 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   0.975000        0.000000   0.000000   1.025641
+  10.000000   0.000000   0.000000        0.100000   0.000000   0.000000
+   alat = 7.1866  Cell vol = 3618.887104
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   5.405  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.18660   awald= 0.130   lmax=6
+         r1=  5.405   nkd= 291      q1=  1.378   nkg= 103
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1/2,0,-0.4875) r2x r2z:(-1/2,0,0.4875)
+         i::(0,1/2,-1/20) r2x r2z::(0,1/2,-1/20)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  2 species split into 12 classes
+ Species  Class      Sites...
+ Co       1:Co       2 21
+          3:Co2      4 23
+          5:Co3      6 17
+          7:Co4      8 19
+          9:Co5      9 12
+         11:Co6      14 16
+ Pt       2:Pt       1 22
+          4:Pt2      3 24
+          6:Pt3      5 18
+          8:Pt4      7 20
+         10:Pt5      10 13
+         12:Pt6      11 15
+         12 classes for embedding region + 4 for padding layers
+  2D-reciprocal vectors:
+    0.000000    1.000000    0.000000
+    0.000000    0.000000    1.025641
+ BZMESH: 9 irreducible QP from 36 ( 6 6 1 )  shift= T T F
+
+
+ Entering the ASA restart file editor. Parsing command-line options ...
+
+ Option : rs
+ rsedit: read restart file "rsta"
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+         file has nbas = 32  nat = 32  nspec = 2
+
+ Density from rs file:
+ site   1:  q=    9.679985  mom=    0.432126
+ site   2:  q=    9.320398  mom=    1.751963
+ site   3:  q=    9.680255  mom=    0.429660
+ site   4:  q=    9.319815  mom=    1.747302
+ site   5:  q=    9.680192  mom=    0.413725
+ site   6:  q=    9.320080  mom=    1.776826
+ site   7:  q=    9.680022  mom=    0.417890
+ site   8:  q=    9.319198  mom=    1.781920
+ site   9:  q=    9.317741  mom=    1.724246
+ site  10:  q=    9.682090  mom=    0.430221
+ site  11:  q=    9.671069  mom=    0.432164
+ site  12:  q=    9.317741  mom=    1.724246
+ site  13:  q=    9.682090  mom=    0.430221
+ site  14:  q=    9.329156  mom=    1.758277
+ site  15:  q=    9.671069  mom=    0.432164
+ site  16:  q=    9.329156  mom=    1.758277
+ site  17:  q=    9.320080  mom=    1.776826
+ site  18:  q=    9.680192  mom=    0.413725
+ site  19:  q=    9.319198  mom=    1.781920
+ site  20:  q=    9.680022  mom=    0.417890
+ site  21:  q=    9.320398  mom=    1.751963
+ site  22:  q=    9.679985  mom=    0.432126
+ site  23:  q=    9.319815  mom=    1.747302
+ site  24:  q=    9.680255  mom=    0.429660
+ site  25:  q=    9.679843  mom=    0.426227
+ site  26:  q=    9.320157  mom=    1.749577
+ site  27:  q=    9.679843  mom=    0.426227
+ site  28:  q=    9.320157  mom=    1.749577
+ site  29:  q=    9.320157  mom=    1.749577
+ site  30:  q=    9.679843  mom=    0.426227
+ site  31:  q=    9.320157  mom=    1.749577
+ site  32:  q=    9.679843  mom=    0.426227
+
+ Option : read
+
+ iors  : read restart file (ascii, asa)
+ rsedit: read 2nd density from file "rsta" ...  nbas = 32  nat = 32  nspec = 2
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: positions, pnu 
+         ignore in restart file: ef window 
+
+ Second Density:
+ site   1:  q=    9.679985  mom=    0.432126
+ site   2:  q=    9.320398  mom=    1.751963
+ site   3:  q=    9.680255  mom=    0.429660
+ site   4:  q=    9.319815  mom=    1.747302
+ site   5:  q=    9.680192  mom=    0.413725
+ site   6:  q=    9.320080  mom=    1.776826
+ site   7:  q=    9.680022  mom=    0.417890
+ site   8:  q=    9.319198  mom=    1.781920
+ site   9:  q=    9.317741  mom=    1.724246
+ site  10:  q=    9.682090  mom=    0.430221
+ site  11:  q=    9.671069  mom=    0.432164
+ site  12:  q=    9.317741  mom=    1.724246
+ site  13:  q=    9.682090  mom=    0.430221
+ site  14:  q=    9.329156  mom=    1.758277
+ site  15:  q=    9.671069  mom=    0.432164
+ site  16:  q=    9.329156  mom=    1.758277
+ site  17:  q=    9.320080  mom=    1.776826
+ site  18:  q=    9.680192  mom=    0.413725
+ site  19:  q=    9.319198  mom=    1.781920
+ site  20:  q=    9.680022  mom=    0.417890
+ site  21:  q=    9.320398  mom=    1.751963
+ site  22:  q=    9.679985  mom=    0.432126
+ site  23:  q=    9.319815  mom=    1.747302
+ site  24:  q=    9.680255  mom=    0.429660
+ site  25:  q=    9.679843  mom=    0.426227
+ site  26:  q=    9.320157  mom=    1.749577
+ site  27:  q=    9.679843  mom=    0.426227
+ site  28:  q=    9.320157  mom=    1.749577
+ site  29:  q=    9.320157  mom=    1.749577
+ site  30:  q=    9.679843  mom=    0.426227
+ site  31:  q=    9.320157  mom=    1.749577
+ site  32:  q=    9.679843  mom=    0.426227
+
+ Option : set all 2 flip
+
+ New density:
+ site   1:  q=    9.679985  mom=   -0.432126
+ site   2:  q=    9.320398  mom=   -1.751963
+ site   3:  q=    9.680255  mom=   -0.429660
+ site   4:  q=    9.319815  mom=   -1.747302
+ site   5:  q=    9.680192  mom=   -0.413725
+ site   6:  q=    9.320080  mom=   -1.776827
+ site   7:  q=    9.680023  mom=   -0.417890
+ site   8:  q=    9.319198  mom=   -1.781920
+ site   9:  q=    9.317741  mom=   -1.724246
+ site  10:  q=    9.682090  mom=   -0.430221
+ site  11:  q=    9.671068  mom=   -0.432164
+ site  12:  q=    9.317741  mom=   -1.724246
+ site  13:  q=    9.682090  mom=   -0.430221
+ site  14:  q=    9.329156  mom=   -1.758277
+ site  15:  q=    9.671068  mom=   -0.432164
+ site  16:  q=    9.329156  mom=   -1.758277
+ site  17:  q=    9.320080  mom=   -1.776827
+ site  18:  q=    9.680192  mom=   -0.413725
+ site  19:  q=    9.319198  mom=   -1.781920
+ site  20:  q=    9.680023  mom=   -0.417890
+ site  21:  q=    9.320398  mom=   -1.751963
+ site  22:  q=    9.679985  mom=   -0.432126
+ site  23:  q=    9.319815  mom=   -1.747302
+ site  24:  q=    9.680255  mom=   -0.429660
+ site  25:  q=    9.679843  mom=   -0.426227
+ site  26:  q=    9.320157  mom=   -1.749577
+ site  27:  q=    9.679843  mom=   -0.426227
+ site  28:  q=    9.320157  mom=   -1.749577
+ site  29:  q=    9.320157  mom=   -1.749577
+ site  30:  q=    9.679843  mom=   -0.426227
+ site  31:  q=    9.320157  mom=   -1.749577
+ site  32:  q=    9.679843  mom=   -0.426227
+
+ Option : add all 0 1 9,11,12,15 9,11,12,15
+
+ ... Replace  qnu pnu  by linear combination 0*[1st] + 1*[2nd]
+ site 1 :    9  11  12  15
+ site 2 :    9  11  12  15
+
+ New density from rs file:
+ site   1:  q=    9.679985  mom=    0.432126
+ site   2:  q=    9.320398  mom=    1.751963
+ site   3:  q=    9.680255  mom=    0.429660
+ site   4:  q=    9.319815  mom=    1.747302
+ site   5:  q=    9.680192  mom=    0.413725
+ site   6:  q=    9.320080  mom=    1.776826
+ site   7:  q=    9.680022  mom=    0.417890
+ site   8:  q=    9.319198  mom=    1.781920
+ site   9:  q=    9.317741  mom=   -1.724246
+ site  10:  q=    9.682090  mom=    0.430221
+ site  11:  q=    9.671068  mom=   -0.432164
+ site  12:  q=    9.317741  mom=   -1.724246
+ site  13:  q=    9.682090  mom=    0.430221
+ site  14:  q=    9.329156  mom=    1.758277
+ site  15:  q=    9.671068  mom=   -0.432164
+ site  16:  q=    9.329156  mom=    1.758277
+ site  17:  q=    9.320080  mom=    1.776826
+ site  18:  q=    9.680192  mom=    0.413725
+ site  19:  q=    9.319198  mom=    1.781920
+ site  20:  q=    9.680022  mom=    0.417890
+ site  21:  q=    9.320398  mom=    1.751963
+ site  22:  q=    9.679985  mom=    0.432126
+ site  23:  q=    9.319815  mom=    1.747302
+ site  24:  q=    9.680255  mom=    0.429660
+ site  25:  q=    9.679843  mom=    0.426227
+ site  26:  q=    9.320157  mom=    1.749577
+ site  27:  q=    9.679843  mom=    0.426227
+ site  28:  q=    9.320157  mom=    1.749577
+ site  29:  q=    9.320157  mom=    1.749577
+ site  30:  q=    9.679843  mom=    0.426227
+ site  31:  q=    9.320157  mom=    1.749577
+ site  32:  q=    9.679843  mom=    0.426227
+
+ Option : save
+ rsedit: write restart file "rsta"
+ iors  : write restart file (ascii, asa)
+
+ Option : q
+ Exit 0 exit rs editor 
+ CPU time:  0.245s   Wall clock 0.281s  at  08:13:51 20.06.2018  on  localhost.localdomai
+ ----------------------  START LMPG  ----------------------
+ HEADER CoPt (24yz)
+
+ LMPG:     nbas = 24  nspec = 2  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      Q2:Power-moments
+ bz:       metal, tetra, invit 
+ pgf:      self-consistency  via LU decmpsn
+
+ PGFSET: 5 principal layers, 24+4+4 sites.  Normal: 1 0 0
+   PL |   0   1   2   3   4
+ size |   4   4   6   6   4
+  PLV |   0   0   0   0   0
+ Basis reordered by increasing PL:
+   PL  1  1  1  1  2  2  2  2  3  3  3  3  3  3  4  4  4  4
+ Site 21 22 23 24 17 18 19 20  1  4 13 14 15 16  2  3  5  6
+   PL  4  4  5  5  5  5
+ Site  7  8  9 10 11 12
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   6.000000   0.000000   0.000000 Plat(3) as input
+   1.000000   0.000000   0.000000 PlatL:  angle (deg) with Plat(3) = 0
+   1.000000   0.000000   0.000000 PlatR:  angle (deg) with Plat(3) = 0
+  10.000000   0.000000   0.000000 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   0.975000        0.000000   0.000000   1.025641
+  10.000000   0.000000   0.000000        0.100000   0.000000   0.000000
+   alat = 7.1866  Cell vol = 3618.887104
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   5.405  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.18660   awald= 0.130   lmax=6
+         r1=  5.405   nkd= 291      q1=  1.378   nkg= 103
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 8 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i:(-1/2,0,-0.4875) r2x r2z:(-1/2,0,0.4875)
+         i::(0,1/2,-1/20) r2x r2z::(0,1/2,-1/20)
+ MKSYM:  found 8 space group operations ... includes inversion
+
+ SPLCLS:  2 species split into 12 classes
+ Species  Class      Sites...
+ Co       1:Co       2 21
+          3:Co2      4 23
+          5:Co3      6 17
+          7:Co4      8 19
+          9:Co5      9 12
+         11:Co6      14 16
+ Pt       2:Pt       1 22
+          4:Pt2      3 24
+          6:Pt3      5 18
+          8:Pt4      7 20
+         10:Pt5      10 13
+         12:Pt6      11 15
+         12 classes for embedding region + 4 for padding layers
+  2D-reciprocal vectors:
+    0.000000    1.000000    0.000000
+    0.000000    0.000000    1.025641
+ BZMESH: 9 irreducible QP from 36 ( 6 6 1 )  shift= T T F
+
+ iors  : read restart file (ascii, asa)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ IOVSHF: read file vshft: ef=0  vconst=0.045866
+  
+ ZMESH: nz=10 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,0.00
+
+ GETZV:  304 valence electrons
+ATOM=Co   Z=27  Qc=18  R=2.784895  Qv=0.320398  mom=1.75196  a=0.03  nr=335
+ATOM=Pt   Z=78  Qc=68  R=2.784895  Qv=-0.320015  mom=0.43213  a=0.03  nr=405
+
+ RSEQ warning!  sphere density not converged
+ATOM=Co2  Z=27  Qc=18  R=2.784895  Qv=0.319815  mom=1.7473  a=0.03  nr=335
+ATOM=Pt2  Z=78  Qc=68  R=2.784895  Qv=-0.319745  mom=0.42966  a=0.03  nr=405
+
+ RSEQ warning!  sphere density not converged
+ATOM=Co3  Z=27  Qc=18  R=2.784895  Qv=0.32008  mom=1.77683  a=0.03  nr=335
+ATOM=Pt3  Z=78  Qc=68  R=2.784895  Qv=-0.319808  mom=0.41372  a=0.03  nr=405
+ATOM=Co4  Z=27  Qc=18  R=2.784895  Qv=0.319198  mom=1.78192  a=0.03  nr=335
+ATOM=Pt4  Z=78  Qc=68  R=2.784895  Qv=-0.319978  mom=0.41789  a=0.03  nr=405
+ATOM=Co5  Z=27  Qc=18  R=2.784895  Qv=0.317741  mom=-1.72425  a=0.03  nr=335
+ATOM=Pt5  Z=78  Qc=68  R=2.784895  Qv=-0.31791  mom=0.43022  a=0.03  nr=405
+
+ RSEQ warning!  sphere density not converged
+ATOM=Co6  Z=27  Qc=18  R=2.784895  Qv=0.329156  mom=1.75828  a=0.03  nr=335
+ATOM=Pt6  Z=78  Qc=68  R=2.784895  Qv=-0.328931  mom=-0.43216  a=0.03  nr=405
+ATOM=Pt7  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42623  a=0.03  nr=405
+
+ RSEQ warning!  sphere density not converged
+ATOM=Co7  Z=27  Qc=18  R=2.784895  Qv=0.320157  mom=1.74958  a=0.03  nr=335
+ATOM=Pt8  Z=78  Qc=68  R=2.784895  Qv=-0.320157  mom=0.42623  a=0.03  nr=405
+
+ RSEQ warning!  sphere density not converged
+ATOM=Co8  Z=27  Qc=18  R=2.784895  Qv=0.320157  mom=1.74958  a=0.03  nr=335
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Co         0.320398   0.000000  -0.160844   0.069253  -0.687678
+ Pt        -0.320015   0.000000   0.252631   0.022809  -0.755337
+ Co2        0.319815   0.000000  -0.160456   0.069222  -0.687642
+ Pt2       -0.319745   0.000000   0.252433   0.022805  -0.755431
+ Co3        0.320080   0.000000  -0.160966   0.068903  -0.688136
+ Pt3       -0.319808   0.000000   0.252197   0.022524  -0.755883
+ Co4        0.319198   0.000000  -0.160294   0.068941  -0.688021
+ Pt4       -0.319978   0.000000   0.252343   0.022548  -0.755883
+ Co5        0.317741   0.000000  -0.158970   0.069219  -0.686619
+ Pt5       -0.317910   0.000000   0.250354   0.022044  -0.756500
+ Co6        0.329156   0.000000  -0.169198   0.067189  -0.690013
+ Pt6       -0.328931   0.000000   0.260578   0.024353  -0.753584
+ Pt7       -0.320157   0.000000   0.252627   0.022703  -0.755480
+ Co7        0.320157   0.000000  -0.160761   0.069163  -0.687733
+ Pt8       -0.320157   0.000000   0.252640   0.022716  -0.755466
+ Co8        0.320157   0.000000  -0.160751   0.069173  -0.687722
+ Pt9       -0.320157   0.000000   0.252011   0.022087   0.022087
+ Co9        0.320157   0.000000  -0.163248   0.066675   0.066675
+ Pt10      -0.320157   0.000000   0.255125   0.025201   0.025201
+ Co10       0.320157   0.000000  -0.160134   0.069789   0.069789
+ Sum Q=0.000001  Emad=0.146767(-1.330598) Vconst=0.045866  Vmtz=-0.568169 (up-dn=0.003882)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T    0.045752    0.045939    0.000187    0.000187
+  R      T    0.045752    0.045939    0.000187    0.000187
+
+ RMS pot difference in L PL = 0.000000  in R PL = 0.000000  total = 0.000000
+ vconst that minimizes potential mismatch to end layers =  0.045679
+ vconst is now (estimate to satisfy charge neutrality)  =  0.045866
+ difference                                             = -0.000187
+ LMPG: it 0 of 0  ehk0=-15.541738  pv=1.1827  mmom=26.2702  seref=-633394.1008
+ cpudel    ...   Time this iter:  time(s):  1.28     total:  1.28s
+ Exit 0 [5 severe warnings] LMPG
+ CPU time:  1.284s   Wall clock 1.326s  at  08:13:52 20.06.2018  on  localhost.localdomai
+ ----------------------  START LMPG  ----------------------
+ HEADER CoPt (24yz)
+
+ LMPG:     nbas = 24  nspec = 2  verb 31,20
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll
+ asa:      Q2:Power-moments
+ bz:       metal, tetra, invit 
+ pgf:      self-consistency  via LU decmpsn
+
+ PGFSET: 5 principal layers, 24+4+4 sites.  Normal: 1 0 0
+   PL |   0   1   2   3   4
+ size |   4   4   6   6   4
+  PLV |   0   0   0   0   0
+ Basis reordered by increasing PL:
+   PL  1  1  1  1  2  2  2  2  3  3  3  3  3  3  4  4  4  4
+ Site 21 22 23 24 17 18 19 20  1  4 13 14 15 16  2  3  5  6
+   PL  4  4  5  5  5  5
+ Site  7  8  9 10 11 12
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: i::(0,1/2,-1/20) r2x r2z::(0,-1/2,-1/20)
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   6.000000   0.000000   0.000000 Plat(3) as input
+   1.000000   0.000000   0.000000 PlatL:  angle (deg) with Plat(3) = 0
+   1.000000   0.000000   0.000000 PlatR:  angle (deg) with Plat(3) = 0
+  10.000000   0.000000   0.000000 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   0.975000        0.000000   0.000000   1.025641
+  10.000000   0.000000   0.000000        0.100000   0.000000   0.000000
+   alat = 7.1866  Cell vol = 3618.887104
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   5.405  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 7.18660   awald= 0.130   lmax=6
+         r1=  5.405   nkd= 291      q1=  1.378   nkg= 103
+
+ SGROUP: 8 symmetry operations from 3 generators
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  2 species split into 12 classes
+ Species  Class      Sites...
+ Co       1:Co       2 21
+          3:Co2      4 23
+          5:Co3      6 17
+          7:Co4      8 19
+          9:Co5      9 12
+         11:Co6      14 16
+ Pt       2:Pt       1 22
+          4:Pt2      3 24
+          6:Pt3      5 18
+          8:Pt4      7 20
+         10:Pt5      10 13
+         12:Pt6      11 15
+         12 classes for embedding region + 4 for padding layers
+  2D-reciprocal vectors:
+    0.000000    1.000000    0.000000
+    0.000000    0.000000    1.025641
+ BZMESH: 9 irreducible QP from 36 ( 6 6 1 )  shift= T T F
+
+ IOVSHF: read file vshft: ef=0  vconst=0.045866
+  
+ ZMESH: nz=10 (ellipse)  ecc,eps=0.5,0.3  e1,e2=-1.00,0.00
+
+ GETZV:  304 valence electrons
+
+ Electrostatics for embedded L-C-R system:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Co         0.320398   0.000000  -0.160844   0.069253  -0.687678
+ Pt        -0.320015   0.000000   0.252631   0.022809  -0.755337
+ Co2        0.319815   0.000000  -0.160456   0.069222  -0.687642
+ Pt2       -0.319745   0.000000   0.252433   0.022805  -0.755431
+ Co3        0.320080   0.000000  -0.160966   0.068903  -0.688136
+ Pt3       -0.319808   0.000000   0.252197   0.022524  -0.755883
+ Co4        0.319198   0.000000  -0.160294   0.068941  -0.688021
+ Pt4       -0.319978   0.000000   0.252343   0.022548  -0.755883
+ Co5        0.317741   0.000000  -0.158970   0.069219  -0.686619
+ Pt5       -0.317910   0.000000   0.250354   0.022044  -0.756500
+ Co6        0.329156   0.000000  -0.169198   0.067189  -0.690013
+ Pt6       -0.328931   0.000000   0.260578   0.024353  -0.753584
+ Pt7       -0.320157   0.000000   0.252627   0.022703  -0.755480
+ Co7        0.320157   0.000000  -0.160761   0.069163  -0.687733
+ Pt8       -0.320157   0.000000   0.252640   0.022716  -0.755466
+ Co8        0.320157   0.000000  -0.160751   0.069173  -0.687722
+ Pt9       -0.320157   0.000000   0.252011   0.022087   0.022087
+ Co9        0.320157   0.000000  -0.163248   0.066675   0.066675
+ Pt10      -0.320157   0.000000   0.255125   0.025201   0.025201
+ Co10       0.320157   0.000000  -0.160134   0.069789   0.069789
+ Sum Q=0.000001  Emad=0.146767(-1.330598) Vconst=0.045866  Vmtz=-0.568169 (up-dn=0.003882)
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Pt7       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co7        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Pt8       -0.320157   0.000000   0.252449   0.022525  -0.755657
+ Co8        0.320157   0.000000  -0.160945   0.068979  -0.687917
+ Sum Q=0.000000  Emad=0.029745(-0.264702) Vconst=0.045752  Vmtz=-0.721787 (up-dn=0.006603)
+
+ Deviations in end potentials:
+ region met  <ves>Bulk   <ves>layer     Diff      RMS diff
+  L      T    0.045752    0.045939    0.000187    0.000187
+  R      T    0.045752    0.045939    0.000187    0.000187
+
+ RMS pot difference in L PL = 0.000000  in R PL = 0.000000  total = 0.000000
+ vconst that minimizes potential mismatch to end layers =  0.045679
+ vconst is now (estimate to satisfy charge neutrality)  =  0.045866
+ difference                                             = -0.000187
+ cpudel    ...   Time this iter:  time(s):  0.263    total:  0.263s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 288 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+          Euler angles:
+   ib   alpha      beta     gamma     class           z axis rotated to:
+    1  0.000000  0.000000  0.000000   Pt         0.000000  0.000000  1.000000
+    2  0.000000  0.000000  0.000000   Co         0.000000  0.000000  1.000000
+    3  0.000000  0.000000  0.000000   Pt2        0.000000  0.000000  1.000000
+    4  0.000000  0.000000  0.000000   Co2        0.000000  0.000000  1.000000
+    5  0.000000  0.000000  0.000000   Pt3        0.000000  0.000000  1.000000
+    6  0.000000  0.000000  0.000000   Co3        0.000000  0.000000  1.000000
+    7  0.000000  0.000000  0.000000   Pt4        0.000000  0.000000  1.000000
+    8  0.000000  0.000000  0.000000   Co4        0.000000  0.000000  1.000000
+    9  0.000000  3.141593  0.000000   Co5        0.000000  0.000000 -1.000000
+   10  0.000000  0.000000  0.000000   Pt5        0.000000  0.000000  1.000000
+   11  0.000000  3.141593  0.000000   Pt6        0.000000  0.000000 -1.000000
+   12  0.000000  3.141593  0.000000   Co5        0.000000  0.000000 -1.000000
+   13  0.000000  0.000000  0.000000   Pt5        0.000000  0.000000  1.000000
+   14  0.000000  0.000000  0.000000   Co6        0.000000  0.000000  1.000000
+   15  0.000000  3.141593  0.000000   Pt6        0.000000  0.000000 -1.000000
+   16  0.000000  0.000000  0.000000   Co6        0.000000  0.000000  1.000000
+   17  0.000000  0.000000  0.000000   Co3        0.000000  0.000000  1.000000
+   18  0.000000  0.000000  0.000000   Pt3        0.000000  0.000000  1.000000
+   19  0.000000  0.000000  0.000000   Co4        0.000000  0.000000  1.000000
+   20  0.000000  0.000000  0.000000   Pt4        0.000000  0.000000  1.000000
+   21  0.000000  0.000000  0.000000   Co         0.000000  0.000000  1.000000
+   22  0.000000  0.000000  0.000000   Pt         0.000000  0.000000  1.000000
+   23  0.000000  0.000000  0.000000   Co2        0.000000  0.000000  1.000000
+   24  0.000000  0.000000  0.000000   Pt2        0.000000  0.000000  1.000000
+   25  0.000000  0.000000  0.000000   Pt7        0.000000  0.000000  1.000000
+   26  0.000000  0.000000  0.000000   Co7        0.000000  0.000000  1.000000
+   27  0.000000  0.000000  0.000000   Pt8        0.000000  0.000000  1.000000
+   28  0.000000  0.000000  0.000000   Co8        0.000000  0.000000  1.000000
+   29  0.000000  0.000000  0.000000   Co7        0.000000  0.000000  1.000000
+   30  0.000000  0.000000  0.000000   Pt7        0.000000  0.000000  1.000000
+   31  0.000000  0.000000  0.000000   Co8        0.000000  0.000000  1.000000
+   32  0.000000  0.000000  0.000000   Pt8        0.000000  0.000000  1.000000
+
+ pglusu: band subdiagonal = 161
+
+ --- PGFASA ( LU-decmpsn ) ---
+ layer GF and qnu, idos,  using P3
+   PL   0   1   2   3   4
+  1st   1   5   9  15  21
+ nbas   4   4   6   6   4
+ ndim  36  36  54  54  36
+ ldim  36  36  54  54  36
+  L+I  36  36  54  54  36
+  PLV   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0458659 vconst(L)=0.0457520 vconst(R)=0.0457520
+ 
+ pgglst mode 1     6 PL   (-1:4)
+ pgglst mode 0     5 PL   (0:4)
+ SUPGBC: read lbc for  GF ...  missing -> generate for ipl=-1 (collinear mode)
+ SUPGBC: read rbc for  GF ...  missing -> generate for ipl=5 (collinear mode)
+ iz = 1 of 10  z = -0.999409 0.012150  wz = 0.00301149 0.0309468  isp=1  q= 0 0.083333 0.08547
+
+ MAGCPA: spin and orbital moments, SOC (mRy) and torques (Ry) from density matrices
+                        global coordinates                  local coordinates
+   ib  ic          x           y           z             x           y           z
+    1   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    2   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    3   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    4   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    5   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    6   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    7   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    8   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+    9   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   10   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   11   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   12   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   13   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   14   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   15   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   16   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   17   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   18   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   19   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   20   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   21   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   22   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   23   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+   24   1 spin  0.00000000  0.00000000  0.00000000    0.00000000  0.00000000  0.00000000
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+      0   16.133521   21.180748   -5.161643    1.740149    2.180748
+ spin 2   52.748814   16.819693   -3.963287    1.358299   -2.180307
+  total   68.882335   38.000441   -9.124930    3.098448    0.000441
+      1   15.616822   21.194930   -5.185626    1.749809    2.194930
+ spin 2   52.816892   16.804580   -3.973026    1.363659   -2.195420
+  total   68.433714   37.999509   -9.158652    3.113468   -0.000491
+      2   59.242352   27.868998   -6.615951    2.273784   -0.631002
+ spin 2   43.148322   29.130924   -7.038034    2.368651    0.630924
+  total  102.390674   56.999922  -13.653985    4.642435   -0.000078
+      3   24.893741   31.358099   -7.685088    2.574889    2.858099
+ spin 2   77.452235   25.641646   -6.035301    2.088916   -2.858354
+  total  102.345976   56.999745  -13.720390    4.663805   -0.000255
+      4   16.133521   21.180748   -5.161643    1.740149    2.180748
+ spin 2   52.748814   16.819693   -3.963287    1.358299   -2.180307
+  total   68.882335   38.000441   -9.124930    3.098448    0.000441
+ All PL  132.019956  122.783524  -29.809953                8.783524
+ spin 2  278.915078  105.216535  -24.972934               -8.783465
+ PL tot  410.935034  228.000058  -54.782887                0.000058
+ Deviation from charge neutrality in embedded layers:      0.000058
+ 
+ gfzerq: ef=0  dq=5.83e-5  vold=0  dv=1.42e-7  vnew= 0
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=3.25e-7  vold=1.42e-7  dv=7.86e-10  vnew= 0
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+      0   12.391480   21.180747   -5.161640    1.740149    2.180747
+ spin 2   59.057677   16.819684   -3.963284    1.358299   -2.180316
+  total   71.449157   38.000431   -9.124925    3.098448    0.000431
+      1   11.808019   21.194928   -5.185623    1.749809    2.194928
+ spin 2   59.053641   16.804572   -3.973023    1.363659   -2.195428
+  total   70.861660   37.999499   -9.158647    3.113467   -0.000501
+      2   62.052967   27.868990   -6.615947    2.273784   -0.631010
+ spin 2   42.771908   29.130918   -7.038030    2.368651    0.630918
+  total  104.824875   56.999908  -13.653977    4.642435   -0.000092
+      3   19.552979   31.358096   -7.685084    2.574889    2.858096
+ spin 2   85.788376   25.641635   -6.035298    2.088916   -2.858365
+  total  105.341355   56.999730  -13.720381    4.663805   -0.000270
+      4   12.391480   21.180747   -5.161640    1.740149    2.180747
+ spin 2   59.057677   16.819684   -3.963284    1.358299   -2.180316
+  total   71.449157   38.000431   -9.124925    3.098448    0.000431
+ All PL  118.196926  122.783507  -29.809935                8.783507
+ spin 2  305.729279  105.216493  -24.972919               -8.783507
+ PL tot  423.926204  228.000000  -54.782854                0.000000
+ Deviation from charge neutrality in embedded layers:      0.000000
+ 
+ gfzerq: ef=0  dq=4.26e-14  vold=1.41e-7  dv=2.75e-16  vnew= 0
+ gippad: integrate 10 points corr. from dv shift: idos, qnu
+ potential shift embedded layers =  0.000000  Cumulative shift =  0.000000
+
+ shift (1.4e-7) within Pade tolerance (1e-4, tolq=0) ... accept Pade correction to G
+
+ pgfasa needs d.c. terms
+
+ pgfasa (exit): vconst updated from 0.045866 to 0.045866
+ setting sumev=0 for now
+
+ LMPG: ehf=57.5124145  ehk=57.5113902  sumev=0.0000000  delsev=73.0531438
+  
+ mixing: mode=B  beta=.2
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=9.76e-7
+ AMIX: nmix=0 mmix=8  nelts=288  beta=0.2  tm=10  rmsdel=9.75e-7
+h nit=10 pgf=1 nc=1 afm=1 lmf=0 nk1=6 gamma=0 sparse=1 mmom=26.2702287 ehf=57.5124145 ehk=57.5113902
+ Exit 0 LMPG:  quit = rho       
+ CPU time:  3.902s   Wall clock 3.944s  at  08:13:56 20.06.2018  on  localhost.localdomai

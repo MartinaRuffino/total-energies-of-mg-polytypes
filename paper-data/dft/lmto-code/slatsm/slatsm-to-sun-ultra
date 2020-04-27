@@ -1,0 +1,9 @@
+echo --- slatsm-to-sun-ultra: ccomp to SUN-ULTRA specific ---
+
+echo '   ' slatsm-to-sun-ultra: ccomp for special SUN-ULTRA files: \
+     `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SUN-ULTRA' *.f`
+foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SUN-ULTRA' *.f` )
+  cp $i $i:r.fortran
+  ccomp -uSUN-ULTRA -dSUN-ULTRA -uRECUR -dRECUR $i:r.fortran $i 
+end
+

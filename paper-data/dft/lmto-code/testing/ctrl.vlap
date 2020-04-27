@@ -1,0 +1,51 @@
+TLMSTR  lmstr vlap --pltg:onec -vgmode=13 -vrmxs=0.8 -vrsma=0.3 -vivl=0
+        lmstr vlap --pltg:onec -vgmode=13 -vrmxs=0.8 -vrsma=0.3 -vivl=1
+        lmstr vlap --pltg:onec -vgmode=13 -vrmxs=0.8 -vrsma=0.3 -vivl=2
+% const nmto=0 verb=40 
+% const gmode=1 rmxs=0.8 hcr=0.7 rsm=0.7 rsma=0.4 kmx=8 rmxg0=0.7 ivl=0 ehvl=-0.7 lmxb=2
+HEADER  GaAs with empty spheres for strux testing
+VERS    LMASA-6.0 LM:7 ASA:7
+IO      SHOW=f HELP=f VERBOS={verb} WKP=F IACTIV=f
+# for v7
+HAM     NSPIN=1 REL=t 
+OPTIONS NSPIN=1 REL=t CCOR=T LMH=F ADNF=F NRMIX=80 2 Q=
+CONST   a=10.69 nsph=0 nspec=4
+        rmt_ga=2.3
+        rmt_as=2.3
+        rmt_e=1
+SYMGRP  R4X*I MX*I R3D M(1,1,0)
+.. To make DOS or bands, set metal=t.  Also need NEVMX=36 for full dos
+BZ      TETRA NKABC=6 6 6 TOL=1E-6 METAL=nsph?2:1 DOSWT=F EFMAX=10
+.BZ      TETRA NKABC=6 6 6 TOL=1E-6 METAL=nsph?2:1 DOSWT=T EFMAX=10 NEVMX=36
+ITER    MIX=B
+MIX     MODE=B
+STR     RMAXS={rmxs}*a SHOW=f EQUIV=F RVL/R={rmxg0} VLFUN={ivl}
+        ENV[ MODE={gmode} NEL=2 EL=-.3 -1 ] 
+.STR     RMAXS=4   RMAXSi=4    RMAXCC=5
+SCELL   PLAT= .5 .5 0   0 0 1   .5 -.5 0
+STRUC   NBAS=nspec NSPEC=nspec NL={lmxb+1}
+        ALAT=a PLAT=  0 .5 .5  .5  0 .5  .5 .5  0
+SITE    ATOM=GA POS=  0   0   0
+        ATOM=AS POS= .25 .25 .25
+        ATOM=E1 POS= .50 .50 .50
+        ATOM=E2 POS= .75 .75 .75
+SPEC    ATOM=GA  Z=31  R=rmt_ga LMX={lmxb} LMXA={lmxb} KMXA={kmx} RSMA={rsma}*rmt_ga
+        HCR={hcr}*rmt_ga {hcr}*rmt_ga {hcr}*rmt_ga {hcr}*rmt_ga
+        RSMH={rsm}*rmt_ga {rsm}*rmt_ga {rsm}*rmt_ga
+        EHVL={ehvl} {ehvl} {ehvl} {ehvl}
+        CONF=4 4 3 IDXDN=1 1 2 IDMOD=0 0 1
+        ATOM=AS  Z=33  R=rmt_ga LMX={lmxb} LMXA={lmxb} KMXA={kmx} RSMA={rsma}*rmt_as
+        HCR={hcr}*rmt_as {hcr}*rmt_as {hcr}*rmt_as {hcr}*rmt_as
+        RSMH={rsm}*rmt_as {rsm}*rmt_as {rsm}*rmt_as
+        EHVL={ehvl} {ehvl} {ehvl} {ehvl}
+        CONF=4 4 4 IDXDN=1 1 2
+        ATOM=E1  Z=0  R=rmt_e  LMX={lmxb} LMXA={lmxb} KMXA={kmx} RSMA={rsma}*rmt_e
+        HCR={hcr}*rmt_e  {hcr}*rmt_e  {hcr}*rmt_e {hcr}*rmt_e
+        RSMH={rsm}*rmt_e  {rsm}*rmt_e  {rsm}*rmt_e
+        EHVL={ehvl} {ehvl} {ehvl} {ehvl}
+        CONF=1 2 3 IDXDN=1 1 2 IDMOD=0 0 0
+        ATOM=E2  Z=0  R=rmt_e  LMX={lmxb} LMXA={lmxb} KMXA={kmx} RSMA={rsma}*rmt_e
+        HCR={hcr}*rmt_e  {hcr}*rmt_e  {hcr}*rmt_e {hcr}*rmt_e
+        RSMH={rsm}*rmt_e  {rsm}*rmt_e  {rsm}*rmt_e
+        EHVL={ehvl} {ehvl} {ehvl} {ehvl}
+        CONF=1 2 3 IDXDN=1 1 2 IDMOD=0 0 0

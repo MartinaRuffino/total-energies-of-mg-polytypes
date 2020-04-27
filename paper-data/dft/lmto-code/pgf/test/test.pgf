@@ -1,0 +1,5056 @@
+#!/bin/csh -f
+
+# This file is a shell script testing operation of layer Greens function lmpg
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+alias compare_resf 'set retcall = \!\!:1; set testvar = \!\!:2 ; set refvar = \!\!:3 ; set keyword = \!\!:4  ; set arg_number = \!\!:5 ; set occur_number = \!\!:6 ; set sed_strn = \!\!:7 ; goto compare_resf'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias zcmpmfiles_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set tol = \!\!:3 ; set passvar = \!\!:4 ; set ndig = \!\!:5 ; set srcfile = \!\!:6 ; set reffile = \!\!:7 ; goto zcmpmfiles_res_0 '
+alias getrmfiles 'set rmfiles = ($rmfilel) ; if ("$rmfilel" == "ALL") touch ctrl.$exti ctrl.{$exti}_1; if ("$rmfilel" == "ALL") set rmfiles = (*.$exti *.{$exti}_*)'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+set mcexcl = "~excl:CPU:cpudel:subdiagonal:special"
+set mcincl 
+
+#alias mpix mpirun
+set scr
+set nmpi = 4
+set jobspassed
+set gmaxdif = 0
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.pgf: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+    case "--MPIK=*":
+     set narg = `echo $arg1 | sed s/--MPIK=// | awk '{print split($0, a, "," )}'`
+     if ($narg < 1 || $narg > 1) then
+       echo 'test.pgf (abort): bad argument list to MPIK=..'
+       exit -1
+     endif
+#    extract nmpi from argument
+     set nmpi = `echo $arg1 | sed s/--MPIK=// | awk '{split($0, a, "," ); print a[1]}'`
+#    check to ensure argument is a valid integer
+     @ nmpi = $nmpi
+    case "--MPIK":
+      set MPIK
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--usepsta":
+      set scr='-vscr=52'
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--haveout":
+      set haveout
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--whichexec"
+      set quiet; unset quiet
+      findcmd chk00 lmpg "$path" "$topdir"
+      chk00:
+      exit 0
+      breaksw
+    case "--noplot*":
+      set noplot
+      breaksw
+
+    case "--nk=*":
+     set narg = `echo $arg1 | sed s/--nk=// | awk '{print split($0, a, "," )}'`
+     if ($narg < 1 || $narg > 1) then
+       echo 'test.pgf (abort): bad argument list to nk=..'
+       exit -1
+     endif
+#    extract nk from argument
+     set nk = `echo $arg1 | sed s/--nk=// | awk '{split($0, a, "," ); print a[1]}'`
+#    check to ensure argument is a valid integer
+     @ nk = $nk
+
+    case "--mergepl":
+      set mergepl
+      breaksw
+    case "--lu=no":
+      set ludecomp; unset ludecomp
+      set noludecomp
+      breaksw
+    case "--lu":
+      set ludecomp
+      breaksw
+    case "--bigemb=no":
+      set bigemb; unset bigemb
+      set nobigemb
+      breaksw
+    case "--bigemb":
+      set bigemb
+      breaksw
+    case "--declead":
+      set declead
+      breaksw
+    case "--nclead":
+      set nclead
+      breaksw
+    case "--verb*":
+    case "-verb*":
+      set verb = 1
+      breaksw
+    case "--all":
+      set mater_lst = (fe cr3si6 copt co cuau free femgo coptco ava aba)
+#     Until problem with fully rel transport is resolved ...
+#     set mater_lst = (fe cr3si6 copt co cuau free ava aba)
+      set joblist
+      while (`echo $1 | sed -e 's/\([0-9][0-9]*\)/-/'`  ==  "-")
+        set joblist = ($joblist $1)
+        shift
+      end
+      set pass
+      set failed
+      foreach i ($mater_lst)
+        echo "$space ... invoking $testfile" `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g' | sed -e 's/-add/-add0/g'` $i $joblist
+        $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g' | sed -e 's/-add/-add0/g'` $i $joblist
+        set retval = $status
+        if ($retval != 0) then
+          unset pass
+          set failed = ($failed $i)
+        endif
+      end
+      if ($?clean) then
+        exit
+      else if ($?pass) then
+        echo "$space $testfile : all tests PASSED ($mater_lst)"
+        exit
+      else
+        echo "$space $testfile : checks FAILED for the following materials:  $failed"
+        exit -1
+      endif
+
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+
+end
+
+if ($?nobigemb) then
+  set bigemb ; unset bigemb
+endif
+set leads
+if ($?declead) set leads = ($leads -vdeclead=1)
+if ($?nclead) set leads = ($leads -vnclead=1)
+
+echo ' '
+call qprint chk01 "$space ---- test.pgf: test ASA layer Green's function program lmpg ---"
+chk01:
+
+# --- use fe as default in the absence of specific choice ---
+if ($#argv == 0) then
+  set ext = fe
+  echo "$space .... no file extension specified; use directory fe"
+else
+  set ext = $argv[1]
+  shift
+endif
+
+if ($ext == "fe") then
+# Tests: (--lu=no is the default)
+#   lpgf   LU
+#    1     no     pgf/test/test.pgf --lu=no fe
+#    1    yes     pgf/test/test.pgf --lu fe
+  echo "$space Note: for a more interactive mode, try script $testdir/fe/testpgf"
+  set exti = dat
+  set cplst = ( $testdir/$ext/{*.{dat,pg},q.bulk} $topdir/testing/eref.dat )
+  set rmfilel = ({log,out,rbc,lbc,vshft,bnd1,ctrl,eref,sdot,str,xa1,xa2,xa3,xb1}.dat {ctrl,psta,rsta,vshft}.pg)
+  set rmfilel = ALL
+  set lmargs1
+# Defaults
+  set pgfargs1 = (-vvesi=.2 -vpgf=1 -vnk1=8 -vbzj=0)
+  set pgfargs2 = (-vnk1=1 -vccor=f -vbzj=0)
+  set lmargs3  = (-vtwoc=t -vnk1=40 -vna=8 -vnb=6 -vnk1=16 -vnk2=16 -vnz=60 -vbzj=0 -vsc=t -vtwoc=f -vnl=3 -vbulkm=1)
+  set pgfargs3 = (                  -vna=8 -vnb=6 -vnk1=16 -vnk2=16 -vnz=60 -vbzj=0 -vsc=t -vtwoc=f -vnl=3 "-cgfopts='noidos;pdos;p3'")
+  set lmargs5  = (-vna=8 -vnb=6 -vnk1=8 -vnk2=12 -vnz=10 -vbzj=0 -vsc=t -vtwoc=f -vnl=3 -vnsp=2 -vbulkm=1 --rs=1,0)
+  set pgfargs5 = (-vna=8 -vnb=6 -vnk1=8 -vnk2=12 -vnz=10 -vbzj=0 -vsc=t -vtwoc=f -vnl=3 -vnsp=2 -vef0=-.0665 -vnit=12 -vgamma=f -vscr=4)
+  # set lmargs6  = ($lmargs5)
+  # set pgfargs6 = (-vna=8 -vnb=6 -vnk1=8 -vnk2=12 -vnz=10 -vbzj=0 -vsc=t -vtwoc=f -vnl=3 -vnsp=2 -vef0=-.0665 -vnit=12 -vgamma=f -vsparse=1 -vscr=4)
+  set pgfargs5 = (-vna=8 -vnb=6 -vnk1=8 -vnk2=12 -vnz=10 -vbzj=0 -vsc=t -vtwoc=f -vnl=3 -vnsp=2 -vef0=-.0665 -vnit=12 -vgamma=f -vscr=4)
+  if ($?ludecomp) then
+    set pgfargs1 = ($pgfargs1 -vsparse=1)
+    set pgfargs5 = ($pgfargs5 -vsparse=1)
+  endif
+  set etol5 = 5e-4
+  set dqtol5 = 2e-4
+  set vctol5 = 1e-4
+  set etol6 = 0.01
+  set dqtol6 = 2e-4
+  set vctol6 = 2e-4
+  rm -f {xa0,xa1,xa2,xa3,xa4,xb0,xb1,xb2,xb3,xa02,xa12,xa22,xa32,xa42,xb02,xb12,xb22,xb32}.pg
+else if ($ext == "cr3si6") then
+  set exti = dat
+  set cplst = ( $testdir/$ext/*.$exti )
+  set rmfilel = ({ctrl,vshft,lbc,rbc,mixm,sv,cr,si,site,bnds}.$exti spec.prop)
+  set lmargs1  = ( -vccor=f -vpgf=1 )
+  set pgfargs1 = ( -vccor=f -vpgf=1 -vnk1=8 -vbzj=1 )
+  set pgfargs2 = ( -vnk1=1 -vccor=f -vbzj=0 )
+else if ($ext == "cuau") then
+  set cplst = ( $testdir/$ext/{ctrl.cuau,site.cuau,q.bulk} )
+  set gam = 1
+  set lmargs5  = (-vfile=t -vgamma=$gam -vrw=1 -vrwcu=1 -vnit=30 -vnk=8 -vnk2=1 -vbzj=0 -vscr=10)
+  set pgfargs5  = (-vbeta=.4 --zerq~all~qout -vfile=t -vgamma=$gam -vrw=1 -vrwcu=1 -vnit=30 -vnk=8 -vnk2=1 -vbzj=0 -vscr=44 $leads)
+#   set pgfargs5  = (-vbeta=.4 --zerq~all~qout -vconvc=1e-5 -vfile=t -vgamma=$gam -vrw=1 -vrwcu=1 -vnit=40 -vnk=8 -vnk2=1 -vbzj=0 -vscr=44 $leads)
+  set etol5 = 1e-3
+  set dqtol5 = 3e-5
+  set vctol5 = 1e-4
+  set etol6 = $etol5
+  set dqtol6 = $dqtol5
+  set vctol6 = $vctol5
+  set rmfilel = ALL
+
+  if ($?noludecomp) then
+    set pgfargs5 = ($pgfargs5 -vsparse=0)
+  endif
+
+else if ($ext == "algas") then
+  set cplst = ( $testdir/$ext/{ctrl.algas,rsta.algas} )
+  set pgfargs9   = (--no-iactiv --pr31,20 -vlayer=1 -vnk=1 -vscr=0 -vgamma=t -vrel=1 -vnit=1 --rs=1,0 -vpgfmod=5)
+  set pgfargs9nc_init = ($pgfargs9)
+  set pgfargs9nc = (--no-iactiv --pr31,20 -vlayer=1 -vnk=1 -vscr=0 -vgamma=t -vrel=2 -vnit=1 --rs=1,0 -vpgfmod=5)
+  set rmfilel = ALL
+else if ($ext == "femgo") then
+# Tests (--lu=no is the default).  Note --lu and --lu=no are different for lrel=2.
+#   lpgf   LU          relativistic
+#    5     no      lrel=1,lrel=1+SO,lrel=2     pgf/test/test.pgf --lu=no femgo 9
+#    5    yes      lrel=1,lrel=1+SO,lrel=2     pgf/test/test.pgf --lu femgo 9
+#    7     no      lrel=1,lrel=1+SO,lrel=2     pgf/test/test.pgf --lu=no femgo 11
+#    7    yes      lrel=1,lrel=1+SO,lrel=2     pgf/test/test.pgf --lu femgo 11
+  set cplst = ( $testdir/$ext/{ctrl.femgo,rsta.femgo,vshft.femgo} )
+  set gam=0  # Only alpha representation is used in this context
+  set lmargs4 = (--no-iactiv -vrel=1 -vnit=1 -vpgf=1 --stack~setpl:range=7.8~wsite)
+  set pgfargs9 = (--no-iactiv -vrel=1 -vnit=1 --rs=1,0 -vpgf=5 $leads)
+  set pgfargs9nc_init = (-vnit=0 $pgfargs9)
+# set pgfargs9nc = (--no-iactiv -vrel=2 -vnit=1 --rs=1,0 -vpgf=5 $leads --pr60,41 -vbegmom=2)
+  set pgfargs9nc = (--no-iactiv -vrel=2 -vnit=1 --rs=1,0 -vpgf=5 $leads -vbegmom=2)
+  set pgfargs9nc2 = (--no-iactiv -vrel=1 -vso=1 -vnit=1 --rs=1,0 -vpgf=5 $leads -vbegmom=2)
+  set pgfargsb   = (--no-iactiv -vrel=1 -vnit=1 --rs=1,0 -vpgf=7 $leads)
+  set pgfargsbnc_init = (-vnit=0 $pgfargsb)
+  set pgfargsbnc = (--no-iactiv -vrel=2 -vnit=1 --rs=1,0 -vpgf=7 $leads -vbegmom=2)
+  set pgfargsbnc2 = (--no-iactiv -vrel=1 -vso=1 -vnit=1 --rs=1,0 -vpgf=7 $leads -vbegmom=2)
+
+  set rmfilel = ALL
+
+  if ($?ludecomp) then
+    set pgfargs9 = ($pgfargs9 -vsparse=1)
+    set pgfargs9nc_init = ($pgfargs9nc_init -vsparse=1)
+    set pgfargs9nc = ($pgfargs9nc -vsparse=1)
+    set pgfargs9nc2 = ($pgfargs9nc2 -vsparse=1)
+    set pgfargsb   = ($pgfargsb -vsparse=1)
+    set pgfargsbnc_init = ($pgfargsbnc_init -vsparse=1)
+    set pgfargsbnc = ($pgfargsbnc -vsparse=1)
+    set pgfargsbnc2 = ($pgfargsbnc2 -vsparse=1)
+  endif
+# if ($?noludecomp) then
+#   set pgfargs9 = ($pgfargs9 -vsparse=0)
+#   set pgfargs9nc_init = ($pgfargs9nc_init -vsparse=0)
+#   set pgfargs9nc = ($pgfargs9nc -vsparse=0)
+#   set pgfargs9nc2 = ($pgfargs9nc2 -vsparse=0)
+# endif
+else if ($ext == "copt") then
+# Tests (--lu is the default)
+#   lpgf   LU    noncollinear
+#    1     no         no          pgf/test/test.pgf --lu=no copt 5
+#    1    yes         no          pgf/test/test.pgf --lu copt 5
+#    1     no        yes          pgf/test/test.pgf --lu=no copt 7
+#    1    yes        yes          pgf/test/test.pgf --lu copt 7
+#    1     no        yes          pgf/test/test.pgf --lu=no copt 10
+#    1    yes        yes          pgf/test/test.pgf --lu copt 10
+#    5     no         no          pgf/test/test.pgf --lu=no copt 8
+#    5    yes         no          pgf/test/test.pgf --lu copt 8
+#    5     no        yes          pgf/test/test.pgf --lu=no copt 9
+#    5    yes        yes          pgf/test/test.pgf --lu copt 9
+#    7     no        yes          pgf/test/test.pgf --lu=no copt 11
+#    7    yes        yes          pgf/test/test.pgf --lu copt 11
+#
+  set rmfilel = ({lbc,rbc,co,pt,vshft,mixm,log,eula}.$ext)
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{psta.copt,rsta.copt,site.copt,ctrl.copt,spec.prop,eula.copt0,socscl.copt0} )
+  set cplst7 = ( $testdir/$ext/{rsta.copt,site.copt,vshft.copt,ctrl.copt,spec.prop,eula.copt0,socscl.copt0} )
+  set cplst8 = ( $cplst7)
+  set cplst9 = ( $cplst7)
+  set cplsta = ( $cplst7)
+  set cplstb = ( $cplst7)
+  set cplst_ne = ($testdir/$ext/{rsta-noneq,vshft-noneq}.$ext)
+  set cplst_ne2 = ($testdir/$ext/{rsta-noneq2,vshft-noneq2}.$ext)
+  set lmargs5  = (-cstrx=file -vlmf=f -vnk1=6 --pr31,20 -vnit=10 --rs=1,0)
+  set etol5 = 5e-4
+  set dqtol5 = .025
+# the gamma-rep doesn't come out identical in the noncollinear case
+# because gamma is averaged over the two spins.  Use alpha
+  set lmargs7  = (-cstrx=24yz -vlmf=f -vnk1=6 --pr31,20)
+# Defaults
+  set sparse = 1; if ($?noludecomp) set sparse = 0
+  set pgfargs5 = (-cstrx=file -vlmf=f -vnk1=6 --pr31,20 -vnit=30 -vgamma=f $leads -vsparse=$sparse -vscr=4)
+  set pgfargs7 = (-cstrx=24yz -vlmf=f -vnk1=6 --pr31,20 -vgamma=f $leads -vsparse=$sparse)
+  set pgfargs7nc1 = ($pgfargs7 -vpgf=1 -vso=1 -vsoscl=0 -vnc=t -vafm=f  -vnclead=1 -vdeclead=1 --iactiv=no --quit=rho -vang=0)
+  set pgfargs7nc2 = ($pgfargs7 -vpgf=1 -vso=1 -vsoscl=0 -vnc=t -vafm=f  -vnclead=1 -vdeclead=1 --iactiv=no --quit=rho -vang=90)
+  set pgfargs7nc3 = ($pgfargs7 -vpgf=1 -vso=1 -vsoscl=0 -vnc=t -vafm=f  -vnclead=1 -vdeclead=1 --iactiv=no --quit=rho -vang=180)
+  set pgfargs7nc4 = ($pgfargs7 -vpgf=1 -vso=1 -vsoscl=0 -vnc=t -vafm=f  -vnclead=1 -vdeclead=1 --iactiv=no --quit=rho -vang=-90)
+  set pgfargs8 = (-vnit=10 -vnc=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=5 $leads -vsparse=$sparse)
+  set pgfargs9 = (-vnit=10 -vnc=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=5 $leads -vsparse=$sparse --pr31,20 --iactiv=no)
+  set pgfargs9nc = (-vnit=10 -vnc=t -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=5 $leads -vsparse=$sparse --pr31,20 --iactiv=no)
+  set pgfargsa = (-vnit=10 -vnc=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=1 $leads -vsparse=0 --pr31,20 --iactiv=no)
+  set pgfargsa_ne = (-vnit=10 -vnc=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=1 $leads -vsparse=0 -vgamma=f -vscr=4 -vvne=-.02 --pr31,20 --iactiv=no --quit=rho)
+  set pgfargsa_nenc = (-vnit=10 -vnc=t -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=1 $leads -vsparse=0 -vgamma=f -vscr=4 -vvne=-.02 --pr31,20 --iactiv=no --quit=rho)
+  set pgfargsb = (-vnit=10 -vnc=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=7 $leads -vsparse=$sparse --pr31,20 --iactiv=no)
+  set pgfargsbnc = (-vnit=10 -vnc=t -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=7 $leads -vsparse=$sparse --pr31,20 --iactiv=no)
+  if ($?ludecomp) then
+  #   set pgfargs7 = (-cstrx=24yz -vlmf=f -vnk1=6 --pr31,20 -vgamma=f -vsparse=1)
+  #   set pgfargs8 = (-vnit=10 -vnc=f -vafm=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=5 $leads  -vsparse=1)
+  #   set pgfargs9 = (--pr31,20 -vnit=10 --no-iactiv -vnc=f -vafm=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=5 $leads -vsparse=1)
+    set pgfargsa = (--pr31,20 -vnit=10 --no-iactiv -vnc=f -vafm=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=1 $leads -vsparse=1)
+    set pgfargsa_ne = (-vnit=10 -vnc=f -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=1 $leads -vsparse=1 -vgamma=f -vscr=4 -vvne=-.02 --pr31,20 --iactiv=no --quit=rho)
+    set pgfargsa_nenc = (-vnit=10 -vnc=t -cstrx=24yz -vlmf=f -vnk1=6 -vpgf=1 $leads -vsparse=1 -vgamma=f -vscr=4 -vvne=-.02 --pr31,20 --iactiv=no --quit=rho)
+  endif
+  set pgfargs8_init = (--pr31,20 --no-iactiv -vnit=0 --rs=1,0 $pgfargs8)
+  set pgfargs9_init = (-vnit=0 --rs=1,0 $pgfargs9)
+  set pgfargs9nc_init = (-vnit=0 --rs=1,0 $pgfargs9nc)
+  set pgfargsa_init = (-vnit=0 --rs=1,0 $pgfargsa)
+  set pgfargsa_init_ne = (--pr31,20 -vnit=0 --rs=1,0 $pgfargsa_ne)
+  set pgfargsa_init_nenc = (--pr31,20 -vnit=0 --rs=1,0 $pgfargsa_nenc)
+  set pgfargsb_init = (-vnit=0 --rs=1,0 $pgfargsb)
+  set pgfargsbnc_init = (-vnit=0 --rs=1,0 $pgfargsbnc)
+  set rmfilel_ne = ({mixm,lbc,rbc}.$ext)
+  set efermi9 = 0
+  set stdotol9 = 2e-4
+# set dqtol7 = 1e-5
+# set bstol7 = 1d-5
+
+# coptco tests noncollinear spins combined with SO coupling
+else if ($ext == "coptco") then
+  set rmfilel = ALL
+  set cplst
+  set cplst7 = ( $testdir/$ext/{ctrl,rsta,vshft,socscl}.$ext $testdir/$ext/{ctrl}.$ext.mergedPL)
+  set cplst9 = ( $cplst7 )
+  set lmargs7  = (-vnk=12 -vbeta=0.1 -vscr=4)
+  if (! $?nk) then
+    set nk = 12
+  endif
+  set pgfargs7 =    (-vpgf=1 -vnk=$nk -vbeta=0.1 -vscr=4 -vso=0 --quit=rho)
+  set pgfargs7nc1 = (-vpgf=1 -vnk=$nk -vbeta=0.1 -vscr=4 -vnc=1 -vso=0 -vadeg1=000 -vadeg=000 --quit=rho)
+  set pgfargs7nc2 = (-vpgf=1 -vnk=$nk -vbeta=0.1 -vscr=4 -vnc=1 -vso=0 -vadeg1=120 -vadeg=120 --quit=rho)
+  set pgfargs7nc3 = (-vpgf=1 -vnk=$nk -vbeta=0.1 -vscr=4 -vnc=1 -vso=0 -vadeg1=240 -vadeg=240 --quit=rho)
+
+  set pgfargs9 = (--no-iactiv -vrel=1 -vnit=1 -vpgf=5 -vnc=0 $leads)
+  set pgfargs9_init = (-vnit=0 -vpgf=1 -vso=1 -vnc=t --rs=1,0 $pgfargs9)
+  set pgfargs9nc_init = ( $pgfargs9_init )
+  set pgfargs9nc2  = (-vrel=1 -vso=0 -vnc=t -vnit=1 -vpgf=5 $leads --no-iactiv)
+  set pgfargs9nc = (-vrel=1 -vso=1 -vnc=t -vsoscl=0 -vnit=1 -vpgf=5 $leads --no-iactiv)
+
+  set jtol9 = 0.00002
+  set stdotol9 = 1e-6
+
+
+  if ($?noludecomp) then
+    set pgfargs7 =    (-vsparse=0 $pgfargs7)
+    set pgfargs7nc1 = (-vsparse=0 $pgfargs7nc1)
+    set pgfargs7nc2 = (-vsparse=0 $pgfargs7nc2)
+    set pgfargs7nc3 = (-vsparse=0 $pgfargs7nc3)
+  else
+    set pgfargs7 =    (-vsparse=1 $pgfargs7)
+    set pgfargs7nc1 = (-vsparse=1 $pgfargs7nc1)
+    set pgfargs7nc2 = (-vsparse=1 $pgfargs7nc2)
+    set pgfargs7nc3 = (-vsparse=1 $pgfargs7nc3)
+  endif
+  set bstol7 = 1e-6
+  set spintol7 = 1e-6
+else if ($ext == "co") then
+  set exti = co
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{ctrl,occnum}.$exti )
+# sparse=1 exercises the LU branch; should produce same transmission
+  set pgfargs2 = (-vnk=1)
+  set ldauargs2 = "-vldau=1"
+  set pgfargs2_init = (--no-iactiv -vnit=0 -vpgf=1 $pgfargs2)
+  if ($?noludecomp) then
+    set pgfargs8 = (-vpgf=5)
+  else
+    set pgfargs8 = (-vpgf=5 -vsparse=1)
+  endif
+  set efermi8 = -0.0596
+  set pgfargs8_init = (-vnit=0 -vpgf=1 $pgfargs8)
+  set ldauargs8 = "-vldau=1"
+else if ($ext == "free") then
+  set exti = step
+  set rmfilel = ({lbc,rbc,jzk,jz}.$exti)
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{ctrl,xa}.$exti )
+# sparse=1 exercises the LU branch; should produce same result
+  set pgfargs8 = (-vnit=1 -vnk1=4 -vpgf=5 -vsparse=0)
+  if ($?ludecomp) then
+    set pgfargs8 = (-vnit=1 -vnk1=4 -vpgf=5 -vsparse=1)
+  endif
+else if ($ext == "ava") then
+# Tests:
+#   lpgf   LU    nonequilbrium
+#    1     no        no,yes       pgf/test/test.pgf ava
+#    1     yes       no,yes       nonequilibrium mode not implemented
+  set exti = ava
+  set rmfilel = ({vshft,mixm,lbc,rbc,jzk,jz,save,sv}.$exti)
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{ctrl,rsta,vshft}.$exti )
+  set pgfargsa = (-vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=0 -vvne=0 -vnit=99 --rs=1)
+  set pgfargsa_init = (-vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=0 -vvne=0 -vnit=0 --rs=1)
+  set rmfilel_ne = ({mixm,lbc,rbc}.$exti)
+  set cplst_ne = ( $testdir/$ext/{rsta-noneq,vshft-noneq}.$exti )
+  set pgfargsa_init_ne = (-vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=81 -vvne=-.1 -vnit=0 --rs=1)
+  set pgfargsa_ne = (-vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=81 -vvne=-.1 -vnit=99 --rs=1)
+  set cplst_ne2 = ( $testdir/$ext/{rsta-noneq2,vshft-noneq2}.$exti )
+  if ($?ludecomp) then
+    set pgfargsa = ($pgfargsa -vsparse=1)
+    set pgfargsa_ne = ($pgfargsa_ne -vsparse=1)
+  endif
+  if ($?bigemb) then
+    set pgfargsa = ($pgfargsa -vbigemb=t)
+    set pgfargsa_ne = ($pgfargsa_ne -vbigemb=t)
+  endif
+  if ($?nobigemb) then
+    set pgfargsa = ($pgfargsa -vbigemb=f)
+    set pgfargsa_ne = ($pgfargsa_ne -vbigemb=f)
+  endif
+else if ($ext == "ava2") then
+  set exti = ava
+  set rmfilel = ({vshft,mixm,lbc,rbc,jzk,jz,save,sv}.$exti)
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{ctrl,rsta,vshft}.$exti )
+  set pgfargsa = (-vnsp=2 -vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=0 -vvne=0 -vnit=99 --rs=1)
+  set pgfargsa_init = (-vnsp=2 -vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=0 -vvne=0 -vnit=0 --rs=1)
+  set rmfilel_ne = ({mixm,lbc,rbc}.$exti)
+  set cplst_ne = ( $testdir/$ext/{rsta-noneq,vshft-noneq}.$exti )
+  set pgfargsa_init_ne = (-vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=81 -vvne=-.1 -vnit=0 --rs=1)
+  set pgfargsa_ne = (-vnk=18 -vnz=16 -vemesh_mode=110 -vnzne=81 -vvne=-.1 -vnit=99 --rs=1)
+else if ($ext == "fegascu") then
+  set exti = fegascu
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{ctrl,rsta,vshft}.$exti )
+  set lmargs5  = (-vnk=12 -vlayer=1 -vrel=1 -vgamma=1 -vnit=1 -vpgf=1 -vscr=24 --rs=1)
+  set pgfargs5 = (-vnk=12 -vlayer=1 -vrel=1 -vgamma=1 -vnit=1 -vpgf=1 -vscr=24 --rs=1)
+  set etol5 = 7e-5
+  set dqtol5 = .025
+else if ($ext == "aba") then
+# Tests:
+#   lpgf   LU    noncollinear
+#    5     no         no          pgf/test/test.pgf --lu=no aba
+#    5    yes         no          pgf/test/test.pgf --lu aba
+
+  set exti = aba
+  set pgfargs8 = (-vrmax=5.7 -vpgf=5 -vnk=1 -vnz=3 -vemesh_mode=101 -ve0=-.085-.11 -vef0=-.085 -ve1=1d-5 -ve2=.0 -vvne=-.11 -vnzne=0 -vnit=1)
+
+# Default
+  set pgfargs8 = (-vrmax=5.7 -vpgf=5 -vnk=1 -vnz=3 -vemesh_mode=101 -ve0=-.085-.11 -vef0=-.085 -ve1=1d-5 -ve2=.0 -vvne=-.11 -vnzne=0 -vnit=1)
+# can't do -cstrx=file because noncoll and coll moments are different
+  if ($?noludecomp) then
+    set pgfargs8 = (-vsparse=0 -vrmax=5.7 -vpgf=5 -vnk=1 -vnz=3 -vemesh_mode=101 -ve0=-.085-.11 -vef0=-.085 -ve1=1d-5 -ve2=.0 -vvne=-.11 -vnzne=0 -vnit=1)
+  endif
+  if ($?ludecomp) then
+    set pgfargs8 = (-vsparse=1 -vrmax=5.7 -vpgf=5 -vnk=1 -vnz=3 -vemesh_mode=101 -ve0=-.085-.11 -vef0=-.085 -ve1=1d-5 -ve2=.0 -vvne=-.11 -vnzne=0 -vnit=1)
+  endif
+  set pgfargs8_init = (-vnit=0 -vpgf=1 --rs=1,0 $pgfargs8)
+  set rmfilel = ALL
+  set cplst = ( $testdir/$ext/{ctrl,pos,rsta,vshft}.$exti )
+else
+  echo "unknown test case $ext"  ... aborting
+  exit
+endif
+
+if ($?exti == 0) then
+  set exti = $ext
+endif
+
+set mcx
+unset mcx
+findcmd chk01a mcx "$path" "no"
+chk01a:
+if ($?mcx) then
+  if `$mcx --h |& sed -n 1,1p | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.072))}'` then
+  else
+    echo "$space    program $mcx not vsn 1.072 or later ... may omit some checks"
+    unset mcx
+#   In case an environment variable has been set
+    setenv mcx
+    unsetenv mcx
+  endif
+endif
+
+if ($?MPIK) then
+set mcexcl = "$mcexcl~excl:MADMAT:dstrbpx:warning"
+endif
+
+set joblist = ($argv)
+if ($#joblist == 0 ) set joblist = (1 2 3 4 5 7 8 9 10 11)
+
+echo $joblist | egrep '\b1\b' >/dev/null
+if ($status) goto chk1e
+if ($?pgfargs1 == 0) goto chk1e
+
+cat <<EOF
+
+         --- Test case 1 ($testdir/$ext) Compare generated GF to file ---
+EOF
+if ($ext == "cr3si6") then
+cat <<EOF
+         File $testdir/$ext/ctrl.dat is input for 4 PL of Cr3Si6, each PL equivalent.
+
+         lmpg generates the surface g-1-1~,g00~,g11~,g22~, next the R surface g44~,
+         then g33,g44,g22,g11,g00,g-1-1, finally the proper G-1-1,G00,G11,G22,G33,G44.
+         The script however aborts execution after writing G00 to file out.dat and
+         compares it to $testdir/$ext/G00.
+EOF
+else if ($ext == "fe") then
+cat <<EOF
+         File $testdir/fe/ctrl.dat is input for 7 PL of Fe bilayers, each layer
+         identical except for constant potential shifts in layers 2 and beyond:
+             layers   shift     layers     shift     layers     shift
+            ...0,1      0        2-5      vesi        6...     vesi/2
+
+         The present script exploits the equivalence in potential of layers 2-5,
+         by setting variable vesi=-.2 (see invocation of lmpg, below).
+
+         lmpg generates the surface g00~,g11~,g22~,g55~,g66~, next the
+         layer g66,g55,g22,g11,g00, and finally the proper G00,G11,G22,G55,G66.
+         The script however aborts execution after writing G00 to out.dat and
+         compares it to $testdir/$ext/G00.
+EOF
+else
+endif
+
+set gmaxdif = 0
+set pass; set ldaupass ; unset ldaupass
+if ($?MPIK) then
+  echo "$space ... skipping test : MPIK has not been set up"
+  goto chk1e
+endif
+if ($?lmargs1 == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chk1e
+endif
+if (! -e $testdir/$ext/G00) then
+  echo "$space ... missing file $testdir/$ext/G00; skip this test"
+  goto chk1e
+endif
+if ($?pgfargs1 == 0) set pgfargs1 = ($lmargs1)
+query chk11 chk1e 'run this test'
+chk11:
+# ... Look for executables
+#  findcmd chk11a rdcmd "$path" "$topdir"
+#  chk11a:
+#  findcmd chk11b lm "$path" "$topdir"
+#  chk11b:
+findcmd chk11c lmstr "$path" "$topdir"
+chk11c:
+findcmd chk11d lmpg "$path" "$topdir"
+chk11d:
+
+getrmfiles
+if ($?clean) then
+  echo "$space rm -f $rmfiles out q.bulk"
+               rm -f $rmfiles out q.bulk
+  goto chk1e
+endif
+echo "$space ... Set up ASA strux and starting potential"
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+echo "$space cp $cplst ."
+             cp $cplst .
+runjob chk13 /dev/null "lmstr $exti $lmargs1 --no-iactive"
+chk13:
+if ($ext == "cr3si6") then
+echo "$space lmpg $exti $pgfargs1 --pr70 <<EOF >out"
+             lmpg $exti $pgfargs1 --pr70 <<EOF >out
+
+
+q
+EOF
+else
+echo "$space lmpg $exti $pgfargs1 --pr70 <<EOF >out"
+             lmpg $exti $pgfargs1 --pr70 <<EOF >out
+
+q
+EOF
+endif
+set retval = $status
+if ($retval != 0) goto cleanup
+call qprint chk14 "$space lmpg returned successfully.  G00 should be in file out.dat"
+chk14:
+if ($?add0) then
+ echo -n "         ..." ; $add0 out.dat
+endif
+
+chk1p:
+echo -n "$space File out.dat identical to file $testdir/$ext/G00 ? "
+cmp out.dat $testdir/$ext/G00 >/dev/null
+set retval = $status
+if ($retval == 0) then
+  echo  yes
+else
+  echo -n "no ... to 8 digits? ... "
+  call zcmpnfiles chk1pa "8 out.dat $testdir/$ext/G00"
+chk1pa:
+  if ($retval == 0) then
+    echo yes
+  else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) of $ncharfile)"
+    unset pass
+  endif
+endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED ($ext)"
+    set jobspassed = ($jobspassed 1)
+else
+    echo "$space test 1 FAILED ($ext)"
+    set failed = ($failed 1)
+endif
+chk1e:
+
+echo $joblist | grep 2 >/dev/null
+if ($status) goto chk2e
+
+cat <<EOF
+
+         --- Test case 2 ($testdir/$ext) kmap option (pgf=3) ---
+         lmpg generates the bulk left Green's function using the analytic
+         form of Chen et al.  It generates the (complex) wave numbers, which can
+         be compared directly to the energy bands for this same potential.
+EOF
+if ($?quiet) then
+echo ' '
+else if ($ext == "cr3si6") then
+cat <<EOF
+
+         The direction of k_z is set by the PL (third lattice vector)
+         in the present case between k-points (0,0,-0.34875) and (0,0,0.34875).
+         The fineness of the mesh and the energy window is fixed by EMESH.
+         This script invokes lmpg with variable pgf=3, which uses line
+            EMESH=400 0 -1 1 0
+         as can be seen by inspecting input file ctrl.dat.
+         It creates a uniform mesh on the real axis from -1 to +1 Ry.
+
+EOF
+else if ($ext == "fe") then
+cat <<EOF
+
+         The direction of k_z is set by the PL (third lattice vector)
+         in the present case on the line connecting (0,0,0) and (0,0,1/2).
+         The fineness of the mesh and the energy window is fixed by EMESH.
+         This script invokes lmpg with variable pgf=3, which uses line
+            EMESH=400 0 -.8 1 0
+         as can be seen by inspecting input file ctrl.dat.
+         It creates a uniform mesh on the real axis from -0.8 to +1 Ry.
+
+EOF
+else
+endif
+
+set gmaxdif = 0
+set pass; set ldaupass ; unset ldaupass
+set refout=$testdir/$ext/out.lmpg.kmap testout=out.$exti bnd1ref=$testdir/$ext/bnd1.dat
+if ($?MPIK) then
+  echo "$space ... skipping test : MPIK has not been set up"
+  goto chk2e
+endif
+if ($?pgfargs2 == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chk2e
+endif
+#  goto chk2cd
+query chk22 chk2e 'run this test'
+chk22:
+getrmfiles
+if ($?clean) then
+  touch out1.$exti
+  echo "$space rm -f $rmfiles log.$exti out bnd1.$exti eref.$exti psta.$exti q.bulk rsta.$exti sdot.$exti str.$exti vshft.$exti out.$exti out[12].$exti"
+               rm -f $rmfiles log.$exti out bnd1.$exti eref.$exti psta.$exti q.bulk rsta.$exti sdot.$exti str.$exti vshft.$exti out.$exti out[12].$exti
+  goto chk2e
+endif
+# ... Look for executables
+#  findcmd chk21a rdcmd "$path" "$topdir"
+#  chk21a:
+#  findcmd chk21b lm "$path" "$topdir"
+#  chk21b:
+findcmd chk21c lmstr "$path" "$topdir"
+chk21c:
+findcmd chk21d lmpg "$path" "$topdir"
+chk21d:
+if ($?noplot) goto chk21e
+findcmd chk21e fplot "$path" "no"
+chk21e:
+findcmd chk21f ghostview "$path" "no"
+chk21f:
+if (! $?ghostview) then
+findcmd chk21g gv "$path" "no"
+chk21g:
+if ($?gv) then
+set ghostview = "$gv"
+else if (! $?ghostview) then
+findcmd chk21h gs "$path" "no"
+chk21h:
+if ($?gs) then
+set ghostview = "$gs"
+endif
+endif
+endif
+
+
+echo "$space ... set up ASA strux and starting potential"
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+if ($ext == "fe" || $ext == "cr3si6") then
+echo "$space cp $testdir/$ext/*.$exti ."
+             cp $testdir/$ext/*.$exti .
+else
+echo "$space cp $cplst ."
+             cp $cplst .
+endif
+
+runjob chk23 /dev/null "lmstr $exti -vpgf=3 $pgfargs2 --no-iactiv"
+chk23:
+if (! $?pgfargs2_init) goto chk22b
+runjob chk22b $testout "lmpg $exti $pgfargs2_init"
+chk22b:
+runjob chk24 $testout "lmpg $exti -vpgf=3 $pgfargs2 --no-iactiv"
+chk24:
+call qprint chk25 "$space lmpg returned successfully"
+chk25:
+if ($?add0) then
+ echo -n "         ..." ; $add0 bnds.$exti
+ echo -n "         ..." ; $add0 $testout
+endif
+call qprint chk26 "$space To look at the energy bands lmpg produced, inspect file 'bnds.$exti'."
+chk26:
+call showout chk26a CPU
+chk26a:
+
+chk2c:
+echo ' '
+call qprint chk2ca "$space ... compare generated bands to reference"
+chk2ca:
+call qprint chk2cb "$space cat $testout | grep '    0.000000  1' | sort -n -k 2 -k 1 >out1.dat"
+chk2cb:
+call qprint chk2cc "$space zcat $refout | grep '    0.000000  1' | sort -n -k 2 -k 1 >out2.dat"
+chk2cc:
+call qprint chk2cd "$space cmp out1.dat out2.dat >/dev/null"
+chk2cd:
+echo "$space cat $testout | grep '    0.000000  1' | sort -n -k 2 -k 1 >out1.dat"
+             cat $testout | grep '    0.000000  1' | sort -n -k 2 -k 1 >out1.dat
+echo "$space zcat $refout | grep '    0.000000  1' | sort -n -k 2 -k 1 >out2.dat"
+             zcat $refout | grep '    0.000000  1' | sort -n -k 2 -k 1 >out2.dat
+
+if ! ($?bndstol) set bndstol = 1e-3
+if (! $?mcx) then
+  echo "$space ... mcx not installed ... no check on stdout"
+  goto chk2ck
+endif
+if ($?slow > 0 && $?verb) then
+  echo 'diff -W 150 --suppress-common-lines -y out1.dat out2.dat | expand > out.diffy'
+  echo 'set ndiff = `$mcx -cmpf~fn1=out.diffy~diffy=150~tol=1e-3~ndiff`'
+endif
+diff -W 150 --suppress-common-lines -y out1.dat out2.dat | expand > out.diffy
+set ndiff = `$mcx -cmpf~fn1=out.diffy~diffy=150~tol=1e-3~ndiff`
+echo -n "$space $ndiff lines in out1.dat, out2.dat differ by > 1e-3 ... is it less than 100 ? "
+if ($ndiff < 100) then
+  echo  yes
+else
+  echo  no ... test failed but register as pass '(diff out1.dat out2.dat)'
+#   unset pass
+endif
+
+# zcmpmfiles_res_0 chk2ck "Max deviation in out1.dat from out2.dat " $bndstol pass 3 out1.dat out2.dat
+chk2ck:
+if (! $?pass) then
+  echo "$space NB: the automatic checks may cause this test to fail even though agreement is satisfactory."
+  echo "$space     User is advised to compare files out1.dat and out2.dat pictorially."
+  echo " "
+endif
+#  echo "$space cmp out1.dat out2.dat >/dev/null"
+#               cmp out1.dat out2.dat >/dev/null
+#  set retval = $status
+#  echo -n "$space Bands identical to those in $testdir/$ext/out.lmpg.kmap ? "
+#  if ($retval == 0) then
+#    echo  yes
+#  else
+#    echo -n "no ... to 4 digits? ... "
+#    call zcmpnfiles chk2cf "4 out1.dat out2.dat"
+#  chk2cf:
+#    if ($retval == 0) then
+#      echo yes
+#    else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+#      echo ok "($retval difference(s) of $ncharfile)"
+#    else
+#      echo no "($retval difference(s) of $ncharfile)"
+#      echo "$space NB: the automatic checks may cause this test to fail even though agreement is satisfactory."
+#      echo "$space     User is advised to compare files out1.dat and out2.dat pictorially."
+#      unset pass
+#    endif
+#  endif
+
+if (! $?quiet && $?fplot && $?slow && $?ghostview && -e $bnd1ref ) then
+  echo ' '
+  query chk27 chk2e0 'plot pgf bands with bands generated by lm'
+  chk27:
+               rm -f bnd1.dat
+  echo "$space cp $bnd1ref bnd1.dat"
+               cp $bnd1ref bnd1.dat
+               set nband = `sed -n 1,1p bnd1.dat | awk '{print $5}'`
+  echo "$space $fplot -disp -pr20 -vnband=$nband -f $testdir/plot.plbnds"
+               $fplot -disp -pr20 -vnband=$nband -f $testdir/plot.plbnds
+else if (! $?quiet) then
+  echo " "
+  echo "$space ... no figure drawn... missing one or more of executables fplot,ghostview"
+endif
+
+chk2e0:
+if ($?ldauargs2 && ! $?ldaupass && $?pass) then
+  set ldaupass
+  set pgfargs2 = ($ldauargs2 $pgfargs2)
+  set bnd1ref = $testdir/$ext/bnd1.ldau.dat
+  echo " "
+  echo "$space Repeat test $ext with LDA+U parameters set."
+  set refout=$testdir/$ext/out.lmpg.kmap.ldau testout=out.ldau.$exti
+  query chk22 chk2e0 'run this test'
+endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 2 PASSED ($ext)"
+    set jobspassed = ($jobspassed 2)
+else
+    echo "$space test 2 FAILED ($ext)"
+#   set failed = ($failed 2)
+endif
+
+chk2e:
+
+echo $joblist | grep 3 >/dev/null
+if ($status) goto chk3e
+
+cat <<EOF
+
+         --- Test case 3 ($testdir/$ext) partial DOS ---
+         The l-decomposed DOS is compared to that generated by band program lmdos
+         for bulk GF of the leftmost PL. 3rd order potential functions are used.
+EOF
+if ($?quiet) then
+else if ($ext == "fe") then
+cat <<EOF
+
+         The input file ctrl.pg is essentially the same as ctrl.dat (tests 1,2)
+         except that ctrl.pg is written to generate a variable number of layers.
+         this case uses has 7 layers Fe and 3rd order potential functions.
+
+         lmpg generates the DOS on an elliptical contour in the complex plane,
+         and a Pade approximant to project G to the real axis.
+         Here a relatively fine mesh of 60 points is used.
+
+EOF
+endif
+if ($?quiet) then
+
+set gmaxdif = 0
+set pass
+echo "$space ... no automatic checks ... skipping test 3"
+goto chk3e
+else
+endif
+set pass
+if ($?MPIK) then
+  echo "$space ... skipping test : MPIK has not been set up"
+  goto chk3e
+endif
+if ("$ext" == "fe") then
+  set exti = pg
+else
+  echo "$space ... missing dos file; skip this test"
+  goto chk3e
+endif
+query chk32 chk3e 'run this test'
+chk32:
+getrmfiles
+if ($?clean) then
+  echo "$space rm -f $rmfiles bnds.$exti fplot.ps dos.$exti dos.$exti log.$exti out.lmpg rbc.$exti lbc.$exti sdot.$exti str.$exti dos.lm.$exti eref.$exti q.bulk vshft.$exti"
+  rm -f $rmfiles bnds.$exti fplot.ps dos.$exti dos.$exti log.$exti out.lmpg rbc.$exti lbc.$exti sdot.$exti str.$exti dos.lm.$exti eref.$exti q.bulk vshft.$exti
+  goto chk3e
+endif
+# ... Look for executables
+#  findcmd chk31a rdcmd "$path" "$topdir"
+#  chk31a:
+#  findcmd chk31b lm "$path" "$topdir"
+#  chk31b:
+findcmd chk31c lmstr "$path" "$topdir"
+chk31c:
+findcmd chk31d lmpg "$path" "$topdir"
+chk31d:
+findcmd chk31e catdos "$path" "no"
+chk31e:
+if ($?noplot) goto chk31f
+findcmd chk31f gs "$path" "no"
+chk31f:
+findcmd chk31g pldos "$path" "no"
+chk31g:
+echo "$space ... set up ASA strux and starting potential"
+echo "$space rm -f x[ab]*.pg vshft.pg mixm.pg"
+             touch xa.pg
+             rm -f x[ab]*.pg vshft.pg mixm.pg
+echo "$space cp $testdir/$ext/{ctrl.pg,vshft.pg,q.bulk}  ."
+             cp $testdir/$ext/{ctrl.pg,vshft.pg,q.bulk}  .
+echo "$space cp $topdir/testing/eref.dat ."
+             cp $topdir/testing/eref.dat .
+echo "$space ... this is the reference dos as generated from program lmdos"
+echo "$space zcat $testdir/$ext/dos.3c.lm.nsp=1 > dos.lm.pg"
+             zcat $testdir/$ext/dos.3c.lm.nsp=1 > dos.lm.pg
+
+echo "$space ... set up ASA strux and starting potential"
+runjob chk33 out.lmpg "lmpg $exti -vpgf=1 -vnit=0 $lmargs3 --no-iactiv"
+chk33:
+if ($ext == "fe") then
+call qprint chk34 "$space ... replace the 'standard' energy mesh with ranging between -.8,+.8 Ry:"
+chk34:
+echo "$space cat $testdir/$ext/ctrl.$exti | sed s/'         EMESH={nz} 10 -1 {ef0} .5 0'/'      EMESH={nz} 10 -.8 .8 .9 -.8'/ > ctrl.$exti"
+             cat $testdir/$ext/ctrl.$exti | sed s/'         EMESH={nz} 10 -1 {ef0} .5 0'/'      EMESH={nz} 10 -.8 .8 .9 -.8'/ > ctrl.$exti
+endif
+runjob chk35 /dev/null "lmstr $exti -vpgf=1 $pgfargs3"
+chk35:
+#exit
+runjob chk36 out.lmpg "lmpg $exti -vpgf=1 $pgfargs3 --no-iactiv"
+chk36:
+call qprint chk37 "$space lmpg returned successfully; file dos.pg contains partial DOS"
+chk37:
+if ($?quiet) then
+else if ($?catdos && $?gs && $?pldos) then
+echo "$space catdos dos.lm.pg dos.pg"
+             catdos dos.lm.pg dos.pg
+echo ' '
+echo "$space DOS generated by programs lm and lmpg were concatenated into file dos.dat."
+echo "$space first 3 panels of dos.pg consist of s,p,d dos make by lm"
+echo "$space  next 3 panels of dos.pg consist of s,p,d dos make by lmpg, one layer"
+echo "$space  next 3 panels of dos.pg consist of s,p,d dos make by lmpg, another layer"
+query chk39 chk3p 'plot spd dos generated by lm, compared to lmpg'
+chk39:
+echo "$space echo '30 7 /' | $pldos '-lst=1:3;39:42;43:45' dos.dat"
+             echo '30 7 /' | $pldos '-lst=1:3;39:42;43:45' dos.dat
+if ($?slow != 0) then
+echo "$space gs fplot.ps"
+             gs fplot.ps
+endif
+else
+echo " "
+echo "$space ... no figure drawn... missing one or more of executables catdos,gs,pldos"
+endif
+
+chk3p:
+echo ' '
+echo "$space ... Test 3 has no no automatic pass checks"
+echo "$space     because of numerical instabilities in the Pade interpolation"
+chk1ca:
+
+chk3e:
+
+echo $joblist | grep 4 >/dev/null
+if ($status) goto chk4e
+
+cat <<EOF
+
+         --- Test case 4 ($testdir/$ext) autogeneration of principal layer partitioning ---
+EOF
+if ($ext == "femgo") then
+cat <<EOF
+         File $testdir/$ext/ctrl.$ext is an operational input file.
+
+         This test runs lmscell to autogenerate the principal layers,
+         writing the structural data with PL to file  sites.$ext.
+
+         The PL it generates are large enough to encompass all neighbors in
+         the specified range.  The autogenerated principal layers are
+         slightly different from the ones given in the input file.
+
+EOF
+else if ($ext == "XX") then
+else
+endif
+
+set refout=$testdir/$ext/out.lmscell testout=out.$exti
+
+if ($?lmargs4 == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chk4e
+endif
+if (! -e $testdir/$ext/sites.$ext) then
+  echo "$space ... missing file $testdir/$ext/sites.$ext; skip this test"
+  goto chk4e
+endif
+if ($?pgfargs4 == 0) set pgfargs4 = ($lmargs4)
+query chk41 chk4e 'run this test'
+chk41:
+
+set gmaxdif = 0
+set pass
+
+# ... Look for executables
+#  findcmd chk41a rdcmd "$path" "$topdir"
+#  chk41a:
+#  findcmd chk41b lm "$path" "$topdir"
+#  chk41b:
+findcmd chk41c lmstr "$path" "$topdir"
+chk41c:
+findcmd chk41d lmscell "$path" "$topdir"
+chk41d:
+
+getrmfiles
+if ($?clean) then
+  echo "$space rm -f $rmfiles out q.bulk"
+               rm -f $rmfiles out q.bulk
+  goto chk4e
+endif
+echo "$space ... Run lmscell to create file sites"
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+echo "$space cp $cplst ."
+             cp $cplst .
+runjob chk43 $testout "lmscell $exti $lmargs4 --no-iactive"
+chk43:
+if ($retval != 0) goto cleanup
+call qprint chk44 "$space lmscell returned successfully."
+chk44:
+if ($?add0) then
+ echo -n "         ..." ; $add0 sites.$ext
+endif
+
+call zdiffiles chk42 "CPU 1 $testout $refout"
+chk42:
+
+
+chk4p:
+echo -n "$space file sites.$ext identical to file $testdir/$ext/sites.$ext ? "
+cmp sites.$ext $testdir/$ext/sites.$ext >/dev/null
+set retval = $status
+if ($retval == 0) then
+  echo  yes
+else
+  echo -n "no ... to 6 digits? ... "
+  call zcmpnfiles chk4pa "6 sites.$ext $testdir/$ext/sites.$ext"
+chk4pa:
+  if ($retval == 0) then
+    echo yes
+  else
+    echo no "($retval difference(s) of $ncharfile)"
+    unset pass
+  endif
+endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 4 PASSED ($ext)"
+    set jobspassed = ($jobspassed 4)
+else
+    echo "$space test 4 FAILED ($ext)"
+    set failed = ($failed 4)
+endif
+chk4e:
+
+echo $joblist | grep 5 >/dev/null
+if ($status) goto chk5e
+
+cat <<EOF
+
+         --- Test case 5 ($testdir/$ext) self-consistency, spin-polarized case (pgf=2,1) ---
+         Self-consistency begins with the bulk L, R GF, making self-consistent
+         potentials and finding the required potential shift to match the input
+         Fermi level.  The bulk regions are frozen and the layers are made
+         self-consistent.
+EOF
+if ($ext == "fe") set exti = pg
+if ($?quiet) then
+else if ($ext == "fe") then
+cat <<EOF
+
+         In the Fe case file ctrl.pg is used for a 7-layer slab of Fe.  It tests:
+
+         * self-consistency using ASA model dielectric screening.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+
+EOF
+else if ($ext == "cuau") then
+cat <<EOF
+
+         The cuau case is a 15-layer Cu-Au heterojunction.  It tests:
+         * reading site positions from from 'site' file
+
+         * nonorthogonal vectors PLATL, PLATR
+
+         * Inequivalent end layers
+
+         * self-consistency for a long metallic unit cell, using
+           ASA model dielectric screening.
+
+           Note the synchronization between update of the on-site W
+           and the removal of the mixing file.
+           Both occur each 4th iteration and are set by
+           10s digit of scr and category MIX, respectively.
+
+EOF
+else if ($ext == "fegascu") then
+cat <<EOF
+
+         A spin polarized Fe/GaAs/Cu Shottky barrier.  It tests:
+
+         * Inequivalent end layers
+
+         * self-consistency for a long metallic unit cell, using
+           ASA model dielectric screening.
+
+EOF
+else if ($ext == "copt") then
+cat <<EOF
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu)
+
+         lmpg reads lattice data from file 'site.copt' and potential data from a restart file 'rsta.copt'.
+
+         pgf mode 2 is repeated for the noncollinear case (uniform rotation) to establish that the results
+         do not change.
+
+EOF
+endif
+
+if ($scr == "-vscr=52") then
+cat <<EOF
+         The calculated static response function will be used to improve convergence.
+
+EOF
+endif
+
+set gmaxdif = 0
+set pass
+if ($?pgfargs5 == 0) then
+  echo
+  echo "$space ... skipping test 5 ... test not set up"
+  goto chk5e
+endif
+query chk51 chk5e 'run this test'
+chk51:
+getrmfiles
+if ($?clean) then
+  echo "$space rm -f $rmfiles"
+               rm -f $rmfiles
+  echo "$space rm -f out.lmpg.findef out.lmpg"
+               rm -f out.lmpg.findef out.lmpg
+  goto chk5e
+endif
+# ... Look for executables
+#  findcmd chk51a rdcmd "$path" "$topdir"
+#  chk51a:
+#  findcmd chk51b lm "$path" "$topdir"
+#  chk51b:
+findcmd chk51c lmstr "$path" "$topdir"
+chk51c:
+findcmd chk51d lmpg "$path" "$topdir"
+chk51d:
+
+set refout=$testdir/$ext/out.lmpg.findef testout=out.lmpg.findef
+
+# Skip executables when debugging test.pgf
+#    set dqend = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+#    set refout=$testdir/$ext/out.lmpg.self-consistent testout=out.lmpg.self-consistent
+#    goto chk59
+
+if ($?MPIK) then
+  set lmpg = "mpirun -n $nmpi lmpg"
+endif
+
+echo "$space ... set up ASA strux and starting potential"
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+echo "$space cp $cplst ."
+             cp $cplst .
+runjob chk53 out.lmpg "lmpg $exti -vnit=0 -vpgf=1 $scr $lmargs5 --no-iactiv"
+chk53:
+echo "$space ... Make L-, R- potentials self-consistent"
+set noglob
+runjob chk54 /dev/null "lmstr $exti -vpgf=2 $pgfargs5"
+chk54:
+runjob chk55 $testout "lmpg $exti -vpgf=2 $pgfargs5 --no-iactiv"
+chk55:
+call qprint chk55a "$space lmpg returned successfully"
+chk55a:
+unset noglob
+set dqend = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+
+if ("$ext" == "copt") then
+echo "$space ... Confirm self-consistency when extended to NC case"
+set noglob
+runjob chk53x out.lmpg "lmpg $exti --rs=0,0 -vso=1 -vnit=0 -vpgf=1 $scr $lmargs5 --no-iactiv"
+chk53x:
+  echo "$space Set up files eula.copt and socscl.copt"
+  echo "$space cp eula.copt0 eula.copt"
+               cp eula.copt0 eula.copt
+  echo "$space cp socscl.copt0 socscl.copt"
+               cp socscl.copt0 socscl.copt
+# runjob chk55x '>>'$testout "lmpg $exti -vpgf=2 $pgfargs5  -vdeclead=1 -vnclead=1 -vnc=1 -vso=1 -vsoscl=0 -vang=90 --no-iactiv"
+runjob chk55x '>>'$testout "lmpg $exti -vpgf=2 $pgfargs5 -vnclead=1 -vnc=1 -vso=1 -vsoscl=0 -vang=90 --no-iactiv"
+chk55x:
+call qprint chk55ax "$space lmpg returned successfully"
+chk55ax:
+unset noglob
+endif
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+
+call showout chk56 SV
+chk56:
+call showout chk57 CPU
+chk57:
+
+set noglob
+echo "$space ... iterate towards self-consistency for the layer case:"
+set refout=$testdir/$ext/out.lmpg.self-consistent testout=out.lmpg.self-consistent
+if ($scr == "-vscr=52") set refout=$testdir/$ext/out.lmpg.self-consistent.scr
+if (! -e $refout) then
+  echo "$space ... skipping this test : missing reference file $refout"
+  goto chk5e
+endif
+
+# echo "$lmpg $exti -vpgf=1 $scr $pgfargs5 --no-iactiv"
+# exit
+
+runjob chk59 $testout "$lmpg $exti -vpgf=1 $scr $pgfargs5 --no-iactiv"
+chk59:
+call qprint chk5a "$space $lmpg returned successfully"
+chk5a:
+if ($?add0) then
+ echo -n "         ..." ; $add0 $testout
+endif
+unset noglob
+
+call showout chk5b SV
+chk5b:
+
+call showout chk5c CPU
+chk5c:
+
+# Check whether calculation is spin polarized, and whether there is a dipole moment
+zcat $refout | grep spin-pol  >/dev/null
+if ($status == 0) then
+ set spinpol
+endif
+zcat $refout | grep 'Dipole in plat'  >/dev/null
+if ($status == 0) then
+ set Dipole
+endif
+
+# Get final magnetic moment
+if ($?spinpol) then
+  set mtest = `     cat $testout | grep mmom= | awk '{print substr($0,5+match($0,"mmom=[^ ]*"),RLENGTH-5)}' | tail -1 `
+  set mref  = `zcat $refout | grep mmom= | awk '{print substr($0,5+match($0,"mmom=[^ ]*"),RLENGTH-5)}' | tail -1 `
+endif
+# Get difference in Fermi energies to compare to dipole
+if ($?Dipole) then
+  compare_resf chk5d1 dipole dpref "Dipole in plat" 8 0 zzz
+chk5d1:
+  set diffef = ` cat vshft.$exti | awk '{print substr($0,10+match($0,"vconst[(]R[)]=[^ ]*"),RLENGTH-10)-substr($0,10+match($0,"vconst[(]L[)]=[^ ]*"),RLENGTH-10)}' `
+endif
+compare_resf chk5d2 vconst vcref "vconst is now" 10 0 zzz
+chk5d2:
+
+set etest = `cat $testout      | grep "  it" | awk '{print $8}' | tail -1`
+set eref  = `zcat $refout | grep "  it" | awk '{print $8}' | tail -1`
+#  set etest = `cat $testout | awk '{if ($2 == "it") {print;getline}}' | tail -1 | awk '{print substr($7,5)}'`
+#  set eref =  `zcat $refout | awk '{if ($2 == "it") {print;getline}}' | tail -1 | awk '{print substr($7,5)}'`
+set dqlayer = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+set dqmin = `cat $testout | grep SV: | tail -2 | awk '{print $3}' | sed 's/D/e/'`
+set dqmin = `echo $dqmin | awk '{{k=($1>$2?$2:$1)} {print k}}'`
+set dqmin = `cat $testout | grep SV: | tail -5 | sed s/D/E/ | awk -v dqmin=99 '{if ($3<dqmin) dqmin=$3} END { printf "%f\n", dqmin}'`
+
+if ($?quiet) goto chk5p1
+echo " "
+echo "$space lmpg rms bulk  dq,   last iteration = $dqend"
+echo "$space lmpg rms layer dq,   last iteration = $dqlayer"
+
+set vdiff = `echo $vconst $vcref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+echo " "
+echo "$space lmpg vconst central region, last it = $vconst"
+echo "$space ditto, reference file               = $vcref"
+echo "$space difference                          = $vdiff"
+
+if ($?spinpol) then
+  set mdiff = `echo $mtest $mref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+  echo " "
+  echo "$space lmpg mag. mom., last iteration      = $mtest"
+  echo "$space ref. mag. mom., last iteration      = $mref"
+  echo "$space difference                          = $mdiff"
+endif
+
+if ($?Dipole) then
+  set ddiff = `echo $dipole $dpref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+  echo " "
+  echo "$space Diff in R, L Fermi energies (vshft) = $diffef"
+  echo "$space Dipole across active region         = $dipole"
+  echo "$space Ditto, reference file               = $dpref"
+  echo "$space diff between test and reference     = $ddiff"
+endif
+
+set ediff = `echo $etest $eref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+echo " "
+echo "$space lmpg total energy    last iteration = $etest"
+echo "$space ref. total energy    last iteration = $eref"
+echo "$space difference                          = $ediff"
+
+chk5p1:
+
+call zdiffiles chk54b "CPU -1 $testout $refout"
+chk54b:
+
+echo ' '
+if ($?dqtol5 == 0) set dqtol5 = .002
+
+if (`echo $dqend | awk '{print ($1 < 5e-5)}'`) then
+  echo "$space rms dq in bulk case last iteration ($dqend) < 5e-5 ? ..." yes
+else
+  echo "$space rms dq in bulk case last iteration ($dqend) < 5e-5 ? ..." no
+  unset pass
+endif
+
+compare_res_0 chk5p2 "RMS DQ in moments of last five iter" $dqmin $dqtol5 pass
+chk5p2:
+
+if ($?spinpol) then
+compare_res chk5p3 "lmpg magnetic moment" $mtest $mref .05 pass
+chk5p3:
+endif
+
+if (! $?vctol5) set vctol5 = 1e-5
+compare_res chk5p4 "vconst in active region" $vconst $vcref $vctol5 pass
+chk5p4:
+
+if ($?Dipole) then
+compare_res chk5p5 "Dipole across active region" $dipole $dpref $vctol5 pass
+chk5p5:
+endif
+
+if (! $?etol5) set etol5 = 1e-5
+compare_res chk5p6 "total energy" $etest $eref $etol5 pass
+chk5p6:
+
+if (! $?gmaxdif) then
+else if (! $?mcx) then
+  echo "$space ... mcx not installed ... no check on stdout"
+else
+  if (! $?stdotol5) set stdotol5 = 1e-6
+  echo -n "$space maximum numerical difference in stdout ($gmaxdif) <= tol ($stdotol5) ? ... "
+  if (`echo ' ' | awk -v maxdif=$gmaxdif -v tol=$stdotol5 '{print (maxdif <= tol)}'` == 1) then
+    echo yes
+  else
+    echo no "(max diff = $gmaxdif)"
+    unset pass
+  endif
+endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 5 PASSED ($ext)"
+    set jobspassed = ($jobspassed 5)
+else
+    echo "$space test 5 FAILED ($ext)"
+    set failed = ($failed 5)
+endif
+
+chk5e:
+
+echo $joblist | grep 6 >/dev/null
+if ($status) goto chk6e
+
+echo '         ... no job 6, skipping'
+chk6e:
+
+# cat <<EOF
+
+#          --- Test case 6 ($testdir/$ext) Self-consistency, sparse=1 mode ---
+#          Equivalent to Test 5, but uses LU decomposition for the layer GF.
+
+#          Self-consistency begins with the bulk L, R GF, making self-consistent
+#          potentials and finding the required potential shift to match the input
+#          Fermi level.  The bulk regions are frozen and the layers are made
+#          self-consistent.
+
+# EOF
+# if ($ext == "fe") set exti = pg
+# if ($?quiet) then
+# else if ($ext == "fe") then
+# cat <<EOF
+
+#          In the Fe case file ctrl.pg is used for a 7-layer slab of Fe.  It tests:
+
+#          * self-consistency using ASA model dielectric screening.
+
+# EOF
+# else if ($ext == "copt") then
+# cat <<EOF
+
+#          In the copt case, additional checks are made to illustrate how lmpg
+#          can read lattice data from file 'site.copt'  and potential data from
+#          a restart file 'rsta.copt'.
+
+# EOF
+# endif
+# if ($scr == "-vscr=52") then
+# cat <<EOF
+#          The calculated static response function will be used to improve convergence.
+
+# EOF
+# endif
+# set gmaxdif = 0
+# set pass
+# if ("$ext" == "fe") then
+# else if ("$ext" == "copt") then
+# else
+#   echo "$space ... missing comparison files; skip this test"
+#   goto chk6e
+# endif
+# query chk61 chk6e 'run this test'
+# chk61:
+# if ($?clean) then
+#   touch ctrl.$exti
+#   echo "$space rm -f *.$exti"
+#                rm -f *.$exti
+#   echo "$space rm -f out.lmpg.findef out.lmpg"
+#                rm -f out.lmpg.findef out.lmpg
+#   goto chk6e
+# endif
+# # ... Look for executables
+# #  findcmd chk61a rdcmd "$path" "$topdir"
+# #  chk61a:
+# #  findcmd chk61b lm "$path" "$topdir"
+# #  chk61b:
+# findcmd chk61c lmstr "$path" "$topdir"
+# chk61c:
+# findcmd chk61d lmpg "$path" "$topdir"
+# chk61d:
+
+# set refout=$testdir/$ext/out.lmpg.findef testout=out.lmpg.findef
+
+# # Skip executables when debugging test.pgf
+# #   set dqend = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+# #   set refout=$testdir/$ext/out.lmpg.self-consistent testout=out.lmpg.self-consistent
+# #   goto chk69
+
+# echo "$space ... set up ASA strux and starting potential"
+# echo "$space rm -f *.$exti"
+#              rm -f *.$exti
+# echo "$space cp $cplst ."
+#              cp $cplst .
+# runjob chk63 out.lmpg "lmpg $exti -vpgf=1 -vnit=0 $scr $lmargs5 --no-iactiv"
+# chk63:
+# echo "$space ... Make L-, R- potentials self-consistent"
+# runjob chk64 /dev/null "lmstr $exti -vpgf=2 $pgfargs6"
+# chk64:
+# runjob chk65 $testout "lmpg $exti -vpgf=2 $pgfargs5 --no-iactiv"
+# chk65:
+# call qprint chk65a "$space lmpg returned successfully"
+# chk65a:
+# if ($?add0) then
+#  echo -n "         ..." ; $add0 $testout
+# endif
+
+# set dqend = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+
+# call showout chk66 SV
+# chk66:
+# call showout chk67 CPU
+# chk67:
+
+# set noglob
+# echo "$space ... iterate towards self-consistency for the layer case:"
+# set refout=$testdir/$ext/out.lmpg.self-consistent.sparse=1 testout=out.lmpg.self-consistent
+# runjob chk69 $testout "lmpg $exti -vpgf=1 $scr $pgfargs6 --no-iactiv"
+# chk69:
+# call qprint chk6a "$space lmpg returned successfully"
+# chk6a:
+# if ($?add0) then
+#  echo -n "         ..." ; $add0 $testout
+# endif
+# unset noglob
+
+# call showout chk6b SV
+# chk6b:
+
+# call showout chk6b2 CPU
+# chk6b2:
+
+# # Check whether calculation is spin polarized, and whether there is a dipole moment
+# zcat $refout | grep spin-pol  >/dev/null
+# if ($status == 0) then
+#  set spinpol
+# endif
+# zcat $refout | grep 'Dipole in plat'  >/dev/null
+# if ($status == 0) then
+#  set Dipole
+# endif
+
+# # Get final magnetic moment
+# if ($?spinpol) then
+#   set mtest = `     cat $testout | grep mmom= | awk '{print substr($0,5+match($0,"mmom=[^ ]*"),RLENGTH-5)}' | tail -1 `
+#   set mref  = `zcat $refout | grep mmom= | awk '{print substr($0,5+match($0,"mmom=[^ ]*"),RLENGTH-5)}' | tail -1 `
+# endif
+# # Get difference in Fermi energies to compare to dipole
+# if ($?Dipole) then
+#   compare_resf chk6d1 dipole dpref "Dipole in plat" 8 0 zzz
+# chk6d1:
+#   set diffef = ` cat vshft.$exti | awk '{print substr($0,10+match($0,"vconst[(]R[)]=[^ ]*"),RLENGTH-10)-substr($0,10+match($0,"vconst[(]L[)]=[^ ]*"),RLENGTH-10)}' `
+# endif
+# compare_resf chk6d2 vconst vcref "vconst is now" 10 0 zzz
+# chk6d2:
+
+# set etest = `cat $testout      | grep "  it" | awk '{print $8}' | tail -1`
+# set eref  = `zcat $refout | grep "  it" | awk '{print $8}' | tail -1`
+# #  set etest = `cat $testout | awk '{if ($2 == "it") {print;getline}}' | tail -1 | awk '{print substr($7,5)}'`
+# #  set eref =  `zcat $refout | awk '{if ($2 == "it") {print;getline}}' | tail -1 | awk '{print substr($7,5)}'`
+# set dqlayer = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+# set dqmin = `cat $testout | grep SV: | tail -2 | awk '{print $3}' | sed 's/D/e/'`
+# set dqmin = `echo $dqmin | awk '{{k=($1>$2?$2:$1)} {print k}}'`
+# set dqmin = `cat $testout | grep SV: | tail -5 | sed s/D/E/ | awk -v dqmin=99 '{if ($3<dqmin) dqmin=$3} END { printf "%f\n", dqmin}'`
+
+# if ($?quiet) goto chk6p1
+# echo " "
+# echo "$space lmpg rms bulk  dq,   last iteration = $dqend"
+# echo "$space lmpg rms layer dq,   last iteration = $dqlayer"
+
+# set vdiff = `echo $vconst $vcref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+# echo " "
+# echo "$space lmpg vconst central region, last it = $vconst"
+# echo "$space ditto, reference file               = $vcref"
+# echo "$space difference                          = $vdiff"
+
+# if ($?spinpol) then
+#   set mdiff = `echo $mtest $mref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+#   echo " "
+#   echo "$space lmpg mag. mom., last iteration      = $mtest"
+#   echo "$space ref. mag. mom., last iteration      = $mref"
+#   echo "$space difference                          = $mdiff"
+# endif
+
+# if ($?Dipole) then
+#   set ddiff = `echo $dipole $dpref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+#   echo " "
+#   echo "$space Diff in R, L Fermi energies (vshft) = $diffef"
+#   echo "$space Dipole across active region         = $dipole"
+#   echo "$space Ditto, reference file               = $dpref"
+#   echo "$space diff between test and reference     = $ddiff"
+# endif
+
+# set ediff = `echo $etest $eref  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+# echo " "
+# echo "$space lmpg total energy    last iteration = $etest"
+# echo "$space ref. total energy    last iteration = $eref"
+# echo "$space difference                          = $ediff"
+
+# chk6p1:
+# echo ' '
+# if ($?dqtol6 == 0) set dqtol6 = .002
+
+# if (`echo $dqend | awk '{print ($1 < 5e-5)}'`) then
+#   echo "$space rms dq in bulk case last iteration ($dqend) < 5e-5 ? ..." yes
+# else
+#   echo "$space rms dq in bulk case last iteration ($dqend) < 5e-5 ? ..." no
+#   unset pass
+# endif
+
+# compare_res_0 chk6p2 "RMS DQ in moments of last five iter" $dqmin $dqtol6 pass
+# chk6p2:
+
+# if ($?spinpol) then
+# compare_res chk6p3 "lmpg magnetic moment" $mtest $mref .05 pass
+# chk6p3:
+# endif
+
+# if (! $?vctol6) set vctol6 = 1e-5
+# compare_res chk6p4 "vconst in active region" $vconst $vcref $vctol6 pass
+# chk6p4:
+
+# if ($?Dipole) then
+# compare_res chk6p5 "Dipole across active region" $dipole $dpref $vctol6 pass
+# chk6p5:
+# endif
+
+# if (! $?etol6) set etol6 = 1e-5
+# compare_res chk6p6 "total energy" $etest $eref $etol6 pass
+# chk6p6:
+
+# echo ' '
+# if ($?clean) then
+# else if ($?pass) then
+#     echo "$space test 6 PASSED ($ext)"
+# else
+#     echo "$space test 6 FAILED ($ext)"
+#     set failed = ($failed 6)
+# endif
+
+chk6e:
+
+
+echo $joblist | grep 7 >/dev/null
+if ($status) goto chk7e
+
+cat <<EOF
+
+         --- Test case 7 ($testdir/$ext) noncollinear case (pgf=1) ---
+
+         Tests of noncollinear structures.
+
+EOF
+if ($?quiet) then
+else if ($ext == "copt") then
+cat <<EOF
+         This case consists of 6 layers of copt in the CuAu structure, with
+         an APB in the middle layer.  This structure has a 2-fold rotation about z.
+
+         The copt test checks noncollinear configurations in two ways.
+         In the first kind, all angles are rotated by a uniform amount.
+         SO coupling is included.
+         Two sequences of tests are run: SO coupling scaled to zero, and full SO coupling.
+         Angles 0, 90, 180 and 270 (in the latter case) are run.
+         When SO is scaled to zero, the test confirms that density is unaffected by spin rotation;
+         they should come out identical to each other and to a collinear calculation.
+         When SO is included the result depends on angle: 0 and 90 degree rotations are slightly different.
+         The 90 and 270 rotations are compared, and the 0 and 180 rotations are compared.
+
+         In the second test, a collinear calculation is compared to a noncollinear one in which
+         the moments of two classes (Co5 and Pt6) are spin-flipped, and
+         simultaneously they are rotated by pi to offset the spin-flip.  Thus
+         the band structure energies will be differently partitioned into the
+         two spin channels, but the total should be equivalent, as should the
+         RMS change in the moments.
+
+         As a test of different-sized PL, one PL is artifically merged into
+         two others, checking that the code can manage different sized PL.
+
+         The L- and R- GF should already start out self-consistent (see test 5);
+         that step is skipped here.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu)
+
+EOF
+else if ($ext == "coptco") then
+cat <<EOF2
+         The CoPtCo test checks noncollinear structures in conjunction with SO coupling.
+
+         The structure consists of a sandwich structure of 30 layers (Cu6,Co6,Pt6,Co6,Cu6).
+         The density has been made self-consistent for the collinear spin structure.
+
+         In the noncollinear case, spins for the entire active region are rotated to y.
+         All spins, including the end leads, remain collinear to each other.
+         Calculations are made for three different rotations:
+         Case 000 : x->x  y->-z  z->y
+         Case 120 : x->-x/2 + z*sqrt(3)/2  z->y
+         Case 240 : y->x*sqrt(3)/2 + z/2   z->y
+         The z axis is rotated to y in each case, while x and y are rotated by
+         multiples of 120 degrees in the xz plane.
+
+         This check turns on SO coupling, initially scaling it to zero.
+         In the absence of SO coupling, spin and orbital moments should be identical and
+         parallel to y since the input quantization axis is fixed to y.
+
+         Calculations are next performed for the three angles with the full SO included.
+         SO coupling induces a noncollinear spin and orbital moment, and it also affects the density.
+         (There is no attempt to make these calculations self-consistent).
+
+         SO induces spin & orbital moments (measured by the change in these moments when SO is on or off),
+         which appear in the xz plane in the global reference frame.  The induced moments should
+         equal in the three cases because the input spin orientation is the same.
+
+         The L- and R- GF are pre-calculated; that step is skipped here.
+
+         You can also do this test with a ctrl file that artifically merges PL (--mergepl)
+         to confirm that it does not affect results.
+
+         This check only works in the LU-decomposition mode.
+
+EOF2
+endif
+
+set refcoll=$testdir/$ext/out.lmpg.coll refnc=$testdir/$ext/out.lmpg.noncoll refso=$testdir/$ext/out.lmpg.so
+set outcoll=out.lmpg.coll outnc=out.lmpg.noncoll
+set outso0 = out.lmpg.so0 refso0 = $testdir/$ext/out.lmpg.so0
+set outso1 = out.lmpg.so  refso1 = $testdir/$ext/out.lmpg.so
+
+set gmaxdif = 0
+set pass
+# if ($?MPIK) then
+#   echo "$space ... skipping test : MPIK has not been set up"
+#   goto chk7e
+# endif
+if ($?pgfargs7 == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chk7e
+endif
+query chk71 chk7e 'run this test'
+chk71:
+if ($?clean) then
+  touch ctrl.$exti out.lmpg
+  echo "$space rm -f *.$exti"
+  echo "$space rm -f out*lmpg*"
+               rm -f *.$exti
+               rm -f out*lmpg*
+  goto chk7e
+endif
+# ... Look for executables
+#  findcmd chk71a rdcmd "$path" "$topdir"
+#  chk71a:
+#  findcmd chk71b lm "$path" "$topdir"
+#  chk71b:
+findcmd chk71c lmstr "$path" "$topdir"
+chk71c:
+findcmd chk71d lmpg "$path" "$topdir"
+chk71d:
+
+if (! $?quiet) then
+echo "$space collinear reference file   :" $refcoll
+echo "$space noncollinear reference file:" $refnc
+if (-e $refso0) then
+echo "$space noncoll+SO0  reference file:" $refso0
+endif
+echo "$space noncoll+SO   reference file:" $refso
+echo ""
+endif
+
+
+if ($?MPIK) then
+  set lmpg = "mpirun -n $nmpi lmpg"
+endif
+
+if ($?haveout && $ext == coptco) goto chk76bc
+if ($?haveout) goto chk76b
+
+
+echo "$space ... Set up ASA strux and collinear starting potential"
+getrmfiles
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+echo "$space cp $cplst7 ."
+             cp $cplst7 .
+
+if ($?mergepl && -e ctrl.{$ext}.mergedPL) then
+ echo "$space ... cp ctrl.{$ext}.mergedPL ctrl.{$ext}"
+                  cp ctrl.{$ext}.mergedPL ctrl.{$ext}
+endif
+
+#runjob chk72a /dev/null "lmstr $exti -vpgf=1 $pgfargs7 --no-iactiv"
+runjob chk72a out.str "lmstr $exti -vpgf=1 $pgfargs7 --no-iactiv"
+chk72a:
+runjob chk72b $outcoll "lmpg $exti -vnit=0 -vpgf=1 -vso=1 -vnc=t -vafm=f $lmargs7 --rs=1,0 --no-iactiv"
+chk72b:
+# echo "$space ... Make L-, R- potentials self-consistent"
+# runjob chk73 $outcoll "lmpg $exti -vnit=10 -vpgf=2 $pgfargs7 --no-iactiv"
+# chk73:
+# call qprint chk73a "$space lmpg returned successfully"
+# chk73a:
+
+if ($ext == coptco || $ext == copt) then
+echo "$space ... save vshft.$ext as vshft.bk"
+cp vshft.$ext vshft.bk
+chk73b:
+endif
+
+echo "$space ... Make collinear layer GF for this potential"
+echo "$space $lmpg $exti -vnit=10 -vpgf=1 -vnc=f -vafm=f $pgfargs7 --iactiv=no --quit=rho >>$outcoll"
+             $lmpg $exti -vnit=10 -vpgf=1 -vnc=f -vafm=f $pgfargs7 --iactiv=no --quit=rho >>$outcoll
+
+set retval = $status
+if ($retval != 0) goto cleanup
+call qprint chk74a "$space lmpg returned successfully"
+chk74a:
+
+set refout = $refcoll testout = $outcoll
+call showout chk74b CPU
+chk74b:
+
+call zdiffiles chk74c "CPU -1 $outcoll $refcoll"
+chk74c:
+
+if ($ext == copt) then
+
+  echo
+  echo "$space ... Noncollinear tests, with uniform rotation including end leads"
+  rm -f $outso0 $outso1
+
+  echo "$space ... Set up files eula.copt and socscl.copt"
+  echo "$space     cp eula.copt0 eula.copt"
+                   cp eula.copt0 eula.copt
+  echo "$space     cp socscl.copt0 socscl.copt"
+                   cp socscl.copt0 socscl.copt
+
+  echo "$space ... Make noncollinear layer GF, angle=0 SO turned on but scaled to zero"
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space $lmpg $exti $pgfargs7nc1 --iactiv=no >> $outso0"
+               $lmpg $exti $pgfargs7nc1 --iactiv=no >> $outso0
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... Make noncollinear layer GF, angle=90 SO turned on but scaled to zero"
+  echo "$space $lmpg $exti $pgfargs7nc2 --iactiv=no >> $outso0"
+               $lmpg $exti $pgfargs7nc2 --iactiv=no >> $outso0
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... Make noncollinear layer GF, angle=180 SO turned on but scaled to zero"
+  echo "$space $lmpg $exti $pgfargs7nc3 --iactiv=no >> $outso0"
+               $lmpg $exti $pgfargs7nc3 --iactiv=no >> $outso0
+
+  call zdiffiles chk74d "CPU -1 $outso0 $refso0"
+  chk74d:
+
+  echo "$space ... Make noncollinear layer GF, angle=0 full SO"
+  echo "$space ... remove socscl.copt"
+                   rm socscl.copt
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space $lmpg $exti $pgfargs7nc1 --iactiv=no >> $outso1"
+               $lmpg $exti $pgfargs7nc1 --iactiv=no >> $outso1
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... Make noncollinear layer GF, angle=90 full SO"
+  echo "$space $lmpg $exti $pgfargs7nc2 --iactiv=no >> $outso1"
+               $lmpg $exti $pgfargs7nc2 --iactiv=no >> $outso1
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... Make noncollinear layer GF, angle=180 full SO"
+  echo "$space $lmpg $exti $pgfargs7nc3 --iactiv=no >> $outso1"
+               $lmpg $exti $pgfargs7nc3 --iactiv=no >> $outso1
+
+  echo "$space ... remove lbc.$ext and rbc.$ext"
+  touch lbc.{$ext}_1 rbc.{$ext}_1
+  rm -f lbc.$ext rbc.$ext lbc.{$ext}_* rbc.{$ext}_* mixm.copt
+  echo "$space     cp vshft.bk vshft.$ext"
+                   cp vshft.bk vshft.$ext
+  echo "$space ... Make noncollinear layer GF, angle=270 full SO"
+  echo "$space $lmpg $exti $pgfargs7nc4 --iactiv=no >> $outso1"
+               $lmpg $exti $pgfargs7nc4 --iactiv=no >> $outso1
+
+  rm -f eula.copt
+  call zdiffiles chk74e "CPU -1 $outso1 $refso1"
+  chk74e:
+
+  echo
+
+endif
+
+if ($ext == coptco) then
+
+rm -f $outnc $outso0 $outso1
+
+echo
+echo "$space Noncollinear tests"
+echo "$space ... Make noncollinear layer GF, angle=0 no SO"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti $pgfargs7nc1 --iactiv=no >> $outnc"
+             $lmpg $exti $pgfargs7nc1 --iactiv=no >> $outnc
+echo "$space ... Make noncollinear layer GF, angle=120 no SO"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti $pgfargs7nc2 --iactiv=no >> $outnc"
+             $lmpg $exti $pgfargs7nc2 --iactiv=no >> $outnc
+echo "$space ... Make noncollinear layer GF, angle=240 no SO"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti $pgfargs7nc3 --iactiv=no >> $outnc"
+             $lmpg $exti $pgfargs7nc3 --iactiv=no >> $outnc
+
+echo
+echo "$space Spin-orbit tests with SOC scaled to 0"
+
+runjob chk75ac $outso1 "lmpg $exti -vnit=0 -vpgf=1 -vnc=t -vso=t $lmargs7 --rs=1,0 --no-iactiv"
+chk75ac:
+
+rm -f $outso0
+echo "$space ... Make noncollinear layer GF, angle=0 SO=1 but scaled to 0"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc1 -vsoscl=0 --iactiv=no >> $outso0"
+             $lmpg $exti -vso=1 $pgfargs7nc1 -vsoscl=0 --iactiv=no >> $outso0
+echo "$space ... Make noncollinear layer GF, angle=120 SO=1 but scaled to 0"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc2 -vsoscl=0 --iactiv=no >> $outso0"
+             $lmpg $exti -vso=1 $pgfargs7nc2 -vsoscl=0 --iactiv=no >> $outso0
+echo "$space ... Make noncollinear layer GF, angle=240 SO=1 but scaled to 0"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc3 -vsoscl=0 --iactiv=no >> $outso0"
+             $lmpg $exti -vso=1 $pgfargs7nc3 -vsoscl=0 --iactiv=no >> $outso0
+
+echo
+echo "$space Spin-orbit tests with full SOC"
+echo "$space ... Initial pass to find vshft with SO coupling"
+echo "$space cp vshft.bk vshft.$ext"
+             cp vshft.bk vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc1 --iactiv=no >> $outso1"
+             $lmpg $exti -vso=1 $pgfargs7nc1 --iactiv=no >> $outso1
+echo "$space rm -f $outso1"
+             rm -f $outso1
+echo "$space cp vshft.$ext vshft.so"
+             cp vshft.$ext vshft.so
+echo "$space ... Make noncollinear layer GF, angle=0 SO=1"
+echo "$space cp vshft.so vshft.$ext"
+             cp vshft.so vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc1 --iactiv=no >> $outso1"
+             $lmpg $exti -vso=1 $pgfargs7nc1 --iactiv=no >> $outso1
+echo "$space ... Make noncollinear layer GF, angle=120 SO=1"
+echo "$space cp vshft.so vshft.$ext"
+             cp vshft.so vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc2 --iactiv=no >> $outso1"
+             $lmpg $exti -vso=1 $pgfargs7nc2 --iactiv=no >> $outso1
+echo "$space ... Make noncollinear layer GF, angle=240 SO=1"
+echo "$space cp vshft.so vshft.$ext"
+             cp vshft.so vshft.$ext
+             touch lbc.$ext rbc.$ext
+echo "$space rm -f lbc*.{$ext}* rbc*.{$ext}*"
+             rm -f lbc*.{$ext}* rbc*.{$ext}*
+echo "$space $lmpg $exti -vso=1 $pgfargs7nc3 --iactiv=no >> $outso1"
+             $lmpg $exti -vso=1 $pgfargs7nc3 --iactiv=no >> $outso1
+
+
+call zdiffiles chk75bc "CPU -1 $outnc $refnc"
+chk75bc:
+
+if (-e $refso0) then
+call zdiffiles chk75cc "CPU -1 $outso0 $refso0"
+chk75cc:
+endif
+
+call zdiffiles chk75dc "CPU -1 $outso1 $refso"
+chk75dc:
+
+
+# Checks against reference
+chk76bc:
+set devqcoll =  `cat $outcoll | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set devqnonc =  `cat $outnc   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set rdevqcoll = `cat $refcoll | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set rdevqnonc = `cat $refnc   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+if (-e $refso0) then
+set devqso0  = `cat $outso0   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set rdevqso0 = `cat $refso0   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+endif
+
+set bscoll = `cat $outcoll   |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+set bsnonc  = `extract-lines 'START LMPG' Exit 1 $outnc | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc1 = `extract-lines 'START LMPG' Exit 1 $outnc | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc2 = `extract-lines 'START LMPG' Exit 2 $outnc | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc3 = `extract-lines 'START LMPG' Exit 3 $outnc | grep 'PL tot' | head -1 | awk '{print $5}'`
+set rbscoll = `zcat $refcoll |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+set rbsnonc = `zcat $refnc   |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+
+set bsso01 = `extract-lines 'START LMPG' Exit 1 $outso0 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsso02 = `extract-lines 'START LMPG' Exit 2 $outso0 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsso03 = `extract-lines 'START LMPG' Exit 3 $outso0 | grep 'PL tot' | head -1 | awk '{print $5}'`
+
+set bsso1 = `extract-lines 'START LMPG' Exit 1 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsso2 = `extract-lines 'START LMPG' Exit 2 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsso3 = `extract-lines 'START LMPG' Exit 3 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set rbsso = `zcat $refso   |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+
+set spin12a = (`extract-lines 'MAGCPA:' PGFASA: 1 $outso1 | grep  '12   1 spin' | awk '{print $4,$5,$6}' `)
+set orb12a  = (`extract-lines 'MAGCPA:' PGFASA: 1 $outso1 | grep -A 1 '12   1 spin' | tail -1 | awk '{print $2,$3,$4}' `)
+set spin12b = (`extract-lines 'MAGCPA:' PGFASA: 3 $outso1 | grep  '12   1 spin' | awk '{print $4,$5,$6}' `)
+set orb12b  = (`extract-lines 'MAGCPA:' PGFASA: 3 $outso1 | grep -A 1 '12   1 spin' | tail -1 | awk '{print $2,$3,$4}' `)
+set spin12c = (`extract-lines 'MAGCPA:' PGFASA: 5 $outso1 | grep  '12   1 spin' | awk '{print $4,$5,$6}' `)
+set orb12c  = (`extract-lines 'MAGCPA:' PGFASA: 5 $outso1 | grep -A 1 '12   1 spin' | tail -1 | awk '{print $2,$3,$4}' `)
+set refs12 = (`extract-lines 'MAGCPA:' PGFASA: 1 $refso | grep  '12   1 spin' | awk '{print $4,$5,$6}' `)
+set refs12b = (`extract-lines 'MAGCPA:' PGFASA: 3 $refso | grep  '12   1 spin' | awk '{print $4,$5,$6}' `)
+set refo12   = (`extract-lines 'MAGCPA:' PGFASA: 1 $refso | grep -A 1 '12   1 spin' | tail -1 | awk '{print $2,$3,$4}' `)
+set refs12c = (`extract-lines 'MAGCPA:' PGFASA: 5 $refso | grep  '12   1 spin' | awk '{print $4,$5,$6}' `)
+
+set dqcoll  = `cat $outcoll   | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set dqnonc  = `cat $outnc     | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+if (-e $refso0) then
+set dqso0  = `cat $outso0     | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+endif
+set rdqcoll = `zcat $refcoll | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set rdqnonc = `zcat $refnc   | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set dqso    = `cat $outso1     | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set rdqso   = `cat $refso     | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+
+if (! $?quiet) then
+
+echo "$space deviation in charge neutrality for coll case =   $devqcoll"
+echo "$space corresponding deviation for noncollinear case  = $devqnonc"
+if (-e $refso0) then
+echo "$space corresponding deviation for SO case, SO=0  =     $devqso0"
+endif
+echo "$space deviation extracted from reference output =      $rdevqcoll"
+echo ' '
+echo "$space sum PL band-structure energies for input E_f = $bscoll"
+echo "$space corresponding sum for noncollinear angle 0   = $bsnonc1"
+echo "$space corresponding sum for noncollinear angle 120 = $bsnonc2"
+echo "$space corresponding sum for noncollinear angle 240 = $bsnonc3"
+echo "$space sum extracted from reference output =          $rbscoll"
+echo ' '
+echo "$space corresponding sum for noncoll SO=0 angle 0   = $bsso01"
+echo "$space corresponding sum for noncoll SO=0 angle 120 = $bsso02"
+echo "$space corresponding sum for noncoll SO=0 angle 240 = $bsso03"
+echo ' '
+echo "$space corresponding sum for noncoll SO   angle 0   = $bsso1"
+echo "$space corresponding sum for noncoll SO   angle 120 = $bsso2"
+echo "$space corresponding sum for noncoll SO   angle 240 = $bsso3"
+echo "$space sum extracted from reference output =          $rbsso"
+echo ' '
+echo "$space rms DQ in output-input moments =                 $dqcoll"
+echo "$space corresponding DQ for noncollinear, 3 angles =    $dqnonc"
+if (-e $refso0) then
+echo "$space corresponding DQ for noncoll SO=0, 3 angles =    $dqso0"
+endif
+echo "$space DQ extracted from reference output =             $rdqcoll"
+
+echo ' '
+echo "$space corresponding DQ for noncoll+SO, 2 angles   =    $dqso"
+
+# echo ' '
+# echo "$space spin moment atom 12, angle 0              =      $spin12a"
+# echo "$space corresponding reference moment            =      $refs12"
+# echo "$space spin moment atom 12, angle 120 =          =     $spin12b"
+# echo "$space spin moment atom 12, angle 240 =          =      $spin12c"
+
+endif
+
+echo ' '
+call qprint chk7p2 "$space ... automatic pass checks :"
+
+endif
+
+echo "$space ... Set up AFM starting potential"
+getrmfiles
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+echo "$space cp $cplst7 ."
+             cp $cplst7 .
+runjob chk75a /dev/null "lmstr $exti -vpgf=1 $pgfargs7 --no-iactiv"
+chk75a:
+echo "$space ... Spin flip sites 9,11,12,15 and overwrite rsta file"
+echo "$space lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' > $outnc"
+lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' > $outnc
+echo "$space ... Set up starting potential"
+runjob chk75b '>>'$outnc "lmpg $exti -vnit=0 -vpgf=1 -vnc=f -vafm=f $lmargs7 --rs=1,0 --no-iactiv"
+chk75b:
+
+echo "$space ... Make noncollinear layer GF for this potential"
+echo "$space $lmpg $exti -vnit=10 -vpgf=1 -vnc=t -vafm=t $pgfargs7 --iactiv=no --quit=rho >>$outnc"
+             $lmpg $exti -vnit=10 -vpgf=1 -vnc=t -vafm=t $pgfargs7 --iactiv=no --quit=rho >>$outnc
+set retval = $status
+if ($retval != 0) goto cleanup
+call qprint chk76a "$space $lmpg returned successfully"
+chk76a:
+call zdiffiles chk76b "CPU -1 $outnc $refnc"
+chk76b:
+
+set refout = $refnc testout = $outnc
+call showout chk76c CPU
+chk76c:
+
+set devqcoll = `cat $outcoll   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set devqnonc = `cat $outnc     | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set rdevqcoll = `zcat $refcoll | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set rdevqnonc = `zcat $refnc   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+if (-e $refso0) then
+set devqso0  = `cat $outso0   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+set rdevqso0 = `cat $refso0   | awk '{if ($1 == "Embedded") {print $3;exit}; if ($6 == "embedded") {print $8; exit}}'`
+endif
+
+set bscoll = `cat $outcoll   |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+set bsnonc = `cat $outnc     |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+set rbscoll = `zcat $refcoll |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+set rbsnonc = `zcat $refnc   |grep 'PL tot' | sed -n 1,1p | awk '{print $5}'`
+
+set dqcoll = `cat $outcoll   | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set dqnonc = `cat $outnc     | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set rdqcoll = `zcat $refcoll | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+set rdqnonc = `zcat $refnc   | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+
+if ($?quiet) goto chk7p1
+
+echo ' '
+echo "$space ... compare PL-summed quantities from various files"
+echo ' '
+set refout = $refcoll testout = $outcoll
+echo "$space ... collinear output file $testout"
+grep Q-Z $refout | sed -n 1,1p
+cat $testout | awk '{if ($1 == "All") {print;getline;print;getline;print}}' | sed -n 1,3p
+echo ' '
+
+if ($ext == copt) then
+
+echo "$space ... noncollinear $outso0 angle 0 (SO on but scaled to 0)"
+grep Q-Z $refout | sed -n 1,1p
+extract-lines 'START LMPG' 'Exit' 1 $outso0 | awk '{if ($1 == "All") {print;getline;print;getline;print}}' | sed -n 1,3p
+echo ' '
+
+echo "$space ... noncollinear $outso0 angle 90 (SO on but scaled to 0)"
+grep Q-Z $refout | sed -n 1,1p
+extract-lines 'START LMPG' 'Exit' 2 $outso0 | awk '{if ($1 == "All") {print;getline;print;getline;print}}' | sed -n 1,3p
+echo ' '
+
+endif
+
+echo "$space ... reference file $refout"
+zcat $refout | grep Q-Z | sed -n 1,1p
+zcat $refout | awk '{if ($1 == "All") {print;getline;print;getline;print}}' | sed -n 1,3p
+
+set refout = $refnc testout = $outnc
+echo ' '
+echo "$space ... noncollinear output file $testout"
+grep Q-Z $testout | sed -n 1,1p
+cat $testout | awk '{if ($1 == "All") {print;getline;print;getline;print}}' | sed -n 1,3p
+echo ' '
+echo "$space ... noncollinear reference file $refout"
+zcat $refout | grep Q-Z | sed -n 1,1p
+zcat $refout | awk '{if ($1 == "All") {print;getline;print;getline;print}}' | sed -n 1,3p
+
+echo ' '
+
+chk7p1:
+
+echo "$space deviation in charge neutrality for input E_f =   $devqcoll"
+if ($ext == copt) then
+echo -n "$space corresponding deviation with SO, scaled to 0 ="
+foreach i ( 1 2 3)
+echo -n '  ' `extract-lines 'START LMPG' 'Exit' $i $outso0 | awk '{if ($6 == "embedded" && i==0) {print $8; i++}}'`
+end
+echo
+endif
+
+echo "$space corresponding deviation for noncollinear case  = $devqnonc"
+echo "$space deviation extracted from reference output =      $rdevqcoll"
+
+if ($ext == copt) then
+echo -n "$space corresponding deviation, full SO angle 0   =  "
+echo ' ' `extract-lines 'START LMPG' 'Exit' 1 $outso1 |&awk '{if ($6 == "embedded") {print $8;exit}}'`
+echo -n "$space corresponding deviation, full SO angle 90 =   "
+echo ' ' `extract-lines 'START LMPG' 'Exit' 2 $outso1 |&awk '{if ($6 == "embedded") {print $8;exit}}'`
+echo -n "$space corresponding deviation, full SO angle 180 =  "
+echo ' ' `extract-lines 'START LMPG' 'Exit' 3 $outso1 |&awk '{if ($6 == "embedded") {print $8;exit}}'`
+echo -n "$space corresponding deviation, full SO angle 270 =  "
+echo ' ' `extract-lines 'START LMPG' 'Exit' 4 $outso1 |&awk '{if ($6 == "embedded") {print $8;exit}}'`
+endif
+
+echo ' '
+echo "$space sum PL band-structure energies for input E_f = $bscoll"
+echo "$space corresponding sum for noncollinear case =      $bsnonc"
+echo "$space sum extracted from reference output =          $rbscoll"
+echo ' '
+echo "$space rms DQ in output-input moments =                 $dqcoll"
+echo "$space corresponding DQ for noncollinear case =         $dqnonc"
+echo "$space DQ extracted from reference output =             $rdqcoll"
+if ($ext == copt) then
+echo "$space corresponding DQ for SO, zero scaled case =     " `cat $outso0 | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+echo "$space corresponding DQ for full SO =                  " `cat $outso1 | grep 'RMS DQ=' | sed 's/.*DQ=//'`
+endif
+
+echo ' '
+call qprint chk7p2 "$space ... automatic pass checks :"
+chk7p2:
+
+if ($?dqtol7 == 0) set dqtol7 = 1e-5
+if ($?bstol7 == 0) set bstol7 = 1e-5
+
+echo -n "$space collinear deviation in charge neutrality ($devqcoll) within tolerance ($dqtol7) of reference? ... "
+if (`echo $devqcoll $rdevqcoll $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto for noncollinear case? ... "
+if (`echo $devqnonc $rdevqnonc $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if (-e $refso0) then
+echo -n "$space ditto for SO=0 case? ... "
+if (`echo $devqso0 $rdevqso0 $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+endif
+
+echo
+echo -n "$space collinear band structure energy ($bscoll) within tolerance ($bstol7) of reference? ... "
+if (`echo $bscoll $rbscoll $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto for noncollinear case? ... "
+if (`echo $bsnonc $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($ext == copt) then
+echo -n "$space matches SO, zero scaling case angle 0? ... "
+set bsnonc1 = `extract-lines 'START LMPG' Exit 1 $outso0 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc2 = `extract-lines 'START LMPG' Exit 2 $outso0 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc3 = `extract-lines 'START LMPG' Exit 3 $outso0 | grep 'PL tot' | head -1 | awk '{print $5}'`
+if (`echo $bsnonc1 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space matches SO, zero scaling case angle 90? ... "
+if (`echo $bsnonc2 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space band energy with SO, angles 0 and 180 match? ... "
+set rbsnonc = `extract-lines 'START LMPG' Exit 1 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc1 = `extract-lines 'START LMPG' Exit 2 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc2 = `extract-lines 'START LMPG' Exit 3 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+set bsnonc3 = `extract-lines 'START LMPG' Exit 4 $outso1 | grep 'PL tot' | head -1 | awk '{print $5}'`
+if (`echo $bsnonc2 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space band energy with SO, angles -90 and 90 match? ... "
+if (`echo $bsnonc1 $bsnonc3 $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+endif # copt
+
+
+echo -n "$space collinear rms DQ ($dqcoll) within tolerance ($dqtol7) of reference? ... "
+if (`echo $dqcoll $rdqcoll $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto ($dqnonc) for noncollinear case? ... "
+if (`echo $dqnonc $rdqnonc $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($ext == coptco) then
+echo -n "$space band energy ($bsnonc2) match reference noncollinear case angle 120? ... "
+if (`echo $bsnonc2 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space ditto for noncollinear case angle 240? ... "
+if (`echo $bsnonc3 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space band energy ($bsso01) match reference noncollinear SO=0 case, angle 0? ... "
+if (`echo $bsso01 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space ditto for noncollinear SO=0 case, angle 120? ... "
+if (`echo $bsso02 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto for noncollinear SO=0 case, angle 240? ... "
+if (`echo $bsso03 $rbsnonc $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space noncollinear+SO band structure energy ($bsso1) within tolerance ($bstol7) of 120 case ($bsso2)? ... "
+if (`echo $bsso1 $bsso2 $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto for noncollinear+SO case angle 240? ... "
+if (`echo $bsso1 $bsso3 $bstol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+if ($?mcx) then
+echo
+echo "$space ... Detailed checks of orientation of spin and orbital moments"
+echo "$space Construct matrix r1 rotating around x by pi/2 (000), so that x->x, y->-z, z->y"
+echo "$space $mcx -f3f15.10 -rot='(0,0,1)-pi/2,(0,1,0)pi/2,(0,0,1)pi/2'  > r1"
+             $mcx -f3f15.10 -rot='(0,0,1)-pi/2,(0,1,0)pi/2,(0,0,1)pi/2'  > r1
+echo "$space Construct matrix r2 rotating z->y, and x and y canted 120 degrees relative to r1"
+echo "$space $mcx -f3f15.10 -rot='(0,0,1)pi/6,(0,1,0)pi/2,(0,0,1)pi/2'  > r2"
+             $mcx -f3f15.10 -rot='(0,0,1)pi/6,(0,1,0)pi/2,(0,0,1)pi/2'  > r2
+echo
+echo "$space ... Extract spin and orbital moments from SO (scaled to 0) calculation, 3 angles to files so0.000 120.so0 so0.240 e.g."
+echo "$space extract-lines --quiet 'MAGCPA:' PGFASA: 1 $outso0 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print" '$i}' "' | $mcx -f6f12.8 -nc=6 . > so0.000"
+extract-lines --quiet 'MAGCPA:' PGFASA: 1 $outso0 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > so0.000
+extract-lines --quiet 'MAGCPA:' PGFASA: 2 $outso0 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > so0.120
+extract-lines --quiet 'MAGCPA:' PGFASA: 3 $outso0 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > so0.240
+echo "$space ... Extract spin and orbital moments from full SO calculation, 3 angles to files so.000 so.120 so.240"
+extract-lines --quiet 'MAGCPA:' PGFASA: 1 $outso1 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > so.000
+extract-lines --quiet 'MAGCPA:' PGFASA: 2 $outso1 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > so.120
+extract-lines --quiet 'MAGCPA:' PGFASA: 3 $outso1 | egrep 'spin|orb' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > so.240
+echo "$space ... Extract torque from full SO calculation, 3 angles to files torq.000 torq.120 torq.240"
+extract-lines --quiet 'MAGCPA:' PGFASA: 1 $outso1 | egrep 'Torq' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > torq.000
+extract-lines --quiet 'MAGCPA:' PGFASA: 2 $outso1 | egrep 'Torq' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > torq.120
+extract-lines --quiet 'MAGCPA:' PGFASA: 3 $outso1 | egrep 'Torq' | awk '{ for(i=NF-5;i<=NF;++i) print $i}' | $mcx -f6f12.8 -nc=6 . > torq.240
+
+echo
+echo "$space check whether spin & orbital moments with SO scaled to 0 are strictly along y in the global frame and z in the local one"
+echo "$space $mcx -f6f15.8 so0.000 '-array[6,1]' 1,0,1,1,1,0 -v2dia -x -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8 so0.000 '-array[6,1]' 1,0,1,1,1,0 -v2dia -x -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space check whether spin & orbital moments with SO scaled to 0 are equivalent for the 000 and 120 rotations"
+echo "$space $mcx -f6f15.8 so0.000 so0.240 -- -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8 so0.000 so0.240 -- -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space .... check whether spin & orbital moments of the global reference frame (000(SO) case) match r1 * (moments in local frame)"
+echo "$space $mcx -f9f15.8 so.000 -a so r1 so -coll 4:6 -t -x -t so -coll 1:3  -- -abs -max:g  -w:nohead ."
+set err0 = `$mcx -f9f15.8 so.000 -a so r1 so -coll 4:6 -t -x -t so -coll 1:3  -- -abs -max:g  -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space check whether spin & orbital moments of the global reference frame match for 000 and 120 degree rotations"
+echo "$space $mcx -f6f15.8 so.000 so.120  -- -coll 1:3  -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8 so.000 so.120  -- -coll 1:3  -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space check whether spin & orbital moments of the global reference frame match for 000 and 240 degree rotations"
+echo "$space $mcx -f6f15.8 so.000 so.240  -- -coll 1:3  -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8 so.000 so.240  -- -coll 1:3  -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space check whether moments in the 120 and 240 cases are the same apart from mirror image in x in the local frame"
+echo "$space $mcx -f6f15.8 '-array[6,1]' 1,1,1,-1,1,1 -v2dia -a scl so.120  scl -x  so.240 --  -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8 '-array[6,1]' 1,1,1,-1,1,1 -v2dia -a scl so.120  scl -x  so.240 --  -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space Check whether SO-induced shift in spin and orbital moments match for 0 and 120 cases in the global reference frame"
+echo "$space $mcx -f6f15.8 so.000 so0.000 -- -a d000 so.120 so0.120 -- -a d120  d000 d120 -- -coll 1:3 -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8 so.000 so0.000 -- -a d000 so.120 so0.120 -- -a d120  d000 d120 -- -coll 1:3 -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space Check whether SO-induced torque for 0 and 120 cases match in the global reference frame"
+echo "$space $mcx -f6f15.8  torq.000 torq.120 -- -coll 1:3 -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8  torq.000 torq.120 -- -coll 1:3 -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo
+echo "$space check whether torque is parallel to x in the global reference frame and has no z component in the local frame"
+echo "$space $mcx -f6f15.8  '-array[6,1]' 0,1,1,0,0,1 -v2dia torq.120 -t -x  -t -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+set err0 = `$mcx -f6f15.8  '-array[6,1]' 0,1,1,0,0,1 -v2dia torq.120 -t -x  -t -abs -max:g -w:nohead . | awk '{print $3}'`
+echo -n "$space difference ($err0) within tolerance $spintol7 ? ... "
+if (`echo $err0 0 $spintol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo
+
+endif # mcx tests
+
+echo -n "$space noncollinear+SO rms DQ within tolerance ($dqtol7) of reference? ... "
+if (`echo $dqso[1] $rdqso[1] $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto for angle 120? ... "
+if (`echo $dqso[2] $rdqso[2] $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+echo -n "$space ditto for angle 240? ... "
+if (`echo $dqso[3] $rdqso[3] $dqtol7 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+endif # coptco
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 7 PASSED ($ext)"
+    set jobspassed = ($jobspassed 7)
+else
+    echo "$space test 7 FAILED ($ext)"
+    set failed = ($failed 7)
+endif
+
+chk7e:
+
+echo $joblist | grep 8 >/dev/null
+if ($status) goto chk8e
+
+cat <<EOF
+
+         --- Test case 8 ($testdir/$ext) collinear transport mode (pgf=5) ---
+
+         Tests of ballistic conductance calculated within the Landauer-Buttiker formalism.
+
+EOF
+if ($?quiet) then
+else if ($ext == "free") then
+cat <<EOF
+         This input file ctrl.$exti consists of a flat potential with a constant
+         barrier in the middle.  There are 3+4+2 layers:
+              layers   pot
+              1..3     0
+              4..7     0.1
+              8..9     0
+         It checks how well the ASA does for an analytically known potential.
+         The transmission probabilities are written to files jzk.$exti and
+         jz.$exti (integrated over k)
+
+         The potential parameters are already known; there is no need for
+         self-consistency.
+
+EOF
+
+else if ($ext == "cu") then
+         This case consists of 2 layers of Cu, and compares the ballistic
+         conductance to that of Schep et al (PRB 57 8907 (1998)).
+         The conductance is G = (e^2)/h * (T/A).
+         Use:  e^2/h = 3.86*10^(-5) Ohm^(-1), A=6.831^2/2 for this file
+         Also, at the Fermi level -0.088 Ry), Tcu=0.917
+           e2byh=3.86e-5 AA=6.831^2/2*.529^2 Tcu=0.917 tcu*e2byh/AA/1e-20
+           = 0.542*10^(15) Ohm^(-1) m^(-2)
+        Schep quotes 0.55*10^(15) Ohm^(-1) m^(-2) (see his table I).
+
+else if ($ext == "co") then
+cat <<EOF
+         This case consists of 2 layers of Co, and compares the ballistic
+         conductance to that of Schep et al (PRB 57 8907 (1998)).
+         The conductance is G = (e^2)/h * (T/A).
+         Use:  e^2/h = 3.86*10^(-5) Ohm^(-1), A=6.758^2/2 for this file
+         Also, at the Fermi level (-0.0596 Ry), T(maj)=1.91 T(min)=0.79
+           e2byh=3.86e-5 AA=6.758^2/2*.529^2 Tmaj=1.91 Tmaj*e2byh/AA/1e-20
+           e2byh=3.86e-5 AA=6.758^2/2*.529^2 Tmin=0.79 Tmin*e2byh/AA/1e-20
+           = (1.15,0.47)*10^(15) Ohm^(-1) m^(-2) for majority,minority
+         Schep quotes (1.15,.47)*10^(15) Ohm^(-1) m^(-2) (see his table I).
+         The energy-dependence is also very similar; see his Table 9.
+
+         The L-, R-, and C- GF are already assumed to to be self-consistent;
+         the self-consistency step (pgf modes 2 and 1) are skipped here.
+
+         This test is repeated with an LDA+U potential on the Co d channels.
+         A Hubbard U=0.1 Ry is used.  Occupation numbers (0.6 for minority,
+         0.9 for majority) are close to the self-consistent result.
+         The effect of U is push the Co d bands down by 0.01 Ry, and the
+         the majority bands down -0.04Ry.
+         The same result (without the addition of U) can be obtained
+         by manually shifting the minority enu and C parameters by
+         -0.01 Ry in the minority channel, and the majority d by -0.04 Ry.
+
+EOF
+
+else if ($ext == "copt") then
+cat <<EOF
+         This case consists of 6 layers of copt in the CuAu structure, with
+         an APB in the middle layer.
+
+         As a test of different-sized PL, one PL is artifically merged into
+         two others, so that the output shows only 5 PL.
+
+         The copt case only checks that the off-diagonal GF gRL is correct.
+         It does not check the validity of the transmission coefficient.
+
+         The L-, R-, and C- GF are already assumed to to be self-consistent;
+         the self-consistency step (pgf modes 2 and 1) are skipped here.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu)
+
+EOF
+
+else if ($ext == "aba") then
+cat <<EOF
+         Case aba tests transport for a nonequilibrium potential.
+         It consists of transport from bulk Au leads through a gold wire,
+         under a bias of -0.11 Ry.
+
+         The structure constants are rather long ranged in the vacuum,
+         and take a bit of time to compute.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+
+EOF
+endif
+set refcoll=$testdir/$ext/out.lmpg.coll.mode5 jz=jz.$ext jzref=$testdir/$ext/jz.$exti
+set outcoll=out.lmpg.coll.mode5 outnc=out.lmpg.noncoll.mode5
+
+# call zdiffiles chk85c "CPU -1 $outcoll $refcoll"
+# chk85c:
+# exit
+
+set gmaxdif = 0
+set pass; set ldaupass ; unset ldaupass
+if ($?MPIK) then
+  echo "$space ... skipping test : MPIK has not been set up"
+  goto chk8e
+endif
+if ($?pgfargs8 == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chk8e
+endif
+query chk81 chk8e 'run this test'
+chk81:
+if ($?clean) then
+  touch ctrl.$exti out.lmpg lbc.$exti{_}
+  echo "$space rm -f *.$exti"
+  echo "$space rm -f out*lmpg* *.$exti *.$exti{_}*"
+               rm -f out*lmpg* *.$exti *.$exti{_}*
+  goto chk8e
+endif
+# ... Look for executables
+#  findcmd chk81a rdcmd "$path" "$topdir"
+#  chk81a:
+#  findcmd chk81b lm "$path" "$topdir"
+#  chk81b:
+findcmd chk81c lmstr "$path" "$topdir"
+chk81c:
+findcmd chk81d lmpg "$path" "$topdir"
+chk81d:
+if ($?MPIK) then
+  set lmpg = "mpirun -n $nmpi lmpg"
+endif
+
+if ($?noplot) goto chk81e
+findcmd chk81e fplot "$path" "no"
+chk81e:
+findcmd chk81f ghostview "$path" "no"
+chk81f:
+if (! $?ghostview) then
+findcmd chk81g gv "$path" "no"
+chk81g:
+if ($?gv) then
+set ghostview = "$gv"
+endif
+endif
+
+echo "$space ... Set up ASA strux and collinear starting potential"
+getrmfiles
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+if (! $?cplst8) set cplst8 = ($cplst)
+echo "$space cp $cplst8 ."
+             cp $cplst8 .
+
+runjob chk82a /dev/null "lmstr $exti $pgfargs8 --no-iactiv"
+chk82a:
+if (! $?pgfargs8_init) goto chk82b
+runjob chk82b $outcoll "lmpg $exti $pgfargs8_init"
+chk82b:
+
+if ($ext == "copt") then
+echo "$space ... Make and print off-diagonal layer GF for this potential"
+echo "$space lmpg $exti --pr70,31 --iactiv $pgfargs8 >>$outcoll"
+             lmpg $exti --pr70,31 --iactiv $pgfargs8 >>$outcoll <<EOF
+
+
+
+
+q
+EOF
+set retval = $status
+if ($retval != 0) goto cleanup
+call qprint chk84a "$space lmpg returned successfully.  gRL should be in file out.$ext"
+chk84a:
+if ($?add0) then
+ echo -n "         ..." ; $add0 out.$ext
+endif
+set n = 7
+call zcmpnfiles chk84b "$n out.$ext $testdir/$ext/gRL"
+chk84b:
+echo -n "$space files out.$ext and  $testdir/$ext/gRL equivalent to $n digits? ..."
+if ($retval == 0) then
+  echo yes
+else
+  if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<3.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) of $ncharfile)"
+    unset pass
+  endif
+endif
+
+goto chk87e
+# end of copt branch
+else
+
+runjob chk82c $outcoll "$lmpg $exti $pgfargs8"
+chk82c:
+if ($?add0) then
+ echo -n "         ..." ; $add0 out.$ext
+endif
+
+call zdiffiles chk82d "CPU -1 $outcoll $refcoll"
+chk82d:
+
+if ($?mcx) then
+  echo "$space ... compare file jz.$exti with reference $jzref using:"
+  echo "$space     $mcx jz.$exti $jzref -- -px:9"
+  $mcx jz.$exti $jzref -- -px:9 >/dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chk8e0
+  endif
+endif
+
+if ($?mcx && "$retval" == 0) then
+  set ncharfile = `wc jz.$exti | awk '{print $1}'`
+  set retval = `$mcx jz.$exti $jzref -- -px:9 | wc | awk '{print $1-1}'`
+  echo -n "$space files jz.$exti and  $jzref equivalent to 9 digits? ... "
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx jz.$exti $jzref -- -abs -max:g -px | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+
+  if ($?efermi8) then
+    echo "$space ... interpolating file jz to Fermi level, Ef=$efermi8"
+    echo '    energy    T(majority) T(minority)'
+    mcx jz.$exti -p -inc x2==1 -e2 x1 x3 -intrp $efermi8 -tog -inc x2==2 -e2 x1 x3 -intrp $efermi8 -ccat -coll 1,2,4 | grep -v rows | grep -v interpolate
+    echo "    compare to reference $jzref"
+    mcx $jzref -p -inc x2==1 -e2 x1 x3 -intrp $efermi8 -tog -inc x2==2 -e2 x1 x3 -intrp $efermi8 -ccat -coll 1,2,4 | grep -v rows | grep -v interpolate
+  endif
+
+else
+  call zcmpnfiles chk84c "9 jz.$exti $jzref"
+  chk84c:
+  echo -n "$space files jz.$exti and  $jzref equivalent to 9 digits? ... "
+  if ($retval == 0) then
+    echo yes
+  else
+    echo -n "no ... to 4 digits? ... "
+    call zcmpnfiles chk84c2 "4 jz.$exti $jzref"
+    chk84c2:
+    if ($retval == 0) then
+      echo yes
+    else
+      if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+        echo ok "($retval difference(s) of $ncharfile)"
+      else
+        echo no "($retval difference(s) of $ncharfile)"
+        unset pass
+      endif
+    endif
+  endif
+endif
+endif
+
+if (! $?quiet && $?fplot && $?slow && $?ghostview && -e $jzref ) then
+  echo ' '
+  query chk87 chk87e 'plot jz generated by lmpg; compare to reference'
+  chk87:
+  echo \
+  fplot -disp -inc x2==1 -ord x3 jz.$exti -inc x2==1 -ord x3 -lt 3,bold=4,col=0,0,1 $jzref
+  fplot -disp -inc x2==1 -ord x3 jz.$exti -inc x2==1 -ord x3 -lt 3,bold=4,col=0,0,1 $jzref
+else if (! $?quiet) then
+  echo "$space ... no figure drawn... missing file $jzref or fplot or ghostview missing from path"
+endif
+chk87e:
+
+chk8e0:
+if ($?ldauargs8 && ! $?ldaupass && $?pass) then
+  set ldaupass
+  set pgfargs8 = ($ldauargs8 $pgfargs8)
+  echo " "
+  echo "$space Repeat test $ext with LDA+U parameters set."
+  set refcoll=$testdir/$ext/out.lmpg.coll.mode5.ldau testout=out.ldau.$exti jz=jz.ldau.$exti jzref=$testdir/$ext/jz.ldau.$exti
+
+  if ($?MPIK) then
+    echo "$space MPIK does not yet work with LDA+U"
+    goto chk8e0
+  endif
+
+  query chk81 chk8e0 'run this test'
+endif
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 8 PASSED ($ext)"
+    set jobspassed = ($jobspassed 8)
+else
+    echo "$space test 8 FAILED ($ext)"
+    set failed = ($failed 8)
+endif
+
+chk8e:
+
+echo $joblist | grep 9 >/dev/null
+if ($status) goto chk9e
+
+cat <<EOF
+
+         --- Test case 9 ($testdir/$ext) noncollinear transport mode (pgf=5) ---
+
+EOF
+if ($?quiet) then
+else if ($ext == "femgo") then
+cat <<EOF
+         This case tests transmission through an Fe/MgO interface, in the following modes:
+         (1) scalar relativistic
+         (2) scalar relativistic with SO coupling added perturbatively
+         (3) fully relativistic
+
+         The following commands draw pictures comparing modes 1-3 in the spin-1 and spin-2 channels, respectively:
+           fplot -ord x3 -inc x2==1 pgf/test/femgo/jz.femgo  -ord x2 -lt 2,col=1,0,0 pgf/test/femgo/jznc.femgo  -ord x2 -lt 3,bold=4,col=0,1,0 pgf/test/femgo/jzso.femgo
+           fplot -ord x3 -inc x2==2 pgf/test/femgo/jz.femgo  -ord x5 -lt 2,col=1,0,0 pgf/test/femgo/jznc.femgo  -ord x5 -lt 3,bold=4,col=0,1,0 pgf/test/femgo/jzso.femgo
+         Blue (SO) and Red (relativistic) track each other rather closely; Black (no SO) is slightly different.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+         But see Note 1 below for the relativistic case.
+
+         The transmission formula contains the Green's function gLR (gRL) connecting
+         left and right leads.  In this implementation, gLR and gRL make a connection
+         between layers -1 and npl, which belong to the leads.
+         When spin-orbit coupling is added, SO in these layers is normally suppressed,
+         since SO coupling is not included in the leads.  But see Note 1 below.
+
+         There is a way to tell lmpg to include SO coupling in layers (-1) and (npl) when calculating gLR.
+         It has to be accomplished using the LU-decomposition mode (SPARSE=1) with prescribed scaling of the SO.
+         To accomplish this and see its effect try the following after this test completes:
+           cp pgf/test/femgo/socscl.femgo .
+           lmpg femgo --no-iactiv -vrel=1 -vso=1 -vnit=1 --rs=1,0 -vpgf=5 -vsparse=1
+           cp jz.femgo jzso.femgo
+           lmpg femgo --no-iactiv -vrel=2 -vnit=1 --rs=1,0 -vpgf=5 -vbegmom=2 -vsparse=1
+         Compare both perturbative and fully relativistic cases.
+         The SO comparison should be slightly different, but the relativistic test unchanged (see Note 2 below)
+           jzso.femgo pgf/test/femgo/jzso.femgo
+           jz.femgo pgf/test/femgo/jznc-extendedPL.femgo
+
+         Note 1: calculating transmission with LU decomposition can potentially produce results different
+         from the Dyson method.  This is because the LU branch includes layers (-1,npl) as part of the
+         active region.  To make LU and Dyson methods consistent (when SO coupling is included)
+         lmpg will normally zero out the SO perturbation in the leads.  It so indicates by printing this line:
+             PGFASA: set SO perturbation to 0 for padded classes
+         In the fully relativistic case, SO coupling cannot suppressed.  LU and Dyson results are slightly different.
+
+         Note 2: if you prescribe the scaling of SO through the socscl file, you can turn on SOC in layers (-1,npl).
+         To see the effect compare jzso.femgo computed by the procedure above to pgf/test/femgo/jzso.femgo.
+         In the fully relativistic case, SO coupling cannot be scaled. The result does not depend on SO scaling.
+
+         Note 3: there is a problem with how potential parameters are made using the new Dirac code.
+         To make this test work, subs/atomsr.f was modified and copied into the pgf directory.
+         This is a temporary fix.
+
+EOF
+else if ($ext == "algas") then
+cat <<EOF
+         This case compares the scalar and fully relativistic transmission through a GaAs/AlAs/GaAs trilayer
+
+         For pictures comparing the two, after this test completes, do
+           fplot -ord x3 -inc x2==1 pgf/test/algas/jz.algas  -ord x2 -lt 2,col=1,0,0 pgf/test/algas/jznc.algas
+           fplot -ord x3 -inc x2==2 pgf/test/algas/jz.algas  -ord x5 -lt 2,col=1,0,0 pgf/test/algas/jznc.algas
+
+EOF
+else if ($ext == "copt") then
+cat <<EOF
+         This case consists of 6 layers of copt in the CuAu structure, with
+         an APB in the middle layer.
+
+         The density is constructed as in test 5, which will confirm that
+         the starting L-, R-, and C- GF are already self-consistent ... pgf modes 2 and 1 are skipped.
+
+         As a test of different-sized PL, one PL is artifically merged into
+         two others, so that the output shows only 5 PL.
+
+         The copt test performs additional check on the noncollinear transmission coefficients.
+         The potential of classes pt6 and co6 are spin-flipped relative to the collinear case,
+         and the Euler angles of the corresponding sites are rotated 180 degrees.
+         These two effects cancel, so that the collinear and noncollinear transmission should agree.
+                noncollinear              collinear
+                  up-up        matches      spin1
+                  down-down    matches      spin2
+                  up-down      is zero
+                  down-up      is zero
+         That is can be seen by comparing the following files in the
+         reference directory ($testdir/$ext)
+                 jznc.$exti (column 2) and jz.$exti (spin 1, column 3)
+                 jznc.$exti (column 5) and jz.$exti (spin 2, column 3)
+         And also the k-resolved transmissions
+                 jzknc.$exti (column 3) and jzk.$exti  (column 3)
+                 jzknc.$exti (column 6) and jzk2.$exti (column 3)
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+
+EOF
+endif
+
+set refcoll=$testdir/$ext/out.lmpg.coll.mode5 refnc=$testdir/$ext/out.lmpg.noncoll.mode5
+set outcoll=out.lmpg.coll.mode5 outnc=out.lmpg.noncoll.mode5
+
+set gmaxdif = 0
+set pass
+if ($?pgfargs9 == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chk9e
+endif
+if (! -e $refcoll) then
+   echo ' '
+   echo "$space ... skipping test ... missing file $refcoll"
+   goto chk9e
+endif
+if (! -e $refnc) then
+   echo ' '
+   echo "$space ... skipping test ... missing file $refnc"
+   goto chk9e
+endif
+
+query chk91 chk9e 'run this test'
+chk91:
+
+
+if ($?haveout) goto chk9ncb
+
+if ($?clean) then
+  touch ctrl.$exti out.lmpg lbc.$exti{_}
+  echo "$space rm -f out*lmpg* *.$exti *.$exti{_}*"
+               rm -f out*lmpg* *.$exti *.$exti{_}*
+  goto chk9e
+endif
+# ... look for executables
+#  findcmd chk91a rdcmd "$path" "$topdir"
+#  chk91a:
+#  findcmd chk91b lm "$path" "$topdir"
+#  chk91b:
+findcmd chk91c lmstr "$path" "$topdir"
+chk91c:
+findcmd chk91d lmpg "$path" "$topdir"
+chk91d:
+if ($?MPIK) then
+  set lmpg = "mpirun -n $nmpi lmpg"
+endif
+if ($?noplot) goto chk91e
+findcmd chk91e fplot "$path" "no"
+chk91e:
+findcmd chk91f ghostview "$path" "no"
+chk91f:
+if (! $?ghostview) then
+findcmd chk91g gv "$path" "no"
+chk91g:
+if ($?gv) then
+set ghostview = "$gv"
+endif
+endif
+if (! $?quiet) then
+echo "$space collinear output file      :" $outcoll
+echo "$space collinear reference file   :" $refcoll
+echo "$space noncollinear output file   :" $outnc
+echo "$space noncollinear reference file:" $refnc
+endif
+
+
+# Skip collinear case
+# goto chk9nc
+
+# Jump to checks
+#goto chk94xxx
+# goto  chkxxx
+
+echo " "
+echo "$space ... Start with collinear case:"
+echo "$space ... Set up ASA strux and collinear starting potential"
+
+getrmfiles
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+if (! $?cplst9) set cplst9 = ($cplst)
+echo "$space cp $cplst9 ."
+             cp $cplst9 .
+
+runjob chk92a /dev/null "lmstr $exti $pgfargs9 --no-iactiv"
+chk92a:
+if (! $?pgfargs9_init) goto chk92b
+runjob chk92b $outcoll "lmpg $exti $pgfargs9_init"
+chk92b:
+
+runjob chk92c $outcoll "$lmpg $exti $pgfargs9"
+chk92c:
+
+call zdiffilesx chk94b "CPU -1 $outcoll $refcoll"
+chk94b:
+
+if ($?mcx) then
+  echo "$space ... compare file jz.$exti with reference $testdir/$ext/jz.$exti using:"
+  echo "$space     $mcx jz.$exti $testdir/$ext/jz.$exti -- -px:9"
+                   $mcx jz.$exti $testdir/$ext/jz.$exti -- -px:9 >/dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chk9x
+  endif
+endif
+
+if ($?mcx && "$retval" == 0) then
+  set ncharfile = `wc jz.$exti | awk '{print $1}'`
+  set retval = `$mcx jz.$exti $testdir/$ext/jz.$exti -- -px:9 | wc | awk '{print $1-1}'`
+  echo -n "$space files jz.$exti and  $testdir/$ext/jz.$exti equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx jz.$exti $testdir/$ext/jz.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+
+  set ncharfile = `wc jzk.$exti | awk '{print $1}'`
+  set retval = `$mcx jzk.$exti $testdir/$ext/jzk.$exti -- -px:9 | wc | awk '{print $1-1}'`
+  echo -n "$space files jzk.$exti and  $testdir/$ext/jzk.$exti equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx jzk.$exti $testdir/$ext/jzk.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+
+  if ($?efermi9) then
+    echo " "
+    echo "$space ... interpolating file jz to Fermi level, Ef=$efermi9"
+    echo '    energy    T(majority) T(minority)'
+    mcx jz.$exti -p -inc x2==1 -e2 x1 x3 -intrp $efermi9 -tog -inc x2==2 -e2 x1 x3 -intrp $efermi9 -ccat -coll 1,2,4 | grep -v rows | grep -v interpolate
+    echo '    compare to reference'
+    mcx $testdir/$ext/jz.$exti -p -inc x2==1 -e2 x1 x3 -intrp $efermi9 -tog -inc x2==2 -e2 x1 x3 -intrp $efermi9 -ccat -coll 1,2,4 | grep -v rows | grep -v interpolate
+  endif
+
+else  # ! mcx
+  call zcmpnfiles chk94c "9 jz.$exti $testdir/$ext/jz.$exti"
+chk94c:
+  echo -n "$space files jz.$exti and  $testdir/$ext/jz.$exti equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+      echo ok "($retval difference(s) of $ncharfile)"
+    else
+      echo no "($retval difference(s) of $ncharfile)"
+      unset pass
+    endif
+  endif
+endif  # mcx
+
+chk9nc:
+echo " "
+if ($ext == "femgo" || $ext == "algas") then
+echo "$space ... Repeat for relativistic case"
+echo "$space ... Set up ASA strux and relativistic starting potential"
+else
+echo "$space ... Repeat for noncollinear case"
+echo "$space ... Set up ASA strux and noncollinear starting potential"
+endif
+getrmfiles
+echo "$space rm -f $rmfiles $outnc"
+             rm -f $rmfiles $outnc
+if (! $?cplst9) set cplst9 = ($cplst)
+echo "$space cp $cplst9 ."
+             cp $cplst9 .
+touch $outnc
+
+if ($exti == "copt") then
+echo "$space ... Spin flip sites 9,11,12,15 and overwrite rsta file"
+echo "$space lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' > $outnc"
+lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' > $outnc
+endif # copt
+
+runjob chk92nca /dev/null "lmstr $exti $pgfargs9nc --no-iactiv"
+chk92nca:
+if (! $?pgfargs9nc_init) goto chk92ncb
+runjob chk92ncb $outnc "lmpg $exti $pgfargs9nc_init"
+chk92ncb:
+
+if ($exti == "coptco") then
+touch lbc.coptco rbc.coptco lbc.coptco_1 rbc.coptco_1
+rm ?bc.{$exti} ?bc.{$exti}_*
+runjob chk92ncd1a '>>'$outnc "$lmpg $exti -vadeg1=000 -vadeg=000 $pgfargs9nc2"
+chk92ncd1a:
+touch lbc.coptco rbc.coptco lbc.coptco_1 rbc.coptco_1
+rm ?bc.{$exti} ?bc.{$exti}_*
+runjob chk92ncd1b '>>'$outnc "$lmpg $exti -vadeg1=120 -vadeg=120 $pgfargs9nc2"
+chk92ncd1b:
+echo "$space cp jz.$exti jzso0.$exti"
+             cp jz.$exti jzso0.$exti
+echo "$space cp jzk.$exti jzkso0.$exti"
+             cp jzk.$exti jzkso0.$exti
+
+touch lbc.coptco rbc.coptco lbc.coptco_1 rbc.coptco_1
+rm ?bc.{$exti} ?bc.{$exti}_*
+runjob chk92ncd1c '>>'$outnc "$lmpg $exti -vadeg1=000 -vadeg=000 $pgfargs9nc"
+chk92ncd1c:
+touch lbc.coptco rbc.coptco lbc.coptco_1 rbc.coptco_1
+rm ?bc.{$exti} ?bc.{$exti}_*
+runjob chk92ncd1d '>>'$outnc "$lmpg $exti -vadeg1=120 -vadeg=120 $pgfargs9nc"
+chk92ncd1d:
+echo "$space cp jz.$exti jzso.$exti"
+             cp jz.$exti jzso.$exti
+echo "$space cp jzk.$exti jzkso.$exti"
+             cp jzk.$exti jzkso.$exti
+
+goto chk92ncc
+endif # coptco
+
+if (! $?pgfargs9nc2) goto chk92ncd
+runjob chk92ncdx '>>'$outnc "$lmpg $exti $pgfargs9nc2"
+chk92ncdx:
+echo "$space cp jz.$exti jzso.$exti"
+             cp jz.$exti jzso.$exti
+echo "$space cp jzk.$exti jzkso.$exti"
+             cp jzk.$exti jzkso.$exti
+chk92ncd:
+
+runjob chk92ncc '>>'$outnc "$lmpg $exti $pgfargs9nc"
+chk92ncc:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 $outnc
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $outnc
+endif
+
+call zdiffiles chk9ncb "CPU -1 $outnc $refnc"
+chk9ncb:
+
+# Check for max numerical difference in stdout
+if (! $?mcx) then
+  echo "$space ... mcx not installed ... no check on stdout"
+else
+  if (! $?stdotol9) set stdotol9 = 1e-6
+  echo -n "$space maximum logged numerical difference ($gmaxdif) in stdout <= tol ($stdotol9) ? ... "
+  if (`echo ' ' | awk -v maxdif=$gmaxdif -v tol=$stdotol9 '{print (maxdif <= tol)}'` == 1) then
+    echo yes
+  else
+    echo no "(max diff = $gmaxdif)"
+    unset pass
+  endif
+endif
+
+if ($?mcx && $?pgfargs9nc2) then
+  echo "$space ... compare file jzso.$exti with reference $testdir/$ext/jzso.$exti using:"
+  echo "$space     $mcx jzso.$exti $testdir/$ext/jzso.$exti -- -px:9 >/dev/null"
+  $mcx jzso.$exti $testdir/$ext/jzso.$exti -- -px:9 >/dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chk9x
+  endif
+
+  set retval = `$mcx jzso.$exti $testdir/$ext/jzso.$exti -- -px:9 | wc | awk '{print $1-1}'`
+  echo -n "$space files jzso.$exti and  $testdir/$ext/jzso.$exti equivalent to 9 digits? ... "
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx -f1pe9.3 jzso.$exti $testdir/$ext/jzso.$exti -- -abs -max:g -coll 3  | tail -1`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+endif  # $?pgfargs9nc2
+
+set refjz = $testdir/$ext/jznc.$exti
+set refjzk = $testdir/$ext/jzknc.$exti
+if ($?ludecomp && $exti == "femgo") then
+  set refjz = $testdir/$ext/jznc-extendedPL.$exti
+  set refjzk = $testdir/$ext/jzknc-extendedPL.$exti
+endif
+set srcjz = jz.$exti
+if ($exti == "coptco") then
+set srcjz = jzso0.$exti
+set refjz = $testdir/$ext/jzso0.$exti
+endif
+
+if ($?mcx) then
+
+  set ncharfile = `wc $srcjz | awk '{print $1}'`
+  echo "$space ... compare file $srcjz with reference $refjz using:"
+  echo "$space     $mcx $srcjz $refjz -- -abs -max:g -px:9"
+  $mcx $srcjz $refjz -- -px:9 >/dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chkbx
+  endif
+
+  echo -n "$space files $srcjz and  $refjz equivalent to 9 digits? ..."
+  set retval = `$mcx $srcjz $refjz -- -px:9 | wc | awk '{print $1-1}'`
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx $srcjz $refjz -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+
+  if (-e $refjzk) then
+  set ncharfile = `wc jzk.$exti | awk '{print $1}'`
+  set retval = `$mcx jzk.$exti $refjzk -- -px:9 | wc | awk '{print $1-1}'`
+  echo -n "$space files jzk.$exti and  $refjzk equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx jzk.$exti $refjzk -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+  endif # file $refjzk exists
+
+  if ($?efermi9) then
+    echo "$space ... interpolating file jz to Fermi level, Ef=$efermi9"
+    echo '    energy      T(up-up)    T(up-down)  T(down-up)  T(down-down)'
+    mcx $srcjz -p -coll 1:5 -intrp $efermi9 | grep -v rows | grep -v interpolate
+    echo '    compare to reference'
+    mcx $refjz -p -coll 1:5 -intrp $efermi9 | grep -v rows | grep -v interpolate
+  endif
+
+  if ($exti == "coptco") then
+
+     echo "$space ... check that Tr jz in noncollinear case matches collinear one"
+     grep intjk $outcoll | awk '{if ($4 == 1) x = $6; if ($4 == 2) print x, $6}' > jzcoll.$exti
+     echo "$space extract-lines SUPGBC: CPU 2 $outnc | grep intjk | awk '{print "'$'"(NF-3), "'$'"(NF-2), "'$'"(NF-1), "'$'"(NF)}' | "'$'"mcx -csum . jzcoll.coptco  -csum  -- -abs -max:g -w:nohead . | awk '{print "'$'"3}'"
+     set err0 = `extract-lines SUPGBC: CPU 2 $outnc | grep intjk | awk '{print $(NF-3), $(NF-2), $(NF-1), $(NF)}' | $mcx -csum . jzcoll.coptco  -csum  -- -abs -max:g -w:nohead . | awk '{print $3}'`
+     echo -n "$space difference ($err0) within tolerance $jtol9 ? ... "
+     if (`echo $err0 0 $jtol9 | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<$3)}'`) then
+       echo yes
+     else
+       echo no
+       unset pass
+     endif
+  endif
+
+else  # ! mcx
+  call zcmpnfiles chk94nc "9 $srcjz $refjz"
+chk94nc:
+  echo -n "$space files $srcjz and  $refjz equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    echo -n "no ... to 5 digits? ... "
+    call zcmpnfiles chk94nc2 "5 $srcjz $refjz"
+    chk94nc2:
+    if ($retval == 0) then
+      echo yes
+    else
+      if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+        echo ok "($retval difference(s) of $ncharfile)"
+      else
+        echo no "($retval difference(s) of $ncharfile)"
+        unset pass
+      endif
+    endif
+  endif
+endif   # done checking jznc and jzknc
+
+chk94xxx:
+
+if (! $?quiet && $?fplot && $?slow && $?ghostview && -e $testdir/$ext/jznc.$exti ) then
+  echo ' '
+  if (`wc $srcjz | awk '{print $1}'` < 2) goto chk97e
+  query chk97 chk97e 'plot noncollinear jz generated by lmpg; compare to reference'
+chk97:
+  echo \
+  fplot -disp -lt 1,col=0,0,1 -colsy 2:5 $srcjz -lt 3,bold=5,col=1,0,0 -colsy 2:5 $testdir/$ext/jznc.$exti
+  fplot -disp -lt 1,col=0,0,1 -colsy 2:5 $srcjz -lt 3,bold=5,col=1,0,0 -colsy 2:5 $testdir/$ext/jznc.$exti
+else if (! $?quiet) then
+  echo "$space ... no figure drawn... missing file $testdir/$ext/jznc.$exti or fplot or ghostview missing from path"
+endif
+chk97e:
+
+chk9x:
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 9 PASSED ($ext)"
+    set jobspassed = ($jobspassed 9)
+else
+    echo "$space test 9 FAILED ($ext)"
+    set failed = ($failed 9)
+endif
+
+chk9e:
+
+echo $joblist | grep 10 >/dev/null
+if ($status) goto chkae
+if ($?pgfargsa == 0) goto chkae
+
+cat <<EOF
+
+         --- Test case 10 ($testdir/$exti) nonequilibrium self-consistency (pgf=1,2) ---
+
+EOF
+if ($?quiet) then
+else if ($exti == "ava") then
+cat <<EOF
+         Input file ctrl.$exti consists of four gold layers,
+         then three vacuum layers, and then four more gold layers.
+
+         The equilibrium calculation includes an artificial
+         site-dependent potential shift that mimics the effect of the
+         nonequilibrium case.  By comparing charges in this artificial
+         case to the nonequilibrium calculation we can verify that the
+         nonequilibrium mode works properly.
+
+         Also, the nonequilibrium dipole potential shift almost
+         exactly matches the applied bias.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+
+EOF
+
+else if ($exti == "copt") then
+cat <<EOF
+         Input file ctrl.$exti consists of five layers of CoPt,
+         artificially constructed so that middle layers have different PL sizes.
+
+         Four calculations are performed.
+         In each case the given starting density should already be self-consistent;
+         this test should confirm that such is the case.
+
+         1. End layers are calculated.
+
+         2. Active region is calculated, collinear under equilibrium conditions
+
+         3. Same calculation, but under nonequilibrium conditions
+
+         4. Noncollinear calculation, nonequilibrium conditions .
+         The quantization axis of sites 9,11,12 in PL 2, and site 16 in PL 3 are rotated by pi.
+         Rotations are accompanied by a corresponding spin flip of the potential on those sites.
+         The two effects should cancel, leaving the self-consistency intact.
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+
+EOF
+endif
+
+# set nonequ2
+
+set refeq=$testdir/$ext/out.lmpg.equil.mode1
+set refne=$testdir/$ext/out.lmpg.noneq.mode1
+set refnenc=$testdir/$ext/out.lmpg.noneqnc.mode1
+if ($?nonequ2) then
+set refne=$testdir/$ext/out.lmpg.noneq2.mode1
+set refnenc=$testdir/$ext/out.lmpg.noneqnc2.mode1
+endif
+set outeq=out.lmpg.equil.mode1 outne=out.lmpg.noneq.mode1
+
+set gmaxdif = 0
+set pass
+# if ($?MPIK) then
+#   echo "$space ... skipping test : MPIK has not been set up"
+#   goto chkae
+# endif
+if ($?pgfargsa == 0) then
+  echo "$space ... skipping test : case $exti has not been set up"
+  goto chkae
+endif
+
+query chka1 chkae 'run this test'
+chka1:
+if ($?clean) then
+  touch ctrl.$exti out.lmpg
+  echo "$space rm -f *.$exti"
+  echo "$space rm -f out*lmpg*"
+               rm -f *.$exti
+               rm -f out*lmpg*
+  goto chkae
+endif
+
+# ... Look for executables
+#  findcmd chka1a rdcmd "$path" "$topdir"
+#  chka1a:
+#  findcmd chka1b lm "$path" "$topdir"
+#  chka1b:
+findcmd chka1c lmstr "$path" "$topdir"
+chka1c:
+findcmd chka1d lmpg "$path" "$topdir"
+chka1d:
+if ($?noplot) goto chka1e
+findcmd chka1e fplot "$path" "no"
+chka1e:
+findcmd chka1f ghostview "$path" "no"
+chka1f:
+if (! $?quiet) then
+echo "$space equilibrium output file      :" $outeq
+echo "$space equilibrium reference file   :" $refeq
+echo "$space nonequilibrium output file   :" $outne
+echo "$space nonequilibrium reference file:" $refne
+endif
+
+if ($?MPIK) then
+  set lmpg = "mpirun -n $nmpi lmpg"
+endif
+
+if ($?haveout) goto chka7
+
+echo ' '
+echo "$space ... Set up ASA strux and equilibrium starting potential"
+getrmfiles
+
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+if (! $?cplsta) set cplsta = ($cplst)
+echo "$space cp $cplsta ."
+             cp $cplsta .
+runjob chka2a /dev/null "lmstr $exti -vpgf=1 $pgfargsa --no-iactiv"
+chka2a:
+
+if (! $?pgfargsa_init) goto chka2b
+runjob chka2b $outeq "lmpg $exti -vpgf=1 $pgfargsa_init"
+chka2b:
+echo "$space ... Verify L-, R- potentials self-consistent"
+runjob chka2c '>>'$outeq "lmpg $exti -vpgf=2 $pgfargsa"
+chka2c:
+echo "$space ... Verify C- layer is self-consistent in equilibrium"
+runjob chka2d '>>'$outeq "$lmpg $exti -vpgf=1 $pgfargsa"
+chka2d:
+
+if ($exti == "ava") then
+echo "$space lmplan $exti -vpgf=1 $pgfargsa '--pledit~qsum 1 13~q' >>$outeq"
+             lmplan $exti -vpgf=1 $pgfargsa '--pledit~qsum 1 13~q' >>$outeq
+endif
+
+set refout = $refeq testout = $outeq
+call showout chka6 SV	       
+chka6:			       
+			       
+call zdiffilesx chka7 "CPU -1 $testout $refout"
+chka7:
+
+if ($exti == "copt") goto chkap2
+if ($?quiet) goto chkap1
+set dqend = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+set etest = `cat $testout      | grep "  it" | awk '{print $6}' | tail -1`
+set eref  = `zcat $refout | grep "  it" | awk '{print $6}' | tail -1`
+
+echo " "
+echo "$space lmpg charge distribution, equil case :"
+echo "$space extract-lines --quiet 'Electrostatics for embedded' 'Sum' -1 $outeq"
+extract-lines --quiet 'Electrostatics for embedded' 'Sum' -1 $outeq
+echo " "
+echo "$space compare to reference :"
+extract-lines --quiet 'Electrostatics for embedded' 'Sum' -1 $refeq
+
+echo " "
+echo "$space lmpg rms bulk  dq,   last iteration = $dqend"
+echo "$space lmpg total energy    last iteration = $etest"
+echo "$space ref. total energy    last iteration = $eref"
+echo " "
+chkap1:
+
+if ($?dqtola == 0) set dqtola = .0001
+set dqmineq = `cat $testout | grep SV: | tail -5 | sed s/D/E/ | awk -v dqmin=99 '{if ($3<dqmin) dqmin=$3} END { printf "%f\n", dqmin}'`
+compare_res_0 chkap2 "RMS DQ in moments of last five iter" $dqmineq $dqtola pass
+chkap2:
+
+if ($?haveout) goto chka2h
+
+echo
+echo "$space ... set up ASA strux and nonequilibrium starting potential"
+echo "$space rm -f $rmfilel_ne"
+             rm -f $rmfilel_ne
+echo "$space cp $cplst_ne ."
+             cp $cplst_ne .
+echo "$space cp rsta-noneq.$exti rsta.$exti"
+             cp rsta-noneq.$exti rsta.$exti
+echo "$space cp vshft-noneq.$exti vshft.$exti"
+             cp vshft-noneq.$exti vshft.$exti
+
+if ($?nonequ2) then
+echo "$space cp $cplst_ne2 ."
+             cp $cplst_ne2 .
+echo "$space cp rsta-noneq2.$exti rsta.$exti"
+             cp rsta-noneq2.$exti rsta.$exti
+echo "$space cp vshft-noneq2.$exti vshft.$exti"
+             cp vshft-noneq2.$exti vshft.$exti
+endif
+
+if (! $?pgfargsa_init_ne) goto chka2f
+runjob chka2f $outne "lmpg $exti -vpgf=1 $pgfargsa_init_ne"
+chka2f:
+
+if ($ext == "ava") then
+echo $pgfargsa_ne | grep sparse=1 > /dev/null
+if (! $status) then
+  echo "$space ... job running with nonequilibrium + sparse mode ... adding bigemb=f"
+  set pgfargsa_ne = (-vbigemb=f $pgfargsa_ne)
+endif
+endif
+
+echo "$space ... Verify C- layer is self-consistent under non-equilibrium conditions"
+runjob chka2h '>>'$outne "$lmpg $exti -vpgf=1 $pgfargsa_ne"
+chka2h:
+if ($exti == "ava") then
+echo "$space lmplan $exti -vpgf=1 $pgfargsa_ne '--pledit~qsum 1 13~q' >>$outne"
+             lmplan $exti -vpgf=1 $pgfargsa_ne '--pledit~qsum 1 13~q' >>$outne
+endif
+
+set refout = $refne testout = $outne
+if ($?haveout) goto chkaa
+if ($exti == "copt") goto chkap21
+
+call showout chka9 SV
+chka9:
+
+if ($?quiet) goto chkap21
+set dqend = `cat $testout | grep SV: | tail -1 | awk '{print $3}' | sed 's/D/e/'`
+set etest = `cat $testout      | grep "  it" | awk '{print $6}' | tail -1`
+set eref  = `zcat $refout | grep "  it" | awk '{print $6}' | tail -1`
+set diptest = `cat $testout | grep -i 'dipole in plat' | awk '{print $8}' | tail -1`
+set dipref  = `zcat $refout | grep -i 'dipole in plat' | awk '{print $8}' | tail -1`
+
+echo " "
+echo "$space lmpg charge distribution, nonequil case :"
+echo "$space extract-lines --quiet 'Electrostatics for embedded' 'Sum' -1 $outne"
+extract-lines --quiet 'Electrostatics for embedded' 'Sum' -1 $outne
+echo " "
+echo "$space compare to reference :"
+extract-lines --quiet 'Electrostatics for embedded' 'Sum' -1 $refne
+
+echo " "
+echo "$space lmpg rms bulk  dq,   last iteration = $dqend"
+echo "$space lmpg total energy    last iteration = $etest"
+echo "$space ref. total energy    last iteration = $eref"
+echo "$space lmpg dipole from charge density     = $diptest"
+echo "$space ref. dipole from charge density     = $dipref"
+echo " "
+chkap21:
+
+call zdiffilesx chkaa "CPU -1 $testout $refout"
+chkaa:
+
+if ($ext == "copt") then
+set outnenc=out.lmpg.noneqnc.mode1
+
+if ($?haveout) goto chka5d
+
+rm -f $outnenc
+echo
+echo "$space ... Set up for nonequilibrium, noncollinear starting potential"
+echo "$space ... Spin flip sites 9,11,12,15 and overwrite rsta file"
+echo "$space lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' >> $outnenc"
+             lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' >> $outnenc
+echo "$space ... Remake starting potential"
+runjob chka5b '>>'$outnenc "lmpg $exti -vpgf=1 $pgfargsa_init_ne"
+chka5b:
+
+echo "$space ... Verify noncollinear C- layer is self-consistent under non-equilibrium conditions"
+runjob chka5c '>>'$outnenc "$lmpg $exti $pgfargsa_nenc"
+chka5c:
+
+call zdiffilesx chka5d "CPU -1 $outnenc $refnenc"
+chka5d:
+
+# echo testout $testout
+# echo refout $refout
+# echo $outnenc
+# echo $refnenc
+# exit
+
+
+set dqleft   = (`extract-lines 'START LMPG' Exit 2 $outeq | grep 'Left end' | head -1 | awk '{print $NF}'`)
+set dqleftr  = (`extract-lines 'START LMPG' Exit 2 $refeq | grep 'Left end' | head -1 | awk '{print $NF}'`)
+set dqright  = (`extract-lines 'START LMPG' Exit 2 $outeq | grep 'Right end' | head -1 | awk '{print $NF}'`)
+set dqrightr = (`extract-lines 'START LMPG' Exit 2 $refeq | grep 'Right end' | head -1 | awk '{print $NF}'`)
+
+set dqeq     = (`extract-lines 'START LMPG' Exit 3 $outeq | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+set dqeqr    = (`extract-lines 'START LMPG' Exit 3 $refeq | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+
+set dqeq     = (`extract-lines 'START LMPG' Exit 3 $outeq | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+set dqeqr    = (`extract-lines 'START LMPG' Exit 3 $refeq | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+
+set dqne     = (`extract-lines 'START LMPG' Exit 2 $testout | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+set dqner    = (`extract-lines 'START LMPG' Exit 2 $refout  | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+
+set dqnenc   = (`extract-lines 'START LMPG' Exit 3 $outnenc | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+set dqnencr  = (`extract-lines 'START LMPG' Exit 3 $refnenc | grep 'charge neutrality in embedded layers' | head -1 | awk '{print $NF}'`)
+
+set rmsdqne  = (`extract-lines 'START LMPG' Exit 2 $testout | grep DQ | vextract . DQ`)
+set rmsdqnnc = (`extract-lines 'START LMPG' Exit 3 $outnenc | grep DQ | vextract . DQ`)
+
+set ehfne    = (`extract-lines 'START LMPG' Exit 2 $testout | vextract h ehf`)
+set ehfnnc   = (`extract-lines 'START LMPG' Exit 3 $outnenc | vextract h ehf`)
+set diffe    = `echo $ehfne $ehfnnc  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+
+set amomeq   = (`extract-lines 'START LMPG' Exit 3 $outeq   | vextract . mmom`)
+set amomne   = (`extract-lines 'START LMPG' Exit 2 $testout | vextract . mmom`)
+set amomnc   = (`extract-lines 'START LMPG' Exit 3 $outnenc | vextract . mmom`)
+
+
+#  echo "extract-lines 'START LMPG' Exit 3 $outeq"
+#  echo "extract-lines 'START LMPG' Exit 2 $testout"
+#  echo "extract-lines 'START LMPG' Exit 3 $outnenc"
+#  exit
+
+if (! $?quiet) then
+echo
+echo    "$space Charge neutrality of left  layer from input potential = $dqleft"
+echo    "$space Charge neutrality of right layer from input potential = $dqright"
+echo    "$space Charge neutrality of active region, equil potential   = $dqeq"
+echo    "$space Charge neutrality of active region, noneq potential   = $dqne"
+echo    "$space Ditto for             noncollinear, noneq potential   = $dqnenc"
+
+echo
+echo    "$space Total energy collinear noneq potential                = $ehfne"
+echo    "$space Ditto, noncollinear noneq potential                   = $ehfnnc"
+echo    "$space difference                                               $diffe"
+
+echo
+echo    "$space Total magnetic moment eq potential                    = $amomeq"
+echo    "$space Total magnetic moment noneq potential                 = $amomne"
+echo    "$space Total magnetic moment noneq, noncoll potential        = $amomnc"
+
+endif
+
+echo ' '
+call qprint chka6a "$space ... automatic pass checks :"
+chka6a:
+if ($?detola == 0) set detola = .0005
+if ($?dqtola == 0) set dqtola = 2e-6
+echo -n "$space left layer charge neutrality ($dqleft) within tol $dqtola of reference ($dqleftr)? ... "
+if (`echo $dqleft $dqleftr $dqtola | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space right layer charge neutrality ($dqright) within tol $dqtola of reference ($dqrightr)? ... "
+if (`echo $dqright $dqrightr $dqtola | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space equil central layer charge neutrality ($dqeq) within tol $dqtola of reference ($dqeqr)? ... "
+if (`echo $dqeq $dqeqr $dqtola | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space noneq central layer charge neutrality ($dqne) within tol $dqtola of reference ($dqner)? ... "
+if (`echo $dqne $dqner $dqtola | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+echo -n "$space noneq, noncoll central layer charge neutrality ($dqnenc) within tol $dqtola of reference ($dqnencr)? ... "
+if (`echo $dqnenc $dqnencr $dqtola | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=$3)}'`) then
+  echo yes
+else
+  echo no
+  unset pass
+endif
+
+compare_res_0 chka6b "RMS DQ in moments of collinear noneq active region" $rmsdqne $dqtola pass
+chka6b:
+compare_res_0 chka6c "RMS DQ in moments of noncoll   noneq active region" $rmsdqnnc $dqtola pass
+chka6c:
+compare_res_0 chka6d "noncoll-coll nonequilibrium total energy difference" $diffe $detola pass
+chka6d:
+
+goto chkap22
+
+set dqne    = (`extract-lines 'START LMPG' Exit 2 $testout | grep 'charge neutrality in embedded layers' | awk '{print $NF}'`)
+set dqnenc  = (`extract-lines 'START LMPG' Exit 2 $testout | grep 'charge neutrality in embedded layers' | awk '{print $NF}'`)
+echo $dqcoll
+
+
+# End of copt-specific check
+endif
+
+
+# automatic pass checks
+
+set dqminne = `cat $testout | grep SV: | tail -5 | sed s/D/E/ | awk -v dqmin=99 '{if ($3<dqmin) dqmin=$3} END { printf "%f\n", dqmin}'`
+compare_res_0 chkap22 "RMS DQ in moments of last five iter" $dqminne $dqtola pass
+chkap22:
+
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 10 PASSED ($exti)"
+    set jobspassed = ($jobspassed 10)
+else
+    echo "$space test 10 FAILED ($exti)"
+    set failed = ($failed 10)
+endif
+
+chkae:
+
+echo $joblist | grep 11 >/dev/null
+if ($status) goto chkbe
+
+cat <<EOF
+
+         --- Test case 11 ($testdir/$ext) noncollinear reflectance mode (pgf=7) ---
+
+EOF
+if ($?quiet) then
+
+else if ($ext == "femgo") then
+cat <<EOF
+         This case tests transmission through an Fe/MgO interface, in the following modes:
+         (1) scalar relativistic
+         (2) scalar relativistic with SO coupling added perturbatively
+         (3) fully relativistic
+
+         The following commands draw pictures comparing modes 1-3 in the spin-1 and spin-2 channels, respectively:
+           fplot -ord x3 -inc x2==1 $testdir/femgo/rzl.femgo -ord x2 -lt 2,col=1,0,0 $testdir/femgo/rzlnc.femgo -ord x2 -lt 3,bold=4,col=0,1,0 $testdir/femgo/rzlso.femgo
+           fplot -ord x3 -inc x2==2 $testdir/femgo/rzl.femgo -ord x5 -lt 2,col=1,0,0 $testdir/femgo/rzlnc.femgo -ord x5 -lt 3,bold=4,col=0,1,0 $testdir/femgo/rzlso.femgo
+         You can confirm that the fully relativistic mode (red) is nearly identical with SO (green) while the scalar relativistic is a bit more different (black)
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu=no)
+         The same caveats apply to the reflection as for the transmission (see job 9): 
+         --lu and --lu=no generate slightly different results in the SO and relativistic cases.
+         To visualize how the two differ, do
+           fplot -lt 1,col=0,0,1 -colsy 2:5 $testdir/$ext/rzlnc-extendedPL.femgo -lt 3,bold=5,col=1,0,0 -colsy 2:5 $testdir/$ext/rzlnc.femgo
+           open fplot.ps
+
+EOF
+
+else if ($ext == "copt") then
+cat <<EOF
+         This case consists of 6 layers of copt in the CuAu structure, with
+         an APB in the middle layer.
+
+         As a test of different-sized PL, one PL is artifically merged into
+         two others, so that the output shows only 5 PL.
+
+         The copt case compares the collinear to the noncollinear
+         reflectance coefficients. The potential of classes pt6 and
+         co6 are spin-flipped relative to the collinear case, and the
+         Euler angles of the corresponding sites are rotated 180
+         degrees.  These two effects cancel, so that the reflectance
+         in the two cases should be:
+                noncollinear              collinear
+                  up-up        matches      spin1
+                  down-down    matches      spin2
+                  up-down      is zero
+                  down-up      is zero
+         That is can be seen by comparing the following files in the
+         reference directory ($testdir/$ext)
+                 rzlnc.$exti (column 2) and rzl.$exti (spin 1, column 3)
+                 rzlnc.$exti (column 5) and rzl.$exti (spin 2, column 3)
+         And also the k-resolved reflectance
+                 rzklnc.$exti (column 3) and rzkl.$exti  (column 3)
+                 rzklnc.$exti (column 6) and rzkl2.$exti (column 3)
+
+         The following check compares the collinear and noncollinear k-integrated outputs
+           mcx pgf/test/copt/rzl.copt  -inc x2==1 -coll 1,3 pgf/test/copt/rzlnc.copt  -coll 1,2 -- -px
+           mcx pgf/test/copt/rzl.copt  -inc x2==2 -coll 1,3 pgf/test/copt/rzlnc.copt  -coll 1,5 -- -px
+
+         This check should work in either LU-decomposition or Dyson mode (--lu or --lu=no; default is --lu)
+
+         You can also confirm that the left- and right- reflectances are identical;
+         compare e.g.
+           rzkl2.copt  rzkr2.copt
+
+         The L-, R-, and C- GF are already assumed to to be self-consistent;
+         the self-consistency step (pgf modes 2 and 1) are skipped here.
+
+EOF
+endif
+set refcoll=$testdir/$ext/out.lmpg.coll.mode7 refnc=$testdir/$ext/out.lmpg.noncoll.mode7
+set outcoll=out.lmpg.coll.mode7 outnc=out.lmpg.noncoll.mode7
+
+set gmaxdif = 0
+set pass
+if ($?pgfargsb == 0) then
+  echo "$space ... skipping test : case $ext has not been set up"
+  goto chkbe
+endif
+if (! -e $refcoll) then
+   echo ' '
+   echo "$space ... skipping test ... missing file $refcoll"
+   goto chkbe
+endif
+if (! -e $refnc) then
+   echo ' '
+   echo "$space ... skipping test ... missing file $refnc"
+   goto chkbe
+endif
+
+query chkb1 chkbe 'run this test'
+chkb1:
+
+if ($?haveout) goto chkbncb
+
+if ($?clean) then
+  touch ctrl.$exti out.lmpg
+  echo "$space rm -f *.$exti"
+  echo "$space rm -f out*lmpg*"
+               rm -f *.$exti
+               rm -f out*lmpg*
+  goto chkbe
+endif
+# ... Look for executables
+#  findcmd chkb1a rdcmd "$path" "$topdir"
+#  chkb1a:
+#  findcmd chkb1b lm "$path" "$topdir"
+#  chkb1b:
+findcmd chkb1c lmstr "$path" "$topdir"
+chkb1c:
+findcmd chkb1d lmpg "$path" "$topdir"
+chkb1d:
+if ($?MPIK) then
+  set lmpg = "mpirun -n $nmpi lmpg"
+endif
+if ($?noplot) goto chkb1e
+findcmd chkb1e fplot "$path" "no"
+chkb1e:
+findcmd chkb1f ghostview "$path" "no"
+chkb1f:
+if (! $?ghostview) then
+findcmd chkb1g gv "$path" "no"
+chkb1g:
+if ($?gv) then
+set ghostview = "$gv"
+endif
+endif
+
+set refcoll=$testdir/$ext/out.lmpg.coll.mode7 refnc=$testdir/$ext/out.lmpg.noncoll.mode7
+set outcoll=out.lmpg.coll.mode7 outnc=out.lmpg.noncoll.mode7
+
+if (! $?quiet) then
+echo "$space collinear output file      :" $outcoll
+echo "$space collinear reference file   :" $refcoll
+echo "$space noncollinear output file   :" $outnc
+echo "$space noncollinear reference file:" $refnc
+endif
+
+# Skip collinear case
+# goto chkbnc
+
+if ($?haveout) goto chkb4xxx
+
+echo " "
+echo "$space ... Start with collinear case:"
+echo "$space ... Set up ASA strux and collinear starting potential"
+
+getrmfiles
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+if (! $?cplstb) set cplstb = ($cplst)
+echo "$space cp $cplstb ."
+             cp $cplstb .
+
+runjob chkb2a /dev/null "lmstr $exti $pgfargsb --no-iactiv"
+chkb2a:
+if (! $?pgfargsb_init) goto chkb2b
+runjob chkb2b $outcoll "lmpg $exti $pgfargsb_init"
+chkb2b:
+
+runjob chkb2c $outcoll "$lmpg $exti $pgfargsb"
+chkb2c:
+
+set mcincl = "~incl=zp:~incl=dens"   # Single out these lines for mcx
+if (! $?stdotol9) set stdotol9 = 1e-6
+call zdiffilesx chkb4b "CPU -1 $outcoll $refcoll $stdotol9"
+chkb4b:
+unset mcincl
+
+if ($?mcx) then
+  echo "$space ... compare file rzl.$exti with reference $testdir/$ext/rzl.$exti using:"
+  echo "$space     $mcx rzl.$exti $testdir/$ext/rzl.$exti -- -px:9"
+  $mcx rzl.$exti $testdir/$ext/rzl.$exti -- -px:9 >/dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chkbx
+  endif
+
+  set ncharfile = `wc rzl.$exti | awk '{print $1}'`
+  set retval = `$mcx rzl.$exti $testdir/$ext/rzl.$exti -- -px:9 | wc | awk '{print $1-1}'`
+  echo -n "$space files rzl.$exti and  $testdir/$ext/rzl.$exti equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx rzl.$exti $testdir/$ext/rzl.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+
+  if ($ext == "copt") then  # for copt, rzl should equal rzr
+    echo "$space ... compare file rzl.$exti to rzr.$exti using:"
+    echo "$space     $mcx rzl.$exti rzr.$exti -- -px:9"
+    set ncharfile = `wc rzl.$exti | awk '{print $1}'`
+    set retval = `$mcx rzl.$exti rzr.$exti -- -px:9 | wc | awk '{print $1-1}'`
+    echo -n "$space files rzl.$exti and  rzr.$exti equivalent to 9 digits? ..."
+    if ($retval == 0) then
+      echo yes
+    else
+      set maxdif = `$mcx rzl.$exti rzr.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+      if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+        echo ok "(max diff = $maxdif)"
+      else
+        echo no "(max diff = $maxdif)"
+        unset pass
+      endif
+    endif
+
+    if (! $?MPIK) then  # MPI test doesn't work because rzkl isn't combined
+    echo "$space ... compare file rzkl.$exti to $testdir/$ext/rzkl.$exti  using:"
+    echo "$space     $mcx rzkl.$exti $testdir/$ext/rzkl.$exti -- -px:9"
+    $mcx rzkl.$exti $testdir/$ext/rzkl.$exti -- -px:9 > /dev/null
+    set retval = $status
+    if ("$retval" != 0) then
+      echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+      unset pass
+      goto chkbx
+    endif
+    set ncharfile = `wc rzkl.$exti | awk '{print $1}'`
+    set retval = `$mcx rzkl.$exti $testdir/$ext/rzkl.$exti -- -px:9 | wc | awk '{print $1-1}'`
+    echo -n "$space files rzkl.$exti and  $testdir/$ext/rzkl.$exti equivalent to 9 digits? ..."
+    if ($retval == 0) then
+      echo yes
+    else
+      set maxdif = `$mcx rzkl.$exti $testdir/$ext/rzkl.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+      if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 4.e-5)}'` == 1) then
+        echo ok "(max diff = $maxdif)"
+      else
+        echo no "(max diff = $maxdif)"
+        unset pass
+      endif
+    endif
+    endif # not MPIK branch
+
+  else  # Tests other than copt
+
+    echo "$space ... compare file rzr.$exti with reference $testdir/$ext/rzr.$exti using:"
+    echo "$space     $mcx rzr.$exti $testdir/$ext/rzr.$exti -- -px:9"
+    $mcx rzr.$exti $testdir/$ext/rzr.$exti -- -px:9 >/dev/null
+    set retval = $status
+    if ("$retval" != 0) then
+      echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+      unset pass
+      goto chkbx
+    endif
+
+    set ncharfile = `wc rzr.$exti | awk '{print $1}'`
+    set retval = `$mcx rzr.$exti $testdir/$ext/rzr.$exti -- -px:9 | wc | awk '{print $1-1}'`
+    echo -n "$space files rzr.$exti and  $testdir/$ext/rzr.$exti equivalent to 9 digits? ..."
+    if ($retval == 0) then
+      echo yes
+    else
+      set maxdif = `$mcx rzr.$exti $testdir/$ext/rzr.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+      if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+        echo ok "(max diff = $maxdif)"
+      else
+        echo no "(max diff = $maxdif)"
+        unset pass
+      endif
+    endif
+
+  endif # Tests other than copt
+
+  if ($?efermib) then
+    echo " "
+    echo "$space ... interpolating file rzl to Fermi level, Ef=$efermib"
+    echo '    energy    T(majority) T(minority)'
+    mcx rzl.$exti -p -inc x2==1 -e2 x1 x3 -intrp $efermib -tog -inc x2==2 -e2 x1 x3 -intrp $efermib -ccat -coll 1,2,4 | grep -v rows | grep -v interpolate
+    echo '    compare to reference'
+    mcx $testdir/$ext/rzl.$exti -p -inc x2==1 -e2 x1 x3 -intrp $efermib -tog -inc x2==2 -e2 x1 x3 -intrp $efermib -ccat -coll 1,2,4 | grep -v rows | grep -v interpolate
+  endif
+
+else  # no mcx available
+  call zcmpnfiles chkb4c "9 rzl.$exti $testdir/$ext/rzl.$exti"
+chkb4c:
+  echo -n "$space files rzl.$exti and  $testdir/$ext/rzl.$exti equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+      echo ok "($retval difference(s) of $ncharfile)"
+    else
+      echo no "($retval difference(s) of $ncharfile)"
+      unset pass
+    endif
+  endif
+endif
+
+chkbnc:
+echo " "
+if ($ext == "femgo" || $ext == "algas") then
+echo "$space ... Repeat for relativistic case"
+echo "$space ... Set up ASA strux and relativistic starting potential"
+else
+echo "$space ... Repeat for noncollinear case"
+echo "$space ... Set up ASA strux and noncollinear starting potential"
+endif
+getrmfiles
+echo "$space rm -f $rmfiles"
+             rm -f $rmfiles
+if (! $?cplstb) set cplstb = ($cplst)
+echo "$space cp $cplstb ."
+             cp $cplstb .
+
+if ($ext == "copt") then
+echo "$space ... Spin flip sites 9,11,12,15 and overwrite rsta file"
+echo "$space lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' > $outnc"
+lmpg $exti -vnit=1 -vpgf=1 -vnc=f $lmargs7 --no-iactiv '--rsedit~rs~read~set all 2 flip~add all 0 1 9,11,12,15 9,11,12,15~save~q' > $outnc
+endif
+
+#   echo debug: cp tmp/ctrl.femgo . ; cp  tmp/ctrl.femgo .
+runjob chkb2nca /dev/null "lmstr $exti $pgfargsbnc --no-iactiv"
+chkb2nca:
+if (! $?pgfargsbnc_init) goto chkb2ncb
+runjob chkb2ncb $outnc "lmpg $exti $pgfargsbnc_init"
+chkb2ncb:
+
+if (! $?pgfargsbnc2) goto chkb2ncd
+runjob chkb2ncdx '>>'$outnc "$lmpg $exti $pgfargsbnc2"
+chkb2ncdx:
+
+echo "$space cp rzl.$exti rzlso.$exti"
+             cp rzl.$exti rzlso.$exti
+echo "$space cp rzkl.$exti rzklso.$exti"
+             cp rzkl.$exti rzklso.$exti
+chkb2ncd:
+
+runjob chkb2ncc '>>'$outnc "$lmpg $exti $pgfargsbnc"
+chkb2ncc:
+
+if ($?add0) then
+ echo -n "         ..." ; $add0 out.$ext
+endif
+
+set mcincl = "~incl=zp:~incl=r=" # Single out these lines for mcx
+if (! $?stdotol9) set stdotol9 = 1e-6
+if ($?ludecomp) then
+echo "$space note: reflection altered slightly because extra layers through LU"
+call zdiffiles  chkbncb "CPU -1 $outnc $refnc $stdotol9"
+else
+call zdiffilesx chkbncb "CPU -1 $outnc $refnc $stdotol9"
+endif
+chkbncb:
+unset mcincl
+
+if (! $?mcx) then
+  echo "$space ... mcx not installed ... no check on stdout"
+else
+  echo -n "$space maximum numerical difference in stdout ($gmaxdif) <= tol ($stdotol9) ? ... "
+  if (`echo ' ' | awk -v maxdif=$gmaxdif -v tol=$stdotol9 '{print (maxdif <= tol)}'` == 1) then
+    echo yes
+  else
+    echo no "(max diff = $gmaxdif)"
+    unset pass
+  endif
+endif
+
+chkxxx:
+# set verbose; unset mcx; set retval = 0
+# set verbose
+
+if ($?mcx && $?pgfargsbnc2) then
+  echo "$space ... compare file rzlso.$exti with reference $testdir/$ext/rzlso.$exti using:"
+  echo "$space     $mcx rzlso.$exti $testdir/$ext/rzlso.$exti -- -px:9 >/dev/null"
+  $mcx rzlso.$exti $testdir/$ext/rzlso.$exti -- -px:9 > /dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chkbx
+  endif
+
+  echo -n "$space files rzlso.$exti and  $testdir/$ext/rzlso.$exti equivalent to 9 digits? ... "
+  set retval = `$mcx rzlso.$exti $testdir/$ext/rzlso.$exti -- -px:9 | wc | awk '{print $1-1}'`
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx -f1pe9.3 rzlso.$exti $testdir/$ext/rzlso.$exti -- -abs -max:g -coll 3  | tail -1`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+endif  # $?pgfargsbnc2
+
+set refrz = $testdir/$ext/rzlnc.$exti
+set refrzk = $testdir/$ext/rzlknc.$exti
+if ($?ludecomp && $exti == "femgo") then
+  set refrz = $testdir/$ext/rzlnc-extendedPL.$exti
+  set refrzk = $testdir/$ext/rzlknc-extendedPL.$exti
+endif
+
+if ($?mcx) then
+
+  set ncharfile = `wc rzl.$exti | awk '{print $1}'`
+  echo "$space ... compare file rzl.$exti with reference $refrz using:"
+  echo "$space     $mcx rzl.$exti $refrz -- -abs -max:g -px:9"
+  $mcx rzl.$exti $refrz -- -px:9 >/dev/null
+  set retval = $status
+  if ("$retval" != 0) then
+    echo "$space oops! ... mcx could not subtract these files ... something is wrong"
+    unset pass
+    goto chkbx
+  endif
+# echo "$space     maximum difference in rzl files = " `$mcx rzl.$exti $refrz -- -px:9 | $mcx . -coll 3 | tail -1`
+
+  echo -n "$space files rzl.$exti and  $refrz equivalent to 9 digits? ..."
+  set retval = `$mcx rzl.$exti $refrz -- -px:9 | wc | awk '{print $1-1}'`
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx rzl.$exti $refrz -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 1.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+
+  if ($ext == "copt") then  # check k-dependence
+  set retval = `$mcx rzkl.$exti $testdir/$ext/rzklnc.$exti -- -px:9 | wc | awk '{print $1-1}'`
+  set ncharfile = `wc rzkl.$exti | awk '{print $1}'`
+  echo -n "$space files rzkl.$exti and  $testdir/$ext/rzklnc.$exti equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    set maxdif = `$mcx rzkl.$exti $testdir/$ext/rzklnc.$exti -- -abs -max:g -coll 3 -px:12 | tail -1 | awk '{printf "%12.3e", $3}'`
+    if (`echo ' ' | awk -v maxdif=$maxdif '{print (maxdif < 4.e-5)}'` == 1) then
+      echo ok "(max diff = $maxdif)"
+    else
+      echo no "(max diff = $maxdif)"
+      unset pass
+    endif
+  endif
+  endif  # Done checking rzkl
+
+  if ($?efermib) then
+    echo "$space ... interpolating file rzl to Fermi level, Ef=$efermib"
+    echo '    energy      T(up-up)    T(up-down)  T(down-up)  T(down-down)'
+    mcx rzl.$exti -p -coll 1:5 -intrp $efermib | grep -v rows | grep -v interpolate
+    echo '    compare to reference'
+    mcx $refrz -p -coll 1:5 -intrp $efermib | grep -v rows | grep -v interpolate
+  endif
+
+else
+  call zcmpnfiles chkb4nc "9 rzl.$exti $refrz"
+chkb4nc:
+  echo -n "$space files rzl.$exti and  $refrz equivalent to 9 digits? ..."
+  if ($retval == 0) then
+    echo yes
+  else
+    echo -n "no ... to 5 digits? ... "
+    call zcmpnfiles chkb4nc2 "5 rzl.$exti $refrz"
+    chkb4nc2:
+    if ($retval == 0) then
+      echo yes
+    else
+      if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+        echo ok "($retval difference(s) of $ncharfile)"
+      else
+        echo no "($retval difference(s) of $ncharfile)"
+        unset pass
+      endif
+    endif
+  endif
+endif
+
+chkb4xxx:
+
+if (! $?quiet && $?fplot && $?slow && $?ghostview && -e $testdir/$ext/rzlnc.$exti ) then
+  echo ' '
+  if (`wc rzl.$exti | awk '{print $1}'` < 2) goto chkb7e
+  query chkb7 chkb7e 'plot noncollinear rzl generated by lmpg; compare to reference'
+chkb7:
+  echo \
+  fplot -disp -lt 1,col=0,0,1 -colsy 2:5 rzl.$exti -lt 3,bold=5,col=1,0,0 -colsy 2:5 $testdir/$ext/rzlnc.$exti
+  fplot -disp -lt 1,col=0,0,1 -colsy 2:5 rzl.$exti -lt 3,bold=5,col=1,0,0 -colsy 2:5 $testdir/$ext/rzlnc.$exti
+else if (! $?quiet) then
+  echo "$space ... no figure drawn... missing file $testdir/$ext/rznc.$exti or fplot or ghostview missing from path"
+endif
+chkb7e:
+
+chkbx:
+echo ' '
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 11 PASSED ($ext)"
+    set jobspassed = ($jobspassed 11)
+else
+    echo "$space test 11 FAILED ($ext)"
+    set failed = ($failed 11)
+endif
+
+chkbe:
+
+echo ' '
+if ($?clean) then
+    exit 0
+else if ($#failed <= 1) then
+    echo "$space all tests ($jobspassed) PASSED ($ext)"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit -1
+endif
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+    if ($retval != 0) goto cleanup
+    goto $quitjob
+  endif
+
+  if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+    set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+    echo "$space $callarg  >> $appfile"
+    $callarg >> $appfile
+    set retval = $status
+    if ("$outfile" == /dev/null) then
+    else
+      if ($?add0) then
+        echo -n "         ..." ; $add0 $appfile
+      else if ($?poszer) then
+        echo -n "         ..." ; $poszer $appfile
+      endif
+    endif
+  else
+    echo "$space $callarg  > $outfile"
+    $callarg > $outfile
+    set retval = $status
+    if ("$outfile" == /dev/null) then
+    else
+      if ($?add0) then
+        echo -n "         ..." ; $add0 $outfile
+      else if ($?poszer) then
+        echo -n "         ..." ; $poszer $outfile
+      endif
+    endif
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+set $prog_cmd
+unset $prog_cmd
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space job returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting"
+  exit $retval
+
+# ---------------- diffiles --------------
+# calling argument should consist of four strings:
+# 1st string = string that terminates diff
+# 2nd string = integer that counts how many times terminator should occur before terminating
+# 3nd string = first file name
+# 4th string = second file name
+# example: call diffiles chk69 "CPU 3 $testout $refout"
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+  if ($nend == "-1") then
+    set nend = `grep CPU $files[1] | wc | awk '{print $1}'`
+  endif
+
+#    echo difffiles : $quitjob $nend
+#    grep $endstr $files[1]
+
+  query diff11 $quitjob "compare $files"
+diff11:
+  diff $files | awk -v endstr=$endstr -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- zdiffiles --------------
+# File differences, with additional check for numerical differences
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+# Example: call zdiffiles chk69 "CPU 3 $testout $refout"
+exit
+zdiffiles:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffiles2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiff1 $quitjob "compare $files[1] $files[2]"
+zdiff1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffiles2:
+  if (! $?mcx) goto $quitjob   
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+#  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo 
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiff2  $quitjob "show comparison"
+zdiff2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zdiffilesx --------------
+# Identical to zdiffiles, but gmaxdif is accumulated
+# callarg should consist of four strings; there is an optional fifth and sixth
+# 1st word = string that terminates diff
+# 2nd word = counts how many times terminator should occur before terminating
+#            -1 -> last occurence
+# 3nd word = first file name
+# 4th word = second file name
+# 5th word = (optional) tolerance.  Numerical differences < tolerance are counted as 0
+#            If present, and not "-", passed to mcx as the argument to ~tol=
+# 6th word = (optional) if present, it is used instead of mcexcl
+#
+# Returns ndif = number of differences, and maxdif = difference (if mcx is available)
+exit
+zdiffilesx:
+
+  set quitjob=$retcall
+
+  set noglob
+  set files = ($callarg)
+  unset noglob
+
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ($?quiet) goto zdiffilesx2
+
+  if ( $?slow == 0 ) echo "$space ... compare $files[1] $files[2]"
+  query zdiffx1 $quitjob "compare $files[1] $files[2]"
+zdiffx1:
+  zdiff -Icpudel -Iwritten $files[1] $files[2] | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+
+zdiffilesx2:
+  if (! $?mcx) goto $quitjob   
+
+  if (! $?mcexcll) set mcexcll
+  if (! $?mcexcl) set mcexcl
+  if ($?mcexcl) set mcexcll = "$mcexcl"
+  if ($#files > 3) then
+    set mcexcll = "$files[4]"
+  endif
+
+  if (! $?mcterm) set mcterm
+# Don't do this step ... check that each test initializes its own gmaxdif
+# if (! $?gmaxdif) set gmaxdif = 0
+  set toldif
+  if ($#files > 2) then
+    if ("$files[3]" != "-") set toldif = "~tol=$files[3]"
+  endif
+
+  set maxdif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~max$toldif$mcterm$mcexcll`
+  set ndif = `$mcx -cmpf~fn1=$files[1]~fn2=$files[2]~ndiff$toldif$mcterm$mcexcll`
+  if (! $?gmaxdif) set gmaxdif = 0
+  set gmaxdif = `echo $gmaxdif $maxdif  | awk '{print ($1>$2)?$1:$2}'`
+
+  echo "$space $ndif numerical differences in $files[1] compared to ref, max diff = $maxdif"
+  if ($?slow > 0 && $?verb) then
+    echo 
+    echo "$space The following make a detailed comparison of numerical differences:"
+    echo "$space $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll"
+
+    query zdiffx2  $quitjob "show comparison"
+zdiffx2:
+    $mcx -cmpf~fn1=$files[1]~fn2=$files[2]~vverb$toldif$mcterm$mcexcll
+    echo
+    echo "$space"'*'"hit <return> to continue"
+    set a = ($<)
+  endif
+  if (! $?quiet) echo
+  goto $quitjob
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: no-digits test-file reference-file
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = number of differences in reduced files
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) then
+    rm -f $fn1 $fn2
+    goto $quitjob
+  endif
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- compare_resf --------------
+# Extracts one element of a line in files $testout and $refout containing a keyword.
+# Variables testout and refout point to file names and must be set beforehand ($refout is gzipped file)
+# usage: compare_resf retcall testvar refvar keyword arg_number occur_number sed_strn
+#   Variables testout and refout referring to file names must be set
+#   testvar      : put result from file $testout into this variable
+#   refvar       : put result from file $refout (compressed) into this variable
+#   keyword      : string line must contain
+#   arg_number   : extracts $arg_number'th entry in line, as defined by awk
+#   occur_number : argument from $occur_number'th line; if zero, use last line
+#   sed_strn     : purge this string from result before assigning
+exit
+compare_resf:
+  set quitjob=$retcall
+# echo $retcall $testvar $refvar $keyword $arg_number $occur_number $sed_strn
+  set $testvar = `grep "$keyword" $testout | awk -v ncnt=0 -v num=$arg_number -v count=$occur_number '{ncnt+=1; if (ncnt==count || count == 0) {print $num}}' | sed "s/$sed_strn//" | tail -1`
+  set $refvar = `zcat $refout | grep "$keyword" | awk -v ncnt=0 -v num=$arg_number -v count=$occur_number '{ncnt+=1; if (ncnt==count || count == 0) {print $num}}' | sed "s/$sed_strn//" | tail -1`
+  goto $quitjob
+
+# ---------------- compare_res --------------
+# Compares two numbers $testvar-$refvar and unsets $passvar if |testvar-refvar|<tol
+# usage: compares_res retcall keyword testvar refvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   refvar       : second number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar-refvar|<tol
+exit
+compare_res:
+  set quitjob=$retcall
+# echo $retcall $keyword $testvar $refvar $tol $passvar
+  echo -n "$space $keyword ($testvar) within tol ($tol) of reference ($refvar)? ... "
+  if (`echo $testvar $refvar | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- compare_res_0 --------------
+# Compares a number $testvar and unsets $passvar if |testvar|<tol
+# usage: compares_res_0 retcall keyword testvar tol passvar
+# Example:
+# compare_res_0 chk274a "Max deviation in pdos from reference" $retval $pdostol pass
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar|<tol
+exit
+compare_res_0:
+  set quitjob=$retcall
+#  echo $retcall $keyword $testvar $tol $passvar
+  echo -n "$space $keyword ($testvar) within tol ($tol)? ... "
+  if (`echo $testvar 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- zcmpmfiles_res_0 --------------
+# Compares two files, stripping all but numerical fields.
+# Checks for max absolute difference and unsets $passvar if difference<$tol
+# Files with  or .Z extensions are assumed to be gzipped.
+# usage: zcmpnfiles_res_0 retcall keyword testvar tol passvar ndig srcfile reffile
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if |testvar|<tol
+#   ndig         : number of digits numbers in file are stripped to
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+# Example:
+# zcmpmfiles_res_0 chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext
+exit
+zcmpmfiles_res_0:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile
+
+  unset retval
+  call zcmpmfiles zcmpmfilesx "$ndig $srcfile $reffile"
+zcmpmfilesx:
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpmfiles_res_tol --------------
+# Compares two files, stripping all but numerical fields.
+# Checks for max absolute difference and unsets $passvar if difference<$tol
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# usage: zcmpnfiles_res_tol retcall keyword testvar tol passvar ndig srcfile reffile nlines
+# See also zcmpmfiles_res_0, which accomplished the same thing but without nlines
+#   retcall      : return to this point in script on exit
+#   keyword      : label (for printout)
+#   tol          : tolerance in maximum allowed deviation
+#   passvar      : $passvar is unset if |testvar|<tol
+#   ndig         : number of digits numbers in file are stripped to
+#   srcfile      : first file to compare
+#   reffile      : second file to compare
+#   nlines       : number of lines to compare. Use 0 for all lines.  Inoperative if either file is a zipped file.
+# Example:
+# zcmpmfiles_res_tol chk1ck "Max deviation in bnds.$ext from reference" $bndstol pass 4 bnds.$ext $testdir/bnds.$ext.gz 0
+exit
+zcmpmfiles_res_tol:
+  set quitjobl=$retcall
+# echo $retcall $keyword $tol $?passvar $ndig $srcfile $reffile $nlines
+
+  unset retval
+  if ($nlines == 0) then
+    call zcmpmfiles zcmpmfilesy "$ndig $srcfile $reffile"
+  else
+    call zcmpmfiles zcmpmfilesy "nlines=$nlines $ndig $srcfile $reffile"
+  endif
+zcmpmfilesy:
+
+  echo -n "$space $keyword ($retval) within tol ($tol)? ... "
+  if (`echo $retval 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjobl
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: n test-file reference-file
+# |n| = number of digits which numbers are truncated to.
+# If n<0, sort files before comparing them
+# Alternatively call arguments can contain 4 strings : nlines=# n test-file reference-file
+# nlines=# specifies that the check is made on the first # lines only
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# (nlines doesn't work with gzipped files; sorry)
+# Returns with retval = number of differences in reduced files.
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+
+  set nlines ; unset nlines
+  switch ($zcmpnargs[1])
+    case "nlines=*":
+      set nlines = `echo $zcmpnargs[1] | sed s/nlines=//`
+      @ nlines = $nlines  # Checks to make sure this is an integer
+      shift zcmpnargs
+
+    default:
+  endsw
+
+  set lsort; unset lsort
+  @ digits = $zcmpnargs[1]
+  if ($digits < 0) then
+    @ digits = - $digits
+    set lsort
+  endif
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+# set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; print "" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+    if ($?nlines) then
+      set cat1 = "head -$nlines"
+    endif
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+    if ($?nlines) then
+      set cat2 = "head -$nlines"
+    endif
+  endif
+
+  # if (! $?quiet) then
+  #   if ($?lsort) then
+  #   if ($?exclude) then
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn2
+  #   else
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk '"$a"' >" $fn2
+  #   endif
+  #   else
+  #   if ($?exclude) then
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn2
+  #   else
+  #     echo "$cat1 $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn1
+  #     echo "$cat2 $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk '"$a"' >" $fn2
+  #   endif
+  #   endif
+  # endif
+
+  if ($?lsort) then
+    if ($?exclude) then
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+  else
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+  endif
+  else
+
+    if ($?exclude) then
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | egrep -v "$exclude" | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+    else
+      $cat1  $zcmpnargs[2] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+      $cat2  $zcmpnargs[3] | sed 's:\([1-9]\)-:\1 -:g' | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+    endif
+  endif
+
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  set nwordfile = `wc $fn1 | awk '{print $2}'`
+  set nlinefile = `wc $fn1 | awk '{print $1}'`
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) rm -f $fn1 $fn2
+  if ($retval == 0) goto $quitjob
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- zcmpmfiles --------------
+# Compares two files, treating each field as a number.
+# Call arguments should contain 3 strings: no-digits test-file reference-file
+# Alternatively call arguments can contain 4 strings : nlines=# n test-file reference-file
+# nlines=# specifies that the check is made on the first # lines only
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = max numerical difference
+# Example :  call zcmpmfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpmfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+
+  set nlines ; unset nlines
+  switch ($zcmpnargs[1])
+    case "nlines=*":
+      set nlines = `echo $zcmpnargs[1] | sed s/nlines=//`
+      @ nlines = $nlines  # Checks to make sure this is an integer
+      shift zcmpnargs
+
+    default:
+  endsw
+
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+    if ($?nlines) then
+      set cat1 = "head -$nlines"
+    endif
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+    if ($?nlines) then
+      set cat2 = "head -$nlines"
+    endif
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+
+  set retval = `diff -y --width=300 $fn1 $fn2 | grep '|' | awk -v top=0 '{n=split($0,a,"|"); n1=split(a[1],b1); n2=split(a[2],b2); { j=0; while (j++ < n1) if (j <= n1 && j<=n2) {x = (b1[j]-b2[j])>0?(b1[j]-b2[j]):(b2[j]-b1[j]); top = (top-x)>0?top:x; }}} END {printf "%12.4e\n", top}'`
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg in file lines for these files: $testout $refout"
+  grep "$callarg" $testout
+  if (`cat $testout | grep "$callarg" | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep "$callarg"
+  goto $quitjob
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] job-list
+
+   Material:
+         fe: elemental Fe with constant shifts in active region
+           : to test lmpg's ability to exploit repeating potential
+     cr3si6: 4 principal layers of Cr3Si6, mainly to test bulk and surface GF
+       copt: a spin polarized metal
+         co: tests ballistic transport in elemental Co
+       cuau: Cu/Au heterojunction
+       free: Models a square well barrier
+      femgo: transmission through Fe/MgO interface, compare scalar and fully relativistic, and SO coupling
+     coptco: Check of noncollinear case including SO coupling
+        ava: nonequilibrium transport through a vacuum
+        aba: nonequilibrium transport through a Au nanowire attached to Au leads
+      algas: transmission through a GaAs/AlAs/GaAs trilayer, compare scalar and fully relativistic
+
+  jobs:   1: Check layer-by-layer GF (pgf=1)
+          2: demonstrates that the bulk GF can be generated for a given energy (pgf=3)
+          3: generates the l-decomposed DOS resolved by principal layer (pgf=1)
+          4: no longer used
+          5: tests self-consistency (pgf=1,2)
+          6: no longer used
+          7: noncollinear test of GF to be compared against collinear (pgf=1)
+          8: Prints out Green function gRL connecting L- and R -leads (pgf=5)
+          9: ballistic conductance, noncollinear case (pgf=5)
+         10: nonequilibrium self-consistency (pgf=1,2)
+         11: ballistic reflectance, noncollinear case (pgf=7)
+
+EOF
+exit
+
+# ---------------- usage: --------------
+usage:
+cat <<EOF
+ usage: test.pgf [switches] [test-name] [testcase-list]
+        e.g., "test.pgf fe 1 2"
+        If test-name is missing, fe is used.
+        Switches:
+        --list       lists the test names and the kinds of tests available
+        --quiet      runs tests with minimal output and without prompting user
+        --verb       verbose mode
+        --no-iactive runs tests without prompting user
+        --all        run through a default list of test cases
+        --noplot     skip any steps that generate a plot
+        --clean      clean up files generated by this script
+        --lu         Construct g with LU decomposition (applies to some materials for jobs 5,7,9,11)
+        --lu=no      Construct g with Dyson equation  (applies to some materials for jobs 5,7,9,11)
+        --mergepl    Artificially merge PL as debugging test of code (for CoPtCo test only)
+        --nk=#       Set the number of k-points (for some tests: note this will cause checks to fail)
+        --nclead     Treat leads as noncollinear, if system is noncollinear
+        --declead    Bulk L- and R- GF calculated by decimation (lpgf=2)
+        --add0       add suppressed or leading zeros in output for real numbers \`.nnn'
+        --poszer     strips (-) sign from numbers represented as 0
+        --whichexec  prints out which lmpg executable it finds in path and exits
+        --MPIK[=#]   run lmpg in MPIK mode
+                     If # is given, it specifies the number of processors.
+                     mpirun -n # lmpg ...
+
+EOF
+exit -1
+
+This is a test for a symmetric Cu|Co|Cu|Co|Cu (111) spin valve. The structure has an inversion center in the middle of the middle Cu layer. The magnetizations of the left and right Co layers (M_L and M_R) are not collinear, resulting in spin torques, which we are testing. The code does not compute the torques, but it computes the magnetic moment components perpendicular to the input moments. The torques are the cross products m x Bxc, which we can infer from the results.
+
+The current flows along the z axis. The magnetizations M_L and M_R lie in the xy plane and make a 90-degree angle with each other. There are two kinds of torques: the "parallel" torque lying in the plane spanned by M_L and M_R, and the "perpendicular" torque (perpendicular to this plane).
+
+The perpendicular torque is also called "field-like." It exists in equilibrium (zero bias) and represents the interlayer exchange coupling between the two magnetic layers. This torque is exerted by the off-diagonal spin density lying in the plane spanned by M_L and M_R. Look at the file 17628.out, which shows the calculation of the equilibrium spin density coming from a tiny contour from -0.001 to 0. (There's no reason to take this particular contour - it's just an illustration.) Consider the printout from the MAGCPA routine. Notice that this output is perfectly left-right symmetric, as it should be in a system with an inversion center in the middle. (Sites 1-15 and 16-30 have the local z axes along the global -y and -x axes, respectively.) Also notice that the spin moments have zero projections along the global z axis, meaning that the parallel torques vanish (as they should in equilibrium).

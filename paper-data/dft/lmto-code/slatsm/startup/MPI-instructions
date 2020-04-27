@@ -1,0 +1,73 @@
+Here are some instructions on compiling slatsm.a for MPI.  In
+instructions were written originally by Tony Paxton. For now this is
+rather crude. Later we will build the options into configure.
+
+These instructions show you how to create a MPI version of slatsm
+(slatsm-MPI.a).  Before doing anything, some points to note:
+
+* Look at getarf in syscall.f and make sure you are calling gtargc and not
+  getarg.  (This is because MPI-1 does not pass the command line args
+  to all processes -- this will become standard in MPI-2.)
+
+* Note also that in fopna, lgunit opens MLOG on logical unit
+  lgunit(3). This is an MPI log file which is written if you invoke
+  lmf --mlog. This will only work if your computer permits all
+  processes to write to disc. The philosophy in lmf is otherwise that
+  only process 0 (master) writes to disc.
+
+Most of the changes can be done automatically using shell script 'startup/slatsm-to-mpi'
+In order to run this script, you must do the following:
+
+1. Set environment variable F90M to point to
+   an appropriate MPI-f90 compiler, followed by switches, e.g. in csh:
+   /usr/local/mpich-1.2.5_shared/bin/mpif90 -I/usr/local/mpich-1.2.5_shared/include -cm -O3 -xW -ip
+2. Make sure preprocessor ccomp is in your path, or
+   set environment variable CCOMP pointing to ccomp.
+
+Then invoke :
+  startup/slatsm-to-mpi
+This will create slatsm-MPI.a and make MPI variants of any fortran source
+files that need it.
+
+3. This tar file comes with an interface to parallelized diagonalizer.
+You can test it with tpzhev.f.  To compile and link tpzhev.f you will
+need BLACS and SCALAPACK. If you don't have these or don't want to
+install them (netlib.org) then exclude pzhev.f from MPI as follows:
+
+     ar dv slatsm-MPI.a pzhev-MPI.o
+     ar xv slatsm.a pzhev.o
+     ar rv slatsm-MPI.a pzhev.o
+     rm pzhev.o
+
+4. The remaining step is to compile an MPI version of fmain.c.
+You do this as follows:
+
+mpicc [args] -DMPI -c fmain.c
+ar rv slatsm-MPI.a fmain.o
+rm fmain.o
+
+Note that mpicc is a script that is installed as a part of mpich. It
+invokes your local C compiler and includes the required header files;
+similarly mpif90. Not all systems use mpich; you may be using score or
+scali mpimon. At all events you have to find out from documentation or
+the system manager how to invoke C and FORTRAN90 in such a way as to
+include the correct header files. It may be sufficent to use, say,
+
+cc -I/opt/scali/include
+
+or
+
+icc -cm  -O3 -axW -c -I/usr/local/mpich-1.2.5/include
+(intel C compiler)
+
+The [args] will depend on the compiler you are using but it should be
+safe to use the same args as used by make when you assembled slatsm.a;
+so watch as (configure; make) runs and copy the args to the C compiler
+when fmain.c is compiled. Or invoke
+
+touch fmain.c
+make
+
+and make a note of the [args] the standard make uses, and insert them
+to the mpicc command above.
+

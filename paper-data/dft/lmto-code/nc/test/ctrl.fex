@@ -1,0 +1,85 @@
+# Compare Fixed spin moment with external field.
+# Results of self-consistent calculations, this file
+# echo `tail -1 save.fex | vextract . bz ehf ehk` `grep M=FE2 out | tail -1 | vextract . mom`
+#       To get FSM, Uncomment FSM= line below and do:
+# lm fex --nosym --iactiv=no -vfile=2 -vnk=8 -vnl=3 -vnc=0 -vbf=0 --iactiv -vbz=-.008 -vnit=50 | tee out
+#       To get external field, comment FSM= line below and do:
+# lm fex --nosym --iactiv=no -vfile=2 -vnk=8 -vnl=3 -vnc=0 -vbf=1 --iactiv -vbz=.00 -vnit=50 | tee out
+#         Through FSM, fixed Beff        Through External field
+# -.02  -.9201394 -.9201321 2.63453    -.9196228 -.9196203 2.63528
+# -.015 -.9232708 -.9232708 2.53419    -.9228558 -.9228558 2.53534
+# -.01  -.9257613 -.9257652 2.41527    -.9254915 -.9254885 2.41578
+# -.008 -.9261028 -.9261024 2.38815    -.9258848 -.9258845 2.38848
+# -.005 -.9266639 -.9266649 2.32699    -.9265312 -.9265287 2.32698
+# -.003 -.9267346 -.9267343 2.31227    -.9266541 -.9266518 2.31224
+# -.001 -.9268013 -.926801  2.30146    -.9267747 -.9267723 2.30144
+# -1e-4 -.9268333 -.9268332 2.29800    -.9268274 -.926826  2.29932
+#  0    -.9268266 -.9268261 2.30175    -.92683   -.9268292 2.30042
+#  .001 -.926872  -.9268706 2.28846    -.9268988 -.9268873 2.28844
+#  .003 -.9268412 -.9268366 2.24486    -.9269218 -.9269018 2.24496
+#  .005 -.9265921 -.9265835 2.21218    -.9267268 -.9266986 2.21233
+#  .008 -.9260635 -.9260538 2.18462    -.9262770 -.9262460 2.18486 
+#  .01  -.9258264 -.9258151 2.16585    -.9260946 -.9260688 2.16634
+% const lmh=f nsp=2 nl=4 ccor=t mode=0 nit=1 nk=8 novmza=f nc=t so=f bf=f idxf=1
+% const gamrep=f gfmod=1 scr=0
+% const eref=lmh?-2542.34265:-2540.56813
+HEADER  Study of iron
+VERS    LMASA-6 LM:7 ASA:7
+IO      SHOW=F HELP=f VERBOS=31 20 WKP=F IACTIV=t
+HAM     NSPIN={nsp} NONCOL={nc|so|bf} BFIELD={bf} SO={so} QASA=3
+OPTIONS NSPIN={nsp} LMH={lmh} ASA[ ADNF=f CCOR={ccor} GAMMA={gamrep} ]
+        NONCOL={nc|so|bf} SO={so} BFIELD={bf}
+        SCR={scr}
+% const sdmod=0
+        SDYN: f,{sdmod}, {sdmod==0?5/5:10/10},0,0,0,0
+TESTDNF cp fe.feso.dnf fe.feso
+        lmstr feso >/dev/null
+        lm -vso=t -vidxf=2 feso --no-iactiv
+GF      MODE={gfmod}
+TEST    lmstr feso >/dev/null
+        lm -vso=t feso --no-iactiv
+CONST   ns=.8
+BZ      NKABC={nk} SAVDOS=F NPTS=1001 PUTQP=f INVIT=F
+        FSMOM=4.729*0 {bz} # METAL=3
+% ifdef so
+#        NEVMX=-1 Q=BAND
+% endif
+        EMESH=12 10 -1 0 .5 .5
+STR     RMAX=3.5 MODE={mode}
+% ifdef file
+% ifdef file>1
+STRUC   FILE=site{file} NSPEC=1 NL={nl} ALAT=5.42
+SITE    FILE=site{file}
+%else
+STRUC   FILE=site NSPEC=1 NL={nl} ALAT=5.42
+SITE    FILE=site
+%endif
+%ifdef nc
+SYMGRP  I*I
+%endif
+SPEC    ATOM=FE Z=26 R/W=1 IDXDN=1,1,1,{idxf} EREF={eref} A=.03 NR=331
+        IDMOD=0 0 0 1 GRP2=1
+% endif
+STRUC   NBAS=1 NSPEC=1 NL={nl}
+        ALAT=5.42 PLAT=  -.5 .5 .5  .5 -.5 .5  .5 .5 -.5
+CLASS   ATOM=FE Z=26 R/W=1 IDXDN=1,1,1,{idxf} EREF={eref} A=.03 NR=331
+        IDMOD=0 0 0 1
+SITE    ATOM=FE POS= 0 0 0 ROT!=(1,.1,.5)0*pi/5
+.ITER    MIX=A4,b=.20 NIT={nit} CONVC=1D-7 CONV=0
+.MIX     MODE=A4,b=.20
+ITER    MIX=A4,b=.50,w=2,1,n=8;A4,w=1,2,b=.5,k=4 NIT={nit} CONVC=1D-6 CONV=0
+MIX     MODE=A4,b=.50,w=2,1,n=8;A4,w=1,2,b=.5,k=4
+ITER    MIX=B NIT={nit} CONVC=1D-7 CONV=0
+MIX     MODE=B
+.START   CNTROL=F  BEGMOM=t NIT={nit} CNVG=1D-7
+START   CNTROL={nit==0} BEGMOM={nit==0} NIT={nit} CNVG=1D-7
+# self-consistent with: lm fex -vfile=2 -vnk=8 -vnl=3 -vnc=0 -vbf=0 --iactiv -vbz=-.000 -vnit=50
+        ATOM=FE       P=  4.6628483  4.4009834  3.8686521
+                          4.6705483  4.4284150  3.6748389
+                      Q=  0.3134627  0.0000000  0.0049640
+                          0.3595860  0.0000000  0.0047014
+                          4.4772499  0.0000000  0.0451456
+                          0.3298516  0.0000000  0.0050829
+                          0.4319957  0.0000000  0.0065147
+                          2.0878541  0.0000000  0.0115378
+# %include qasa

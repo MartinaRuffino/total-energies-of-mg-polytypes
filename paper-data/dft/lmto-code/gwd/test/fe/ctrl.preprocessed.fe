@@ -1,0 +1,46 @@
+ -----------------------  START LMFGWD (80000K)  -----------------------
+VERS    LMF-6 LMASA-6 LM:7 FP:7 ASA:7
+HAM     GMAX=9 FTMESH=15 FORCES=1 XCFUN=2 GGA=0 ELIND=-.7
+        NSPIN=2 REL=t SO=0 RDVEXT=0
+        AUTOBAS[PFLOAT=0,0 MTO=0] PWMODE=0 PWEMIN=0 PWEMAX=3 OVEPS=0
+        SIGP[MODE=4 NMIN=0 EMIN=0 NMAX=0 EMAX=2.5 A=0 B=.09 EFIT=0]
+        RDSIG=12 SIGP:4,0,0,0,2.5,0,.09,0
+        RSRNGE=8
+GW      NKABC=nkgw nkgw nkgw2 GCUTB=2.7 GCUTX=2.2 MKSIG=3 ECUTS=2
+IO      SHOW=f HELP=F VERBOS=31 20 WKP=F IACTIV=0
+GF      MODE=0 GFOPTS=p3
+STR     RMAX=3.5
+CONST   rc=0 nk=16 nk2=nk bzj=0 cbya=1.63299316 nkgw=8 nkgw2=nk2
+HEADER  Master file for multinary TM compounds, suitable for GW
+#rf  211: (file atparms) Fe : Z1=26 eref=-2540.5681 mom=2.2 rsm=1.3 rsmd=.95
+STRUC   FILE=site NL=5 NSPEC=1
+        DALAT=0
+SYMGRP  find
+SITE    FILE=site
+SPEC
+
+        ATOM=Fe Z=26 R/A=.4114 LMXA=4 EREF=-2540.5681 A=.025
+        MMOM=0 0 2.2
+        LMXA=4 RSMA=0 KMXA=4 LFOCA=1
+        P=0,0,0,4.15,5.12 IDMOD=0,0,0,1,1
+        PZ=0,0,4.5 RS3=0.95
+        RSMH=1.3,1.3,.95,1.3,0 EH=-.4,-.4,-.4,-.4,-.4
+        RSMH2=1.3,1.3,.95 EH2=-1.2,-1.2,-1.2
+
+OPTIONS NSPIN=2 REL=t XCFUN=2 XCN=0 HF=0 SO=0 PFLOAT=0
+        Q =BAND INVIT=T GRCOR=0 LMH=0
+        ASA[ CCOR=1 ADNF=0 TWOC=0 GAMMA=0 ]
+        SAVVEC=0
+BZ      NKABC=nk nk nk2 N.W=.002 W=.002 NPTS=1001 NKABC2=6 JOB2=bzj SAVDOS=F
+        BZJOB=bzj
+        EF0=0 DELEF=.1 TETRA=2 DOS=0-1 0+.5 METAL=5
+        EMESH=12 10 -1 0 .5 .5 INVIT=f NOINV=T
+EWALD   AS=2.0 TOL=1D-8 ALAT0=a NKRMX=600 NKDMX=600
+ITER    MIX=A3,b=.3 NIT=20 CONV=.00001 CONVC=1e-5
+        FIT[MODE=0 NBFIT=1 8 NBFITF=1 LAM=1 SCL=5 SHFT=1 WT=1,.1,.1]
+MIX     MODE=A3,b=.3
+        NMIX=2 AMIX=T BETA=.8 CONV=.00001 CONVC=1e-5
+START   CNTROL=0 BEGMOM=0 NIT=20 FREE=f
+ ------------------------ End of input file ----------------------
+ LMFGWD : 41 lines read from input file
+

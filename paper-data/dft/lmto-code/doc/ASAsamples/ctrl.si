@@ -1,0 +1,84 @@
+# Any line beginning with `#' is a comment and is ignored.
+# Any text after `#' on any line is also ignored.
+
+# The VERS category is for version check: package 7, prepared for ASA input version 7.
+VERS    LM:7 ASA:7 
+
+This is the HEADER category; it is used only for printout.
+HEADER  Si in diamond lattice with empty spheres.
+        You can put as many lines in the header as you like.
+        Lines beginning with a non-blank character demarcate the start of new category.
+        A category ends where the next category begins.
+        Categories can appear in any order.
+
+# The SYMGRP category is optional.
+# Normally symmetry operations are determined automatically.
+SYMGRP  i*r3(1,1,-1)::(1/4,1/4,1/4) r4x::(1/4,1/4,1/4)
+
+# Most input is of the form TOKEN=value TOKEN=value ... as follows:
+IO      SHOW=F HELP=F VERBOS=31,35 WKP=F 
+# In the preceding line, SHOW=, HELP=, VERBOS= and WKP= are tokens that indicate where data is to be read.
+# The data (token's contents) are respectively, "F", "F", "31,20" and "F".
+
+# Brackets [...] can also be used demarcate the beginning and end of any tag, including categories.
+HEADER [ The contents of HEADER reside within the category delimiters,
+       ] so this line isn't part of it.
+# Only the first declaration of a category (or token) is read; thus
+# the preceding category will only be used if you remove or comment the first appearance of HEADER.
+
+# The next two lines for the STR category are equivalent.
+STR     RMAX=3.6
+STR     RMAX[3.6] 
+
+# Nesting : sometimes tags are nested: that is a tag's contents are more tags (a tree structure)
+# In the OPTIONS category, tag ASA contains multiple tokens, e.g. CCOR.
+OPTIONS NSPIN=1 ASA[ADNF=T TWOC=F CCOR=T] 
+# The full identifier of CCOR above is OPTIONS_ASA_CCOR,
+# represented in the input as "OPTIONS ASA[CCOR=]" or "OPTIONS[ASA[CCOR=]]"
+# To avoid logical ambiguities, you are not allowed to represent this nested token as "OPTIONS ASA CCOR=".
+
+# Preprocessor 
+# Lines beginning with a '%' are instructions to the preprocessor.
+# The following line declares to the preprocessor variables a0 and nk and assigns values to them: 
+% var a0=.5292 nk=3+1 
+# Lines beginning with '%' are not part of the input file, but preprocessor instructions.
+
+# Text inside brackets {..} are taken by the preprocessor to be expressions (usually algebraic ones).
+# Algebraic expressions are evaluated numerically and the result converted into an ASCII string.
+# For example, in the BZ category below:
+BZ      NKABC={nk} {nk} {nk}  METAL=F DOSWT=T SAVDOS=F
+        BZJOB=0 
+# The preprocessor parses each of the brackets and modifies the input to read:
+BZ      NKABC=4 4 4 METAL=F DOSWT=T SAVDOS=F
+        BZJOB=0
+# Note that brackets can be nested: thus both "{nk*nk/2}" and "{nk*{nk/2}}" 
+# would be replaced by "8".
+
+# Some tokens take a vector of numbers, e.g. PLAT in the STRUC category requires 9 numbers:
+STRUC   NBAS=4 NCLASS=2 NL=3
+        ALAT=5.431/{a0} PLAT= 0 .5 .5   .5 0 .5   .5 .5 0 
+# Elements can be separated by spaces or commas.
+
+# A few tokens require multiple instances, e.g. information about sites and chemical species 
+# in the SPEC and SITE categories: 
+SITE    ATOM=SI   POS= 0 0 0
+        ATOM=SI   POS= .25 .25 .25
+        ATOM=ES   POS= .5 .5 .5
+        ATOM=ES   POS= .75 .75 .75
+SPEC    ATOM=SI   R/W=1  Z=14
+        ATOM=ES   R/W=1  Z=0 
+# Here "Empty" atoms are put where large interstitial regions occur.
+# They are included here because this file is set up for a calculation using the
+# Atomic Spheres Approximation (ASA) to the LDA.  The ASA makes shape approximations 
+# to the potential, so large interstitial regions are problematic
+
+# The ITER category governs mixing and convergence of charge densities: 
+ITER    MIX=B2,wc=3,b0 CONVC=1D-5 NIT=10 
+
+# The START category is unique to the ASA. 
+# This category sets starting values for P and Q which specifies a potential.
+START
+        BEGMOM=T (=T to begin with moments, =F to begin with band-structure)
+        CNTROL=T (=T to use following to override disk; =F to ignore following)
+          ATOM=SI  P=3.5 3.5 3.5    Q=1 0 0    2 0 0   0 0 0
+          ATOM=ES  P=1.5 2.5 3.5    Q=.5 0 0  .5 0 0   0 0 0 

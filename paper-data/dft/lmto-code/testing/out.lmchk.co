@@ -1,0 +1,58 @@
+ ---------------------  START LMCHK  ----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMCHK:    nbas = 2  nspec = 1  verb 31,20
+ pot:      spin-pol, XC:BH
+ float:    float P LDA-style
+ autoread: none
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 147.121922
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379   lmax=6
+         r1=  3.072   nkd= 75       q1=  2.875   nkg= 135
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 24 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z:(-1*sqrt(3)/6,-1/2,-0.8164966) r2z:(-1*sqrt(3)/6,-1/2,0.8164966) r2x
+         i*r3z::(1/3,-1/3,-1/2) r2z::(1/3,-1/3,1/2) r2x
+ MKSYM:  found 24 space group operations ... includes inversion
+
+ MKSYML: generating symmetry line file ...
+         rotating qp to Cartesian coordinates ...
+ Exit 0  wrote symmetry lines to syml file 
+ CPU time:  0.043s   Wall clock 0.087s  at  18:12:44 20.10.2018  on  localhost.localdomai
+ ---------------------  START LMCHK  ----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMCHK:    nbas = 2  nspec = 1  verb 31,20
+ pot:      spin-pol, XC:BH
+ float:    float P LDA-style
+ autoread: none
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.632993        0.000000   0.000000   0.612372
+   alat = 4.703135  Cell vol = 147.121922
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379   lmax=6
+         r1=  3.072   nkd= 75       q1=  2.875   nkg= 135
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 24 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z:(-1*sqrt(3)/6,-1/2,-0.8164966) r2z:(-1*sqrt(3)/6,-1/2,0.8164966) r2x
+         i*r3z::(1/3,-1/3,-1/2) r2z::(1/3,-1/3,1/2) r2x
+ MKSYM:  found 24 space group operations ... includes inversion
+
+ MKSYML: generating symmetry line file ...
+         rotating qp to Cartesian coordinates ...
+ Exit 0  wrote symmetry lines to syml file 
+ CPU time:  0.042s   Wall clock 0.083s  at  18:12:44 20.10.2018  on  localhost.localdomai

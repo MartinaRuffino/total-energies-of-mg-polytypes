@@ -1,0 +1,274 @@
+# --- Makefile to install ASA package and extensions ---
+#     invoke  'make init' to run any preprocessing steps
+#             'make ALL'  to compile libraries and executables
+#             'make install'  to install executables
+
+# The default location for installation.  Defaults to home
+prefix=/home/ms4
+# Like 'prefix', but used for architecture-specific files.
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+
+# Allow configure to specify the install program.
+INSTALL = /usr/bin/install -c
+INSTALL_PROGRAM = ${INSTALL}
+INSTALL_DATA = ${INSTALL} -m 644
+INSTALL_INFO = install-info
+
+# Not used now
+infodir = ${prefix}/info
+mandir = ${prefix}/man
+
+# ---- Machine-specific compiler flags ---
+include Make.inc
+
+# Compile main programs w/out optimization (Commenting these lines causes Makefile to use the default FFLAGS)
+.f.o: 
+	$(FC) $(FFLAGS_NONE) -c $<
+
+LIBSUBS = v7input/subs.a subs/subs.a
+LIBSUBS_MPI = v7input/subs.a subs/subs-MPI.a
+LIBSUBS_MPIK = v7input/subs.a subs/subs-MPIK.a
+#SUBS = ./subs.a
+
+# ---- Main programs ---
+blm:	blm.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmchk:	lmchk.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) nc/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmstr:	lmstr.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lm:	lm.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) nc/subs.a sx/subs.a optics/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lm-MPIK:	lm-MPIK.o $(SUBS)
+	$(F90M) $(LKFLAGS1) $@.o $(SUBS) nc/subs-MPIK.a sx/subs.a optics/subs.a $(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@
+ 
+lmdos:	lmdos.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmctl:	lmctl.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmscell:	lmscell.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmxbs:	lmxbs.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmplan:	lmplan.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+rdcmd:	rdcmd.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(LIBES) $(LKFLAGS2) -o $@
+ 
+poscar2site:	poscar2site.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+poscar2init:	poscar2init.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lm67:	lm67.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmgf:	lmgf.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) gf/subs.a nc/subs.a sx/subs.a optics/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmgf-MPIK:	lmgf-MPIK.o $(SUBS)
+	$(F90M) $(LKFLAGS1) $@.o $(SUBS) gf/subs.a nc/subs-MPIK.a sx/subs.a optics/subs.a $(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@
+ 
+lmpg:	lmpg.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) pgf/subs.a gf/subs.a nc/subs.a sx/subs.a optics/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmf:	lmf.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) fp/subs.a optics/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmf-MPI:	lmf-MPI.o $(SUBS)
+	$(F90M) $(LKFLAGS1) $@.o $(SUBS) fp/subs-MPI.a optics/subs.a $(LIBSUBS_MPI) $(LIBES_MPI) $(LKFLAGS2) -o $@
+ 
+lmf-MPIK:	lmf-MPIK.o $(SUBS)
+	$(F90M) $(LKFLAGS1) $@.o $(SUBS) fp/subs-MPIK.a optics/subs.a $(LIBSUBS_MPIK) $(LIBES_MPI) $(LKFLAGS2) -o $@
+ 
+lmfa:	lmfa.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) fp/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+tbe:	tbe.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) tb/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+tbe-MPIK:	tbe-MPIK.o $(SUBS)
+	$(F90M) $(LKFLAGS1) $@.o $(SUBS) tb/subs.a $(LIBSUBS_MPI) $(LIBES_MPI) $(LKFLAGS2) -o $@
+ 
+lmmc:	lmmc.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) mol/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmfgwd:	lmfgwd.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) gwd/subs.a fp/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmfgws:	lmfgws.o $(SUBS)
+	$(LK) $(LKFLAGS1) $@.o $(SUBS) fp/subs.a $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+spectral:	spectral.o
+	$(LK) $(LKFLAGS1) $@.o $(LKFLAGS2) $(LIBSUBS) $(LIBES) $(LKFLAGS2) -o $@
+ 
+lmf2gw:	lmf2gw.o
+	$(FC) $(LKFLAGS1) $@.o $(LKFLAGS2) -o $@
+ 
+# ---- To initialize, compile, and install ---
+ALL:
+	(cd v7input; make -f Makefile)
+	(cd subs; make -f Makefile)
+	(cd nc; make -f Makefile )
+	(cd sx; make -f Makefile )
+	(cd optics; make -f Makefile )
+	(cd gf; make -f Makefile )
+	(cd pgf; make -f Makefile )
+	(cd fp; make -f Makefile )
+	(cd tb; make -f Makefile )
+	(cd mol; make -f Makefile )
+	(cd gwd; make -f Makefile )
+	make -f Makefile blm lm lmchk lmstr lmdos lmctl lmscell lmxbs lmplan rdcmd poscar2site poscar2init lm67 lmgf lmpg lmf lmfa tbe lmmc lmfgwd lmfgws spectral lmf2gw
+ 
+init:
+	(cd subs; make -f Makefile init)
+	(cd nc; make -f Makefile init)
+	(cd sx; make -f Makefile init)
+	(cd optics; make -f Makefile init)
+	(cd gf; make -f Makefile init)
+	(cd pgf; make -f Makefile init)
+	(cd fp; make -f Makefile init)
+	(cd tb; make -f Makefile init)
+	(cd mol; make -f Makefile init)
+	(cd gwd; make -f Makefile init)
+ 
+install:
+	for p in  blm lm lmchk lmstr lmdos lmctl lmscell lmxbs lmplan rdcmd poscar2site poscar2init lm67 lmgf lmpg lmf lmfa tbe lmmc lmfgwd lmfgws spectral lmf2gw ; do \
+	  if test -x $$p; then \
+	     echo "$(INSTALL_PROGRAM) $$p $(bindir)/$$p "; \
+	     $(INSTALL_PROGRAM) $$p $(bindir)/$$p ; \
+	  else \
+	     echo executable $$p is missing ... not installed ;\
+	  fi ; \
+	done
+ 
+progs:
+	make -f Makefile blm lm lmchk lmstr lmdos lmctl lmscell lmxbs lmplan rdcmd poscar2site poscar2init lm67 lmgf lmpg lmf lmfa tbe lmmc lmfgwd lmfgws spectral lmf2gw
+ 
+veryclean:
+	rm -f config.log config.status config.cleanup MakeMainMakefile~
+	for p in  blm lm lmchk lmstr lmdos lmctl lmscell lmxbs lmplan rdcmd poscar2site poscar2init lm67 lmgf lmpg lmf lmfa tbe lmmc lmfgwd lmfgws spectral lmf2gw ; do \
+	  rm -f $$p $$p.o ; \
+	done
+	testing/test.lm --quiet --clean
+	make -f Makefile bigcheckclean
+ 
+clean:
+	rm -f  blm lm lmchk lmstr lmdos lmctl lmscell lmxbs lmplan rdcmd poscar2site poscar2init lm67 lmgf lmpg lmf lmfa tbe lmmc lmfgwd lmfgws spectral lmf2gw
+ 
+check:
+	testing/test.lm --quiet --noplot $(ADD0) $(POSZER)
+	make -f Makefile checkfp
+	make -f Makefile checknc
+	make -f Makefile checksx
+	make -f Makefile checkoptics
+	make -f Makefile checkgf
+	make -f Makefile checkpgf
+	make -f Makefile checktb
+	make -f Makefile checkmol
+	make -f Makefile checkgwd
+ 
+bigcheck:
+	testing/test.lm --quiet --noplot $(ADD0) $(POSZER)
+	make -f Makefile bigcheckfp
+	make -f Makefile bigchecknc
+	make -f Makefile bigchecksx
+	make -f Makefile bigcheckoptics
+	make -f Makefile bigcheckgf
+	make -f Makefile bigcheckpgf
+	make -f Makefile bigchecktb
+	make -f Makefile bigcheckmol
+	make -f Makefile bigcheckgwd
+ 
+bigcheckclean:
+	testing/test.lm --quiet --noplot --clean $(ADD0) $(POSZER)
+	make -f Makefile bigcheckfpclean
+	make -f Makefile bigcheckncclean
+	make -f Makefile bigchecksxclean
+	make -f Makefile bigcheckopticsclean
+	make -f Makefile bigcheckgfclean
+	make -f Makefile bigcheckpgfclean
+	make -f Makefile bigchecktbclean
+	make -f Makefile bigcheckmolclean
+	make -f Makefile bigcheckgwdclean
+ 
+checkfp:
+	fp/test/test.fp --quiet --noplot $(ADD0) $(POSZER)
+	fp/test/test.fp --quiet --noplot $(ADD0) $(POSZER) te
+bigcheckfp:
+	fp/test/test.fp --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckfpclean:
+	fp/test/test.fp --quiet --noplot --clean --all
+ 
+checknc:
+	nc/test/test.so --quiet --noplot $(ADD0) $(POSZER)
+	nc/test/test.nc --quiet --noplot $(ADD0) $(POSZER)
+bigchecknc:
+	nc/test/test.nc --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckncclean:
+	nc/test/test.nc --quiet --noplot --clean --all
+ 
+checksx:
+	sx/test/test.sx --quiet --noplot $(ADD0) $(POSZER)
+bigchecksx:
+	sx/test/test.sx --quiet --noplot --all $(ADD0) $(POSZER)
+bigchecksxclean:
+	sx/test/test.sx --quiet --noplot --clean --all
+ 
+checkoptics:
+	optics/test/test.optics --quiet --noplot $(ADD0) $(POSZER)
+bigcheckoptics:
+	optics/test/test.optics --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckopticsclean:
+	optics/test/test.optics --quiet --noplot --clean --all
+ 
+checkgf:
+	gf/test/test.gf --quiet --noplot $(ADD0) $(POSZER)
+	gf/test/test.gf --quiet --noplot $(ADD0) $(POSZER) fccfe
+bigcheckgf:
+	gf/test/test.gf --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckgfclean:
+	gf/test/test.gf --quiet --noplot --clean --all
+ 
+checkpgf:
+	pgf/test/test.pgf --quiet --noplot $(ADD0) $(POSZER)
+	pgf/test/test.pgf --quiet --noplot $(ADD0) $(POSZER) copt 7
+bigcheckpgf:
+	pgf/test/test.pgf --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckpgfclean:
+	pgf/test/test.pgf --quiet --noplot --clean --all
+ 
+checktb:
+	tb/test/test.tb --quiet --noplot $(ADD0) $(POSZER)
+	tb/test/test.tb --quiet --noplot $(ADD0) $(POSZER) zrt
+bigchecktb:
+	tb/test/test.tb --quiet --noplot --all $(ADD0) $(POSZER)
+bigchecktbclean:
+	tb/test/test.tb --quiet --noplot --clean --all
+ 
+checkmol:
+	mol/test/test.mol --quiet --noplot $(ADD0) $(POSZER)
+	mol/test/test.mol --quiet --noplot $(ADD0) $(POSZER) h2o
+bigcheckmol:
+	mol/test/test.mol --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckmolclean:
+	mol/test/test.mol --quiet --noplot --clean --all
+ 
+checkgwd:
+	gwd/test/test.gwd --quiet --noplot $(ADD0) $(POSZER)
+bigcheckgwd:
+	gwd/test/test.gwd --quiet --noplot --all $(ADD0) $(POSZER)
+bigcheckgwdclean:
+	gwd/test/test.gwd --quiet --noplot --clean --all
+ 

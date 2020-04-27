@@ -1,0 +1,76 @@
+VERS    LM:7 FP:7 ASA:7
+IO      SHOW=f HELP=f WKP=F IACTIV=f VERBOS=31,20
+%const  so=0 gamma=f beta=0.05 gfmod=1 nk=12 nit=20 pgf=0 sparse=0 scr=0 vne=0
+%const  a0=0.529177 nc=1
+CONST   a=4.79228972 zz=sqrt(2/3) zsh=14.5*zz
+#HAM     NSPIN=2 REL=1 QASA=0 SO={so} NONCOL={nc} XCFUN=0,101,130 GGA=3 BXCSCAL=0
+HAM     NSPIN=2 REL=1 QASA=0 SO={so} NONCOL={nc} XCFUN=2 GGA=0 BXCSCAL=0 ELIND=-1.4
+ITER    MIX=B6,k=18,b={beta}  NIT={nit} CONVC=1e-5 CNVG=1e-5 CONV=0 # NRMIX=2,30
+BZ      NKABC={nk} {nk} 1 BZJOB=0 METAL=0 TETRA=1
+%const  mmode=(vne<>0)?110:10 ef=0 esh=0
+% if pgf==1
+#       EMESH=5 10 {ef-.1} {ef} .5 .0
+        EMESH=51 10 -0.9 {ef} .5 .0
+#        EMESH=3 {mmode} {ef}-0.8 {ef}+{esh} .5 .0 1 {vne} 1d-8 0.000001
+% endif
+% if pgf==2
+        EMESH=51 10 -0.9 {ef} .5 .0
+% endif
+% if pgf==5
+        EMESH=2 2 {ef-.5} {ef} 1d-7 0 0 0 0 1d-5
+#       EMESH=1 1 {ef} {ef} 1d-7 0 0 0 0 1d-5
+% endif
+% if pgf==7
+        EMESH=1 1 {ef} {ef} 1d-7 0 0 0 0 1d-5
+% endif
+EWALD   AS=1.5 TOL=1D-40 NKDMX=30000 RPAD=1.5
+% const sharm=1
+OPTIONS ASA[CCOR=F GAMMA={gamma} TWOC=F] SHARM={sharm} SCR={scr}
+GF      MODE={gfmod} DLM=12 BXY=F GFOPTS=p3;padtol=0.0001
+PGF     MODE={pgf} SPARSE={sparse} LMET=1 RMET=1
+        PLATL=0 -0.577350269 zz PLATR=0 -0.577350269 zz 
+        GFOPTS=p3;sdmat;nclead;padtol=0.00001;qtolp=0.0005;inveula
+        GFOPTS=p3;sdmat;nclead;padtol=0.00001;qtolp=0.0005    #;refinegs=1d-10
+SYMGRP  i*i
+STR     RMAX=2.7
+STRUC   NSPEC=3 NBAS=30 NL=3 ALAT=a
+        PLAT= 1.0 0.0 0.0 
+              -.5 sqrt(3)/2 0.0 
+              0.0 0.0 30*zz FIXLAT=F 
+#       ROT=z:{120}*pi/180
+SPEC    ATOM=Co Z=27 R/W=1 IDXDN=1 1 1 A=.01
+        ATOM=Cu Z=29 R/W=1 IDXDN=1 1 1 A=.01 
+        ATOM=Pt Z=78 R/W=1 IDXDN=1 1 1 A=.01 
+%const  adeg1=0 adeg=0 ipl=-1
+%const  ang1={adeg1}*pi/180 ang2={adeg}*pi/180 xang=pi/2
+SITE    ATOM=Cu POS=0.0 0.577350269  0*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} # ROT=x:-{xang},z:{-ang1}
+        ATOM=Cu POS=0.0 0.000000000  1*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Cu POS=0.5 0.288675135  2*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Cu POS=0.0 0.577350269  3*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Cu POS=0.0 0.000000000  4*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Cu POS=0.5 0.288675135  5*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Co POS=0.0 0.577350269  6*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Co POS=0.0 0.000000000  7*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Co POS=0.5 0.288675135  8*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Co POS=0.0 0.577350269  9*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Co POS=0.0 0.000000000 10*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Co POS=0.5 0.288675135 11*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Pt POS=0.0 0.577350269 12*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Pt POS=0.0 0.000000000 13*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Pt POS=0.5 0.288675135 14*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang1},x:{xang} 
+        ATOM=Pt POS=0.0 0.577350269 15*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Pt POS=0.0 0.000000000 16*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Pt POS=0.5 0.288675135 17*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Co POS=0.0 0.577350269 18*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Co POS=0.0 0.000000000 19*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Co POS=0.5 0.288675135 20*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Co POS=0.0 0.577350269 21*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Co POS=0.0 0.000000000 22*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Co POS=0.5 0.288675135 23*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Cu POS=0.0 0.577350269 24*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Cu POS=0.0 0.000000000 25*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Cu POS=0.5 0.288675135 26*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Cu POS=0.0 0.577350269 27*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Cu POS=0.0 0.000000000 28*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+        ATOM=Cu POS=0.5 0.288675135 29*zz-zsh PL={ipl+=1,ipl}  ROT=z:{ang2},x:{xang} 
+START   CNTROL={nit<=0} BEGMOM={nit<=0}

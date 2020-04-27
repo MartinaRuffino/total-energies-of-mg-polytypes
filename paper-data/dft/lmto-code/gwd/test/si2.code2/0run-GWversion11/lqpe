@@ -1,0 +1,44 @@
+  q+band index for zero?
+ hqpe_sc: VerNum= xxx: mode=  4
+ hqpe_sc: files vxc.si2 and evec.si2 made for   7 qp by   1 thread(s)
+ sigma calculated with iSigMode = 3 for   3  k-points and 1 spins
+ Maximum hamiltonian rank    =   26
+ Maximum rank of <i|sigma|j> =   26
+ Use LMTO evecs to rotate sigm to orbital basis, dim=   0
+ reading v_xc, evec ...
+  iq  is  ndimh
+   1   1    26
+   2   1    26
+   3   1    26
+ reading XCU, SEXU, SEXcoreU, SECU data
+  eshift is so as to be zero for UP of (it iq)=            4           1
+ qp    1 spin   1 sigma calculated to   20 of   26 eseavr(1:2) =    0.188028    0.193480
+ qp    2 spin   1 sigma calculated to   23 of   26 eseavr(1:2) =    0.199499    0.215195
+ qp    3 spin   1 sigma calculated to   24 of   26 eseavr(1:2) =    0.187014    0.193825
+  ### readin BZDATA ###
+  read_bzdata           8           3          27          48           2
+          48
+ read from bzdata : nqibz2 nqibz nqsig   3   3   3
+ k-averaged eseavr =     0.193383
+ 
+ ========= Mix Sigma with prior iterations read from mixsigma file =======
+  rwsigma: Reading sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1  -0.50000   0.50000   0.50000
+  ===     3  1   0.00000   0.00000   1.00000
+  === rwsigma:  sum check of sigm=   2.71745577248130     
+ 
+ mixsigma: Anderson mixing sigma with mixing beta =    1.000000
+ ... No file mixsigma
+ sum sss=   2.71745577547945     
+ AMIX: nmix=0 mmix=3  nelts=  4056  beta=1.00000  tm= 5.00000  rmsdel=2.77D-03
+ 
+ === Write sigma to files (Binary and ASCII) ========
+  rwsigma  Writing sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1  -0.50000   0.50000   0.50000
+  ===     3  1   0.00000   0.00000   1.00000
+  === rwsigma:  sum check of sigm=   2.71745577248130     
+ 
+
+ ----  OK! hqpe_sc 

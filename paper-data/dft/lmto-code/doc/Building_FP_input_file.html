@@ -1,0 +1,1164 @@
+<!DOCTYPE html><html>
+
+<head>
+<title>Using blm</title>
+<style>
+
+/* For hyperlinks */
+a:link {color:#FF0000;}      /* unvisited link */
+a:link {color:#222288;}      /* unvisited link */
+a:visited {color:#228822;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+body {
+       background-color:#ffffgg;
+     }
+ h1 {
+      color:#880000;
+      text-align:center;
+      font-size:12px;
+    }
+ h2 {
+      color:#bb3300;
+      font-size:120%;
+      font-weight:normal;
+      font-style:italic;
+    }
+
+ h3 {
+      color:#33bb00;
+      font-size:110%;
+      font-weight:normal;
+      font-style:italic;
+      text-indent: 0.5em;
+    }
+
+ h4 {
+      color:#000000;
+      font-size:100%;
+      font-weight:bold;
+      text-indent: 1.0em;
+    }
+
+ h5 {
+      color:#444488;
+      font-size:100%;
+      font-weight:bold;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+ hn {
+      color:#000000;
+      font-size:100%;
+      font-weight:normal;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+  P {
+<!--  font-family:"Times New Roman"; -->
+<!--  font-size:12px; -->
+<!--  color: red; -->
+    }
+
+  q {
+      color: red;
+    }
+
+  a {
+        color: blue;
+    }
+
+  tlarge {
+       <font-size="+1">
+    }
+
+  p.pos_left
+  {
+  position:relative;
+  left:-20px;
+  }
+
+  p.pos_right
+  {
+  position:relative;
+  left:20px;
+  right:520px;
+  }
+
+div.ex
+{
+width:3in;
+padding:10px;
+border:5px solid gray;
+margin:0px;
+}
+
+
+</style>
+
+<!-- Enables the use of latex -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+
+<!--
+<script type="text/javascript"  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/javascript" src="/Users/markvanschilfgaarde/MathJax/MathJax.js"></script>
+-->
+
+</head>
+
+
+<h1><B><FONT size="+2">Building an input file for the FP program (v7.11)</FONT></B></h1>
+
+<h2><A name="intro"></A>Purpose</h2>
+
+This tutorial explains how to use the <b>blm</b> tool, amongst other
+tools, to automatically generate input files.
+
+<P> To get started, you must have structural data available (primitive lattice vectors and
+atoms in the unit cell, along with their positions).
+You can supply this structural data in one of several possible formats, as described below.
+
+<P> The LMTO programs require as their main input a file <FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT>.
+<b>blm</b> takes as input the basic structural information of a material
+and generates a skeleton  <FONT size="+1"><tt>ctrl</tt></FONT> file
+from it.  You supply the basic structural information
+with file <FONT size="+1"><tt>init.<i>ext</i></tt></FONT>, which
+<b>blm</b> reads to generate the skeleton or template input file.   It writes to a file
+<A href="#actrl">file <FONT size="+1"><tt>actrl.<i>ext</i></tt></FONT>, not <FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT></A>;
+you must rename the file yourself.  The <FONT size="+1"><tt>init</tt></FONT> file itself can be
+automatically generated using tools (e.g. <b>cif2init</b> and <b>poscar2init</b>) that
+<A href="#import">import structural data stored in other formats</A>.
+
+<P> Alternatively, you may already have an input
+(<FONT size="+1"><tt>ctrl</tt></FONT>) file, made perhaps for some
+compound with similar or the same species, and you only want to change
+the structural information.  Programs in the package allow you to optionally pack
+structural data into a separate file,
+<FONT size="+1"><tt>site.<i>ext</i></tt></FONT>.  Several tools, including <b>blm</b>,
+<b>lmchk</b>, <b>lmscell</b>, <b>cif2site</b>, <b>poscar2site</b>,
+enable you to write a <FONT size="+1"><tt>site</tt></FONT> file directly.
+
+<P><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT>
+This tutorial assumes that you installed the executables (e.g. <b>blm</b> and <b>poscar2init</b>)
+and that they are in your path.
+
+<P> Several quantities, notably the augmentation
+radius and coefficients defining the shape of the  basis of <A href="fp.html#smoothH">smoothed Hankel functions</A>,
+can be tedious to determine by hand.  Both are explicitly constructed in the
+<A href="FPtutorial.html">Full Potential tutorial</A>; but <b>blm</b> can
+make both automatically.
+
+<P> <FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT>
+<b>blm</b> is a relatively recent addition to this package; it is less seasoned
+than some of the other codes.  Some of the defaults it builds in automatically, e.g.
+the basis and which deep states should be treated as valence and which as core.
+These defaults may sometimes not be what you want, or not optimally chosen,
+so you are advised to use the <b>blm</b> program with some care, and not take for granted
+the defaults it supplies.
+
+<h2><A name="Structure"></A>Importing Crystal Structure</h2>
+
+<h3><A name="byhand"></A>Supplying Crystal Structure by hand</h3>
+
+Typically you have structural information about your material, e.g.
+<i>space group number</i> (e.g. number 99 or name P4<i>mm</i>) and <i>lattice
+parameters</i> related to the space group (<i>a</i> and <i>b</i> in the P4<i>mm</i> case).
+
+This page will use Bi<sub>2</sub>Te<sub>3</sub> as an
+example, which belongs to space group R<span style="text-decoration:overline">3</span>m
+with lattice constants <i>a</i> and <i>c</i>.
+(SeeWykoff,
+<A href="https://archive.org/stream/structureofcryst030914mbp#page/n107/mode/2up/search/Bi"><FONT size="+1"><i>Structure of Crystals</i></FONT></A>,
+to obtain this information.)
+
+You also need information about the chemical species and positions
+of the atoms in the basis.  The minimum information for
+Bi<sub>2</sub>Te<sub>3</sub> is:
+<pre>
+    ATOM=Te X=0     0    0
+    ATOM=Te X=0     0   .788
+    ATOM=Bi X=0     0   .4
+</pre>
+There are five atoms in the basis; the positions of the remaining two
+follow from the symmetry of the space group
+(R<span style="text-decoration:overline">3</span>m).
+
+<P> Symbols Te and Bi tell <b>blm</b> that the atoms are Tellurium and
+Bismuth, with atomic numbers 52 and 83.  You can use any symbol for the
+species name, but if you don't use a standard one you must specify the
+atomic number, e.g. write <FONT size="+1"><tt>ATOM=A Z=52</tt></FONT>.
+
+<P> The three coordinates e.g. (<FONT size="+1"><tt>0 0 0.788</tt></FONT>) correspond to fractions of the
+first, second, and third lattice vectors. This is a standard
+way of representing site coordinates.  Alternatively, you can specify
+Cartesian coordinates; use <FONT size="+1"><tt>POS=</tt></FONT> in place of <FONT size="+1"><tt>X=</tt></FONT>.
+In the Bi<sub>2</sub>Te<sub>3</sub> case, substituting the above 3 lines with
+<pre>
+    ATOM=Te POS= 0.0000000   0.0000000   0.0000000
+    ATOM=Te POS=-0.5000000  -0.8660254   1.4616199
+    ATOM=Bi POS= 0.5000000   0.8660254   0.8030878
+</pre>
+creates the same input template.
+
+<P> Jump <A href="#run">here</A> to see an <FONT size="+1"><tt>init</tt></FONT> file for Bi<sub>2</sub>Te<sub>3</sub> and what happens when you run <b>blm</b> with it.
+
+<h3><A name="cif"></A>Importing a CIF file</h3>
+
+<A href="http://en.wikipedia.org/wiki/Crystallographic_Information_File">Crystallographic Information Files</A> (CIF files for short)
+is a standard text file format for representing crystallographic information, whose standards are set by the International Union of Crystallography.
+
+If you have a CIF file, you can automatically make <i>either</i>
+an <FONT size="+1"><tt>init</tt></FONT> file, <i>or</i>
+a <FONT size="+1"><tt>site</tt></FONT> file.  The tools in this package
+do not read CIF files directly, but parse the output of the
+<b>cif2cell</b> program (version 1.1.0).
+<b>cif2cell</b> is a very versatile tool,
+<A href="http://sourceforge.net/projects/cif2cell">freely available on the web</A>.
+
+<P> To import data from a CIF file you need <b>cif2cell</b> installed and <b>cif2init</b> in your path
+(<b>cif2init</b> should be automatically compiled with this package).  The steps are:
+
+<pre>
+
+1. Run <b>cif2cell</b> (without any special switches) and capture the output in a file, e.g. <FONT size="+1"><tt>cif2cell.out</tt></FONT>.
+2. Run <b>cif2init</b> to generate an <FONT size="+1"><tt>init</tt></FONT> file (called simply `<FONT size="+1"><tt>init</tt></FONT>').
+3. Rename <FONT size="+1"><tt>init</tt></FONT> to <FONT size="+1"><tt>init.<i>ext</i></tt></FONT> and use the <A href="#run">blm</A> tool.
+</pre>
+
+<P> <FONT size="+1" color="#3300bb"><FONT size="+1"><i>Example</i></FONT></FONT>&nbsp; :
+create an <FONT size="+1"><tt>init</tt></FONT> file for the orthorhombic form of BaTiO<sub>3</sub>:
+<pre>
+  cp testing/cif2cell.batio3 .
+  cif2init cif2cell.batio3  
+</pre>
+Note: <FONT size="+1"><tt>cif2cell.batio3</tt></FONT> was
+obtained by running <FONT size="+1"><tt>cif2cell</tt></FONT> on the CIF file supplied with the 
+cif2cell-1.1.0 distribution:
+<FONT size="+1"><tt>cif2cell-1.1.0/cifs/BaTiO3_orthorhombic.cif</tt></FONT>.
+
+<P> The following <FONT size="+1"><tt>init</tt></FONT> file should be generated:
+<pre>
+HEADER Ba (Ti O3) (Barium titanate - nanocrystalline)
+LATTICE
+#       SPCGRP=38
+#       A=4.0094  B=5.6214  C=5.6386   ALPHA=90  BETA=90  GAMMA=90
+% const a=4.0094
+        ALAT={a}  UNITS=A
+        PLAT=    1.0000000    0.0000000    0.0000000
+                 0.0000000    0.7010276   -0.7031725
+                 0.0000000    0.7010276    0.7031725
+SITE
+     ATOM=Ba       X=     0.0000000    0.0000000    0.0000000
+     ATOM=Ti       X=     0.5000000    0.4900000    0.5100000
+     ATOM=O        X=     0.5000000    0.0100000    0.9900000
+     ATOM=O        X=     0.5000000    0.0129000    0.4921000
+     ATOM=O        X=     0.5000000    0.5079000    0.9871000
+</pre>
+
+<P> If you prefer to make your own input file but import structure information via a <FONT size="+1"><tt>site</tt></FONT> file, use
+<b>cif2site</b> in place of <b>cif2init</b>.  To summarize:
+<pre>
+  cif2init     creates an init file from the output of <b>cif2cell</b>
+  cif2site     creates a  site file from the output of <b>cif2cell</b>
+</pre>
+
+
+<h3><A name="poscar"></A>Importing a POSCAR file</h3>
+
+<A href="http://www.vasp.at">VASP</A> is a very popular electronic structure program.
+Structural information is contained in the <FONT size="+1"><tt>POSCAR</tt></FONT> file.
+If you want to import data from such a file in a form suitable for this program suite, use one of these:
+<pre>
+  poscar2init     creates an init file from a VASP POSCAR file
+  poscar2site     creates a  site file from a VASP POSCAR file
+</pre>
+
+If you already have an input file, use <b>poscar2site</b> to translate structural data from
+a <FONT size="+1"><tt>POSCAR</tt></FONT> file into <FONT size="+1"><tt>site.<i>ext</i></tt></FONT>.
+
+If you want an input file instead, use <b>poscar2init</b>; then run <b>blm</b>.
+
+<P> <FONT size="+1" color="#3300bb"><FONT size="+1"><i>Example</i></FONT></FONT>&nbsp; :
+create an input file for Zn<sub>3</sub>As<sub>2</sub> from a <FONT size="+1"><tt>POSCAR</tt></FONT> file:
+<pre>  testing/test.blm 2 </pre>
+The script has the following steps
+<pre>
+  poscar2init > init.zn3as2
+  blm zn3as2 --fixpos:tol=1e-6 > out.zn3as2
+</pre>
+which creates an input file template (<FONT size="+1"><tt>actrl.zn3as2</tt></FONT>)
+from a <FONT size="+1"><tt>POSCAR</tt></FONT> file in two steps.
+
+<P> <FONT size="+1" color="#3300bb"><FONT size="+1"><i>Example</i></FONT></FONT>&nbsp; :
+create a <FONT size="+1"><tt>site</tt></FONT> file for the Kesterite Cu<sub>2</sub>ZnSnS<sub>4</sub>:
+<pre>  testing/test.blm 3 </pre>
+It creates file `<FONT size="+1"><tt>site</tt></FONT>' from file `<FONT size="+1"><tt>POSCAR</tt></FONT>.'
+
+<h2><A name="run"></A>Running <b>blm</b></h2>
+
+Near all programs in this package
+require an input file <FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT>.
+You can do an entire calculation starting only with this file; but often you supply other
+files such as site files to supplement <FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT>.
+
+<b>blm</b> will create a skeleton or template file from basic material structural
+information; it is called <FONT size="+1"><tt>actrl.<i>ext</i></tt></FONT>, so as
+not to overwrite any file named <FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT>.
+
+<OL>
+
+<LI> Create a file named <FONT size="+1"><tt>init.bi2te3</tt></FONT>
+containing the following lines:
+
+<pre>
+# from http://cst-www.nrl.navy.mil/lattice/struk/c33.html
+# Bi2Te3 from Wyckoff
+% const a=4.3835 c=30.487 uTe=0.788 uBi=0.40
+LATTICE
+   SPCGRP=R-3M
+   UNITS=A
+   A={a} C={c}
+SITE
+    ATOM=Te X=0     0    0
+    ATOM=Te X=0     0   {uTe}
+    ATOM=Bi X=0     0   {uBi}
+</pre>
+
+<A href="input-file-style.html">This tutorial</A> explains how the input files
+<FONT size="+1"><tt>init.<i>ext</i></tt></FONT> and
+<FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT>
+are structured, including the <b>categories</b>
+and <b>tokens</b> that organize it.  The syntax is more fully
+defined <A href="input.pdf">here</A>.  You should also read
+the <A href="lmto.html">ASA documentation</A> and the
+<A href="FP.html">FP implementation</A>.
+
+<BR><BR>
+
+<LI> To create the skeleton input file invoke <b>blm</b>:
+  <pre>   blm bi2te3  </pre>
+As the
+<A href="FPsamples/out.bi2te3.blm">output</A> shows,
+it  found all five atoms that were implicit in the specification of the symmetry group, <FONT size="+1"><tt>R-3m</tt></FONT>.
+
+<A name="getwsr"></A>
+
+<P> Note that <b>blm</b> automatically determined
+<A href="FPsamples/out.bi2te3.blm#rmt">augmentation sphere radii</A>,
+which it accomplishes
+by attempting to find spheres with equal potentials on each sphere surfaces (as well as it can).
+
+If you already have an input file, you can run <b>lmchk</b> with
+<FONT size="+1"><tt>--getwsr</tt></FONT> to determine radii for you (it uses
+the same algorithm as <b>blm</b>.)
+
+Particularly in polar compounds, this algorithm probably does a better
+job than you can do by hand, and it is recommended that you use the
+radii it finds, or some scaled version of them.
+
+<P> 
+<b>blm</b> creates the file <FONT size="+1"><FONT size="+1"><tt>actrl.bi2te3</tt></FONT></FONT> with these contents:
+<pre>
+# Autogenerated from init.bi2te3
+VERS    LM:7 FP:7
+IO      SHOW=f HELP=f WKP=F IACTIV=f VERBOS=31
+% const pwmode=0 pwemax=3 # Use pwmode=1 or 11 to add APWs
+HAM     AUTOBAS[PNU=1 LOC=1 LMTO=4 MTO=4 GW=0]  GMAX=  # set GMAX by hand
+#       AUTOBAS[PNU=1 LOC=1 LMTO=3 MTO=3 GW=0]  GMAX=  # LMTO=3 for minimal basis
+        PWMODE={pwmode} PWEMIN=0 PWEMAX={pwemax} OVEPS=0
+% const nsp=1 so=0 elind=-.7
+        NSPIN={nsp} SO={so} FORCES={so==0} ELIND={elind}
+% const lxcf=2 lxcf2=-1 # for PBE functional use lxcf=101 lxcf2=130
+%ifdef lxcf & lxcf2>0
+        XCFUN=0,{lxcf},{lxcf2}     # format for libxc functionals
+%else
+        XCFUN={lxcf}               # internally compiled functionals
+%endif
+% const nit=1
+ITER    MIX=B2,b=.3,k=10  NIT={nit}  CONVC=1e-5
+% const met=5 nk=0
+BZ      NKABC={nk}  METAL={met}  # NKABC requires 1 to 3 positive numbers
+#SYMGRP i r3z my
+% const a=4.782549
+STRUC 
+  NSPEC=2  NBAS=5  NL=5
+  ALAT={a}
+  PLAT= 1  0  4.0154392  -0.5  0.8660254  4.0154392  -0.5  -0.8660254  4.0154392
+SPEC 
+  ATOM=Te         Z= 52  R= 2.870279  LMX=3  LMXA=3
+  ATOM=Bi         Z= 83  R= 2.856141  LMX=3  LMXA=4
+SITE 
+  ATOM=Te         POS=  0.0000000   0.0000000   0.0000000
+  ATOM=Te         POS= -0.5000000  -0.8660254   1.4616199
+  ATOM=Te         POS=  0.5000000   0.8660254  -1.4616199
+  ATOM=Bi         POS=  0.5000000   0.8660254   0.8030878
+  ATOM=Bi         POS= -0.5000000  -0.8660254  -0.8030878
+</pre>
+
+</OL>
+
+<P><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> The following applies to the FP code <b>lmf</b>.
+For ASA calculations, ignore the remainder of this section.
+
+<P> This template will not work as is; three pieces of information <b>blm</b> cannot supply are missing:
+<UL>
+<LI>  You must specify plane-wave cutoff <FONT size="+1"><tt>GMAX</tt></FONT>; see <A href="#gmax">here</A>.
+<LI>  You must specify a valid <b>k</b> mesh for Brillouin zone integration; see <A href="#bz">here</A>.
+<LI>  No basis set has been defined.  You can do this manually or automatically, as described next.
+</UL>
+
+<A name="autobas"></A>
+<b>blm</b> creates a family of tags belonging to <FONT size="+1"><tt>AUTOBAS</tt></FONT>
+to enbable other programs to automatically find a basis set for you.
+We will use this tag, which sets up a standard minimal basis:
+<pre>
+     AUTOBAS[PNU=1 LOC=1 LMTO=3 MTO=3 GW=0]
+</pre>
+(Note that you must modify <FONT size="+1"><tt>actrl.bi2te3</tt></FONT> a little; the default gives <FONT size="+1"><tt>[.. LMTO=4 MTO=4]</tt></FONT>, which makes a
+<A href="#multikappa">double kappa basis</A>.
+
+<P> <b>lmfa</b> calculates wave functions and atomic densities for free
+atoms. It also has a mode that automatically generates information for
+basis sets, using tokens in <FONT size="+1"><tt>AUTOBAS</tt></FONT> to guide it.
+This information is written to a file <FONT size="+1"><tt>basp0.<i>ext</i></tt></FONT>.
+
+<FONT size="+1"><tt>AUTOBAS</tt></FONT> specifies set of conditions that enable
+<b>lmfa</b> to automatically build the basis set for you, including specification of 
+envelope function parameters
+<A href="fp.html#spec"> <FONT size="+1"><tt>RSMH</tt></FONT> and <FONT size="+1"><tt>EH</tt></FONT></A>.
+ Alternatively you can define parameters such as <FONT size="+1"><tt>EH</tt></FONT> and <FONT size="+1"><tt>RSMH</tt></FONT> basis by hand, as described
+<A href="FPtutorial.html#basis">in this tutorial</A>.
+
+<P> Tokens in <FONT size="+1"><tt>AUTOBAS</tt></FONT> tell <b>lmfa</b> to do the following:
+<pre>
+  PNU=1    Calculate <A href="lmto.html#logderivative">logarithmic derivative</A> parameter for the free atom; save P parameters in file <FONT size="+0"><tt>basp0.<i>ext</i></tt></FONT>.
+           Nothing about P is written if <FONT size="+0"><tt>PNU=0</tt></FONT>.
+
+  LOC=1    Look for shallow cores to be explicitly treated as valence electrons, using <A href="fp.html#localorbitals">local orbitals</A>.
+           Shallow cores that meet specific criteria are identified and written to <FONT size="+0"><tt>basp0.<i>ext</i></tt></FONT> as PZ=.
+           No search is made if <FONT size="+0"><tt>LOC=0</tt></FONT>.
+
+  LMTO=3   Pick a default choice about the size of basis.  LMTO=3 is a standard minimal basis.
+           Run lmfa --input and look for HAM_AUTOBAS_LMTO to see what other choices there are.
+
+           Note that <b>lmfa</b> will pick some defaults for the <i>l</i>-cutoff
+           e.g. <i>spd</i> or <i>spdf</i> depending on the value of LMTO.
+
+  MTO=1    Choose 1-kappa basis set (single orbital per <i>l</i> channel).
+           For better quality calculations, it is recommended you use MTO=2.
+
+  GW=0     If GW=1, tailor basis for a GW calculation, e.g. changing the
+           criteria for including shallow cores as valence, and the size of basis.
+
+</pre>
+These tokens thus define some reasonable default basis for you.
+<b>lmfa</b>  <i>writes</i> <FONT size="+1"><tt>basp0.<i>ext</i></tt></FONT>.
+This file is never read, but
+<b>lmf</b> will <i>read</i> <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT>
+and use this information when assembling the basis set.  The two files have
+the same structure and you can copy <FONT size="+1"><tt>basp0.<i>ext</i></tt></FONT> to <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT>.
+What <b>lmfa</b> generates is not cast in concrete.
+You are free to adjust the parameters to your liking, e.g.
+add a local orbital or remove one from the basis.  You need to use your judgement here.
+
+<A name="basprules"></A>
+<P> The <FONT size="+1"><tt>AUTOBAS</tt></FONT> tokens tell <b>lmf</b> what to read from <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT>.
+It uses tokens in a manner similar, but not identical, to the way <b>lmfa</b> uses them:
+<pre>
+  PNU=1    Read parameters P for all species present in <FONT size="+0"><tt>basp.<i>ext</i></tt></FONT>
+
+  LOC=1    LOC=1 or 2 tell <b>lmf</b> to read local orbital parameters PZ.
+           Since these parameters may also be specified by the input file,
+           LOC=1 tells lmf to give precedence to parameters specified by ctrl file
+           LOC=2 tells lmf to give precedence to parameters specified by basp.
+
+  LMTO=    is not used by <b>lmf</b>.
+
+  MTO=1    RSMH and EH may also be specified by the input file
+           LMTO=1 or 3 tells lmf to read 1-kappa parameters specified by basp
+           LMTO=2 or 4 tells lmf to read 2-kappa parameters specified by basp
+           LMTO=1 or 2 tells lmf that parameters in the ctrl file take precedence
+           LMTO=2 or 4 tells lmf that parameters in the basp file take precedence
+
+  GW=0     If GW=1, tune basis for a GW calculation: log derivative parameters P
+           are floated a little differently in the self-consistency cycle.
+           They are weighted to better represent unoccupied states, at a slight cost
+           to their representation of occupied states.
+</pre>
+
+</OL>
+
+<h3><A name="options"></A>Command line switches for <b>blm</b></h3>
+
+<b>blm</b> accepts the following command-line switches:
+<pre>
+  --fixpos[:tol=#]: Use this switch if your structural information is a little rough (e.g.
+              	    lattice positions deviate slightly from positions dictated by symmetry)
+
+  --input         : show tokens blm will attempt to read, without reading anything
+
+  --show          : show output after preprocessing
+
+  --asa       	  : Tailor the input file for an ASA calculation.
+                  : (By default the input file is designed for <b>lmf</b>.)
+                  : See <A href="Demo_ASA_copt.html">Demo_ASA_copt.html</A> for a demonstration of this switch.
+
+  --gw        	  : Tailor the input file for an <A href="#gw"><i>GW calculation</i></A>.
+                  : See <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> for a demonstration of this switch.
+
+  --mag           : Tailor the input file for a magnetic calculation. 
+                  : In practice blm merely sets `%const nsp=2'
+                  : You must also supply an initial spin splitting.
+                  : See <A href="Demo_ASA_copt.html">Demo_ASA_copt.html</A> for a demonstration of this switch.
+
+  --nk=#[,#,#]    : supplies, through a command-line argument, the k-mesh band codes require.
+                  : <b>blm</b> has no way to determine this mesh, so by default it makes a null one.
+                  : <b>lmf</b> will not run until a legitimate mesh is supplied; see <A href="#bz">below</A>.
+                  : This switch enables you to define the mesh without manual intervention.
+                  : See <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> for a demonstration of this switch.
+
+  --nkgw=#[,#,#]  : supplies, through a command-line argument, the k-mesh for <i>GW</i> calculations.
+                  : In addition to the LDA <i>k</i> mesh, you must supply it before starting a <i>GW</i> calculation.
+                  : <A href="Demo_QSGW_Si.html">Demo_QSGW_Si.html</A> also uses this switch.
+
+  --gmax=#        : supplies the plane wave cutoff GMAX for the interstitial density, as described <A href="#gmax">here</A>.
+                  : This switch enables you to define this cutoff without manual intervention.
+
+  --noshorten 	  : Use the basis vectors as given; do not shorten them.
+
+  --xpos          : By default <b>blm</b> writes site data in Cartesian coordinates.
+                  : Use this switch if you prefer it to write it in units of the lattice vectors.
+
+  --wpos=<i>fnam</i> 	  : Write basis vectors to file <i>fnam</i>.
+
+  --wsite     	  : Write a site file
+
+  --wsitex    	  : Write a site file, with basis vectors expresses as multiples
+                    of the lattice vectors instead of in Cartesian coordintes.
+</pre>
+
+Site files are very useful when you already have an input file but want to supply the
+structural information independently (lattice vectors and basis vectors).
+It is useful in many contexts, particularly when you want to study
+different kinds of structure with similar elements.  To tell
+<b>lmf</b> (or another code) to read lattice vectors from the site file,
+use <FONT size="+1"><tt>STRUC_FILE=<i>fnam</i></tt></FONT>.  To
+read basis vectors from it, use
+<FONT size="+1"><tt>SITE_FILE=<i>fnam</i></tt></FONT>.  You can course read both.
+A number of tests make use of <FONT size="+1"><tt>site</tt></FONT> files.  Try for example:
+<pre>
+  testing/test.lmscell
+  fp/test/test.fp er
+  fp/test/test.fp tio2
+</pre>
+<A href="siged-tutorial.html#AsAntisiteGaAs">This tutorial</A>, which shows how to make
+a supercell and calculate a defect in it, makes extensive use of <FONT size="+1"><tt>site</tt></FONT> files.
+
+
+<h2><A name="lmchk"></A>Checking sphere overlaps</h2>
+
+<OL>
+<LI value="3"> Sphere overlaps can be checked using <b>lmchk</b>.  To do
+this copy the template <FONT size="+1"><FONT size="+1"><tt>actrl.bi2te3</tt></FONT></FONT> to the input
+file and run <b>lmchk</b>:
+  <pre>
+    cp actrl.bi2te3 ctrl.bi2te3
+    lmchk bi2te3  </pre>
+By default, <b>blm</b> makes the spheres as large
+as possible without overlapping, as the
+<A href="FPsamples/out.bi2te3.lmchk">output</A> shows.
+In this case the Bi and Te radii are nearly the same.
+</OL>
+
+<h2><A name="lmfa"></A>Making the atomic density</h2>
+
+<OL>
+<LI value="4"> Make the free atom density.  If you did not do so already copy
+<FONT size="+1"><FONT size="+1"><tt>actrl.bi2te3</tt></FONT></FONT> to the input file (changing <FONT size="+1"><tt>[.. LMTO=4 MTO=4]</tt></FONT> to [.. LMTO=3 MTO=3]) and invoke <b>lmfa</b>:
+<pre>
+  cp actrl.bi2te3 ctrl.bi2te3
+  lmfa bi2te3
+</pre>
+
+</OL>
+
+The primary purpose of <b>lmfa</b> is to generate a free atom density.
+A secondary purpose is to supply additional information about the
+basis set in an automatic way.  All of this information can be
+supplied manually in the input file, but the autogenerated input file
+supplies a minimum amount of information.
+
+<b>lmfa</b> generates <FONT size="+1"><FONT size="+1"><tt>basp0.bi2te3</tt></FONT></FONT> which contains
+<pre>
+BASIS:
+ Te RSMH= 1.615 1.681 1.914 1.914 EH= -0.888 -0.288 -0.1 -0.1 P= 5.901 5.853 5.419 4.187
+ Bi RSMH= 1.674 1.867 1.904 1.904 EH= -0.842 -0.21 -0.1 -0.1 P= 6.896 6.817 6.267 5.199 5.089 PZ= 0 0 15.936
+</pre>
+Every species gets one line.
+This file specifies a basis set consisting of <i>spdf</i> orbitals on Te sites, and <i>spdf</i> orbitals on Bi sites,
+and a local 5<i>d</i> orbital on Bi.  The contents of  this file are explained <A href="#autobas">above</A>;
+see also
+<A href="fp.html#spec">RSMH and EH</A>,
+<A href="lmto.html#pbasp">P</A>, and <A href="fp.html#localorbitals">PZ</A>.
+
+<P><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT>
+Remember that <b>lmf</b> reads from <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT>,
+not <FONT size="+1"><tt>basp0.<i>ext</i></tt></FONT>.
+
+
+<P>
+<FONT color="#bb3300"><I>Automatically finding deep states to include as valence electrons</I>&nbsp</FONT>
+
+The partitioning between valence and core states is something that requires a judgement call.
+<b>lmfa</b> has made a default choice for you:  the
+<A href="FPsamples/out.bi2te3.lmfa1#bihead">output</A> shows that for Bi,
+<b>lmfa</b> selected the 6<i>s</i>, 6<i>p</i>, 6<i>d</i>, 5<i>f</i> states, populating them with charges &nbsp;
+<FONT size="+1"><tt>2, 3, 0, 0</tt></FONT>.
+Note that the total sphere charge is <FONT size="+1"><tt>Q=0</tt></FONT>.
+You can override the default, e.g. choose the 5<i>d</i> over the 6<i>d</i> with
+<FONT size="+1"><tt>SPEC_ATOM_P</tt></FONT>; override the <i>l</i> channel charges with
+<FONT size="+1"><tt>SPEC_ATOM_Q</tt></FONT>.
+
+
+<P> As was explained <A href="#autobas">earlier</A>, when
+<FONT size="+1"><tt>HAM_AUTOBAS_QLOC</tt></FONT> is set
+<b>lmfa</b> will look for shallow core levels below 6<i>s</i>, 6<i>p</i>,
+6<i>d</i>, 5<i>f</i> states, and as
+<A href="FPsamples/out.bi2te3.lmfa1#localorbital">this table</A> shows
+<b>lmfa</b> selected the 5<i>d</i> orbital which is normally a
+core state, to be included as a
+<A href="fp.html#localorbitals">local orbital</A> so that the usual
+6<i>d</i> state and the 5<i>d</i> state are simultaneously included in the basis.
+
+Even though the 5<i>d</i> state is fairly deep (the
+<A href="FPsamples/out.bi2te3.lmfa1#bicore">output</A>
+shows it lies at &minus;2 Ry), the criterion of having a
+charge density outside the smoothing radius greater than
+3&times;10<sup>&minus;3</sup> was met. (Use
+<FONT size="+1"><tt>HAM_AUTOBAS_ELOC</tt></FONT> and
+<FONT size="+1"><tt>HAM_AUTOBAS_QLOC</tt></FONT> to change these criteria.)
+<b>lmfa</b> supplies information about this to
+<FONT size="+1"><tt>basp0.bi2te3</tt></FONT>, in the form
+&nbsp;<FONT size="+1"><tt>PZ=0 0 15.936 </tt></FONT> (no local orbitals for <i>s</i> or <i>p</i> states).
+
+The <FONT size="+1"><tt>0.936</tt></FONT> is significant: it tells
+<b>lmf</b> what boundary condition to use for the 5<i>d</i> radial function.
+
+<P> <FONT color="#bb3300"><I>Automatically finding linearization energies</I>&nbsp</FONT>
+
+Because <FONT size="+1"><tt>HAM_AUTOBAS_P</tt></FONT> is set,
+<b>lmfa</b> save estimates for logarithmic derivative parameters <FONT size="+1"><tt>P</tt></FONT>
+into <FONT size="+1"><tt>basp0.<i>ext</i></tt></FONT>.
+
+As is well known from elementary quantum mechanics, and as
+described <A href="lmto.html#pbasp">here</A>, there is a relation
+between the energy of a wave function and its logaritmic derivative at
+some radius.  This information is supplied through the parameters
+<FONT size="+1"><tt>P</tt></FONT>.
+
+<P> <b>lmfa</b> calculates <FONT size="+1"><tt>P</tt></FONT> for the free-atom potential.  Since
+this potential is not so far removed from the crystal potential, these
+parameters reasonably well find the "band center" for each partial
+wave <i>l</i>.  In any case, these are only estimates; they normally
+get "floated" in the self-consistency cycle.
+
+<P> <A name="envelopes"></A>
+<FONT color="#bb3300"><I>Automatically finding envelope function parameters</I>&nbsp</FONT>
+
+Finally, the input file contains <FONT size="+1"><tt>AUTOBAS[MTO=1]</tt></FONT>.
+This causes <b>lmfa</b> to
+envelope function parameters <A href="fp.html#spec"><FONT size="+1"><tt>RSMH</tt></FONT> and <FONT size="+1"><tt>EH</tt></FONT></A>
+(<FONT size="+1"><tt>RSMH</tt></FONT> is the
+<A href="FPtutorial.html#optimizebasis">most important</A> of the two) that fit the free
+atom wave functions well, and save the result in <FONT size="+1"><tt>basp0.bi2te3</tt></FONT>.
+Unfortunately, what is optimum for the free atom is not optimum for
+the crystal, but the parameters are a reasonable starting point.
+These parameters are important, as they determine the quality of the basis.
+Later we discuss ways to optimize them, or improve the basis quality by adding APWs.
+
+</OL>
+
+<A name="completectrl"></A>
+
+<b>blm </b> cannot automatically determine every required input from the structural data.
+But for the following reasons: <b>lmf</b> will not run properly as the situation now stands
+
+<DL>
+<DD>  &loz;1 The <A href="fp.html">basis set</A> has to be specified.
+      <b>lmfa</b> autogenerated parameters for a basis set, and saved the
+      result to <FONT size="+1"><tt>basp0.bi2te3</tt></FONT>.
+
+      A decision must be made whether to use <b>lmfa</b>'s choices
+      for <FONT size="+1"><tt>RSMH, EH, P</tt></FONT>,
+      and <FONT size="+1"><tt>PZ</tt></FONT>, to supply your own, or to
+      modify <b>lmfa</b>'s choice. In any case, you can do it in one of two ways:<BR><BR>
+
+      <UL>
+      <LI> With your text editor pick up the lines in <FONT size="+1"><tt>basp0.bi2te3</tt></FONT>
+      for Te and Bi, and copy them to  <FONT size="+1"><tt>ctrl.bi2te3</tt></FONT>, e.g.
+      <pre>
+        ATOM=Te Z= 52  R= 2.870279
+                RSMH= 1.615 1.681 1.914 1.914 EH= -0.888 -0.288 -0.1 -0.1 P= 5.901 5.853 5.419 4.187
+        ATOM=Bi Z= 83  R= 2.856141
+                RSMH= 1.674 1.867 1.904 1.904 EH= -0.842 -0.21 -0.1 -0.1 P= 6.896 6.817 6.267 5.199 PZ= 0 0 15.936
+      </pre>
+
+
+      <LI> Copy <FONT size="+1"><tt>basp0.bi2te3</tt></FONT> to <FONT size="+1"><tt>basp.bi2te3</tt></FONT>, and modify it
+      as you like.  File <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT> is read after the main
+      input file is read. If <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT> exists, and one or more of the following tokens
+      is present, their corresponding parameters <i>may</i> be read
+      from <FONT size="+1"><tt>basp.<i>ext</i></tt></FONT>:
+
+     <UL>
+     <LI> <FONT size="+1"><tt>AUTOBAS[MTO]</tt></FONT>: read <FONT size="+1"><tt>RSMH,EH</tt></FONT> (also possibly <FONT size="+1"><tt>RSMH2,EH2</tt></FONT>)
+
+     <LI> <FONT size="+1"><tt>AUTOBAS[P]</tt></FONT>: read <FONT size="+1"><tt>P</tt></FONT>
+
+     <LI> <FONT size="+1"><tt>AUTOBAS[PZ]</tt></FONT>: read <FONT size="+1"><tt>PZ</tt></FONT>
+     </UL>
+     </UL><BR>
+
+     If some this information is given in both the <FONT size="+1"><tt>ctrl</tt></FONT> file and the <FONT size="+1"><tt>basp</tt></FONT> file,
+     the <FONT size="+1"><tt>AUTOBAS</tt></FONT> settings tell <b>lmf</b> which to use, as described <A href="#basprules">here</A>.
+
+<P><A name="lmfa2"></A>
+
+<DD>  &loz;2 The <FONT size="+1"><tt>atm</tt></FONT> file was created by <b>lmfa</b> without prior knowledge that
+      the 5<i>d</i> local orbital is to be included as a valence state (via a local orbital).
+      Thus it incorrectly partitioned the core and valence charge.  You must do one of the following:
+
+     <DL>
+     <DD> &square; Remove &nbsp;<FONT size="+1"><tt>PZ=0 0 15.936 </tt></FONT> from <FONT size="+1"><tt>basp.bi2te3</tt></FONT>.
+          It will no longer be treated as a valence state.  Removing it means
+          the remaining envelope functions are much smoother, which allows you to get away with a coarser mesh density, as described <A href="#gmax">below</A>.
+          Whether you need it or not depends on the context.
+
+     <DD> &square; Copy <FONT size="+1"><tt>basp0.bi2te3</tt></FONT> to  <FONT size="+1"><tt>basp.bi2te3</tt></FONT> and run <b>lmfa</b> over again:
+     <pre>
+       cp basp0.bi2te3 basp.bi2te3
+       lmfa bi2te3
+    </pre>
+
+    With the latter choice <b>lmfa</b> operates a little differently from before as can be seen by comparing <A href="FPsamples/out.bi2te3.lmfa2">new output</A> with the old.
+    Initially the Bi 5<i>d</i> was part of the <A href="FPsamples/out.bi2te3.lmfa1#bicore">core</A>;
+    now is included as part of the <A href="FPsamples/out.bi2te3.lmfa2#xxx2">valence</A>.
+
+    </DL>
+
+<P><A name="gmax"></A>
+<DD> &loz;3 <b>blm</b> does not by default assign any value to the plane wave cutoff for the interstitial density. 
+    <b>lmf</b> reads this information through 
+     <A href="FPtutorial.html#GMAX"><FONT size="+1"><tt>HAM_GMAX</tt></FONT></A>.
+    It is a required input; but <b>blm</b> does not pick a value because its <A href="FPtutorial.html#meshdensity">proper choice</A> depends on the smoothness of the basis.
+    <b>lmfa</b> will determine a suggested value
+    for <FONT size="+1"><tt>HAM_GMAX</tt></FONT> for you.  In the present instance, when the usual 6<i>s</i>, 6<i>p</i>, 6<i>d</i>, 5<i>f</i> states are included
+    <b>lmfa</b> recommends <FONT size="+1"><tt>GMAX=4.4</tt></FONT> as can be seen by inspecting the
+    <A href="FPsamples/out.bi2te3.lmfa1#gmax">first <b>lmfa</b> run</A>.  In the second run it recommends
+    <FONT size="+1"><tt>GMAX=4.1</tt></FONT> from the valence states alone (as
+    before), but because of the 5<i>d</i> state <b>lmfa</b> recommends
+    that <A href="FPsamples/out.bi2te3.lmfa2#gmax"><FONT size="+1"><tt>GMAX=8.1</tt></FONT></A>.
+    The 5<i>d</i> state is strongly peaked at around the atom, and requires more
+    plane waves to represent reasonably, even a smoothed version of it, than the
+    other states.  The difference between <FONT size="+1"><tt>8.1</tt></FONT>
+    and <FONT size="+1"><tt>4.4</tt></FONT> is substantial, and it reflects the
+    additional computational cost of including deep core-like states in the
+    valence.  This is the all-electron analog of the "hardness" of the
+    pseudopotential in pseudopotential schemes.  If you want high-accuracy calculations (especially in
+    the <i>GW</i> context), you will need to include these states as valence.
+    This particular choice of local orbital is rather overkill for LDA
+    calculations however. If you eliminate the Bi 5<i>d</i> local orbital you
+    can set <FONT size="+1"><tt>GMAX=4.4</tt></FONT> and significantly speed up the execution time.
+
+<P><A name="bz"></A>
+<DD> &loz;4 <b>blm</b> assigns the initial <i>k</i>-point mesh to zero.  Note the following lines in  <FONT size="+1"><tt>actrl.bi2te3</tt></FONT>:
+  <pre>
+  % const met=5 nk=0
+  BZ      NKABC={nk}  METAL={met}  # NKABC requires 1 to 3 positive numbers  </pre>
+  <FONT size="+1"><tt>BZ_NKABC</tt></FONT> governs the mesh of <i>k</i>-points.
+  What is appropriate it will depend strongly on the context:
+  many things: the size of the unit cell; the density-of-states at the
+  Fermi level; whether Fermi surface properties are important; whether you want optical properties as well as total energies well described;
+  the precision you need; the integration method, and so on.
+  Any automatic formula can be dangerous, so <b>blm</b> will not choose a default for you.
+  In this case, a 4&times;4&times;4 mesh works well.  Use your text editor to change <FONT size="+1"><tt>nk=0</tt></FONT> to <FONT size="+1"><tt>nk=4</tt></FONT>.
+  Alternatively, supply <FONT size="+1"><tt>--nk=..</tt></FONT> to <b>blm</b> on the command line, as was done in
+  <A href="Demo_QSGW_Si.html#nk">this tutorial</A>.
+
+  <P> Note that as generated, <FONT size="+1"><tt>ctrl.bi2te3</tt></FONT> will reflect <FONT size="+1"><tt>METAL=5</tt></FONT>.  Using <FONT size="+1"><tt>METAL=5</tt></FONT> with the
+  tetrahedron integration is the recommended way to handle Fermi surface integration in metals.
+  See <A href="FPtutorial.html#metal">this tutorial</A> for some discussion.
+</DL>
+
+<h2><A name="lmf"></A>Running <b>lmf</b></h2>
+
+After making the above adjustments, the input file is ready to be used for a FP calculation.
+
+<P> For the rest of this tutorial we use the <FONT size="+1"><tt>ctrl</tt></FONT> file found in
+<A href="FPsamples/ctrl.bi2te3">doc/FPsamples/ctrl.bi2te3</A>.  
+We also put the Te 5<i>d</i> in the core, so <FONT size="+1"><tt>basp.bi2te3</tt></FONT> initially looks like:
+<pre>
+BASIS:
+ Te RSMH= 1.615 1.681 1.914 1.914 EH= -0.888 -0.288 -0.1 -0.1 P= 5.901 5.853 5.419 4.187
+ Bi RSMH= 1.674 1.867 1.904 1.904 EH= -0.842 -0.21 -0.1 -0.1 P= 6.896 6.817 6.267 5.199 5.089 </pre>
+First do this (not necessary unless you changed the valence-core paritioning since last running <b>lmfa</b>)
+<pre>
+  lmfa bi2te3      
+</pre>
+
+Next use <b>lmf</b> to make a band pass.  Since we aren't sure about the <i>k</i>-mesh, a good first thing
+to do is try calculating the total energy parameterically as a function of <i>k</i>.
+<pre>
+  lmf bi2te3 --rs=0,0 -vnit=1 -vnk=2
+  lmf bi2te3 --rs=0,0 -vnit=1 -vnk=3
+  lmf bi2te3 --rs=0,0 -vnit=1 -vnk=4
+  lmf bi2te3 --rs=0,0 -vnit=1 -vnk=5
+</pre>
+
+Click
+<A href="FPsamples/out.bi2te3.lmf.hf">here</A> to see the
+output for the <FONT size="+1"><tt>nk=4</tt></FONT> case.
+The output is described in some detail in the
+<A href="FPtutorial.html#selfconsistency">FP tutorial</A>.
+
+Some differences appear for the system we are considering here:
+
+<DL>
+
+<DD> &loz; at this we are only doing single iterations with overlapped
+free-atom densities, as we
+<A href="FPtutorial.html#lmf">initially did</A> in the FP tutorial.
+In this case we generate the
+<A href="FPsamples/out.bi2te3.lmf.hf#outrho">output density</A> but don't make use of it. <P>
+
+<DD> &loz; At least for this trial density (Mattheis construction), the
+     calculation predicts this system to be a narrow-gap <A href="FPsamples/out.bi2te3.lmf.hf#efermi">insulator</A>.
+     This is actually the case: Bi<sub>2</sub>Te<sub>3</sub> is very popular material today because it is
+     a narrow gap insulator that can be used as a thermoelectric or a topological insulator. <P>
+
+<DD> &loz; The initial
+<A href="FPsamples/out.bi2te3.lmf.hf#mixrho"><FONT size="+1"><tt>RMS DQ</tt></FONT></A>
+is larger than in <A href="FPsamples/out.al.lmf#mixrho">fcc Al</A>,
+and the difference between the Harris-Foulkes and Hohnberg-Kohn-Sham total energies
+much larger.  It indicates that the Mattheis construction is less good an
+estimate of the true density in this case.  Generally, the more heterogenous the
+compound, the less good the Mattheis construction.
+
+<BR> <FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> The H-F total energy is
+usually the more stable one; when you are not at self-consistency it is
+generally better to use it.  Also, usually (but not always) the HF total energy
+approaches the self-consistent energy from below, while the HK approaches it from above.<br><br>
+
+<DD> &loz; The total energies are large because no reference energy was subtracted.
+These energies include the core levels.
+
+</DL>
+
+<h3><A name="vextract"></A>Extracting data from the <FONT size="+1"><tt>save </tt></FONT> file with <FONT size="+1"><tt>vextract</tt></FONT></h3>
+
+File <FONT size="+1"><tt>save.<i>ext</i></tt></FONT> contains strings <FONT size="+1"><tt>var=<i>val</i></tt></FONT> for the following:
+<pre>
+  any variable that was declared on the command line or in the CMD category
+  mmom : the value is the calculated magnetic moment (magnetic calculations only)
+  ehf  : the Harris-Foulkes total energy
+  ehk  : the Hohnberg-Kohn-Sham total energy
+</pre>
+The first character on the line is a key that indicate the nature of the iteration:
+<pre>
+  h    : density constructed from overlapped atomic densities
+  i    : intermediate iteration, no yet self-consistent density
+  x    : last iteration, though density not yet self-consistent
+  c    : a self-consistent density
+  C    : a self-consistent density obtained after a converged lattice relaxation (molecular statics)
+</pre>
+
+<b>lmf</b> appends
+one line to <FONT size="+1"><tt>save.<i>ext</i></tt></FONT> for each evaluation of the total energy
+(as do other programs that calculate total energy: <b>lm</b>, <b>lmgf</b>, <b>tbe</b>, etc).
+
+<P> There is script <FONT size="+1"><tt>startup/vextract</tt></FONT>, designed to extract
+data from the <FONT size="+1"><tt>save</tt></FONT> file in a convenient manner.
+Invoke <FONT size="+1"><tt>vextract</tt></FONT> this way:
+<pre>  cat save-file | startup/vextract <i>key</i> var1 var2 ... </pre>
+<i>key</i> is a regular expression, and lines for which the first string match the key,
+<FONT size="+1"><tt>vextract</tt></FONT> takes to extract values associated with variables
+<FONT size="+1"><tt>var1, var2, ... </tt></FONT>.
+
+<P> In this case we can monitor the convergence of total energy with <i>k</i> mesh using
+<pre>  cat save.bi2te3 | startup/vextract . nk ehf ehk </pre>
+You should see the following:
+<pre>
+  2 -126808.2397819 -126808.1527195
+  3 -126808.3174489 -126808.2441246
+  4 -126808.3205093 -126808.245362
+  5 -126808.320225 -126808.2445382
+</pre>
+
+<h2><A name="selfconsistency"></A>Self-consistent LDA calculation</h2>
+
+From inspection of the Table, evidently <FONT size="+1"><tt>nk=2</tt></FONT> is too rough,
+while <FONT size="+1"><tt>nk=5</tt></FONT> is overkill unless you have a special purpose such as
+calculating <A href="siged-tutorial.html#SOcoupling.2">magnetocrystalline anisotropy</A>
+Here we use <FONT size="+1"><tt>nk=3</tt></FONT>, though
+after we reach self-consistency we might consider redoing it with <FONT size="+1"><tt>nk=4</tt></FONT>.
+
+<P><FONT size="+1"><tt>nk</tt></FONT> is already set to 3 in the <FONT size="+1"><tt>ctrl.bi2te3</tt></FONT> we use, so we iterate
+<b>lmf</b> for 20 iterations:
+<pre>
+  rm -f mixm.bi2te3
+  lmf bi2te3 -vnit=20
+</pre>
+
+Self-consistency is reached in
+<A href="FPsamples/out.bi2te3.lmf#mixrho">10 iterations</A>.
+
+The self-consistent total energy is <FONT size="+1"><tt>ehf=-126808.294867</tt></FONT>.
+Note that <FONT size="+1"><tt>ehf</tt></FONT> and <FONT size="+1"><tt>ehk</tt></FONT> merge
+to a common value 22 mRy <i>less</i> binding than the Harris-Foulkes energy of the Mattheis construction
+and 51 mRy <i>more</i> binding than the corresponding Kohn-Sham energy.  That
+the two initial functionals bracket the self-consistent result, and that the HF
+is generally closer to the final result than the HK functional, is typical behavior.
+
+<P> The <i>bandgap</i> decreased from
+<A href="FPsamples/out.bi2te3.lmf#efermi1">0.44 eV</A> (Mattheis construction)
+to <A href="FPsamples/out.bi2te3.lmf#efermin">0.22 eV</A> at self-consistency.
+That the Mattheis construction yields gaps larger than self-consistent ones is
+also typical behavior.
+
+<h3><A name="OptimizeRSMH"></A>Optimizing envelope function parameters</h3>
+
+The basis parameters <FONT size="+1"><tt>RSMH,EH</tt></FONT> were chosen to fit free-atom wave functions well.
+You can have <b>lmf</b> find better parameters, which it does by
+brute-force minimization of <FONT size="+1"><tt>ehf</tt></FONT>
+<pre>
+  lmf bi2te3 --optbas
+</pre>
+As a result of the optimization, <FONT size="+1"><tt>ehf</tt></FONT> dropped from
+<FONT size="+1"><tt>ehf=-126808.2949</tt></FONT> to <FONT size="+1"><tt>ehf=-126808.3094</tt></FONT>,
+a gain of 15 mRy, as can be seen from the
+<A href="FPsamples/out.bi2te3.lmf.optbas#end">output</A>.
+
+<P> Switch <FONT size="+1"><tt>--optbas</tt></FONT> varies only <FONT size="+1"><tt>RSMH</tt></FONT>.  You can do more things, e.g.:
+<pre>
+  lmf bi2te3 --optbas:sort:spec=Te,rs,e,l=0123:spec=Bi,rs,e,l=0123
+</pre>
+The latter optimizes both <FONT size="+1"><tt>RSMH</tt></FONT> and <FONT size="+1"><tt>EH</tt></FONT>
+for each <i>l</i> (<FONT size="+1"><tt>l=0123</tt></FONT>) and species in Bi<sub>2</sub>Te<sub>3</sub>.
+This fancier minimization gains 18 mRy --- better than 15 mRy but a minor improvement.
+If you let <b>lmfa</b> choose <FONT size="+1"><tt>EH</tt></FONT> from the free atom,
+generally little is gained from further optimization of it.  The situation is different for <FONT size="+1"><tt>RSMH</tt></FONT>:
+it controls the short range behavior of the envelope function whereas <FONT size="+1"><tt>EH</tt></FONT> controls the asymptotic behavior.
+
+<P> For more information about using <FONT size="+1"><tt>--optbas</tt></FONT> see
+<A href="FPoptbas.html">FPoptbas.html</A>.
+
+<P> In either case, <b>lmf</b> does not overwrite <FONT size="+1"><tt>basp.bi2te3</tt></FONT> but writes the updated
+parameters to <FONT size="+1"><tt>basp2.bi2te3</tt></FONT>.
+To redo the self-consistency with this tuned single-kappa basis set, do;
+<pre>
+  cp basp2.bi2te3 basp.bi2te3
+  rm mixm.bi2te3
+  lmf bi2te3 -vnit=20
+</pre>
+The density is not quite self-consistent in this new basis, but the difference between the initial an self-consistency density isn't large.
+The HF energy becomes slightly less bound (<FONT size="+1"><tt>ehf=-126808.3094</tt></FONT> &rarr; <FONT size="+1"><tt>-126808.3076</tt></FONT>).
+
+This is the best we can do at present without increasing the rank of the hamiltonian, which stands, at
+<A href="FPsamples/out.bi2te3.lmf.optbas#makidx">90</A> at present (5&times;16 <i>spdf</i> orbitals per atom, plus 10 local orbitals for the Bi 5<i>d</i>).
+
+<h3><A name="multikappa"></A>Multiple kappa basis</h3>
+
+We need not be restricted to a single <i>spd..</i> orbital per <i>l</i> channel.
+In LMTO language we call basis sets with more than one "multiple kappa" basis
+sets (corresponding to "double-&zeta;" basis sets in quantum chemistry
+language).  This is an effective way to improve on the quality of the
+hamiltonian, albeit at greater computational cost.
+
+<P> The simplest way to proceed is to repeat the
+<A href="#lmfa2">atomic calculation</A> but increase the basis set it autogenerates by changing
+<FONT size="+1"><tt>AUTOBAS</tt></FONT> to e.g.
+<pre>
+  AUTOBAS[PNU=1 LOC=1 LMTO=4 MTO=4 GW=0]
+</pre>
+With this configuration, <b>lmfa</b> generates the following for <FONT size="+1"><tt>basp0</tt></FONT>:
+<pre>
+BASIS:
+ Te RSMH= 1.615 1.681 1.914 1.914 EH= -0.1 -0.1 -0.1 -0.1 RSMH2= 1.615 1.681 1.914 EH2= -0.9 -0.9 -0.9 P= 5.901 5.853 5.419 4.187
+ Bi RSMH= 1.674 1.867 1.904 1.904 EH= -0.1 -0.1 -0.1 -0.1 RSMH2= 1.674 1.867 1.904 EH2= -0.9 -0.9 -0.9 P= 6.896 6.817 6.267 5.199 PZ= 0 0 15.936
+</pre>
+The basis is now <i>sdpfspd</i> for both Bi and Te, for a grand total of 135 orbitals.  Without bothering to optimize <FONT size="+1"><tt>RSMH</tt></FONT> the
+total energy drops to <FONT size="+1"><tt>ehf=-126808.3154</tt></FONT>, for a gain of 8 mRy relative to the optimized
+<i>sdpf</i> basis.  The bandgap remains unchanged at 0.22 eV.
+
+<P> You can now if you choose, optimize <FONT size="+1"><tt>RSMH</tt></FONT> for this enlarged <i>spdfspd</i> basis set, but it makes little difference in this case.
+In complex, especially polar materials, the additional optimization can improve matters some.
+
+<h3><A name="pmt"></A>Adding APW's: the PMT method</h3>
+
+The LMTO method is efficient, but there is no well controlled convergence
+procedure as exists in the APW method.  There is a facility to augment (or
+substitute) APW's to the generalized LMTO basis.  For most purposes the LMTO
+basis is good, but at times is useful to check whether your calculations are
+converged.  At times there is a slight underconvergence of the basis which can
+affect details.   This method offers significant advantages over the LAPW method
+because convergence can be achieved with far fewer basis functions.
+The theory and some demonstrations of its power can be found
+<A href="http://link.aps.org/doi/10.1103/PhysRevB.81.125117">in this paper</A>.
+
+<BR> <FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> The extra freedom the LAPW
+basis brings also brings a new set of hazards with it:  both LAPW and LMTO basis sets
+are covering similar hilbert spaces.  There can be a problem with overcompleteness if you
+make the LAPW basis too large.
+
+To mitigate the overcompleteness problem let's return to the optimized single-kappa basis set
+and eliminate the <i>f</i> orbital from it, which we can do by setting <FONT size="+1"><tt>RSMH=0</tt></FONT> for the <i>f</i> orbitals.
+Thus our <FONT size="+1"><tt>basp</tt></FONT> file looks like the following:
+<pre>
+BASIS:
+ Te RSMH= 1.615 1.62 1.914 2.87*0 EH= -0.888 -0.288 -0.1 -0.1 P= 5.903 5.823 5.25 4.122
+ Bi RSMH= 1.532 1.653 2.254 1.904*0 EH= -0.842 -0.21 -0.1 -0.1 P= 6.906 6.737 6.267 5.138 PZ= 0 0 15.942
+</pre>
+Note these lines in the <FONT size="+1"><tt>ctrl</tt></FONT> file:
+<pre>
+% const pwmode=0 pwemax=3
+HAM     AUTOBAS[PNU=1 LOC=1 LMTO=3 MTO=1 GW=0]  GMAX=8.1
+        PWMODE={pwmode} PWEMIN=0 PWEMAX={pwemax} OVEPS=0
+</pre>
+The PW part of the basis is turned on by
+setting <FONT size="+1"><tt>PWMODE</tt></FONT> to 1 or 11.
+<FONT size="+1"><tt>PWMODE=11</tt></FONT> is the proper construction (it makes a
+<i>k</i>-dependent basis exp[<i>i</i>(<b>k</b>+<b>G</b>)&middot;<b>r</b>]
+) and you should use it if you are going to compare total
+energies in different structures.
+<FONT size="+1"><tt>PWMODE=1</tt></FONT> uses the simpler, <i>k</i>-independent basis
+exp[<i>i</i><b>G</b>&middot;<b>r</b>].  While it is simpler, it can also be less reliable.
+It is not, for example, invariant with respect to rotation of the lattice.
+If <FONT size="+1"><tt>PWMODE</tt></FONT> is set, plane waves with energy between
+<FONT size="+1"><tt>PWEMIN</tt></FONT>
+and <FONT size="+1"><tt>PWEMAX</tt></FONT> are added to the basis.
+Note that <FONT size="+1"><tt>PWEMIN</tt></FONT> would always have to be zero in a conventional PW method.
+Usually we use zero as well, but this is not necessary.
+
+Thus we can turn on the PMT part of the basis by setting command-line variables <FONT size="+1"><tt>pwmode</tt></FONT> and <FONT size="+1"><tt>pwemax</tt></FONT>, e.g.
+<pre>  lmf ctrl.bi2te3 --iactiv --rs=1,0 -vpwmode=11 -vpwemax=5 -vnit=20 </pre>
+Doing self-consistent calculations as a function of <FONT size="+1"><tt>pwemax</tt></FONT> we find the following:
+<pre>
+pwemax rank     ehf
+  0     55  -126808.280168      &larr; generalized LMTO basis without <i>f</i> orbitals
+  1     84  -126808.293042               
+  2    120  -126808.301525 
+  3    164  -126808.311261 
+  4    223  -126808.318328 
+  5    287  -126808.320473 
+  ---
+  0     90  -126808.315362      &larr; 2-kappa generalized LMTO basis
+</pre>
+
+'<FONT size="+1"><tt>rank</tt></FONT>' signifies the upper bound to the
+hamiltonian dimension for a given <FONT size="+1"><tt>pwemax</tt></FONT>.  Going
+beyond <FONT size="+1"><tt>pwemax=5</tt></FONT> results in a nearly singular
+overlap matrix.  You can surmount the problem with some combination of the following:
+<UL>
+<LI>  Reduce further the number of LMTO basis functions in <FONT size="+1"><tt>basp.bi2te3</tt></FONT>
+<LI>  Reduce the size of the MT radius.
+<LI>  Set <FONT size="+1"><tt>HAM_OVEPS</tt></FONT> to a small number, e.g. <FONT size="+1"><tt>HAM_OVEPS=1e-8</tt></FONT> .
+      When this number is nonzero, the overlap matrix is diagonalized and the part of the hilbert space with
+      eigenvalues smaller than HAM_OVEPS is removed.
+      <br> <FONT color="#33bb00"><I>*Warning</I>&nbsp;</FONT> this trick becomes increasingly dodgy the more singular the overlap matrix is.
+</UL>
+The converged total energy seems to be near <FONT size="+1"><tt>-126808.3215</tt></FONT>.
+
+<P> The 2-kappa <FONT size="+1"><tt>LMTO</tt></FONT> basis thus misses about 6
+mRy in the total energy.  For most purposes this is not important.  Note also
+that the LMTO <i>f</i> orbitals are more efficient in converging the total energy per extra orbital added
+than plane waves are.
+
+<h3><A name="gw"></A>Input files for GW</h3>
+
+<i>GW</i> calculations demand more of the basis set because unuoccupied states are important.
+To setting up a job in preparation for a <i>GW</i> calculation, invoke <b>blm</b> as :
+  <pre>   blm --gw bi2te3  </pre>
+Compare <FONT size="+1"><tt>actrl.bi2te3</tt></FONT> generated with the <FONT size="+1"><tt>--gw</tt></FONT> switch to one without.
+One important difference will be that the default basis parameters are modified because <FONT size="+1"><tt>AUTOBAS</tt></FONT> becomes:
+<pre>
+  AUTOBAS[PNU=1 LOC=1 LMTO=5 MTO=4 GW=1]
+</pre>
+The basis is similar to <FONT size="+1"><tt>LMTO=4</tt></FONT> but <FONT size="+1"><tt>EH</tt></FONT> has been set a little deeper.
+This helps the QS<i>GW</i> implementation interpolate between <i>k</i>-points.
+The larger basis makes a minor difference to the valence bands; but the conduction
+bands change, especially the higher in energy you go.
+
+<P> Look also at this <A href="Demo_QSGW_Si.html">QS<i>GW</i> demo for Silicon</A>.
+
+<P> <FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> The GW implementation allows you to use
+plane waves, but the QS<i>GW</i> part of it does not, as yet.
+
+<h2><A name="energybands"></A>Comparing energy bands, minimal vs large basis</h2>
+
+If you have not gone through the tutorial on how to generate energy bands, you should
+do so before reading this section.
+
+<P> One way to see how the minimal basis set stacks up against the converged PMT
+one is to plot the energy bands of the two methods.  Self-consistent potentials
+were made for both minimal and PMT basis sets
+with <FONT size="+1"><tt>pwemax=5</tt></FONT>, as described <A href="#pmt">above</A>.
+
+<P> Energy bands were made as follows
+
+<pre>
+  cp doc/FPsamples/syml.bi2te3 .
+  lmf ctrl.bi2te3 --band:fn=syml                              minimal basis
+</pre>
+and with suitably modified <FONT size="+1"><tt>basp.bi2te3</tt></FONT> and <FONT size="+1"><tt>rst.bi2te3</tt></FONT>
+<pre>
+  cp doc/FPsamples/syml.bi2te3 .
+  lmf ctrl.bi2te3 -vpwmode=11 -vpwemax=5  --band:fn=syml      PMT  basis
+</pre>
+
+Bands were plotted using the <FONT size="+1"><tt>FPLOT</tt></FONT> package.
+
+<P>
+
+<IMG align="left" STYLE="WIDTH:3in; HEIGHT:3in" SRC="FPsamples/bands.bi2te3.1.jpg">
+<IMG align="right" STYLE="WIDTH:3in; HEIGHT:3in" SRC="FPsamples/bands.bi2te3.2.jpg">
+ The <i>left</i> figure shows bands plotted over an energy window <i>E</i><sub>F</sub> &plusmn; 6 eV.  The blue dashed lines correspond to the PMT basis;
+the red dotted line to the minimal basis.  It is evident that the two are nearly identical.
+
+<BR><BR>
+
+The <i>right</i> figure shows the same bands plotted over a window <i>E</i><sub>F</sub> &plusmn; 15 eV.  Above 8 eV or so, the two start to differ.
+</p>
+
+<BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR>
+<h2><A name="footnotes"></A>Notes</h2>
+
+<FN ID=actrl><P> The skeleton <FONT size="+1"><tt>ctrl</tt></FONT>
+file <b>blm</b> creates is named
+<FONT size="+1"><tt>actrl.<i>ext</i></tt></FONT>, so as not to
+overwrite any existing input file named
+<FONT size="+1"><tt>ctrl.<i>ext</i></tt></FONT>.
+This is in accordance with the principle that the main input file should 
+be modified only by you.
+
+
+<BR><BR><BR><BR><BR><BR><BR><BR>
+
+</HTML>

@@ -1,0 +1,62 @@
+ -----------------------  START LM  -----------------------
+
+ LM:       nbas = 4  nspec = 2  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, Q2:Power-moments
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 7.413673  Cell vol = 407.474337
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 7.41367   awald= 0.270   lmax=6
+         r1=  2.567   nkd= 81       q1=  2.995   nkg= 93
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(0,1,1)
+         i*r3d r2(0,1,1)
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH: 56 irreducible QP from 1000 ( 10 10 10 )  shift= F F F
+ TETIRR: sorting 6000 tetrahedra ... 492 inequivalent ones found
+
+ GETZV:  37 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ Mn        -0.119539   0.000000   0.072713  -0.012359  -0.759171
+ Pt         0.039847   0.000000  -0.024238   0.003007  -0.765337
+ Sum Q=0.000001  Emad=0.000918(-0.005795)  Vmtz=-0.763930 (up-dn=0.001885)
+ cpudel    ...   Time this iter:  time(s):  0.128    total:  0.128s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 64 0 0 0
+
+ --- BNDASA : iteration 1 (KKR-qout) ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 56, k=  0.00000  0.00000  0.00000
+ -0.8128 -0.6080 -0.5470 -0.5470 -0.5294 -0.5294 -0.5294 -0.2923 -0.2923
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 56, k=  0.00000  0.00000  0.00000
+ -0.8271 -0.6207 -0.5754 -0.5754 -0.5483 -0.5483 -0.5483 -0.3419 -0.3419
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.108400;  37.000000 electrons;  D(Ef):   43.855
+         Sum occ. bands:  -13.2112593  incl. Bloechl correction:   -0.003462
+         Mag. moment:      -4.184768
+
+ Saved qp weights ...
+
+ LM: ehf=-2.1574576  ehk=-2.1540042  sumev=-13.2112593  delsev=-0.1341236
+  
+ mixing: mode=B  beta=.6
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=8.76e-3
+ AMIX: nmix=0 mmix=8  nelts=64  beta=0.6  tm=10  rmsdel=8.76e-3
+h twoc=0 nit=1 ccor=0 gfmod=1 nk=10 ldmat=0 mmom=-4.1847681 ehf=-2.1574576 ehk=-2.1540042
+ Exit 0 LM:  quit = rho         
+ CPU time:  0.327s   Wall clock 0.362s  at  18:09:33 20.07.2018  on  ellery

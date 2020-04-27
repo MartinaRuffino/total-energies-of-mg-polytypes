@@ -1,0 +1,1596 @@
+  q+band index for zero?
+hqpe_sc: VerNum= 033a6: 20Nov2009
+  ... reading input sigma from file sigm
+  rwsigma: Reading sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1   0.00000   0.12500   0.12500
+  ===     3  1   0.00000   0.25000   0.25000
+  ===     4  1   0.00000   0.37500   0.37500
+  ===     5  1   0.00000   0.50000   0.50000
+  ===     6  1   0.12500   0.12500   0.25000
+  ===     7  1   0.12500   0.25000   0.37500
+  ===     8  1   0.12500   0.37500   0.50000
+  ===     9  1   0.25000   0.25000   0.50000
+  ===    10  1   0.25000   0.37500   0.62500
+  ===    11  1   0.25000   0.25000   0.25000
+  ===    12  1   0.25000   0.37500   0.37500
+  ===    13  1   0.25000   0.50000   0.50000
+  ===    14  1   0.25000   1.00000   1.00000
+  ===    15  1   0.37500   0.37500   0.50000
+  ===    16  1   0.37500   0.87500   1.00000
+  ===    17  1   0.50000   0.75000   1.00000
+  ===    18  1   0.50000   0.87500   1.12500
+  ===    19  1   0.62500   0.62500   1.00000
+  ===    20  1   0.62500   0.75000   1.12500
+  ===    21  1   0.75000   0.75000   1.25000
+  ===    22  1   0.50000   0.50000   0.50000
+  ===    23  1   0.50000   1.00000   1.00000
+  ===    24  1   0.62500   0.87500   1.00000
+  ===    25  1   0.75000   0.75000   1.00000
+  ===    26  1   0.75000   0.87500   1.12500
+  ===    27  1   0.75000   1.00000   1.00000
+  ===    28  1   0.87500   0.87500   1.00000
+  ===    29  1   1.00000   1.00000   1.00000
+  ===     1  2   0.00000   0.00000   0.00000
+  ===     2  2   0.00000   0.12500   0.12500
+  ===     3  2   0.00000   0.25000   0.25000
+  ===     4  2   0.00000   0.37500   0.37500
+  ===     5  2   0.00000   0.50000   0.50000
+  ===     6  2   0.12500   0.12500   0.25000
+  ===     7  2   0.12500   0.25000   0.37500
+  ===     8  2   0.12500   0.37500   0.50000
+  ===     9  2   0.25000   0.25000   0.50000
+  ===    10  2   0.25000   0.37500   0.62500
+  ===    11  2   0.25000   0.25000   0.25000
+  ===    12  2   0.25000   0.37500   0.37500
+  ===    13  2   0.25000   0.50000   0.50000
+  ===    14  2   0.25000   1.00000   1.00000
+  ===    15  2   0.37500   0.37500   0.50000
+  ===    16  2   0.37500   0.87500   1.00000
+  ===    17  2   0.50000   0.75000   1.00000
+  ===    18  2   0.50000   0.87500   1.12500
+  ===    19  2   0.62500   0.62500   1.00000
+  ===    20  2   0.62500   0.75000   1.12500
+  ===    21  2   0.75000   0.75000   1.25000
+  ===    22  2   0.50000   0.50000   0.50000
+  ===    23  2   0.50000   1.00000   1.00000
+  ===    24  2   0.62500   0.87500   1.00000
+  ===    25  2   0.75000   0.75000   1.00000
+  ===    26  2   0.75000   0.87500   1.12500
+  ===    27  2   0.75000   1.00000   1.00000
+  ===    28  2   0.87500   0.87500   1.00000
+  ===    29  2   1.00000   1.00000   1.00000
+  === rwsigma:  sum check of sigma_m=   958.557865694975     
+ 
+  ... read successful: eseavr =  0.129623127960094       0.141300747597366     
+ readin nout=           1
+  iSigma_en=           3
+  ndimh ntq nsp nnn =          30          30           2         512
+  reading v_xc ... iq is nz=           1           1          30
+  reading v_xc ... iq is nz=           1           2          30
+  reading v_xc ... iq is nz=           2           1          30
+  reading v_xc ... iq is nz=           2           2          30
+  reading v_xc ... iq is nz=           3           1          30
+  reading v_xc ... iq is nz=           3           2          30
+  reading v_xc ... iq is nz=           4           1          30
+  reading v_xc ... iq is nz=           4           2          30
+  reading v_xc ... iq is nz=           5           1          30
+  reading v_xc ... iq is nz=           5           2          30
+  reading v_xc ... iq is nz=           6           1          30
+  reading v_xc ... iq is nz=           6           2          30
+  reading v_xc ... iq is nz=           7           1          30
+  reading v_xc ... iq is nz=           7           2          30
+  reading v_xc ... iq is nz=           8           1          30
+  reading v_xc ... iq is nz=           8           2          30
+  reading v_xc ... iq is nz=           9           1          30
+  reading v_xc ... iq is nz=           9           2          30
+  reading v_xc ... iq is nz=          10           1          30
+  reading v_xc ... iq is nz=          10           2          30
+  reading v_xc ... iq is nz=          11           1          30
+  reading v_xc ... iq is nz=          11           2          30
+  reading v_xc ... iq is nz=          12           1          30
+  reading v_xc ... iq is nz=          12           2          30
+  reading v_xc ... iq is nz=          13           1          30
+  reading v_xc ... iq is nz=          13           2          30
+  reading v_xc ... iq is nz=          14           1          30
+  reading v_xc ... iq is nz=          14           2          30
+  reading v_xc ... iq is nz=          15           1          30
+  reading v_xc ... iq is nz=          15           2          30
+  reading v_xc ... iq is nz=          16           1          30
+  reading v_xc ... iq is nz=          16           2          30
+  reading v_xc ... iq is nz=          17           1          30
+  reading v_xc ... iq is nz=          17           2          30
+  reading v_xc ... iq is nz=          18           1          30
+  reading v_xc ... iq is nz=          18           2          30
+  reading v_xc ... iq is nz=          19           1          30
+  reading v_xc ... iq is nz=          19           2          30
+  reading v_xc ... iq is nz=          20           1          30
+  reading v_xc ... iq is nz=          20           2          30
+  reading v_xc ... iq is nz=          21           1          30
+  reading v_xc ... iq is nz=          21           2          30
+  reading v_xc ... iq is nz=          22           1          30
+  reading v_xc ... iq is nz=          22           2          30
+  reading v_xc ... iq is nz=          23           1          30
+  reading v_xc ... iq is nz=          23           2          30
+  reading v_xc ... iq is nz=          24           1          30
+  reading v_xc ... iq is nz=          24           2          30
+  reading v_xc ... iq is nz=          25           1          30
+  reading v_xc ... iq is nz=          25           2          30
+  reading v_xc ... iq is nz=          26           1          30
+  reading v_xc ... iq is nz=          26           2          30
+  reading v_xc ... iq is nz=          27           1          30
+  reading v_xc ... iq is nz=          27           2          30
+  reading v_xc ... iq is nz=          28           1          30
+  reading v_xc ... iq is nz=          28           2          30
+  reading v_xc ... iq is nz=          29           1          30
+  reading v_xc ... iq is nz=          29           2          30
+  reading v_xc ... iq is nz=          30           1          30
+  reading v_xc ... iq is nz=          30           2          30
+  reading v_xc ... iq is nz=          31           1          30
+  reading v_xc ... iq is nz=          31           2          30
+  reading v_xc ... iq is nz=          32           1          30
+  reading v_xc ... iq is nz=          32           2          30
+  reading v_xc ... iq is nz=          33           1          30
+  reading v_xc ... iq is nz=          33           2          30
+  reading v_xc ... iq is nz=          34           1          30
+  reading v_xc ... iq is nz=          34           2          30
+  reading v_xc ... iq is nz=          35           1          30
+  reading v_xc ... iq is nz=          35           2          30
+  reading v_xc ... iq is nz=          36           1          30
+  reading v_xc ... iq is nz=          36           2          30
+  reading v_xc ... iq is nz=          37           1          30
+  reading v_xc ... iq is nz=          37           2          30
+  reading v_xc ... iq is nz=          38           1          30
+  reading v_xc ... iq is nz=          38           2          30
+  reading v_xc ... iq is nz=          39           1          30
+  reading v_xc ... iq is nz=          39           2          30
+  reading v_xc ... iq is nz=          40           1          30
+  reading v_xc ... iq is nz=          40           2          30
+  reading v_xc ... iq is nz=          41           1          30
+  reading v_xc ... iq is nz=          41           2          30
+  reading v_xc ... iq is nz=          42           1          30
+  reading v_xc ... iq is nz=          42           2          30
+  reading v_xc ... iq is nz=          43           1          30
+  reading v_xc ... iq is nz=          43           2          30
+  reading v_xc ... iq is nz=          44           1          30
+  reading v_xc ... iq is nz=          44           2          30
+  reading v_xc ... iq is nz=          45           1          30
+  reading v_xc ... iq is nz=          45           2          30
+  reading v_xc ... iq is nz=          46           1          30
+  reading v_xc ... iq is nz=          46           2          30
+  reading v_xc ... iq is nz=          47           1          30
+  reading v_xc ... iq is nz=          47           2          30
+  reading v_xc ... iq is nz=          48           1          30
+  reading v_xc ... iq is nz=          48           2          30
+  reading v_xc ... iq is nz=          49           1          30
+  reading v_xc ... iq is nz=          49           2          30
+  reading v_xc ... iq is nz=          50           1          30
+  reading v_xc ... iq is nz=          50           2          30
+  reading v_xc ... iq is nz=          51           1          30
+  reading v_xc ... iq is nz=          51           2          30
+  reading v_xc ... iq is nz=          52           1          30
+  reading v_xc ... iq is nz=          52           2          30
+  reading v_xc ... iq is nz=          53           1          30
+  reading v_xc ... iq is nz=          53           2          30
+  reading v_xc ... iq is nz=          54           1          30
+  reading v_xc ... iq is nz=          54           2          30
+  reading v_xc ... iq is nz=          55           1          30
+  reading v_xc ... iq is nz=          55           2          30
+  reading v_xc ... iq is nz=          56           1          30
+  reading v_xc ... iq is nz=          56           2          30
+  reading v_xc ... iq is nz=          57           1          30
+  reading v_xc ... iq is nz=          57           2          30
+  reading v_xc ... iq is nz=          58           1          30
+  reading v_xc ... iq is nz=          58           2          30
+  reading v_xc ... iq is nz=          59           1          30
+  reading v_xc ... iq is nz=          59           2          30
+  reading v_xc ... iq is nz=          60           1          30
+  reading v_xc ... iq is nz=          60           2          30
+  reading v_xc ... iq is nz=          61           1          30
+  reading v_xc ... iq is nz=          61           2          30
+  reading v_xc ... iq is nz=          62           1          30
+  reading v_xc ... iq is nz=          62           2          30
+  reading v_xc ... iq is nz=          63           1          30
+  reading v_xc ... iq is nz=          63           2          30
+  reading v_xc ... iq is nz=          64           1          30
+  reading v_xc ... iq is nz=          64           2          30
+  reading v_xc ... iq is nz=          65           1          30
+  reading v_xc ... iq is nz=          65           2          30
+  reading v_xc ... iq is nz=          66           1          30
+  reading v_xc ... iq is nz=          66           2          30
+  reading v_xc ... iq is nz=          67           1          30
+  reading v_xc ... iq is nz=          67           2          30
+  reading v_xc ... iq is nz=          68           1          30
+  reading v_xc ... iq is nz=          68           2          30
+  reading v_xc ... iq is nz=          69           1          30
+  reading v_xc ... iq is nz=          69           2          30
+  reading v_xc ... iq is nz=          70           1          30
+  reading v_xc ... iq is nz=          70           2          30
+  reading v_xc ... iq is nz=          71           1          30
+  reading v_xc ... iq is nz=          71           2          30
+  reading v_xc ... iq is nz=          72           1          30
+  reading v_xc ... iq is nz=          72           2          30
+  reading v_xc ... iq is nz=          73           1          30
+  reading v_xc ... iq is nz=          73           2          30
+  reading v_xc ... iq is nz=          74           1          30
+  reading v_xc ... iq is nz=          74           2          30
+  reading v_xc ... iq is nz=          75           1          30
+  reading v_xc ... iq is nz=          75           2          30
+  reading v_xc ... iq is nz=          76           1          30
+  reading v_xc ... iq is nz=          76           2          30
+  reading v_xc ... iq is nz=          77           1          30
+  reading v_xc ... iq is nz=          77           2          30
+  reading v_xc ... iq is nz=          78           1          30
+  reading v_xc ... iq is nz=          78           2          30
+  reading v_xc ... iq is nz=          79           1          30
+  reading v_xc ... iq is nz=          79           2          30
+  reading v_xc ... iq is nz=          80           1          30
+  reading v_xc ... iq is nz=          80           2          30
+  reading v_xc ... iq is nz=          81           1          30
+  reading v_xc ... iq is nz=          81           2          30
+  reading v_xc ... iq is nz=          82           1          30
+  reading v_xc ... iq is nz=          82           2          30
+  reading v_xc ... iq is nz=          83           1          30
+  reading v_xc ... iq is nz=          83           2          30
+  reading v_xc ... iq is nz=          84           1          30
+  reading v_xc ... iq is nz=          84           2          30
+  reading v_xc ... iq is nz=          85           1          30
+  reading v_xc ... iq is nz=          85           2          30
+  reading v_xc ... iq is nz=          86           1          30
+  reading v_xc ... iq is nz=          86           2          30
+  reading v_xc ... iq is nz=          87           1          30
+  reading v_xc ... iq is nz=          87           2          30
+  reading v_xc ... iq is nz=          88           1          30
+  reading v_xc ... iq is nz=          88           2          30
+  reading v_xc ... iq is nz=          89           1          30
+  reading v_xc ... iq is nz=          89           2          30
+  reading v_xc ... iq is nz=          90           1          30
+  reading v_xc ... iq is nz=          90           2          30
+  reading v_xc ... iq is nz=          91           1          30
+  reading v_xc ... iq is nz=          91           2          30
+  reading v_xc ... iq is nz=          92           1          30
+  reading v_xc ... iq is nz=          92           2          30
+  reading v_xc ... iq is nz=          93           1          30
+  reading v_xc ... iq is nz=          93           2          30
+  reading v_xc ... iq is nz=          94           1          30
+  reading v_xc ... iq is nz=          94           2          30
+  reading v_xc ... iq is nz=          95           1          30
+  reading v_xc ... iq is nz=          95           2          30
+  reading v_xc ... iq is nz=          96           1          30
+  reading v_xc ... iq is nz=          96           2          30
+  reading v_xc ... iq is nz=          97           1          30
+  reading v_xc ... iq is nz=          97           2          30
+  reading v_xc ... iq is nz=          98           1          30
+  reading v_xc ... iq is nz=          98           2          30
+  reading v_xc ... iq is nz=          99           1          30
+  reading v_xc ... iq is nz=          99           2          30
+  reading v_xc ... iq is nz=         100           1          30
+  reading v_xc ... iq is nz=         100           2          30
+  reading v_xc ... iq is nz=         101           1          30
+  reading v_xc ... iq is nz=         101           2          30
+  reading v_xc ... iq is nz=         102           1          30
+  reading v_xc ... iq is nz=         102           2          30
+  reading v_xc ... iq is nz=         103           1          30
+  reading v_xc ... iq is nz=         103           2          30
+  reading v_xc ... iq is nz=         104           1          30
+  reading v_xc ... iq is nz=         104           2          30
+  reading v_xc ... iq is nz=         105           1          30
+  reading v_xc ... iq is nz=         105           2          30
+  reading v_xc ... iq is nz=         106           1          30
+  reading v_xc ... iq is nz=         106           2          30
+  reading v_xc ... iq is nz=         107           1          30
+  reading v_xc ... iq is nz=         107           2          30
+  reading v_xc ... iq is nz=         108           1          30
+  reading v_xc ... iq is nz=         108           2          30
+  reading v_xc ... iq is nz=         109           1          30
+  reading v_xc ... iq is nz=         109           2          30
+  reading v_xc ... iq is nz=         110           1          30
+  reading v_xc ... iq is nz=         110           2          30
+  reading v_xc ... iq is nz=         111           1          30
+  reading v_xc ... iq is nz=         111           2          30
+  reading v_xc ... iq is nz=         112           1          30
+  reading v_xc ... iq is nz=         112           2          30
+  reading v_xc ... iq is nz=         113           1          30
+  reading v_xc ... iq is nz=         113           2          30
+  reading v_xc ... iq is nz=         114           1          30
+  reading v_xc ... iq is nz=         114           2          30
+  reading v_xc ... iq is nz=         115           1          30
+  reading v_xc ... iq is nz=         115           2          30
+  reading v_xc ... iq is nz=         116           1          30
+  reading v_xc ... iq is nz=         116           2          30
+  reading v_xc ... iq is nz=         117           1          30
+  reading v_xc ... iq is nz=         117           2          30
+  reading v_xc ... iq is nz=         118           1          30
+  reading v_xc ... iq is nz=         118           2          30
+  reading v_xc ... iq is nz=         119           1          30
+  reading v_xc ... iq is nz=         119           2          30
+  reading v_xc ... iq is nz=         120           1          30
+  reading v_xc ... iq is nz=         120           2          30
+  reading v_xc ... iq is nz=         121           1          30
+  reading v_xc ... iq is nz=         121           2          30
+  reading v_xc ... iq is nz=         122           1          30
+  reading v_xc ... iq is nz=         122           2          30
+  reading v_xc ... iq is nz=         123           1          30
+  reading v_xc ... iq is nz=         123           2          30
+  reading v_xc ... iq is nz=         124           1          30
+  reading v_xc ... iq is nz=         124           2          30
+  reading v_xc ... iq is nz=         125           1          30
+  reading v_xc ... iq is nz=         125           2          30
+  reading v_xc ... iq is nz=         126           1          30
+  reading v_xc ... iq is nz=         126           2          30
+  reading v_xc ... iq is nz=         127           1          30
+  reading v_xc ... iq is nz=         127           2          30
+  reading v_xc ... iq is nz=         128           1          30
+  reading v_xc ... iq is nz=         128           2          30
+  reading v_xc ... iq is nz=         129           1          30
+  reading v_xc ... iq is nz=         129           2          30
+  reading v_xc ... iq is nz=         130           1          30
+  reading v_xc ... iq is nz=         130           2          30
+  reading v_xc ... iq is nz=         131           1          30
+  reading v_xc ... iq is nz=         131           2          30
+  reading v_xc ... iq is nz=         132           1          30
+  reading v_xc ... iq is nz=         132           2          30
+  reading v_xc ... iq is nz=         133           1          30
+  reading v_xc ... iq is nz=         133           2          30
+  reading v_xc ... iq is nz=         134           1          30
+  reading v_xc ... iq is nz=         134           2          30
+  reading v_xc ... iq is nz=         135           1          30
+  reading v_xc ... iq is nz=         135           2          30
+  reading v_xc ... iq is nz=         136           1          30
+  reading v_xc ... iq is nz=         136           2          30
+  reading v_xc ... iq is nz=         137           1          30
+  reading v_xc ... iq is nz=         137           2          30
+  reading v_xc ... iq is nz=         138           1          30
+  reading v_xc ... iq is nz=         138           2          30
+  reading v_xc ... iq is nz=         139           1          30
+  reading v_xc ... iq is nz=         139           2          30
+  reading v_xc ... iq is nz=         140           1          30
+  reading v_xc ... iq is nz=         140           2          30
+  reading v_xc ... iq is nz=         141           1          30
+  reading v_xc ... iq is nz=         141           2          30
+  reading v_xc ... iq is nz=         142           1          30
+  reading v_xc ... iq is nz=         142           2          30
+  reading v_xc ... iq is nz=         143           1          30
+  reading v_xc ... iq is nz=         143           2          30
+  reading v_xc ... iq is nz=         144           1          30
+  reading v_xc ... iq is nz=         144           2          30
+  reading v_xc ... iq is nz=         145           1          30
+  reading v_xc ... iq is nz=         145           2          30
+  reading v_xc ... iq is nz=         146           1          30
+  reading v_xc ... iq is nz=         146           2          30
+  reading v_xc ... iq is nz=         147           1          30
+  reading v_xc ... iq is nz=         147           2          30
+  reading v_xc ... iq is nz=         148           1          30
+  reading v_xc ... iq is nz=         148           2          30
+  reading v_xc ... iq is nz=         149           1          30
+  reading v_xc ... iq is nz=         149           2          30
+  reading v_xc ... iq is nz=         150           1          30
+  reading v_xc ... iq is nz=         150           2          30
+  reading v_xc ... iq is nz=         151           1          30
+  reading v_xc ... iq is nz=         151           2          30
+  reading v_xc ... iq is nz=         152           1          30
+  reading v_xc ... iq is nz=         152           2          30
+  reading v_xc ... iq is nz=         153           1          30
+  reading v_xc ... iq is nz=         153           2          30
+  reading v_xc ... iq is nz=         154           1          30
+  reading v_xc ... iq is nz=         154           2          30
+  reading v_xc ... iq is nz=         155           1          30
+  reading v_xc ... iq is nz=         155           2          30
+  reading v_xc ... iq is nz=         156           1          30
+  reading v_xc ... iq is nz=         156           2          30
+  reading v_xc ... iq is nz=         157           1          30
+  reading v_xc ... iq is nz=         157           2          30
+  reading v_xc ... iq is nz=         158           1          30
+  reading v_xc ... iq is nz=         158           2          30
+  reading v_xc ... iq is nz=         159           1          30
+  reading v_xc ... iq is nz=         159           2          30
+  reading v_xc ... iq is nz=         160           1          30
+  reading v_xc ... iq is nz=         160           2          30
+  reading v_xc ... iq is nz=         161           1          30
+  reading v_xc ... iq is nz=         161           2          30
+  reading v_xc ... iq is nz=         162           1          30
+  reading v_xc ... iq is nz=         162           2          30
+  reading v_xc ... iq is nz=         163           1          30
+  reading v_xc ... iq is nz=         163           2          30
+  reading v_xc ... iq is nz=         164           1          30
+  reading v_xc ... iq is nz=         164           2          30
+  reading v_xc ... iq is nz=         165           1          30
+  reading v_xc ... iq is nz=         165           2          30
+  reading v_xc ... iq is nz=         166           1          30
+  reading v_xc ... iq is nz=         166           2          30
+  reading v_xc ... iq is nz=         167           1          30
+  reading v_xc ... iq is nz=         167           2          30
+  reading v_xc ... iq is nz=         168           1          30
+  reading v_xc ... iq is nz=         168           2          30
+  reading v_xc ... iq is nz=         169           1          30
+  reading v_xc ... iq is nz=         169           2          30
+  reading v_xc ... iq is nz=         170           1          30
+  reading v_xc ... iq is nz=         170           2          30
+  reading v_xc ... iq is nz=         171           1          30
+  reading v_xc ... iq is nz=         171           2          30
+  reading v_xc ... iq is nz=         172           1          30
+  reading v_xc ... iq is nz=         172           2          30
+  reading v_xc ... iq is nz=         173           1          30
+  reading v_xc ... iq is nz=         173           2          30
+  reading v_xc ... iq is nz=         174           1          30
+  reading v_xc ... iq is nz=         174           2          30
+  reading v_xc ... iq is nz=         175           1          30
+  reading v_xc ... iq is nz=         175           2          30
+  reading v_xc ... iq is nz=         176           1          30
+  reading v_xc ... iq is nz=         176           2          30
+  reading v_xc ... iq is nz=         177           1          30
+  reading v_xc ... iq is nz=         177           2          30
+  reading v_xc ... iq is nz=         178           1          30
+  reading v_xc ... iq is nz=         178           2          30
+  reading v_xc ... iq is nz=         179           1          30
+  reading v_xc ... iq is nz=         179           2          30
+  reading v_xc ... iq is nz=         180           1          30
+  reading v_xc ... iq is nz=         180           2          30
+  reading v_xc ... iq is nz=         181           1          30
+  reading v_xc ... iq is nz=         181           2          30
+  reading v_xc ... iq is nz=         182           1          30
+  reading v_xc ... iq is nz=         182           2          30
+  reading v_xc ... iq is nz=         183           1          30
+  reading v_xc ... iq is nz=         183           2          30
+  reading v_xc ... iq is nz=         184           1          30
+  reading v_xc ... iq is nz=         184           2          30
+  reading v_xc ... iq is nz=         185           1          30
+  reading v_xc ... iq is nz=         185           2          30
+  reading v_xc ... iq is nz=         186           1          30
+  reading v_xc ... iq is nz=         186           2          30
+  reading v_xc ... iq is nz=         187           1          30
+  reading v_xc ... iq is nz=         187           2          30
+  reading v_xc ... iq is nz=         188           1          30
+  reading v_xc ... iq is nz=         188           2          30
+  reading v_xc ... iq is nz=         189           1          30
+  reading v_xc ... iq is nz=         189           2          30
+  reading v_xc ... iq is nz=         190           1          30
+  reading v_xc ... iq is nz=         190           2          30
+  reading v_xc ... iq is nz=         191           1          30
+  reading v_xc ... iq is nz=         191           2          30
+  reading v_xc ... iq is nz=         192           1          30
+  reading v_xc ... iq is nz=         192           2          30
+  reading v_xc ... iq is nz=         193           1          30
+  reading v_xc ... iq is nz=         193           2          30
+  reading v_xc ... iq is nz=         194           1          30
+  reading v_xc ... iq is nz=         194           2          30
+  reading v_xc ... iq is nz=         195           1          30
+  reading v_xc ... iq is nz=         195           2          30
+  reading v_xc ... iq is nz=         196           1          30
+  reading v_xc ... iq is nz=         196           2          30
+  reading v_xc ... iq is nz=         197           1          30
+  reading v_xc ... iq is nz=         197           2          30
+  reading v_xc ... iq is nz=         198           1          30
+  reading v_xc ... iq is nz=         198           2          30
+  reading v_xc ... iq is nz=         199           1          30
+  reading v_xc ... iq is nz=         199           2          30
+  reading v_xc ... iq is nz=         200           1          30
+  reading v_xc ... iq is nz=         200           2          30
+  reading v_xc ... iq is nz=         201           1          30
+  reading v_xc ... iq is nz=         201           2          30
+  reading v_xc ... iq is nz=         202           1          30
+  reading v_xc ... iq is nz=         202           2          30
+  reading v_xc ... iq is nz=         203           1          30
+  reading v_xc ... iq is nz=         203           2          30
+  reading v_xc ... iq is nz=         204           1          30
+  reading v_xc ... iq is nz=         204           2          30
+  reading v_xc ... iq is nz=         205           1          30
+  reading v_xc ... iq is nz=         205           2          30
+  reading v_xc ... iq is nz=         206           1          30
+  reading v_xc ... iq is nz=         206           2          30
+  reading v_xc ... iq is nz=         207           1          30
+  reading v_xc ... iq is nz=         207           2          30
+  reading v_xc ... iq is nz=         208           1          30
+  reading v_xc ... iq is nz=         208           2          30
+  reading v_xc ... iq is nz=         209           1          30
+  reading v_xc ... iq is nz=         209           2          30
+  reading v_xc ... iq is nz=         210           1          30
+  reading v_xc ... iq is nz=         210           2          30
+  reading v_xc ... iq is nz=         211           1          30
+  reading v_xc ... iq is nz=         211           2          30
+  reading v_xc ... iq is nz=         212           1          30
+  reading v_xc ... iq is nz=         212           2          30
+  reading v_xc ... iq is nz=         213           1          30
+  reading v_xc ... iq is nz=         213           2          30
+  reading v_xc ... iq is nz=         214           1          30
+  reading v_xc ... iq is nz=         214           2          30
+  reading v_xc ... iq is nz=         215           1          30
+  reading v_xc ... iq is nz=         215           2          30
+  reading v_xc ... iq is nz=         216           1          30
+  reading v_xc ... iq is nz=         216           2          30
+  reading v_xc ... iq is nz=         217           1          30
+  reading v_xc ... iq is nz=         217           2          30
+  reading v_xc ... iq is nz=         218           1          30
+  reading v_xc ... iq is nz=         218           2          30
+  reading v_xc ... iq is nz=         219           1          30
+  reading v_xc ... iq is nz=         219           2          30
+  reading v_xc ... iq is nz=         220           1          30
+  reading v_xc ... iq is nz=         220           2          30
+  reading v_xc ... iq is nz=         221           1          30
+  reading v_xc ... iq is nz=         221           2          30
+  reading v_xc ... iq is nz=         222           1          30
+  reading v_xc ... iq is nz=         222           2          30
+  reading v_xc ... iq is nz=         223           1          30
+  reading v_xc ... iq is nz=         223           2          30
+  reading v_xc ... iq is nz=         224           1          30
+  reading v_xc ... iq is nz=         224           2          30
+  reading v_xc ... iq is nz=         225           1          30
+  reading v_xc ... iq is nz=         225           2          30
+  reading v_xc ... iq is nz=         226           1          30
+  reading v_xc ... iq is nz=         226           2          30
+  reading v_xc ... iq is nz=         227           1          30
+  reading v_xc ... iq is nz=         227           2          30
+  reading v_xc ... iq is nz=         228           1          30
+  reading v_xc ... iq is nz=         228           2          30
+  reading v_xc ... iq is nz=         229           1          30
+  reading v_xc ... iq is nz=         229           2          30
+  reading v_xc ... iq is nz=         230           1          30
+  reading v_xc ... iq is nz=         230           2          30
+  reading v_xc ... iq is nz=         231           1          30
+  reading v_xc ... iq is nz=         231           2          30
+  reading v_xc ... iq is nz=         232           1          30
+  reading v_xc ... iq is nz=         232           2          30
+  reading v_xc ... iq is nz=         233           1          30
+  reading v_xc ... iq is nz=         233           2          30
+  reading v_xc ... iq is nz=         234           1          30
+  reading v_xc ... iq is nz=         234           2          30
+  reading v_xc ... iq is nz=         235           1          30
+  reading v_xc ... iq is nz=         235           2          30
+  reading v_xc ... iq is nz=         236           1          30
+  reading v_xc ... iq is nz=         236           2          30
+  reading v_xc ... iq is nz=         237           1          30
+  reading v_xc ... iq is nz=         237           2          30
+  reading v_xc ... iq is nz=         238           1          30
+  reading v_xc ... iq is nz=         238           2          30
+  reading v_xc ... iq is nz=         239           1          30
+  reading v_xc ... iq is nz=         239           2          30
+  reading v_xc ... iq is nz=         240           1          30
+  reading v_xc ... iq is nz=         240           2          30
+  reading v_xc ... iq is nz=         241           1          30
+  reading v_xc ... iq is nz=         241           2          30
+  reading v_xc ... iq is nz=         242           1          30
+  reading v_xc ... iq is nz=         242           2          30
+  reading v_xc ... iq is nz=         243           1          30
+  reading v_xc ... iq is nz=         243           2          30
+  reading v_xc ... iq is nz=         244           1          30
+  reading v_xc ... iq is nz=         244           2          30
+  reading v_xc ... iq is nz=         245           1          30
+  reading v_xc ... iq is nz=         245           2          30
+  reading v_xc ... iq is nz=         246           1          30
+  reading v_xc ... iq is nz=         246           2          30
+  reading v_xc ... iq is nz=         247           1          30
+  reading v_xc ... iq is nz=         247           2          30
+  reading v_xc ... iq is nz=         248           1          30
+  reading v_xc ... iq is nz=         248           2          30
+  reading v_xc ... iq is nz=         249           1          30
+  reading v_xc ... iq is nz=         249           2          30
+  reading v_xc ... iq is nz=         250           1          30
+  reading v_xc ... iq is nz=         250           2          30
+  reading v_xc ... iq is nz=         251           1          30
+  reading v_xc ... iq is nz=         251           2          30
+  reading v_xc ... iq is nz=         252           1          30
+  reading v_xc ... iq is nz=         252           2          30
+  reading v_xc ... iq is nz=         253           1          30
+  reading v_xc ... iq is nz=         253           2          30
+  reading v_xc ... iq is nz=         254           1          30
+  reading v_xc ... iq is nz=         254           2          30
+  reading v_xc ... iq is nz=         255           1          30
+  reading v_xc ... iq is nz=         255           2          30
+  reading v_xc ... iq is nz=         256           1          30
+  reading v_xc ... iq is nz=         256           2          30
+  reading v_xc ... iq is nz=         257           1          30
+  reading v_xc ... iq is nz=         257           2          30
+  reading v_xc ... iq is nz=         258           1          30
+  reading v_xc ... iq is nz=         258           2          30
+  reading v_xc ... iq is nz=         259           1          30
+  reading v_xc ... iq is nz=         259           2          30
+  reading v_xc ... iq is nz=         260           1          30
+  reading v_xc ... iq is nz=         260           2          30
+  reading v_xc ... iq is nz=         261           1          30
+  reading v_xc ... iq is nz=         261           2          30
+  reading v_xc ... iq is nz=         262           1          30
+  reading v_xc ... iq is nz=         262           2          30
+  reading v_xc ... iq is nz=         263           1          30
+  reading v_xc ... iq is nz=         263           2          30
+  reading v_xc ... iq is nz=         264           1          30
+  reading v_xc ... iq is nz=         264           2          30
+  reading v_xc ... iq is nz=         265           1          30
+  reading v_xc ... iq is nz=         265           2          30
+  reading v_xc ... iq is nz=         266           1          30
+  reading v_xc ... iq is nz=         266           2          30
+  reading v_xc ... iq is nz=         267           1          30
+  reading v_xc ... iq is nz=         267           2          30
+  reading v_xc ... iq is nz=         268           1          30
+  reading v_xc ... iq is nz=         268           2          30
+  reading v_xc ... iq is nz=         269           1          30
+  reading v_xc ... iq is nz=         269           2          30
+  reading v_xc ... iq is nz=         270           1          30
+  reading v_xc ... iq is nz=         270           2          30
+  reading v_xc ... iq is nz=         271           1          30
+  reading v_xc ... iq is nz=         271           2          30
+  reading v_xc ... iq is nz=         272           1          30
+  reading v_xc ... iq is nz=         272           2          30
+  reading v_xc ... iq is nz=         273           1          30
+  reading v_xc ... iq is nz=         273           2          30
+  reading v_xc ... iq is nz=         274           1          30
+  reading v_xc ... iq is nz=         274           2          30
+  reading v_xc ... iq is nz=         275           1          30
+  reading v_xc ... iq is nz=         275           2          30
+  reading v_xc ... iq is nz=         276           1          30
+  reading v_xc ... iq is nz=         276           2          30
+  reading v_xc ... iq is nz=         277           1          30
+  reading v_xc ... iq is nz=         277           2          30
+  reading v_xc ... iq is nz=         278           1          30
+  reading v_xc ... iq is nz=         278           2          30
+  reading v_xc ... iq is nz=         279           1          30
+  reading v_xc ... iq is nz=         279           2          30
+  reading v_xc ... iq is nz=         280           1          30
+  reading v_xc ... iq is nz=         280           2          30
+  reading v_xc ... iq is nz=         281           1          30
+  reading v_xc ... iq is nz=         281           2          30
+  reading v_xc ... iq is nz=         282           1          30
+  reading v_xc ... iq is nz=         282           2          30
+  reading v_xc ... iq is nz=         283           1          30
+  reading v_xc ... iq is nz=         283           2          30
+  reading v_xc ... iq is nz=         284           1          30
+  reading v_xc ... iq is nz=         284           2          30
+  reading v_xc ... iq is nz=         285           1          30
+  reading v_xc ... iq is nz=         285           2          30
+  reading v_xc ... iq is nz=         286           1          30
+  reading v_xc ... iq is nz=         286           2          30
+  reading v_xc ... iq is nz=         287           1          30
+  reading v_xc ... iq is nz=         287           2          30
+  reading v_xc ... iq is nz=         288           1          30
+  reading v_xc ... iq is nz=         288           2          30
+  reading v_xc ... iq is nz=         289           1          30
+  reading v_xc ... iq is nz=         289           2          30
+  reading v_xc ... iq is nz=         290           1          30
+  reading v_xc ... iq is nz=         290           2          30
+  reading v_xc ... iq is nz=         291           1          30
+  reading v_xc ... iq is nz=         291           2          30
+  reading v_xc ... iq is nz=         292           1          30
+  reading v_xc ... iq is nz=         292           2          30
+  reading v_xc ... iq is nz=         293           1          30
+  reading v_xc ... iq is nz=         293           2          30
+  reading v_xc ... iq is nz=         294           1          30
+  reading v_xc ... iq is nz=         294           2          30
+  reading v_xc ... iq is nz=         295           1          30
+  reading v_xc ... iq is nz=         295           2          30
+  reading v_xc ... iq is nz=         296           1          30
+  reading v_xc ... iq is nz=         296           2          30
+  reading v_xc ... iq is nz=         297           1          30
+  reading v_xc ... iq is nz=         297           2          30
+  reading v_xc ... iq is nz=         298           1          30
+  reading v_xc ... iq is nz=         298           2          30
+  reading v_xc ... iq is nz=         299           1          30
+  reading v_xc ... iq is nz=         299           2          30
+  reading v_xc ... iq is nz=         300           1          30
+  reading v_xc ... iq is nz=         300           2          30
+  reading v_xc ... iq is nz=         301           1          30
+  reading v_xc ... iq is nz=         301           2          30
+  reading v_xc ... iq is nz=         302           1          30
+  reading v_xc ... iq is nz=         302           2          30
+  reading v_xc ... iq is nz=         303           1          30
+  reading v_xc ... iq is nz=         303           2          30
+  reading v_xc ... iq is nz=         304           1          30
+  reading v_xc ... iq is nz=         304           2          30
+  reading v_xc ... iq is nz=         305           1          30
+  reading v_xc ... iq is nz=         305           2          30
+  reading v_xc ... iq is nz=         306           1          30
+  reading v_xc ... iq is nz=         306           2          30
+  reading v_xc ... iq is nz=         307           1          30
+  reading v_xc ... iq is nz=         307           2          30
+  reading v_xc ... iq is nz=         308           1          30
+  reading v_xc ... iq is nz=         308           2          30
+  reading v_xc ... iq is nz=         309           1          30
+  reading v_xc ... iq is nz=         309           2          30
+  reading v_xc ... iq is nz=         310           1          30
+  reading v_xc ... iq is nz=         310           2          30
+  reading v_xc ... iq is nz=         311           1          30
+  reading v_xc ... iq is nz=         311           2          30
+  reading v_xc ... iq is nz=         312           1          30
+  reading v_xc ... iq is nz=         312           2          30
+  reading v_xc ... iq is nz=         313           1          30
+  reading v_xc ... iq is nz=         313           2          30
+  reading v_xc ... iq is nz=         314           1          30
+  reading v_xc ... iq is nz=         314           2          30
+  reading v_xc ... iq is nz=         315           1          30
+  reading v_xc ... iq is nz=         315           2          30
+  reading v_xc ... iq is nz=         316           1          30
+  reading v_xc ... iq is nz=         316           2          30
+  reading v_xc ... iq is nz=         317           1          30
+  reading v_xc ... iq is nz=         317           2          30
+  reading v_xc ... iq is nz=         318           1          30
+  reading v_xc ... iq is nz=         318           2          30
+  reading v_xc ... iq is nz=         319           1          30
+  reading v_xc ... iq is nz=         319           2          30
+  reading v_xc ... iq is nz=         320           1          30
+  reading v_xc ... iq is nz=         320           2          30
+  reading v_xc ... iq is nz=         321           1          30
+  reading v_xc ... iq is nz=         321           2          30
+  reading v_xc ... iq is nz=         322           1          30
+  reading v_xc ... iq is nz=         322           2          30
+  reading v_xc ... iq is nz=         323           1          30
+  reading v_xc ... iq is nz=         323           2          30
+  reading v_xc ... iq is nz=         324           1          30
+  reading v_xc ... iq is nz=         324           2          30
+  reading v_xc ... iq is nz=         325           1          30
+  reading v_xc ... iq is nz=         325           2          30
+  reading v_xc ... iq is nz=         326           1          30
+  reading v_xc ... iq is nz=         326           2          30
+  reading v_xc ... iq is nz=         327           1          30
+  reading v_xc ... iq is nz=         327           2          30
+  reading v_xc ... iq is nz=         328           1          30
+  reading v_xc ... iq is nz=         328           2          30
+  reading v_xc ... iq is nz=         329           1          30
+  reading v_xc ... iq is nz=         329           2          30
+  reading v_xc ... iq is nz=         330           1          30
+  reading v_xc ... iq is nz=         330           2          30
+  reading v_xc ... iq is nz=         331           1          30
+  reading v_xc ... iq is nz=         331           2          30
+  reading v_xc ... iq is nz=         332           1          30
+  reading v_xc ... iq is nz=         332           2          30
+  reading v_xc ... iq is nz=         333           1          30
+  reading v_xc ... iq is nz=         333           2          30
+  reading v_xc ... iq is nz=         334           1          30
+  reading v_xc ... iq is nz=         334           2          30
+  reading v_xc ... iq is nz=         335           1          30
+  reading v_xc ... iq is nz=         335           2          30
+  reading v_xc ... iq is nz=         336           1          30
+  reading v_xc ... iq is nz=         336           2          30
+  reading v_xc ... iq is nz=         337           1          30
+  reading v_xc ... iq is nz=         337           2          30
+  reading v_xc ... iq is nz=         338           1          30
+  reading v_xc ... iq is nz=         338           2          30
+  reading v_xc ... iq is nz=         339           1          30
+  reading v_xc ... iq is nz=         339           2          30
+  reading v_xc ... iq is nz=         340           1          30
+  reading v_xc ... iq is nz=         340           2          30
+  reading v_xc ... iq is nz=         341           1          30
+  reading v_xc ... iq is nz=         341           2          30
+  reading v_xc ... iq is nz=         342           1          30
+  reading v_xc ... iq is nz=         342           2          30
+  reading v_xc ... iq is nz=         343           1          30
+  reading v_xc ... iq is nz=         343           2          30
+  reading v_xc ... iq is nz=         344           1          30
+  reading v_xc ... iq is nz=         344           2          30
+  reading v_xc ... iq is nz=         345           1          30
+  reading v_xc ... iq is nz=         345           2          30
+  reading v_xc ... iq is nz=         346           1          30
+  reading v_xc ... iq is nz=         346           2          30
+  reading v_xc ... iq is nz=         347           1          30
+  reading v_xc ... iq is nz=         347           2          30
+  reading v_xc ... iq is nz=         348           1          30
+  reading v_xc ... iq is nz=         348           2          30
+  reading v_xc ... iq is nz=         349           1          30
+  reading v_xc ... iq is nz=         349           2          30
+  reading v_xc ... iq is nz=         350           1          30
+  reading v_xc ... iq is nz=         350           2          30
+  reading v_xc ... iq is nz=         351           1          30
+  reading v_xc ... iq is nz=         351           2          30
+  reading v_xc ... iq is nz=         352           1          30
+  reading v_xc ... iq is nz=         352           2          30
+  reading v_xc ... iq is nz=         353           1          30
+  reading v_xc ... iq is nz=         353           2          30
+  reading v_xc ... iq is nz=         354           1          30
+  reading v_xc ... iq is nz=         354           2          30
+  reading v_xc ... iq is nz=         355           1          30
+  reading v_xc ... iq is nz=         355           2          30
+  reading v_xc ... iq is nz=         356           1          30
+  reading v_xc ... iq is nz=         356           2          30
+  reading v_xc ... iq is nz=         357           1          30
+  reading v_xc ... iq is nz=         357           2          30
+  reading v_xc ... iq is nz=         358           1          30
+  reading v_xc ... iq is nz=         358           2          30
+  reading v_xc ... iq is nz=         359           1          30
+  reading v_xc ... iq is nz=         359           2          30
+  reading v_xc ... iq is nz=         360           1          30
+  reading v_xc ... iq is nz=         360           2          30
+  reading v_xc ... iq is nz=         361           1          30
+  reading v_xc ... iq is nz=         361           2          30
+  reading v_xc ... iq is nz=         362           1          30
+  reading v_xc ... iq is nz=         362           2          30
+  reading v_xc ... iq is nz=         363           1          30
+  reading v_xc ... iq is nz=         363           2          30
+  reading v_xc ... iq is nz=         364           1          30
+  reading v_xc ... iq is nz=         364           2          30
+  reading v_xc ... iq is nz=         365           1          30
+  reading v_xc ... iq is nz=         365           2          30
+  reading v_xc ... iq is nz=         366           1          30
+  reading v_xc ... iq is nz=         366           2          30
+  reading v_xc ... iq is nz=         367           1          30
+  reading v_xc ... iq is nz=         367           2          30
+  reading v_xc ... iq is nz=         368           1          30
+  reading v_xc ... iq is nz=         368           2          30
+  reading v_xc ... iq is nz=         369           1          30
+  reading v_xc ... iq is nz=         369           2          30
+  reading v_xc ... iq is nz=         370           1          30
+  reading v_xc ... iq is nz=         370           2          30
+  reading v_xc ... iq is nz=         371           1          30
+  reading v_xc ... iq is nz=         371           2          30
+  reading v_xc ... iq is nz=         372           1          30
+  reading v_xc ... iq is nz=         372           2          30
+  reading v_xc ... iq is nz=         373           1          30
+  reading v_xc ... iq is nz=         373           2          30
+  reading v_xc ... iq is nz=         374           1          30
+  reading v_xc ... iq is nz=         374           2          30
+  reading v_xc ... iq is nz=         375           1          30
+  reading v_xc ... iq is nz=         375           2          30
+  reading v_xc ... iq is nz=         376           1          30
+  reading v_xc ... iq is nz=         376           2          30
+  reading v_xc ... iq is nz=         377           1          30
+  reading v_xc ... iq is nz=         377           2          30
+  reading v_xc ... iq is nz=         378           1          30
+  reading v_xc ... iq is nz=         378           2          30
+  reading v_xc ... iq is nz=         379           1          30
+  reading v_xc ... iq is nz=         379           2          30
+  reading v_xc ... iq is nz=         380           1          30
+  reading v_xc ... iq is nz=         380           2          30
+  reading v_xc ... iq is nz=         381           1          30
+  reading v_xc ... iq is nz=         381           2          30
+  reading v_xc ... iq is nz=         382           1          30
+  reading v_xc ... iq is nz=         382           2          30
+  reading v_xc ... iq is nz=         383           1          30
+  reading v_xc ... iq is nz=         383           2          30
+  reading v_xc ... iq is nz=         384           1          30
+  reading v_xc ... iq is nz=         384           2          30
+  reading v_xc ... iq is nz=         385           1          30
+  reading v_xc ... iq is nz=         385           2          30
+  reading v_xc ... iq is nz=         386           1          30
+  reading v_xc ... iq is nz=         386           2          30
+  reading v_xc ... iq is nz=         387           1          30
+  reading v_xc ... iq is nz=         387           2          30
+  reading v_xc ... iq is nz=         388           1          30
+  reading v_xc ... iq is nz=         388           2          30
+  reading v_xc ... iq is nz=         389           1          30
+  reading v_xc ... iq is nz=         389           2          30
+  reading v_xc ... iq is nz=         390           1          30
+  reading v_xc ... iq is nz=         390           2          30
+  reading v_xc ... iq is nz=         391           1          30
+  reading v_xc ... iq is nz=         391           2          30
+  reading v_xc ... iq is nz=         392           1          30
+  reading v_xc ... iq is nz=         392           2          30
+  reading v_xc ... iq is nz=         393           1          30
+  reading v_xc ... iq is nz=         393           2          30
+  reading v_xc ... iq is nz=         394           1          30
+  reading v_xc ... iq is nz=         394           2          30
+  reading v_xc ... iq is nz=         395           1          30
+  reading v_xc ... iq is nz=         395           2          30
+  reading v_xc ... iq is nz=         396           1          30
+  reading v_xc ... iq is nz=         396           2          30
+  reading v_xc ... iq is nz=         397           1          30
+  reading v_xc ... iq is nz=         397           2          30
+  reading v_xc ... iq is nz=         398           1          30
+  reading v_xc ... iq is nz=         398           2          30
+  reading v_xc ... iq is nz=         399           1          30
+  reading v_xc ... iq is nz=         399           2          30
+  reading v_xc ... iq is nz=         400           1          30
+  reading v_xc ... iq is nz=         400           2          30
+  reading v_xc ... iq is nz=         401           1          30
+  reading v_xc ... iq is nz=         401           2          30
+  reading v_xc ... iq is nz=         402           1          30
+  reading v_xc ... iq is nz=         402           2          30
+  reading v_xc ... iq is nz=         403           1          30
+  reading v_xc ... iq is nz=         403           2          30
+  reading v_xc ... iq is nz=         404           1          30
+  reading v_xc ... iq is nz=         404           2          30
+  reading v_xc ... iq is nz=         405           1          30
+  reading v_xc ... iq is nz=         405           2          30
+  reading v_xc ... iq is nz=         406           1          30
+  reading v_xc ... iq is nz=         406           2          30
+  reading v_xc ... iq is nz=         407           1          30
+  reading v_xc ... iq is nz=         407           2          30
+  reading v_xc ... iq is nz=         408           1          30
+  reading v_xc ... iq is nz=         408           2          30
+  reading v_xc ... iq is nz=         409           1          30
+  reading v_xc ... iq is nz=         409           2          30
+  reading v_xc ... iq is nz=         410           1          30
+  reading v_xc ... iq is nz=         410           2          30
+  reading v_xc ... iq is nz=         411           1          30
+  reading v_xc ... iq is nz=         411           2          30
+  reading v_xc ... iq is nz=         412           1          30
+  reading v_xc ... iq is nz=         412           2          30
+  reading v_xc ... iq is nz=         413           1          30
+  reading v_xc ... iq is nz=         413           2          30
+  reading v_xc ... iq is nz=         414           1          30
+  reading v_xc ... iq is nz=         414           2          30
+  reading v_xc ... iq is nz=         415           1          30
+  reading v_xc ... iq is nz=         415           2          30
+  reading v_xc ... iq is nz=         416           1          30
+  reading v_xc ... iq is nz=         416           2          30
+  reading v_xc ... iq is nz=         417           1          30
+  reading v_xc ... iq is nz=         417           2          30
+  reading v_xc ... iq is nz=         418           1          30
+  reading v_xc ... iq is nz=         418           2          30
+  reading v_xc ... iq is nz=         419           1          30
+  reading v_xc ... iq is nz=         419           2          30
+  reading v_xc ... iq is nz=         420           1          30
+  reading v_xc ... iq is nz=         420           2          30
+  reading v_xc ... iq is nz=         421           1          30
+  reading v_xc ... iq is nz=         421           2          30
+  reading v_xc ... iq is nz=         422           1          30
+  reading v_xc ... iq is nz=         422           2          30
+  reading v_xc ... iq is nz=         423           1          30
+  reading v_xc ... iq is nz=         423           2          30
+  reading v_xc ... iq is nz=         424           1          30
+  reading v_xc ... iq is nz=         424           2          30
+  reading v_xc ... iq is nz=         425           1          30
+  reading v_xc ... iq is nz=         425           2          30
+  reading v_xc ... iq is nz=         426           1          30
+  reading v_xc ... iq is nz=         426           2          30
+  reading v_xc ... iq is nz=         427           1          30
+  reading v_xc ... iq is nz=         427           2          30
+  reading v_xc ... iq is nz=         428           1          30
+  reading v_xc ... iq is nz=         428           2          30
+  reading v_xc ... iq is nz=         429           1          30
+  reading v_xc ... iq is nz=         429           2          30
+  reading v_xc ... iq is nz=         430           1          30
+  reading v_xc ... iq is nz=         430           2          30
+  reading v_xc ... iq is nz=         431           1          30
+  reading v_xc ... iq is nz=         431           2          30
+  reading v_xc ... iq is nz=         432           1          30
+  reading v_xc ... iq is nz=         432           2          30
+  reading v_xc ... iq is nz=         433           1          30
+  reading v_xc ... iq is nz=         433           2          30
+  reading v_xc ... iq is nz=         434           1          30
+  reading v_xc ... iq is nz=         434           2          30
+  reading v_xc ... iq is nz=         435           1          30
+  reading v_xc ... iq is nz=         435           2          30
+  reading v_xc ... iq is nz=         436           1          30
+  reading v_xc ... iq is nz=         436           2          30
+  reading v_xc ... iq is nz=         437           1          30
+  reading v_xc ... iq is nz=         437           2          30
+  reading v_xc ... iq is nz=         438           1          30
+  reading v_xc ... iq is nz=         438           2          30
+  reading v_xc ... iq is nz=         439           1          30
+  reading v_xc ... iq is nz=         439           2          30
+  reading v_xc ... iq is nz=         440           1          30
+  reading v_xc ... iq is nz=         440           2          30
+  reading v_xc ... iq is nz=         441           1          30
+  reading v_xc ... iq is nz=         441           2          30
+  reading v_xc ... iq is nz=         442           1          30
+  reading v_xc ... iq is nz=         442           2          30
+  reading v_xc ... iq is nz=         443           1          30
+  reading v_xc ... iq is nz=         443           2          30
+  reading v_xc ... iq is nz=         444           1          30
+  reading v_xc ... iq is nz=         444           2          30
+  reading v_xc ... iq is nz=         445           1          30
+  reading v_xc ... iq is nz=         445           2          30
+  reading v_xc ... iq is nz=         446           1          30
+  reading v_xc ... iq is nz=         446           2          30
+  reading v_xc ... iq is nz=         447           1          30
+  reading v_xc ... iq is nz=         447           2          30
+  reading v_xc ... iq is nz=         448           1          30
+  reading v_xc ... iq is nz=         448           2          30
+  reading v_xc ... iq is nz=         449           1          30
+  reading v_xc ... iq is nz=         449           2          30
+  reading v_xc ... iq is nz=         450           1          30
+  reading v_xc ... iq is nz=         450           2          30
+  reading v_xc ... iq is nz=         451           1          30
+  reading v_xc ... iq is nz=         451           2          30
+  reading v_xc ... iq is nz=         452           1          30
+  reading v_xc ... iq is nz=         452           2          30
+  reading v_xc ... iq is nz=         453           1          30
+  reading v_xc ... iq is nz=         453           2          30
+  reading v_xc ... iq is nz=         454           1          30
+  reading v_xc ... iq is nz=         454           2          30
+  reading v_xc ... iq is nz=         455           1          30
+  reading v_xc ... iq is nz=         455           2          30
+  reading v_xc ... iq is nz=         456           1          30
+  reading v_xc ... iq is nz=         456           2          30
+  reading v_xc ... iq is nz=         457           1          30
+  reading v_xc ... iq is nz=         457           2          30
+  reading v_xc ... iq is nz=         458           1          30
+  reading v_xc ... iq is nz=         458           2          30
+  reading v_xc ... iq is nz=         459           1          30
+  reading v_xc ... iq is nz=         459           2          30
+  reading v_xc ... iq is nz=         460           1          30
+  reading v_xc ... iq is nz=         460           2          30
+  reading v_xc ... iq is nz=         461           1          30
+  reading v_xc ... iq is nz=         461           2          30
+  reading v_xc ... iq is nz=         462           1          30
+  reading v_xc ... iq is nz=         462           2          30
+  reading v_xc ... iq is nz=         463           1          30
+  reading v_xc ... iq is nz=         463           2          30
+  reading v_xc ... iq is nz=         464           1          30
+  reading v_xc ... iq is nz=         464           2          30
+  reading v_xc ... iq is nz=         465           1          30
+  reading v_xc ... iq is nz=         465           2          30
+  reading v_xc ... iq is nz=         466           1          30
+  reading v_xc ... iq is nz=         466           2          30
+  reading v_xc ... iq is nz=         467           1          30
+  reading v_xc ... iq is nz=         467           2          30
+  reading v_xc ... iq is nz=         468           1          30
+  reading v_xc ... iq is nz=         468           2          30
+  reading v_xc ... iq is nz=         469           1          30
+  reading v_xc ... iq is nz=         469           2          30
+  reading v_xc ... iq is nz=         470           1          30
+  reading v_xc ... iq is nz=         470           2          30
+  reading v_xc ... iq is nz=         471           1          30
+  reading v_xc ... iq is nz=         471           2          30
+  reading v_xc ... iq is nz=         472           1          30
+  reading v_xc ... iq is nz=         472           2          30
+  reading v_xc ... iq is nz=         473           1          30
+  reading v_xc ... iq is nz=         473           2          30
+  reading v_xc ... iq is nz=         474           1          30
+  reading v_xc ... iq is nz=         474           2          30
+  reading v_xc ... iq is nz=         475           1          30
+  reading v_xc ... iq is nz=         475           2          30
+  reading v_xc ... iq is nz=         476           1          30
+  reading v_xc ... iq is nz=         476           2          30
+  reading v_xc ... iq is nz=         477           1          30
+  reading v_xc ... iq is nz=         477           2          30
+  reading v_xc ... iq is nz=         478           1          30
+  reading v_xc ... iq is nz=         478           2          30
+  reading v_xc ... iq is nz=         479           1          30
+  reading v_xc ... iq is nz=         479           2          30
+  reading v_xc ... iq is nz=         480           1          30
+  reading v_xc ... iq is nz=         480           2          30
+  reading v_xc ... iq is nz=         481           1          30
+  reading v_xc ... iq is nz=         481           2          30
+  reading v_xc ... iq is nz=         482           1          30
+  reading v_xc ... iq is nz=         482           2          30
+  reading v_xc ... iq is nz=         483           1          30
+  reading v_xc ... iq is nz=         483           2          30
+  reading v_xc ... iq is nz=         484           1          30
+  reading v_xc ... iq is nz=         484           2          30
+  reading v_xc ... iq is nz=         485           1          30
+  reading v_xc ... iq is nz=         485           2          30
+  reading v_xc ... iq is nz=         486           1          30
+  reading v_xc ... iq is nz=         486           2          30
+  reading v_xc ... iq is nz=         487           1          30
+  reading v_xc ... iq is nz=         487           2          30
+  reading v_xc ... iq is nz=         488           1          30
+  reading v_xc ... iq is nz=         488           2          30
+  reading v_xc ... iq is nz=         489           1          30
+  reading v_xc ... iq is nz=         489           2          30
+  reading v_xc ... iq is nz=         490           1          30
+  reading v_xc ... iq is nz=         490           2          30
+  reading v_xc ... iq is nz=         491           1          30
+  reading v_xc ... iq is nz=         491           2          30
+  reading v_xc ... iq is nz=         492           1          30
+  reading v_xc ... iq is nz=         492           2          30
+  reading v_xc ... iq is nz=         493           1          30
+  reading v_xc ... iq is nz=         493           2          30
+  reading v_xc ... iq is nz=         494           1          30
+  reading v_xc ... iq is nz=         494           2          30
+  reading v_xc ... iq is nz=         495           1          30
+  reading v_xc ... iq is nz=         495           2          30
+  reading v_xc ... iq is nz=         496           1          30
+  reading v_xc ... iq is nz=         496           2          30
+  reading v_xc ... iq is nz=         497           1          30
+  reading v_xc ... iq is nz=         497           2          30
+  reading v_xc ... iq is nz=         498           1          30
+  reading v_xc ... iq is nz=         498           2          30
+  reading v_xc ... iq is nz=         499           1          30
+  reading v_xc ... iq is nz=         499           2          30
+  reading v_xc ... iq is nz=         500           1          30
+  reading v_xc ... iq is nz=         500           2          30
+  reading v_xc ... iq is nz=         501           1          30
+  reading v_xc ... iq is nz=         501           2          30
+  reading v_xc ... iq is nz=         502           1          30
+  reading v_xc ... iq is nz=         502           2          30
+  reading v_xc ... iq is nz=         503           1          30
+  reading v_xc ... iq is nz=         503           2          30
+  reading v_xc ... iq is nz=         504           1          30
+  reading v_xc ... iq is nz=         504           2          30
+  reading v_xc ... iq is nz=         505           1          30
+  reading v_xc ... iq is nz=         505           2          30
+  reading v_xc ... iq is nz=         506           1          30
+  reading v_xc ... iq is nz=         506           2          30
+  reading v_xc ... iq is nz=         507           1          30
+  reading v_xc ... iq is nz=         507           2          30
+  reading v_xc ... iq is nz=         508           1          30
+  reading v_xc ... iq is nz=         508           2          30
+  reading v_xc ... iq is nz=         509           1          30
+  reading v_xc ... iq is nz=         509           2          30
+  reading v_xc ... iq is nz=         510           1          30
+  reading v_xc ... iq is nz=         510           2          30
+  reading v_xc ... iq is nz=         511           1          30
+  reading v_xc ... iq is nz=         511           2          30
+  reading v_xc ... iq is nz=         512           1          30
+  reading v_xc ... iq is nz=         512           2          30
+  --- is=           1
+  xxxxxxxxxxx111111111
+  ###  readin XCU
+  ###  readin SEXU
+  ###  readin SEXcoreU
+  ###  readin SECU
+  end of qpe1
+ 
+ ip ntq ntqxx=    1   30   17
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.163637792498869     
+ 
+ ip ntq ntqxx=    2   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.144189960778192     
+ 
+ ip ntq ntqxx=    3   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.137273594793382     
+ 
+ ip ntq ntqxx=    4   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.124196735019234     
+ 
+ ip ntq ntqxx=    5   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.124482603759327     
+ 
+ ip ntq ntqxx=    6   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.139209726748352     
+ 
+ ip ntq ntqxx=    7   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.138186043925399     
+ 
+ ip ntq ntqxx=    8   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.141101450639959     
+ 
+ ip ntq ntqxx=    9   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.129909498057540     
+ 
+ ip ntq ntqxx=   10   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.131874519764583     
+ 
+ ip ntq ntqxx=   11   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.125154631554011     
+ 
+ ip ntq ntqxx=   12   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.123701274960769     
+ 
+ ip ntq ntqxx=   13   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.124272692999531     
+ 
+ ip ntq ntqxx=   14   30   13
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.147545420431817     
+ 
+ ip ntq ntqxx=   15   30    9
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   8.776951020590457E-002
+ 
+ ip ntq ntqxx=   16   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.134863641195465     
+ 
+ ip ntq ntqxx=   17   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.133459871349276     
+ 
+ ip ntq ntqxx=   18   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.121535243469672     
+ 
+ ip ntq ntqxx=   19   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.135670092638063     
+ 
+ ip ntq ntqxx=   20   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.134303222203851     
+ 
+ ip ntq ntqxx=   21   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.129311143073120     
+ 
+ ip ntq ntqxx=   22   30    9
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   8.204973934354072E-002
+ 
+ ip ntq ntqxx=   23   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.104733986309965     
+ 
+ ip ntq ntqxx=   24   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.134174828463626     
+ 
+ ip ntq ntqxx=   25   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.129112775567065     
+ 
+ ip ntq ntqxx=   26   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.128960341063732     
+ 
+ ip ntq ntqxx=   27   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.108154120141410     
+ 
+ ip ntq ntqxx=   28   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.102943564593764     
+ 
+ ip ntq ntqxx=   29   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.100029923571542     
+ 
+ 
+  --- is=           2
+  xxxxxxxxxxx111111111
+  ###  readin XCD
+  ###  readin SEXD
+  ###  readin SEXcoreD
+  ###  readin SECD
+  end of qpe1
+ 
+ ip ntq ntqxx=    1   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.154370964046987     
+ 
+ ip ntq ntqxx=    2   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.155438880229932     
+ 
+ ip ntq ntqxx=    3   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.153082792112283     
+ 
+ ip ntq ntqxx=    4   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.146631641696101     
+ 
+ ip ntq ntqxx=    5   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.146631962172608     
+ 
+ ip ntq ntqxx=    6   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.152570820044927     
+ 
+ ip ntq ntqxx=    7   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.154579054207857     
+ 
+ ip ntq ntqxx=    8   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.148523471176941     
+ 
+ ip ntq ntqxx=    9   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.146827398161996     
+ 
+ ip ntq ntqxx=   10   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.145806731252844     
+ 
+ ip ntq ntqxx=   11   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.132982176264419     
+ 
+ ip ntq ntqxx=   12   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.132940968511636     
+ 
+ ip ntq ntqxx=   13   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.132711287597763     
+ 
+ ip ntq ntqxx=   14   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.147710392962979     
+ 
+ ip ntq ntqxx=   15   30    9
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.101066212446506     
+ 
+ ip ntq ntqxx=   16   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.148302932570254     
+ 
+ ip ntq ntqxx=   17   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.153068826269187     
+ 
+ ip ntq ntqxx=   18   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.133812785246209     
+ 
+ ip ntq ntqxx=   19   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.153130010690960     
+ 
+ ip ntq ntqxx=   20   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.141598246456289     
+ 
+ ip ntq ntqxx=   21   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.148572601210773     
+ 
+ ip ntq ntqxx=   22   30    9
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   9.886920596854505E-002
+ 
+ ip ntq ntqxx=   23   30   10
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.118259882315840     
+ 
+ ip ntq ntqxx=   24   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.133486152216248     
+ 
+ ip ntq ntqxx=   25   30   12
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.144912266361864     
+ 
+ ip ntq ntqxx=   26   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.126043987560346     
+ 
+ ip ntq ntqxx=   27   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.127973076289445     
+ 
+ ip ntq ntqxx=   28   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.118692877209431     
+ 
+ ip ntq ntqxx=   29   30   11
+ ### A correction takao2009June: find this in hqpe.se.m.F
+ ###   constant is added to sigm above threshold.
+ ###   the constant (e-weighted average Ry)=   0.121151188481860     
+ 
+ 
+  ### readin BZDATA ###
+  read_bzdata         512          29         729        3072         513
+          48
+  read from bzdata nqibz2; nqibz nq=          29          29          29
+  nstarsum=         512
+ ========= Sigma mixing section using mixsigma =======
+  rwsigma: Reading sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1   0.00000   0.12500   0.12500
+  ===     3  1   0.00000   0.25000   0.25000
+  ===     4  1   0.00000   0.37500   0.37500
+  ===     5  1   0.00000   0.50000   0.50000
+  ===     6  1   0.12500   0.12500   0.25000
+  ===     7  1   0.12500   0.25000   0.37500
+  ===     8  1   0.12500   0.37500   0.50000
+  ===     9  1   0.25000   0.25000   0.50000
+  ===    10  1   0.25000   0.37500   0.62500
+  ===    11  1   0.25000   0.25000   0.25000
+  ===    12  1   0.25000   0.37500   0.37500
+  ===    13  1   0.25000   0.50000   0.50000
+  ===    14  1   0.25000   1.00000   1.00000
+  ===    15  1   0.37500   0.37500   0.50000
+  ===    16  1   0.37500   0.87500   1.00000
+  ===    17  1   0.50000   0.75000   1.00000
+  ===    18  1   0.50000   0.87500   1.12500
+  ===    19  1   0.62500   0.62500   1.00000
+  ===    20  1   0.62500   0.75000   1.12500
+  ===    21  1   0.75000   0.75000   1.25000
+  ===    22  1   0.50000   0.50000   0.50000
+  ===    23  1   0.50000   1.00000   1.00000
+  ===    24  1   0.62500   0.87500   1.00000
+  ===    25  1   0.75000   0.75000   1.00000
+  ===    26  1   0.75000   0.87500   1.12500
+  ===    27  1   0.75000   1.00000   1.00000
+  ===    28  1   0.87500   0.87500   1.00000
+  ===    29  1   1.00000   1.00000   1.00000
+  ===     1  2   0.00000   0.00000   0.00000
+  ===     2  2   0.00000   0.12500   0.12500
+  ===     3  2   0.00000   0.25000   0.25000
+  ===     4  2   0.00000   0.37500   0.37500
+  ===     5  2   0.00000   0.50000   0.50000
+  ===     6  2   0.12500   0.12500   0.25000
+  ===     7  2   0.12500   0.25000   0.37500
+  ===     8  2   0.12500   0.37500   0.50000
+  ===     9  2   0.25000   0.25000   0.50000
+  ===    10  2   0.25000   0.37500   0.62500
+  ===    11  2   0.25000   0.25000   0.25000
+  ===    12  2   0.25000   0.37500   0.37500
+  ===    13  2   0.25000   0.50000   0.50000
+  ===    14  2   0.25000   1.00000   1.00000
+  ===    15  2   0.37500   0.37500   0.50000
+  ===    16  2   0.37500   0.87500   1.00000
+  ===    17  2   0.50000   0.75000   1.00000
+  ===    18  2   0.50000   0.87500   1.12500
+  ===    19  2   0.62500   0.62500   1.00000
+  ===    20  2   0.62500   0.75000   1.12500
+  ===    21  2   0.75000   0.75000   1.25000
+  ===    22  2   0.50000   0.50000   0.50000
+  ===    23  2   0.50000   1.00000   1.00000
+  ===    24  2   0.62500   0.87500   1.00000
+  ===    25  2   0.75000   0.75000   1.00000
+  ===    26  2   0.75000   0.87500   1.12500
+  ===    27  2   0.75000   1.00000   1.00000
+  ===    28  2   0.87500   0.87500   1.00000
+  ===    29  2   1.00000   1.00000   1.00000
+  === rwsigma:  sum check of sigma_m=   958.616089522950     
+ 
+ mixsigma: Anderson mixing sigma with mixing beta =    1.000000
+ ... No file mixsigma
+ ... using input sigma read from sigm file
+ sum sss=   958.616113245729     
+ AMIX: nmix=0 mmix=3  nelts=104400  beta=1.00000  tm= 5.00000  rmsdel=4.34D-06
+ 
+ === Write sigma to files (Binary and ASCII) ========
+  rwsigma  Writing sigm (Binary)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1   0.00000   0.12500   0.12500
+  ===     3  1   0.00000   0.25000   0.25000
+  ===     4  1   0.00000   0.37500   0.37500
+  ===     5  1   0.00000   0.50000   0.50000
+  ===     6  1   0.12500   0.12500   0.25000
+  ===     7  1   0.12500   0.25000   0.37500
+  ===     8  1   0.12500   0.37500   0.50000
+  ===     9  1   0.25000   0.25000   0.50000
+  ===    10  1   0.25000   0.37500   0.62500
+  ===    11  1   0.25000   0.25000   0.25000
+  ===    12  1   0.25000   0.37500   0.37500
+  ===    13  1   0.25000   0.50000   0.50000
+  ===    14  1   0.25000   1.00000   1.00000
+  ===    15  1   0.37500   0.37500   0.50000
+  ===    16  1   0.37500   0.87500   1.00000
+  ===    17  1   0.50000   0.75000   1.00000
+  ===    18  1   0.50000   0.87500   1.12500
+  ===    19  1   0.62500   0.62500   1.00000
+  ===    20  1   0.62500   0.75000   1.12500
+  ===    21  1   0.75000   0.75000   1.25000
+  ===    22  1   0.50000   0.50000   0.50000
+  ===    23  1   0.50000   1.00000   1.00000
+  ===    24  1   0.62500   0.87500   1.00000
+  ===    25  1   0.75000   0.75000   1.00000
+  ===    26  1   0.75000   0.87500   1.12500
+  ===    27  1   0.75000   1.00000   1.00000
+  ===    28  1   0.87500   0.87500   1.00000
+  ===    29  1   1.00000   1.00000   1.00000
+  ===     1  2   0.00000   0.00000   0.00000
+  ===     2  2   0.00000   0.12500   0.12500
+  ===     3  2   0.00000   0.25000   0.25000
+  ===     4  2   0.00000   0.37500   0.37500
+  ===     5  2   0.00000   0.50000   0.50000
+  ===     6  2   0.12500   0.12500   0.25000
+  ===     7  2   0.12500   0.25000   0.37500
+  ===     8  2   0.12500   0.37500   0.50000
+  ===     9  2   0.25000   0.25000   0.50000
+  ===    10  2   0.25000   0.37500   0.62500
+  ===    11  2   0.25000   0.25000   0.25000
+  ===    12  2   0.25000   0.37500   0.37500
+  ===    13  2   0.25000   0.50000   0.50000
+  ===    14  2   0.25000   1.00000   1.00000
+  ===    15  2   0.37500   0.37500   0.50000
+  ===    16  2   0.37500   0.87500   1.00000
+  ===    17  2   0.50000   0.75000   1.00000
+  ===    18  2   0.50000   0.87500   1.12500
+  ===    19  2   0.62500   0.62500   1.00000
+  ===    20  2   0.62500   0.75000   1.12500
+  ===    21  2   0.75000   0.75000   1.25000
+  ===    22  2   0.50000   0.50000   0.50000
+  ===    23  2   0.50000   1.00000   1.00000
+  ===    24  2   0.62500   0.87500   1.00000
+  ===    25  2   0.75000   0.75000   1.00000
+  ===    26  2   0.75000   0.87500   1.12500
+  ===    27  2   0.75000   1.00000   1.00000
+  ===    28  2   0.87500   0.87500   1.00000
+  ===    29  2   1.00000   1.00000   1.00000
+  === rwsigma:  sum check of sigma_m=   958.616089522950     
+ 
+  rwsigmaa: Writing sigma (ASCII)===
+  ===     1  1   0.00000   0.00000   0.00000
+  ===     2  1   0.00000   0.12500   0.12500
+  ===     3  1   0.00000   0.25000   0.25000
+  ===     4  1   0.00000   0.37500   0.37500
+  ===     5  1   0.00000   0.50000   0.50000
+  ===     6  1   0.12500   0.12500   0.25000
+  ===     7  1   0.12500   0.25000   0.37500
+  ===     8  1   0.12500   0.37500   0.50000
+  ===     9  1   0.25000   0.25000   0.50000
+  ===    10  1   0.25000   0.37500   0.62500
+  ===    11  1   0.25000   0.25000   0.25000
+  ===    12  1   0.25000   0.37500   0.37500
+  ===    13  1   0.25000   0.50000   0.50000
+  ===    14  1   0.25000   1.00000   1.00000
+  ===    15  1   0.37500   0.37500   0.50000
+  ===    16  1   0.37500   0.87500   1.00000
+  ===    17  1   0.50000   0.75000   1.00000
+  ===    18  1   0.50000   0.87500   1.12500
+  ===    19  1   0.62500   0.62500   1.00000
+  ===    20  1   0.62500   0.75000   1.12500
+  ===    21  1   0.75000   0.75000   1.25000
+  ===    22  1   0.50000   0.50000   0.50000
+  ===    23  1   0.50000   1.00000   1.00000
+  ===    24  1   0.62500   0.87500   1.00000
+  ===    25  1   0.75000   0.75000   1.00000
+  ===    26  1   0.75000   0.87500   1.12500
+  ===    27  1   0.75000   1.00000   1.00000
+  ===    28  1   0.87500   0.87500   1.00000
+  ===    29  1   1.00000   1.00000   1.00000
+  ===     1  2   0.00000   0.00000   0.00000
+  ===     2  2   0.00000   0.12500   0.12500
+  ===     3  2   0.00000   0.25000   0.25000
+  ===     4  2   0.00000   0.37500   0.37500
+  ===     5  2   0.00000   0.50000   0.50000
+  ===     6  2   0.12500   0.12500   0.25000
+  ===     7  2   0.12500   0.25000   0.37500
+  ===     8  2   0.12500   0.37500   0.50000
+  ===     9  2   0.25000   0.25000   0.50000
+  ===    10  2   0.25000   0.37500   0.62500
+  ===    11  2   0.25000   0.25000   0.25000
+  ===    12  2   0.25000   0.37500   0.37500
+  ===    13  2   0.25000   0.50000   0.50000
+  ===    14  2   0.25000   1.00000   1.00000
+  ===    15  2   0.37500   0.37500   0.50000
+  ===    16  2   0.37500   0.87500   1.00000
+  ===    17  2   0.50000   0.75000   1.00000
+  ===    18  2   0.50000   0.87500   1.12500
+  ===    19  2   0.62500   0.62500   1.00000
+  ===    20  2   0.62500   0.75000   1.12500
+  ===    21  2   0.75000   0.75000   1.25000
+  ===    22  2   0.50000   0.50000   0.50000
+  ===    23  2   0.50000   1.00000   1.00000
+  ===    24  2   0.62500   0.87500   1.00000
+  ===    25  2   0.75000   0.75000   1.00000
+  ===    26  2   0.75000   0.87500   1.12500
+  ===    27  2   0.75000   1.00000   1.00000
+  ===    28  2   0.87500   0.87500   1.00000
+  ===    29  2   1.00000   1.00000   1.00000
+  === rwsigmaa: sum check of sigma_m=   958.616089522950     
+ 

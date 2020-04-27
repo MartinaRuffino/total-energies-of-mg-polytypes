@@ -1,0 +1,44 @@
+This package includes a general-purpose plotting program with functionality
+roughly similar to gnuplot, and programs 'plbnds' and 'pldos' designed
+to read energy bands and density-of-states written by the Questaal package
+to create postscript figures.
+
+For documentation, see the Questaal web site, DOCUMENTATION -> AUXILLIARY TOOLS
+
+------------------- Installation using configure ----------------
+
+To install with configure you must have first installed the slatsm library, which is a
+library of generic math functions, and whose tar file is SLATSM.vsn-no.tar.gz
+Installation of that package creates an archive 'slatsm.a'
+
+With luck, this package will install automatically, using 'configure'
+If you have trouble, look at the README in the slatsm library for
+guidance on how to make corrections specific to your platform
+
+Standard way to install:
+
+1.  Assign environment variable LIBSLA path of slatsm.a, e.g.
+    LIBSLA = /usr/people/markv/slatsm/slatsm.a
+
+2.  Invoke 'configure'
+
+3.  Invoke 'make -f Makefile progs'
+
+Now programs 'fplot', 'pldos' and 'plbnds' should be created.  To check them
+one-by-one (and also see examples of how the programs work) invoke scripts
+
+4.  examples/test.fplot
+    examples/test.pldos
+    examples/test.plbnds
+
+Alternatively, you can invoke
+
+4.  make -f Makefile check
+
+which just runs the three shell scripts in 'quiet' mode --- useful
+for quickly checking correct functioning of programs.
+
+Finally, you can install these programs into a bindir (defaults to ../bin)
+with
+
+5.  make -f Makefile install

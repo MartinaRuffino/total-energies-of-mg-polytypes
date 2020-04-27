@@ -1,0 +1,149 @@
+SYMGRP i*r3(1,-1,-1) r2(1,0,-1) # SOC=2
+# Compare different functionals (24 k divisions in FP case, e.g. lmf -vlxcf=3 -vlxcg=3 -vnk=24 fe)
+#   lxcf   lxcg         FP          ASA (OLD, needs redoing)
+#                  mom      ehf       mom      ehf 
+#    1      0   -2.2629  -0.470567  2.2747  -0.480224
+#    2      0   -2.2612  -0.468892  2.2732  -0.478471
+#    2      1   -2.3395  -0.422792  2.3997  -0.430402
+#    3      0   -2.2529  -0.471025  2.2690  -0.480671
+#    3      3   -2.3185  -0.388172  2.3809  -0.395382
+#    101,130    -2.3177  (should be same as lxcf=3 lxcg=3)
+HEADER  Fe test spin pol, f-orbitals for cls and mull
+TESTLMF lmfa fe -vnsp=2
+        lmf fe --rs=0 -vnsp=2
+        lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=1
+        cp opt.fe opt-so1.fe
+#       Also demonstrate --opt:read and --opt:write
+        lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=3 --opt:write
+        lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=3 --opt:read
+        cp opt.fe opt-so3.fe
+        lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=0
+        lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 --quit=band --jdosw=5,6,8,21,22,24 --jdosw2=7,9,23,25
+        cp jdos.fe dos-tet3.fe
+        lmf fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 '--popted:readb:npol 3:kshowe -0.01 1 sort ds,q3:kmape 0.05 1:saveka:q'
+        lmf fe --iactiv --band~con~fn=fs
+TMPKLMF lmfa fe -vnsp=2
+        mpirun -n 5 lmf fe --rs=0 -vnsp=2
+        mpirun -n 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=1
+        cp opt.fe opt-so1.fe
+#       Also demonstrate --opt:read and --opt:write
+        mpirun -n 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=3 --opt:write
+        mpirun -n 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=3 --opt:read
+        cp opt.fe opt-so3.fe
+        mpirun -n 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=1 -vnk=24 --quit=band -vso=0
+        mpirun -n 5 lmf fe --rs=1,0 -vnsp=2 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 --quit=band --jdosw=5,6,8,21,22,24 --jdosw2=7,9,23,25
+        cp jdos.fe dos-tet3.fe
+        lmf fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 '--popted:readb:npol 3:kshowe -0.01 1 sort ds,q3:kmape 0.05 1:saveka:q'
+        mpirun -n 5 lmf fe --iactiv --band~con~fn=fs
+TESTCLS lmfa fe >/dev/null
+        lmf -vnk=12 fe --rs=0 --cls:1,1,2 --mull~mode=2~nl=3 --quit=rho
+        mv dos.fe tdos.fe
+        lmdos -vnk=12 fe --cls --dos:wtfn=cls:npts=1001:window=-.7,.8 
+        mv dos.fe dos-cls.fe
+        lmdos -vnk=12 fe --mull~mode=2~nl=3 --dos:npts=1001:window=-.7,.8
+        mv dos.fe dos-mull.fe
+        lmdos -vnk=12 fe --mull~mode=2~nl=3 --dos:npts=1001:window=-.7,.8:rdm
+        mv dos.fe dos-mull-sym.fe
+#       Repeat without symops
+        lmf -vnk=12 fe --rs=0 --cls:1,1,2 --mull~mode=2~nl=3 --quit=rho --nosym
+        lmdos -vnk=12 fe --mull~mode=2~nl=3 --dos:npts=1001:window=-.7,.8:rdm --nosym
+        mv dos.fe dos-mull-nosym.fe
+MPIKCLS lmfa fe >/dev/null
+        mpirun -n 5 lmf -vnk=12 fe --rs=0 --cls:1,1,2 --mull~mode=2~nl=3 --quit=rho
+        mv dos.fe tdos.fe
+        lmdos -vnk=12 fe --cls --dos:wtfn=cls:npts=1001:window=-.7,.8 
+        mv dos.fe dos-cls.fe
+        lmdos -vnk=12 fe --mull~mode=2~nl=3 --dos:npts=1001:window=-.7,.8
+        mv dos.fe dos-mull.fe
+        lmdos -vnk=12 fe --mull~mode=2~nl=3 --dos:npts=1001:window=-.7,.8:rdm
+        mv dos.fe dos-mull-sym.fe
+#       Repeat without symops
+        mpirun -n 5 lmf -vnk=12 fe --rs=0 --cls:1,1,2 --mull~mode=2~nl=3 --quit=rho --nosym
+        lmdos -vnk=12 fe --mull~mode=2~nl=3 --dos:npts=1001:window=-.7,.8:rdm --nosym
+        mv dos.fe dos-mull-nosym.fe
+# PBE using easypbe functional : XCFUN={lxcf} GGA={lxcg} 
+.TESTXC  lmfa -vlxcf=4 -vlxcg=3 fe
+        lmf -vlxcf=4 -vlxcg=3 fe --rs=0 
+        lmf -vlxcf=4 -vlxcg=3 fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 --quit=band --jdosw=5,6,8,21,22,24 --jdosw2=7,9,23,25
+        cp jdos.fe dos-tet3.fe
+        lmf -vlxcf=4 -vlxcg=3 fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 '--popted:readb:npol 3:kshowe -0.01 1 sort ds,q3:kmape 0.05 1:saveka:q'
+        lmf -vlxcf=4 -vlxcg=3 fe --iactiv --band~con~fn=fs
+        echo Note: parts of test will fail, since bands and dos are checked against the libxc functional
+TESTXC  lmfa -vlxcf=101 -vlxcf2=130 fe
+        lmf -vlxcf=101 -vlxcf2=130 fe --rs=0 
+        lmf -vlxcf=101 -vlxcf2=130 fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 --quit=band --jdosw=5,6,8,21,22,24 --jdosw2=7,9,23,25
+        cp jdos.fe dos-tet3.fe
+        lmf -vlxcf=101 -vlxcf2=130 fe --rs=1,0 -vlteto=3 -voptmod=-5 -vlpart=12 -vnk=16 '--popted:readb:npol 3:kshowe -0.01 1 sort ds,q3:kmape 0.05 1:saveka:q'
+        lmf -vlxcf=101 -vlxcf2=130 fe --iactiv --band~con~fn=fs
+TESTBXC lmfa fe
+        rm -f mixm.fe
+        lmf fe --rs=0 -vnit=0
+        lmf fe -vconvc=1d-5
+        rm -f mixm.fe
+        lmf --rs=1,0 fe -vbeta=.3 -vbscal=.9 
+        rm -f mixm.fe
+        lmf --rs=1,0 fe -vbeta=.3 -vbscal=.9 -vbxcs=11
+        rm -f mixm.fe
+        lmf --rs=1,0 fe -vbeta=.3 -vbscal=1.1
+        rm -f mixm.fe
+        lmf --rs=1,0 fe -vbeta=.3 -vbscal=1.1 -vbxcs=11
+TSTMBXC lmfa fe
+        rm -f mixm.fe
+        lmf fe --rs=0 -vnit=0
+        mpirun -n 6 lmf fe -vconvc=1d-5
+        rm -f mixm.fe
+        mpirun -n 6 lmf --rs=1,0 fe -vbeta=.3 -vbscal=.9 
+        rm -f mixm.fe
+        mpirun -n 6 lmf --rs=1,0 fe -vbeta=.3 -vbscal=.9 -vbxcs=11
+        rm -f mixm.fe
+        mpirun -n 6 lmf --rs=1,0 fe -vbeta=.3 -vbscal=1.1
+        rm -f mixm.fe
+        mpirun -n 6 lmf --rs=1,0 fe -vbeta=.3 -vbscal=1.1 -vbxcs=11
+PLOTCLS echo  5 10 -0.7 .8 |  pldos -fplot -lst="1,3,5" -lst2="2,4,6" dos-cls.fe
+# This one generates total DOS, highlighting e2 in red
+# PLOTMUL echo 40 7 -9 10 | pldos -ef=0 -escl=13.6 -fplot '-lst=13,17' -ref:fn=tdos.fe:chan=1,2:scale dos-mull.fe
+PLOTMUL echo 20 10 -0.7 .8 | pldos -fplot -lst="1:7:2:2;9,11,15;13,17" -lst2 dos-mull.fe
+CLEAN   rm -f atm.fe ctrl.fe dos-mull.fe moms.fe wkp.fe cls.fe dos-cls.fe log.fe out.lmf-dos.fe bnds.fe fs.fe
+        rm -f jdos.fe dos-tet3.fe popt.fe pdos-tetk.fe
+% const verb=30 so=f
+VERS    LMF-6.10 LMASA-6.10 LM:7 FP:7
+IO      SHOW=F HELP=F VERBOS={verb} WKP=F
+CONST   gmax=13 nit=100 nmix=3 beta=0.5 conv=1d-4 convc=1d-4
+        a=2.87/0.529177 nk=10 Rf=0.99 R=Rf*sqrt(3)*a/4
+STRUC   NBAS=1 NSPEC=1 NL=5
+        ALAT=a PLAT= .5 .5 .5  .5 -.5 .5  .5 .5 -.5
+% const optmod=0 lteto=3 lpart=0
+% ifdef (optmod==-5|optmod==-6)
+OPTICS  MODE={optmod} NPTS=1001 WINDOW=-.7 .8 ESCISS=0 LTET={lteto}
+% else
+# ALLTRANS=F is faster and is nearly identical
+OPTICS  MODE={optmod} NPTS=301 WINDOW=0 1 ESCISS=0 LTET={lteto} ALLTRANS=T # ESMR=.1 
+%endif
+        PART={lpart}
+#SYMGRP  i*i
+SYMGRP  find
+BZ      NKABC=nk TETRA=1 METAL=3 EF0=0.058 DELEF=0.01 N=1 W=0.02
+        NPTS=1001 BZJOB=1 DOS=-.7 .8 SAVDOS=T EFMAX=5 NEVMX=34
+% const lxcf=2 lxcg=0
+% cconst lxcf==1&lxcg==0 eref=-2540.6621
+% cconst lxcf==2&lxcg==1 eref=-2542.3426
+% const eref=lxcf==2&lxcg==0?-2540.5681:(lxcf==3&lxcg==0?-2540.6402:(lxcf==3&lxcg==3?-2545.1730:0))
+SPEC    ATOM=Fe Z=26 R=R LMX=3 LMXA=3 KMXA=4 LFOCA=1 A=0.03 EREF={eref}
+        RSMH=2*R/3 2*R/3 1.05 2*R/3 EH=-0.3 -0.3 -0.3 -0.3
+        RSMH2=2*R/3 2*R/3 1.05      EH2=-1.1 -1.1 -1.1
+        Q=2 0 6 MMOM=0 0 -2.2
+SITE    ATOM=Fe POS= 0 0 0
+EWALD   TOL=1D-8 NKDMX=1999 NKRMX=1999
+# for version 7
+ITER    MIX=A6,k=nmix,b=beta,elind=-1 CONV=conv CONVC=convc NIT=nit
+MIX     MODE=A6,k=nmix,b=beta,elind=-1 CONV=conv CONVC=convc
+% const pwmode=0 pwemin=1 pwemax=3 oveps=0 nsp=2 bscal=1 bxcs=0
+HAM     NSPIN={nsp} REL=T SO={so} BXCSCAL={bscal<>1?(bxcs<1?1:bxcs):0} GMAX=gmax
+%ifdef lxcf & lxcf2+1
+        XCFUN=0,{lxcf},{lxcf2}
+%else
+        XCFUN={lxcf} GGA={lxcg} 
+%endif
+        AUTOBAS[PNU=0 LOC=0 MTO=0 PFLOAT=0,0 xQLOC=.004]
+        PWMODE={pwmode} PWEMIN={pwemin} PWEMAX={pwemax} OVEPS={oveps}
+START   NIT=nit

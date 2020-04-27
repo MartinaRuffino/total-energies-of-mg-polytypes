@@ -1,0 +1,1012 @@
+rdcmd:  lmfdmft niso --ldadc=82.2 --job=1 --pade~nw=421~window=-8/13.606,8/13.606~icut=40,100
+ --------------------  START LMFDMFT  ---------------------
+
+ rdctrl: reset global max nl from 4 to 5
+
+ rdctrl: reading basis parameters from file basp
+ ioorbp: read species Ni        RSMH,EH RSMH2,EH2 P PZ
+         reset nkaph from 2 to 3
+
+ LMFDMFT:  nbas = 1  nspec = 1  verb 35
+ special:: forces
+ pot:      spin-pol, XC:BH, read Sigma
+ float:    float P GW-style, v6-ebar
+ autoread: mto basis(4), pz(1), pnu(1)
+ bz:       metal(5), tetra, invit 
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 6.659398  Cell vol = 73.832033
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.65940   awald= 0.477   lmax=6
+         r1=  1.964   nkd= 135      q1=  5.926   nkg= 229
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+ BZMESH: 29 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 76 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Ni       2.354  0.942    4    3         4  0.589  1.177    15    1   0.942
+
+ MSHSIZ: mesh has 11 x 11 x 11 divisions; length 0.428, 0.428, 0.428
+         generated from gmax = 9.0 a.u. : 893 vectors of 1331 (67%)
+
+ GVLIST: gmax = 9 a.u. created 893 vectors of 1331 (67%)
+         mesh has 11 x 11 x 11 divisions; length 0.428, 0.428, 0.428
+ SGVSYM: 40 symmetry stars found for 893 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 30 0 25 20
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      16     0     9    16    25       0
+   2       9     0    16     9    25       0
+   3       5     0     0     5     5      20
+  all     30     0    25    30    55      20
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Ni       0*   1.57  -0.30   4.735    1.92E-06     137 
+  Ni       1    1.57  -0.30   5.003    1.81E-06     169 
+  Ni       2    0.94  -0.30   9.074    2.30E-06     893*
+  Ni       3    1.57  -0.30   5.546    3.62E-06     181 
+  Ni       0*   1.57  -1.10   4.735    1.92E-06     137 
+  Ni       1    1.57  -1.10   5.003    1.81E-06     169 
+  Ni       2    0.94  -1.10   9.074    2.30E-06     893*
+ 
+
+ iors  : read restart file (binary, mesh density)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ... sudmft job=1: make projectors
+
+ Reading indmfl file ... 1 total (1 inequivalent) correlated blocks, among 1 sites
+ 5 nonzero (5 inequivalent) matrix elements
+
+   channels for 2nd spin block
+   m1   m2   cix chn(1) chn(2)
+    1    1    1     1     6
+    2    2    1     2     7
+    3    3    1     3     8
+    4    4    1     4     9
+    5    5    1     5    10
+
+  correlated channels:
+  chan equiv m1   m2   isp icix  cix  ib
+    1    1    1    1    1    1    1    1
+    2    2    2    2    1    1    1    1
+    3    3    3    3    1    1    1    1
+    4    4    4    4    1    1    1    1
+    5    5    5    5    1    1    1    1
+    6    6    1    1    2    1    1    1
+    7    7    2    2    2    1    1    1
+    8    8    3    3    2    1    1    1
+    9    9    4    4    2    1    1    1
+   10   10    5    5    2    1    1    1
+ 
+ indmfl file expects 1 DMFT block(s) (max dimension 5),  10 matrix elements
+ iodmftc: reading d.c. from command-line  for 10 channel(s) ... read 1 element(s)
+ iodmftc: dc =  82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2
+ Read DMFT sigma from file.  Scale omega, sigma by 0.0735
+
+ SUDMFT: projector #2 with k-integrated norm.  8 bands in window (1,8)
+         999 Matsubara frequencies, interval (0.10472,209.125) eV
+
+ Pade fit to sigma on 44 points (icut=40,100): RMS err 6.24e-15 (fit pts) 0.572 (all pts)
+  point       omega
+    1   0.000000  0.007697
+    2   0.000000  0.023090
+    3   0.000000  0.038484
+    4   0.000000  0.053877
+    5   0.000000  0.069271
+    6   0.000000  0.084664
+    7   0.000000  0.100058
+    8   0.000000  0.115451
+    9   0.000000  0.130845
+   10   0.000000  0.146238
+   11   0.000000  0.161632
+   12   0.000000  0.177025
+   13   0.000000  0.192419
+   14   0.000000  0.207813
+   15   0.000000  0.223206
+   16   0.000000  0.238600
+   17   0.000000  0.253993
+   18   0.000000  0.269387
+   19   0.000000  0.284780
+   20   0.000000  0.300174
+   21   0.000000  0.315567
+   22   0.000000  0.330961
+   23   0.000000  0.346354
+   24   0.000000  0.361748
+   25   0.000000  0.377141
+   26   0.000000  0.392535
+   27   0.000000  0.407928
+   28   0.000000  0.423322
+   29   0.000000  0.438715
+   30   0.000000  0.454109
+   31   0.000000  0.469502
+   32   0.000000  0.484896
+   33   0.000000  0.500289
+   34   0.000000  0.515683
+   35   0.000000  0.531076
+   36   0.000000  0.546470
+   37   0.000000  0.561864
+   38   0.000000  0.577257
+   39   0.000000  0.592651
+   40   0.000000  0.608044
+   42   0.000000  0.638831
+   46   0.000000  0.700405
+   54   0.000000  0.823553
+   70   0.000000  1.069850
+ debugging check : Pade fit to first point:  err = (3.01981e-14,1.5753e-14)
+ Exit 0 wrote Pade-continued sigma to file sig2 
+ CPU time:  0.282s   Wall clock 0.327s  at  17:23:42 26.07.2018  on  localhost.localdomai
+rdcmd:  lmfdmft niso --ldadc=82.2 --job=1 -vso=1 -vnkabc=8 --gprt~band,fn=syml2~rdsigr=sig2~mode=18
+ --------------------  START LMFDMFT  ---------------------
+
+ rdctrl: reset global max nl from 4 to 5
+
+ rdctrl: reading basis parameters from file basp
+ ioorbp: read species Ni        RSMH,EH RSMH2,EH2 P PZ
+         reset nkaph from 2 to 3
+
+ LMFDMFT:  nbas = 1  nspec = 1  verb 35
+ special:: sharm(m=-l:l)
+ pot:      spin-pol, XC:BH, read Sigma
+ float:    float P GW-style, v6-ebar
+ autoread: mto basis(4), pz(1), pnu(1)
+ noncoll:  Non-coll, L.S coupling
+ bz:       metal(5), tetra, invit 
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: i*r3(1,1,-1) r4x
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 6.659398  Cell vol = 73.832033
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.65940   awald= 0.477   lmax=6
+         r1=  1.964   nkd= 135      q1=  5.926   nkg= 229
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+ BZMESH: 29 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 76 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Ni       2.354  0.942    4    3         4  0.589  1.177    15    1   0.942
+
+ MSHSIZ: mesh has 11 x 11 x 11 divisions; length 0.428, 0.428, 0.428
+         generated from gmax = 9.0 a.u. : 893 vectors of 1331 (67%)
+
+ GVLIST: gmax = 9 a.u. created 893 vectors of 1331 (67%)
+         mesh has 11 x 11 x 11 divisions; length 0.428, 0.428, 0.428
+ SGVSYM: 40 symmetry stars found for 893 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 30 0 25 20
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      16     0     9    16    25       0
+   2       9     0    16     9    25       0
+   3       5     0     0     5     5      20
+  all     30     0    25    30    55      20
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Ni       0*   1.57  -0.30   4.735    1.92E-06     137 
+  Ni       1    1.57  -0.30   5.003    1.81E-06     169 
+  Ni       2    0.94  -0.30   9.074    2.30E-06     893*
+  Ni       3    1.57  -0.30   5.546    3.62E-06     181 
+  Ni       0*   1.57  -1.10   4.735    1.92E-06     137 
+  Ni       1    1.57  -1.10   5.003    1.81E-06     169 
+  Ni       2    0.94  -1.10   9.074    2.30E-06     893*
+ 
+          Euler angles:
+   ib   alpha      beta     gamma     class         spin quantization axis
+    1  0.000000  0.000000  0.000000   Ni         0.000000  0.000000  1.000000
+
+ ioextf:   reading site-dependent, lm-dependent file "SO scaling from socscl", 1 components
+ SOC coefficients scaled by: 
+ Site  scale
+    1  1.000 |
+
+ iors  : read restart file (binary, mesh density)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ... sudmft job=1: make projectors
+
+ Reading indmfl file ... 1 total (1 inequivalent) correlated blocks, among 1 sites
+ 5 nonzero (5 inequivalent) matrix elements
+
+   channels for 2nd spin block
+   m1   m2   cix chn(1) chn(2)
+    1    1    1     1     6
+    2    2    1     2     7
+    3    3    1     3     8
+    4    4    1     4     9
+    5    5    1     5    10
+
+  correlated channels:
+  chan equiv m1   m2   isp icix  cix  ib
+    1    1    1    1    1    1    1    1
+    2    2    2    2    1    1    1    1
+    3    3    3    3    1    1    1    1
+    4    4    4    4    1    1    1    1
+    5    5    5    5    1    1    1    1
+    6    6    1    1    2    1    1    1
+    7    7    2    2    2    1    1    1
+    8    8    3    3    2    1    1    1
+    9    9    4    4    2    1    1    1
+   10   10    5    5    2    1    1    1
+ 
+ indmfl file expects 1 DMFT block(s) (max dimension 5),  10 matrix elements
+ iodmftc: reading d.c. from command-line  for 10 channel(s) ... read 1 element(s)
+ iodmftc: dc =  82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2
+ Read DMFT sigma from file.  Scale omega, sigma by 0.0735
+
+ SUDMFT: projector #2 with k-integrated norm.  16 bands in window (1,16)
+         999 Matsubara frequencies, interval (0.10472,209.125) eV
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Average es pot at rmt = 0.675236  avg sphere pot = 0.683359   vconst = -0.675236
+ smooth rhoves     11.333830   charge     3.986228
+ smooth rhoeps =   -2.967728 (  -1.496312,  -1.471417)
+         rhomu =   -3.862982 (  -1.951729,  -1.911253)
+       avg vxc =   -0.870950 (  -0.870641,  -0.871259)
+
+ locpot:
+
+ site  1  z= 28.0  rmt= 2.35445  nr=393   a=0.025  nlml=25  rg=0.589  Vfloat=T
+ sm core charge = 0.290466 (sphere) + 0.005087 (spillout) = 0.295553
+ potential shift to crystal energy zero:    0.000335
+
+ Energy terms:             smooth           local            total
+   rhoval*vef             -6.827556      -145.194096      -152.021652
+   rhoval*ves            -41.000427       -88.219817      -129.220244
+   psnuc*ves              63.668086    -11930.369248    -11866.701163
+   utot                   11.333830     -6009.294533     -5997.960703
+   rho*exc                -2.967728      -119.044578      -122.012307
+   rho*vxc                -3.862982      -157.623152      -161.486134
+   valence chg             3.986228         6.013772        10.000000
+   valence mag             0.021928         0.729750         0.751679
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence    10.00000   cores    18.00000   nucleii   -28.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ RDSIGM: read file sigm and create COMPLEX sigma(R) by FT ...
+         Sigm will be approximated by:  diagonal Sigma for high and low states 
+         Approximate sigma for energies E(lda)>2
+         For high states read constant sigii from sigm file 
+         sigm file has 72 irreducible QP: nk = ( 12 12 12 )  shift= F F F
+         average SE read from sigm file:   0.122094 0.128528
+ hft2rs: make neighbor table for r.s. hamiltonian using range = 8 * alat
+ pairc:  8583 pairs total  8583 is max cluster size
+ hft2rs: found 1728 connecting vectors out of 1728 possible for FFT
+ symiax: enlarged neighbor table from 1728 to 1957 pairs (48 symops)
+
+ q-points in full BZ where sigma calculable ...
+ BZMESH: 1728 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ Irr. qp for which sigma is calculated ...
+ BZMESH: 72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ 
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.567  max Im(hrs) = 2.8e-8
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.559  max Im(hrs) = 2.36e-7
+ check FT s(R) against s(q) ... maximum error = 9.7e-15 < tol (5e-6)
+ check FT s(R) against s(q) ... maximum error = 1.7e-14 < tol (5e-6) spin 2
+ rsmsym: symmetrizing complex s(1..1957) using 48 group operations 
+ symstr: max asymmetry = 2.98e-8
+ check FT s(R) against s(q) ... maximum error = 8.1e-6
+ check FT s(R) against s(q) ... maximum error = 7.7e-5 spin 2
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ BNDFP:  Write evals,evecs to file for 29 qp
+ bndfp:  kpt 1 of 29, k=  0.00000  0.00000  0.00000
+ -0.6687 -0.6663 -0.1240 -0.1213 -0.1175 -0.0739 -0.0665 -0.0649 -0.0541
+ -0.0527 -0.0046 -0.0043  1.7751  1.7798  2.0843  2.0858  2.0953  2.0971
+  2.0985  2.0997  2.2449  2.2464  2.2481  2.2672  2.2692  2.2709  3.0135
+  3.0181  3.0294  3.0395  3.0441  3.0478  3.1138  3.1138  3.1345  3.1345
+  3.4891  3.4992  5.8166  5.8166  5.8167  5.8347  5.8347  5.8348  7.5150
+  7.5151  7.5273  7.5306  7.5398  7.5399  7.8104  7.8109  7.8117  7.8365
+  7.8372  7.8382  8.4628  8.4629  8.4895  8.4901
+ (warning) skip orb. moment calculation ... metal weights required
+ bndfp:  kpt 11 of 29, k=  -0.62500  0.62500  0.87500
+ -0.4227 -0.4197 -0.1636 -0.1200 -0.1174 -0.0995 -0.0701 -0.0618 -0.0444
+ -0.0192 -0.0095  0.0341  0.9398  0.9637  1.3585  1.3736  1.9187  1.9217
+  2.0060  2.0237  2.2186  2.2320  2.2359  2.2405  2.6606  2.6777  2.8361
+  2.8504  3.0472  3.0634  3.5811  3.5977  3.8165  3.8348  4.1667  4.1830
+  4.4570  4.4744  4.6954  4.7069  4.9339  4.9514  5.7241  5.7394  5.7460
+  5.7508  6.6171  6.6429  7.0588  7.0746  8.4081  8.4357  8.6445  8.6681
+  9.3436  9.3778  9.9709 10.0028 10.3953 10.4204
+ bndfp:  kpt 21 of 29, k=  0.00000  0.00000  1.00000
+ -0.3002 -0.2663 -0.2437 -0.1983 -0.0229 -0.0198 -0.0125  0.0302  0.0399
+  0.0482  0.1555  0.1561  0.6736  0.7099  1.0921  1.0976  1.1048  1.1102
+  1.4644  1.5002  1.7899  1.8069  3.3013  3.3091  3.7132  3.7189  3.8944
+  3.8970  3.9036  3.9061  4.0736  4.0989  4.2013  4.2037  4.2221  4.2244
+  4.3199  4.3292  4.6198  4.6255  4.6386  4.6442  5.2855  5.3055  6.1038
+  6.1054  6.1229  6.1249  6.1287  6.1367  6.9749  6.9867  7.0368  7.0580
+  8.3247  8.3247  8.3379  8.3384  9.5304  9.5518
+ BNDFP:  evecs saved in file evec
+
+ BZWTS : --- Tetrahedron Integration ---
+         Est E_f           Window        Tolerance  DOS(E_f)
+         0.023783   0.023490   0.024159   0.000669  35.244885
+         0.023785   0.023784   0.023791   0.000007  35.190009
+         0.023785   0.023785   0.023785   0.000000  35.186299
+ BZINTS: Fermi energy:      0.023785;  10.000000 electrons;  D(Ef):   35.186
+         Sum occ. bands:   -1.3152115  incl. Bloechl correction:   -0.002649
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+
+ Harris energy:
+ sumev=       -1.315211  val*vef=    -152.021652   sumtv=     150.706441
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2934.083445
+ rhoeps=    -122.012307     utot=   -5997.960703    ehar=   -3035.183124
+
+ Make and renormalize projectors ...
+
+ Find chemical potential mu ...
+ Seek mu for 10 electrons ... 11.160377 electrons at Ef0=0.023785.  D(Ef0)=0.555
+ getVnew: v1=0e0 N1=1.16e0  v2=2e-1 N2=5.848e-1  bracket=F  est=0.4
+ getVnew: v1=2e-1 N1=5.848e-1  v2=4e-1 N2=1.492e-1  bracket=F  est=0.475374
+ getVnew: v1=4e-1 N1=1.492e-1  v2=4.754e-1 N2=1.065e-1  bracket=F  est=0.663218
+ getVnew: v1=4.754e-1 N1=1.065e-1  v2=6.632e-1 N2=-2.324e-1  bracket=T  est=0.563649
+ getVnew: v1=4.754e-1 N1=1.065e-1  v2=5.636e-1 N2=-7.292e-2  bracket=T  est=0.525791
+ getVnew: v1=4.754e-1 N1=1.065e-1  v2=5.258e-1 N2=-3.15e-2  bracket=T  est=0.511453
+ getVnew: v1=5.258e-1 N1=-3.15e-2  v2=5.115e-1 N2=4.525e-2  bracket=T  est=0.520094
+ getVnew: v1=5.115e-1 N1=4.525e-2  v2=5.201e-1 N2=-2.17e-2  bracket=T  est=0.517661
+ getVnew: v1=5.115e-1 N1=4.525e-2  v2=5.177e-1 N2=-1.006e-2  bracket=T  est=0.516199
+ getVnew: v1=5.177e-1 N1=-1.006e-2  v2=5.162e-1 N2=3.401e-4  bracket=T  est=0.516244
+ getVnew: v1=5.162e-1 N1=3.401e-4  v2=5.162e-1 N2=-1.24e-5  bracket=T  est=0.516242
+ getVnew: v1=5.162e-1 N1=-1.24e-5  v2=5.162e-1 N2=2.577e-9  bracket=T  est=0.516242
+ mu = -0.492457 = Ef0-0.516242.  Deviation from neutrality = -1.78e-15  D(mu)=7.906
+ Read new frequency mesh (real axis) and sigma from file sig2
+ Read dimensioning parameters for DMFT sigma ... found 421 frequencies and 10 channels
+ Read DMFT sigma from file.  Scale omega, sigma by 0.0735
+
+ Create and write to disk:  diagonal G(k) in 1-particle basis, Real axis,  mu=0.000000 (band mode, 5 qp)
+
+ rdqlst: 111 points in symmetry line mode
+ suqlst:  nq= 41   q1= 0.0000 0.0000 0.0000   q2= 1.0000 0.0000 0.0000
+ suqlst:  nq= 35   q1= 1.0000 0.0000 0.0000   q2= 0.5000 0.5000 0.5000
+ suqlst:  nq= 35   q1= 0.5000 0.5000 0.5000   q2= 0.0000 0.0000 0.0000
+ suqlst: read qp for bands, mode 1
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Average es pot at rmt = 0.675236  avg sphere pot = 0.683359   vconst = -0.675236
+ smooth rhoves     11.333830   charge     3.986228
+ smooth rhoeps =   -2.967728 (  -1.496312,  -1.471417)
+         rhomu =   -3.862982 (  -1.951729,  -1.911253)
+       avg vxc =   -0.870950 (  -0.870641,  -0.871259)
+
+ locpot:
+
+ site  1  z= 28.0  rmt= 2.35445  nr=393   a=0.025  nlml=25  rg=0.589  Vfloat=T
+ sm core charge = 0.290466 (sphere) + 0.005087 (spillout) = 0.295553
+ potential shift to crystal energy zero:    0.000335
+
+ Energy terms:             smooth           local            total
+   rhoval*vef             -6.827556      -145.194096      -152.021652
+   rhoval*ves            -41.000427       -88.219817      -129.220244
+   psnuc*ves              63.668086    -11930.369248    -11866.701163
+   utot                   11.333830     -6009.294533     -5997.960703
+   rho*exc                -2.967728      -119.044578      -122.012307
+   rho*vxc                -3.862982      -157.623152      -161.486134
+   valence chg             3.986228         6.013772        10.000000
+   valence mag             0.021928         0.729750         0.751679
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence    10.00000   cores    18.00000   nucleii   -28.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ RDSIGM: read file sigm and create COMPLEX sigma(R) by FT ...
+         Sigm will be approximated by:  diagonal Sigma for high and low states 
+         Approximate sigma for energies E(lda)>2
+         For high states read constant sigii from sigm file 
+         sigm file has 72 irreducible QP: nk = ( 12 12 12 )  shift= F F F
+         average SE read from sigm file:   0.122094 0.128528
+ hft2rs: make neighbor table for r.s. hamiltonian using range = 8 * alat
+ pairc:  8583 pairs total  8583 is max cluster size
+ hft2rs: found 1728 connecting vectors out of 1728 possible for FFT
+ symiax: enlarged neighbor table from 1728 to 1957 pairs (48 symops)
+
+ q-points in full BZ where sigma calculable ...
+ BZMESH: 1728 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ Irr. qp for which sigma is calculated ...
+ BZMESH: 72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ 
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.567  max Im(hrs) = 2.8e-8
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.559  max Im(hrs) = 2.36e-7
+ check FT s(R) against s(q) ... maximum error = 9.7e-15 < tol (5e-6)
+ check FT s(R) against s(q) ... maximum error = 1.7e-14 < tol (5e-6) spin 2
+ rsmsym: symmetrizing complex s(1..1957) using 48 group operations 
+ symstr: max asymmetry = 2.98e-8
+ check FT s(R) against s(q) ... maximum error = 8.1e-6
+ check FT s(R) against s(q) ... maximum error = 7.7e-5 spin 2
+
+ BNDFP:  Write evals,evecs to file for 111 qp
+ bndfp:  kpt 1 of 111, k=  0.00000  0.00000  0.00000
+ -0.6687 -0.6663 -0.1240 -0.1213 -0.1175 -0.0739 -0.0665 -0.0649 -0.0541
+ -0.0527 -0.0046 -0.0043  1.7751  1.7798  2.0843  2.0858  2.0953  2.0971
+  2.0985  2.0997  2.2449  2.2464  2.2481  2.2672  2.2692  2.2709  3.0135
+  3.0181  3.0294  3.0395  3.0441  3.0478  3.1138  3.1138  3.1345  3.1345
+  3.4891  3.4992  5.8166  5.8166  5.8167  5.8347  5.8347  5.8348  7.5150
+  7.5151  7.5273  7.5306  7.5398  7.5399  7.8104  7.8109  7.8117  7.8365
+  7.8372  7.8382  8.4628  8.4629  8.4895  8.4901
+ bndfp:  kpt 11 of 111, k=  0.25000  0.00000  0.00000
+ -0.6120 -0.6099 -0.1419 -0.1108 -0.1093 -0.0893 -0.0708 -0.0557 -0.0546
+ -0.0486 -0.0172  0.0004  1.6747  1.6854  1.7685  1.7685  1.7893  1.7893
+  1.8968  1.9006  2.3857  2.4075  2.4826  2.4970  2.5476  2.5476  2.5575
+  2.5575  3.1200  3.1394  3.1566  3.1566  3.1818  3.1818  3.4485  3.4645
+  3.9405  3.9537  5.2795  5.2972  5.5978  5.5978  5.6170  5.6170  6.6040
+  6.6104  6.9174  6.9174  6.9333  6.9334  8.1013  8.1290  8.8510  8.8791
+  9.5182  9.5184  9.5434  9.5439 10.1761 10.2038
+ bndfp:  kpt 21 of 111, k=  0.50000  0.00000  0.00000
+ -0.4576 -0.4574 -0.1865 -0.1369 -0.0977 -0.0782 -0.0751 -0.0475 -0.0397
+ -0.0187 -0.0183  0.0126  1.4274  1.4274  1.4461  1.4461  1.4995  1.5117
+  1.5480  1.5724  1.9627  1.9793  2.9300  2.9300  2.9345  2.9345  2.9878
+  2.9971  3.1649  3.1811  3.5270  3.5270  3.5545  3.5546  3.5858  3.5991
+  4.5203  4.5319  4.6690  4.6879  5.1527  5.1527  5.1723  5.1723  5.9043
+  5.9126  6.9644  6.9646  6.9769  6.9769  8.5886  8.6195  8.8184  8.8500
+ 10.0346 10.0348 10.0608 10.0615 10.7216 10.7447
+ bndfp:  kpt 31 of 111, k=  0.75000  0.00000  0.00000
+ -0.3193 -0.2981 -0.2263 -0.1806 -0.0385 -0.0364 -0.0282 -0.0245 -0.0044
+  0.0200  0.0235  0.0278  0.9845  1.0050  1.1851  1.1851  1.1999  1.1999
+  1.4886  1.5238  1.8171  1.8291  3.2480  3.2594  3.4186  3.4186  3.4246
+  3.4246  3.6744  3.6830  3.6965  3.7049  4.0420  4.0420  4.0679  4.0679
+  4.2430  4.2654  4.6986  4.6986  4.7175  4.7175  4.9095  4.9221  6.0340
+  6.0452  6.8536  6.8540  6.8696  6.8696  7.7908  7.8134  8.4124  8.4413
+  8.6837  8.6837  8.7024  8.7026  9.8514  9.8724
+ bndfp:  kpt 41 of 111, k=  1.00000  0.00000  0.00000
+ -0.3002 -0.2663 -0.2436 -0.1984 -0.0243 -0.0164 -0.0145  0.0287  0.0444
+  0.0452  0.1555  0.1561  0.6736  0.7099  1.0943  1.0943  1.1081  1.1081
+  1.4644  1.5002  1.7899  1.8069  3.3013  3.3091  3.7132  3.7190  3.8955
+  3.8955  3.9050  3.9050  4.0736  4.0989  4.2022  4.2022  4.2235  4.2235
+  4.3199  4.3292  4.6223  4.6223  4.6417  4.6417  5.2855  5.3057  6.1041
+  6.1042  6.1241  6.1242  6.1290  6.1372  6.9748  6.9866  7.0368  7.0580
+  8.3224  8.3228  8.3397  8.3399  9.5304  9.5511
+ bndfp:  kpt 51 of 111, k=  0.86765  0.13235  0.13235
+ -0.2851 -0.2526 -0.2301 -0.1859 -0.0730 -0.0390 -0.0268 -0.0181  0.0150
+  0.0390  0.1622  0.1885  0.7936  0.8212  0.8753  0.8912  1.1723  1.1797
+  1.5744  1.6003  2.0064  2.0254  3.0747  3.0851  3.2736  3.2809  3.6874
+  3.7016  3.7663  3.7762  3.9641  3.9767  4.0906  4.1055  4.3525  4.3685
+  4.3728  4.3947  4.5566  4.5723  4.8452  4.8657  5.4262  5.4427  5.8997
+  5.9179  6.6191  6.6347  6.6933  6.7067  7.0356  7.0576  7.4920  7.5113
+  8.0848  8.1030  8.5097  8.5299  9.5662  9.5842
+ bndfp:  kpt 61 of 111, k=  0.72059  0.27941  0.27941
+ -0.2644 -0.2354 -0.1987 -0.1607 -0.1354 -0.0920 -0.0799 -0.0300 -0.0204
+  0.0351  0.1323  0.1704  0.5602  0.5935  1.1561  1.1728  1.4038  1.4160
+  1.6586  1.6735  2.5378  2.5515  2.6033  2.6169  2.7009  2.7115  3.1935
+  3.2096  3.5975  3.6142  3.7336  3.7445  3.8944  3.9080  4.2652  4.2806
+  4.5576  4.5792  4.7454  4.7615  5.5745  5.5912  5.5998  5.6239  5.6746
+  5.6858  6.4121  6.4323  6.9425  6.9609  7.0862  7.1043  7.8367  7.8619
+  8.8138  8.8363  9.1747  9.1809  9.2269  9.2339
+ bndfp:  kpt 71 of 111, k=  0.57353  0.42647  0.42647
+ -0.3038 -0.2734 -0.1315 -0.1168 -0.0942 -0.0892 -0.0666 -0.0617 -0.0225
+  0.0265  0.0340  0.0669  0.4170  0.4623  1.5855  1.5902  1.7379  1.7522
+  1.7752  1.7846  2.1745  2.1871  2.1923  2.2030  2.6546  2.6727  3.3019
+  3.3168  3.5343  3.5480  3.6520  3.6626  3.7924  3.8117  4.0114  4.0276
+  4.7694  4.7806  4.9173  4.9341  4.9966  5.0112  5.7486  5.7607  6.2110
+  6.2365  6.3266  6.3506  6.4612  6.4848  7.2622  7.2900  8.3210  8.3465
+  8.5552  8.5794  9.4287  9.4480  9.4668  9.4786
+ bndfp:  kpt 81 of 111, k=  0.44118  0.44118  0.44118
+ -0.3220 -0.2965 -0.1259 -0.1189 -0.0804 -0.0742 -0.0720 -0.0671 -0.0270
+ -0.0230  0.0290  0.0326  0.4647  0.5095  1.6785  1.6834  1.8608  1.8662
+  1.8777  1.8830  2.0667  2.0690  2.0906  2.0931  2.5618  2.5797  3.3863
+  3.3891  3.4018  3.4046  3.6524  3.6622  3.9328  3.9338  3.9513  3.9523
+  4.7525  4.7614  4.8752  4.8760  4.8915  4.8923  5.5934  5.6052  6.3159
+  6.3417  6.4918  6.4922  6.5151  6.5164  7.5560  7.5867  8.5537  8.5594
+  8.5897  8.5924  9.2624  9.2635  9.2837  9.2846
+ bndfp:  kpt 91 of 111, k=  0.29412  0.29412  0.29412
+ -0.4528 -0.4498 -0.1527 -0.1150 -0.1090 -0.1072 -0.0627 -0.0541 -0.0479
+ -0.0429  0.0059  0.0100  0.8990  0.9267  1.7684  1.7710  1.8845  1.8877
+  1.9027  1.9059  2.2323  2.2336  2.2469  2.2482  2.4797  2.4903  2.9100
+  2.9125  2.9282  2.9306  3.3561  3.3749  4.1908  4.1924  4.2083  4.2100
+  4.5539  4.5637  4.5784  4.5791  4.5956  4.5966  5.5345  5.5408  6.0888
+  6.1108  7.1957  7.1962  7.2103  7.2120  8.5430  8.5463  8.5764  8.5771
+  8.7892  8.8222  9.7935  9.7950  9.8132  9.8155
+ bndfp:  kpt 101 of 111, k=  0.14706  0.14706  0.14706
+ -0.6100 -0.6080 -0.1372 -0.1160 -0.1103 -0.0855 -0.0656 -0.0601 -0.0551
+ -0.0521 -0.0076 -0.0055  1.4695  1.4850  1.8608  1.8635  1.9728  1.9754
+  1.9897  1.9921  2.3951  2.3956  2.4074  2.4079  2.4646  2.4721  2.6878
+  2.6919  2.7112  2.7152  3.0451  3.0688  3.5845  3.5869  3.6033  3.6058
+  3.8475  3.8578  5.3024  5.3029  5.3204  5.3208  5.8860  5.9051  6.4089
+  6.4165  7.2066  7.2069  7.2185  7.2192  8.2245  8.2262  8.2518  8.2533
+  9.0695  9.0956  9.8860  9.8866  9.9136  9.9147
+ bndfp:  kpt 111 of 111, k=  0.00000  0.00000  0.00000
+ -0.6687 -0.6663 -0.1240 -0.1213 -0.1175 -0.0739 -0.0665 -0.0649 -0.0541
+ -0.0527 -0.0046 -0.0043  1.7751  1.7798  2.0843  2.0858  2.0953  2.0971
+  2.0985  2.0997  2.2449  2.2464  2.2481  2.2672  2.2692  2.2709  3.0135
+  3.0181  3.0294  3.0395  3.0441  3.0478  3.1138  3.1138  3.1345  3.1345
+  3.4891  3.4992  5.8166  5.8166  5.8167  5.8347  5.8347  5.8348  7.5150
+  7.5151  7.5273  7.5306  7.5398  7.5399  7.8104  7.8109  7.8117  7.8365
+  7.8372  7.8382  8.4628  8.4629  8.4895  8.4901
+ BNDFP:  evecs saved in file evec
+
+ Make and renormalize projectors for new qp ...
+ Exit 0 : --gprt~band,fn=syml2~rdsigr=sig2~mode=18 wrote diagonal g to file se 
+ CPU time:  50.270s   Wall clock 50.323s  at  17:24:32 26.07.2018  on  localhost.localdomai
+rdcmd:  cp se.niso gii.niso
+rdcmd:  lmfdmft niso --ldadc=82.2 --job=1 -vso=1 -vnkabc=8 --gprt~band,fn=syml2~rdsigr=sig2~mode=19
+ --------------------  START LMFDMFT  ---------------------
+
+ rdctrl: reset global max nl from 4 to 5
+
+ rdctrl: reading basis parameters from file basp
+ ioorbp: read species Ni        RSMH,EH RSMH2,EH2 P PZ
+         reset nkaph from 2 to 3
+
+ LMFDMFT:  nbas = 1  nspec = 1  verb 35
+ special:: sharm(m=-l:l)
+ pot:      spin-pol, XC:BH, read Sigma
+ float:    float P GW-style, v6-ebar
+ autoread: mto basis(4), pz(1), pnu(1)
+ noncoll:  Non-coll, L.S coupling
+ bz:       metal(5), tetra, invit 
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: i*r3(1,1,-1) r4x
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 6.659398  Cell vol = 73.832033
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.65940   awald= 0.477   lmax=6
+         r1=  1.964   nkd= 135      q1=  5.926   nkg= 229
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+ BZMESH: 29 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ TETIRR: sorting 3072 tetrahedra ... 76 inequivalent ones found
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Ni       2.354  0.942    4    3         4  0.589  1.177    15    1   0.942
+
+ MSHSIZ: mesh has 11 x 11 x 11 divisions; length 0.428, 0.428, 0.428
+         generated from gmax = 9.0 a.u. : 893 vectors of 1331 (67%)
+
+ GVLIST: gmax = 9 a.u. created 893 vectors of 1331 (67%)
+         mesh has 11 x 11 x 11 divisions; length 0.428, 0.428, 0.428
+ SGVSYM: 40 symmetry stars found for 893 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 30 0 25 20
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      16     0     9    16    25       0
+   2       9     0    16     9    25       0
+   3       5     0     0     5     5      20
+  all     30     0    25    30    55      20
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term   cutoff
+  Ni       0*   1.57  -0.30   4.735    1.92E-06     137 
+  Ni       1    1.57  -0.30   5.003    1.81E-06     169 
+  Ni       2    0.94  -0.30   9.074    2.30E-06     893*
+  Ni       3    1.57  -0.30   5.546    3.62E-06     181 
+  Ni       0*   1.57  -1.10   4.735    1.92E-06     137 
+  Ni       1    1.57  -1.10   5.003    1.81E-06     169 
+  Ni       2    0.94  -1.10   9.074    2.30E-06     893*
+ 
+          Euler angles:
+   ib   alpha      beta     gamma     class         spin quantization axis
+    1  0.000000  0.000000  0.000000   Ni         0.000000  0.000000  1.000000
+
+ ioextf:   reading site-dependent, lm-dependent file "SO scaling from socscl", 1 components
+ SOC coefficients scaled by: 
+ Site  scale
+    1  1.000 |
+
+ iors  : read restart file (binary, mesh density)
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ ... sudmft job=1: make projectors
+
+ Reading indmfl file ... 1 total (1 inequivalent) correlated blocks, among 1 sites
+ 5 nonzero (5 inequivalent) matrix elements
+
+   channels for 2nd spin block
+   m1   m2   cix chn(1) chn(2)
+    1    1    1     1     6
+    2    2    1     2     7
+    3    3    1     3     8
+    4    4    1     4     9
+    5    5    1     5    10
+
+  correlated channels:
+  chan equiv m1   m2   isp icix  cix  ib
+    1    1    1    1    1    1    1    1
+    2    2    2    2    1    1    1    1
+    3    3    3    3    1    1    1    1
+    4    4    4    4    1    1    1    1
+    5    5    5    5    1    1    1    1
+    6    6    1    1    2    1    1    1
+    7    7    2    2    2    1    1    1
+    8    8    3    3    2    1    1    1
+    9    9    4    4    2    1    1    1
+   10   10    5    5    2    1    1    1
+ 
+ indmfl file expects 1 DMFT block(s) (max dimension 5),  10 matrix elements
+ iodmftc: reading d.c. from command-line  for 10 channel(s) ... read 1 element(s)
+ iodmftc: dc =  82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2 82.2
+ Read DMFT sigma from file.  Scale omega, sigma by 0.0735
+
+ SUDMFT: projector #2 with k-integrated norm.  16 bands in window (1,16)
+         999 Matsubara frequencies, interval (0.10472,209.125) eV
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Average es pot at rmt = 0.675236  avg sphere pot = 0.683359   vconst = -0.675236
+ smooth rhoves     11.333830   charge     3.986228
+ smooth rhoeps =   -2.967728 (  -1.496312,  -1.471417)
+         rhomu =   -3.862982 (  -1.951729,  -1.911253)
+       avg vxc =   -0.870950 (  -0.870641,  -0.871259)
+
+ locpot:
+
+ site  1  z= 28.0  rmt= 2.35445  nr=393   a=0.025  nlml=25  rg=0.589  Vfloat=T
+ sm core charge = 0.290466 (sphere) + 0.005087 (spillout) = 0.295553
+ potential shift to crystal energy zero:    0.000335
+
+ Energy terms:             smooth           local            total
+   rhoval*vef             -6.827556      -145.194096      -152.021652
+   rhoval*ves            -41.000427       -88.219817      -129.220244
+   psnuc*ves              63.668086    -11930.369248    -11866.701163
+   utot                   11.333830     -6009.294533     -5997.960703
+   rho*exc                -2.967728      -119.044578      -122.012307
+   rho*vxc                -3.862982      -157.623152      -161.486134
+   valence chg             3.986228         6.013772        10.000000
+   valence mag             0.021928         0.729750         0.751679
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence    10.00000   cores    18.00000   nucleii   -28.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ RDSIGM: read file sigm and create COMPLEX sigma(R) by FT ...
+         Sigm will be approximated by:  diagonal Sigma for high and low states 
+         Approximate sigma for energies E(lda)>2
+         For high states read constant sigii from sigm file 
+         sigm file has 72 irreducible QP: nk = ( 12 12 12 )  shift= F F F
+         average SE read from sigm file:   0.122094 0.128528
+ hft2rs: make neighbor table for r.s. hamiltonian using range = 8 * alat
+ pairc:  8583 pairs total  8583 is max cluster size
+ hft2rs: found 1728 connecting vectors out of 1728 possible for FFT
+ symiax: enlarged neighbor table from 1728 to 1957 pairs (48 symops)
+
+ q-points in full BZ where sigma calculable ...
+ BZMESH: 1728 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ Irr. qp for which sigma is calculated ...
+ BZMESH: 72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ 
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.567  max Im(hrs) = 2.8e-8
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.559  max Im(hrs) = 2.36e-7
+ check FT s(R) against s(q) ... maximum error = 9.7e-15 < tol (5e-6)
+ check FT s(R) against s(q) ... maximum error = 1.7e-14 < tol (5e-6) spin 2
+ rsmsym: symmetrizing complex s(1..1957) using 48 group operations 
+ symstr: max asymmetry = 2.98e-8
+ check FT s(R) against s(q) ... maximum error = 8.1e-6
+ check FT s(R) against s(q) ... maximum error = 7.7e-5 spin 2
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+
+ BNDFP:  Write evals,evecs to file for 29 qp
+ bndfp:  kpt 1 of 29, k=  0.00000  0.00000  0.00000
+ -0.6687 -0.6663 -0.1240 -0.1213 -0.1175 -0.0739 -0.0665 -0.0649 -0.0541
+ -0.0527 -0.0046 -0.0043  1.7751  1.7798  2.0843  2.0858  2.0953  2.0971
+  2.0985  2.0997  2.2449  2.2464  2.2481  2.2672  2.2692  2.2709  3.0135
+  3.0181  3.0294  3.0395  3.0441  3.0478  3.1138  3.1138  3.1345  3.1345
+  3.4891  3.4992  5.8166  5.8166  5.8167  5.8347  5.8347  5.8348  7.5150
+  7.5151  7.5273  7.5306  7.5398  7.5399  7.8104  7.8109  7.8117  7.8365
+  7.8372  7.8382  8.4628  8.4629  8.4895  8.4901
+ (warning) skip orb. moment calculation ... metal weights required
+ bndfp:  kpt 11 of 29, k=  -0.62500  0.62500  0.87500
+ -0.4227 -0.4197 -0.1636 -0.1200 -0.1174 -0.0995 -0.0701 -0.0618 -0.0444
+ -0.0192 -0.0095  0.0341  0.9398  0.9637  1.3585  1.3736  1.9187  1.9217
+  2.0060  2.0237  2.2186  2.2320  2.2359  2.2405  2.6606  2.6777  2.8361
+  2.8504  3.0472  3.0634  3.5811  3.5977  3.8165  3.8348  4.1667  4.1830
+  4.4570  4.4744  4.6954  4.7069  4.9339  4.9514  5.7241  5.7394  5.7460
+  5.7508  6.6171  6.6429  7.0588  7.0746  8.4081  8.4357  8.6445  8.6681
+  9.3436  9.3778  9.9709 10.0028 10.3953 10.4204
+ bndfp:  kpt 21 of 29, k=  0.00000  0.00000  1.00000
+ -0.3002 -0.2663 -0.2437 -0.1983 -0.0229 -0.0198 -0.0125  0.0302  0.0399
+  0.0482  0.1555  0.1561  0.6736  0.7099  1.0921  1.0976  1.1048  1.1102
+  1.4644  1.5002  1.7899  1.8069  3.3013  3.3091  3.7132  3.7189  3.8944
+  3.8970  3.9036  3.9061  4.0736  4.0989  4.2013  4.2037  4.2221  4.2244
+  4.3199  4.3292  4.6198  4.6255  4.6386  4.6442  5.2855  5.3055  6.1038
+  6.1054  6.1229  6.1249  6.1287  6.1367  6.9749  6.9867  7.0368  7.0580
+  8.3247  8.3247  8.3379  8.3384  9.5304  9.5518
+ BNDFP:  evecs saved in file evec
+
+ BZWTS : --- Tetrahedron Integration ---
+         Est E_f           Window        Tolerance  DOS(E_f)
+         0.023783   0.023490   0.024159   0.000669  35.244885
+         0.023785   0.023784   0.023791   0.000007  35.190009
+         0.023785   0.023785   0.023785   0.000000  35.186299
+ BZINTS: Fermi energy:      0.023785;  10.000000 electrons;  D(Ef):   35.186
+         Sum occ. bands:   -1.3152115  incl. Bloechl correction:   -0.002649
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+
+ Harris energy:
+ sumev=       -1.315211  val*vef=    -152.021652   sumtv=     150.706441
+ sumec=        0.000000  cor*vef=       0.000000   ttcor=    2934.083445
+ rhoeps=    -122.012307     utot=   -5997.960703    ehar=   -3035.183124
+
+ Make and renormalize projectors ...
+
+ Find chemical potential mu ...
+ Seek mu for 10 electrons ... 11.160377 electrons at Ef0=0.023785.  D(Ef0)=0.555
+ getVnew: v1=0e0 N1=1.16e0  v2=2e-1 N2=5.848e-1  bracket=F  est=0.4
+ getVnew: v1=2e-1 N1=5.848e-1  v2=4e-1 N2=1.492e-1  bracket=F  est=0.475374
+ getVnew: v1=4e-1 N1=1.492e-1  v2=4.754e-1 N2=1.065e-1  bracket=F  est=0.663218
+ getVnew: v1=4.754e-1 N1=1.065e-1  v2=6.632e-1 N2=-2.324e-1  bracket=T  est=0.563649
+ getVnew: v1=4.754e-1 N1=1.065e-1  v2=5.636e-1 N2=-7.292e-2  bracket=T  est=0.525791
+ getVnew: v1=4.754e-1 N1=1.065e-1  v2=5.258e-1 N2=-3.15e-2  bracket=T  est=0.511453
+ getVnew: v1=5.258e-1 N1=-3.15e-2  v2=5.115e-1 N2=4.525e-2  bracket=T  est=0.520094
+ getVnew: v1=5.115e-1 N1=4.525e-2  v2=5.201e-1 N2=-2.17e-2  bracket=T  est=0.517661
+ getVnew: v1=5.115e-1 N1=4.525e-2  v2=5.177e-1 N2=-1.006e-2  bracket=T  est=0.516199
+ getVnew: v1=5.177e-1 N1=-1.006e-2  v2=5.162e-1 N2=3.401e-4  bracket=T  est=0.516244
+ getVnew: v1=5.162e-1 N1=3.401e-4  v2=5.162e-1 N2=-1.24e-5  bracket=T  est=0.516242
+ getVnew: v1=5.162e-1 N1=-1.24e-5  v2=5.162e-1 N2=2.577e-9  bracket=T  est=0.516242
+ mu = -0.492457 = Ef0-0.516242.  Deviation from neutrality = -1.78e-15  D(mu)=7.906
+ Read new frequency mesh (real axis) and sigma from file sig2
+ Read dimensioning parameters for DMFT sigma ... found 421 frequencies and 10 channels
+ Read DMFT sigma from file.  Scale omega, sigma by 0.0735
+
+ Create and write to disk:  diagonal Sigma(k) in 1-particle basis, Real axis,  mu=0.000000 (band mode, 5 qp)
+
+ rdqlst: 111 points in symmetry line mode
+ suqlst:  nq= 41   q1= 0.0000 0.0000 0.0000   q2= 1.0000 0.0000 0.0000
+ suqlst:  nq= 35   q1= 1.0000 0.0000 0.0000   q2= 0.5000 0.5000 0.5000
+ suqlst:  nq= 35   q1= 0.5000 0.5000 0.5000   q2= 0.0000 0.0000 0.0000
+ suqlst: read qp for bands, mode 1
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Average es pot at rmt = 0.675236  avg sphere pot = 0.683359   vconst = -0.675236
+ smooth rhoves     11.333830   charge     3.986228
+ smooth rhoeps =   -2.967728 (  -1.496312,  -1.471417)
+         rhomu =   -3.862982 (  -1.951729,  -1.911253)
+       avg vxc =   -0.870950 (  -0.870641,  -0.871259)
+
+ locpot:
+
+ site  1  z= 28.0  rmt= 2.35445  nr=393   a=0.025  nlml=25  rg=0.589  Vfloat=T
+ sm core charge = 0.290466 (sphere) + 0.005087 (spillout) = 0.295553
+ potential shift to crystal energy zero:    0.000335
+
+ Energy terms:             smooth           local            total
+   rhoval*vef             -6.827556      -145.194096      -152.021652
+   rhoval*ves            -41.000427       -88.219817      -129.220244
+   psnuc*ves              63.668086    -11930.369248    -11866.701163
+   utot                   11.333830     -6009.294533     -5997.960703
+   rho*exc                -2.967728      -119.044578      -122.012307
+   rho*vxc                -3.862982      -157.623152      -161.486134
+   valence chg             3.986228         6.013772        10.000000
+   valence mag             0.021928         0.729750         0.751679
+   core charge            18.000000         0.000000        18.000000
+
+ Charges:  valence    10.00000   cores    18.00000   nucleii   -28.00000
+    hom background     0.00000   deviation from neutrality:      0.00000
+
+ RDSIGM: read file sigm and create COMPLEX sigma(R) by FT ...
+         Sigm will be approximated by:  diagonal Sigma for high and low states 
+         Approximate sigma for energies E(lda)>2
+         For high states read constant sigii from sigm file 
+         sigm file has 72 irreducible QP: nk = ( 12 12 12 )  shift= F F F
+         average SE read from sigm file:   0.122094 0.128528
+ hft2rs: make neighbor table for r.s. hamiltonian using range = 8 * alat
+ pairc:  8583 pairs total  8583 is max cluster size
+ hft2rs: found 1728 connecting vectors out of 1728 possible for FFT
+ symiax: enlarged neighbor table from 1728 to 1957 pairs (48 symops)
+
+ q-points in full BZ where sigma calculable ...
+ BZMESH: 1728 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ Irr. qp for which sigma is calculated ...
+ BZMESH: 72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ 
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.567  max Im(hrs) = 2.8e-8
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.559  max Im(hrs) = 2.36e-7
+ check FT s(R) against s(q) ... maximum error = 9.7e-15 < tol (5e-6)
+ check FT s(R) against s(q) ... maximum error = 1.7e-14 < tol (5e-6) spin 2
+ rsmsym: symmetrizing complex s(1..1957) using 48 group operations 
+ symstr: max asymmetry = 2.98e-8
+ check FT s(R) against s(q) ... maximum error = 8.1e-6
+ check FT s(R) against s(q) ... maximum error = 7.7e-5 spin 2
+
+ BNDFP:  Write evals,evecs to file for 111 qp
+ bndfp:  kpt 1 of 111, k=  0.00000  0.00000  0.00000
+ -0.6687 -0.6663 -0.1240 -0.1213 -0.1175 -0.0739 -0.0665 -0.0649 -0.0541
+ -0.0527 -0.0046 -0.0043  1.7751  1.7798  2.0843  2.0858  2.0953  2.0971
+  2.0985  2.0997  2.2449  2.2464  2.2481  2.2672  2.2692  2.2709  3.0135
+  3.0181  3.0294  3.0395  3.0441  3.0478  3.1138  3.1138  3.1345  3.1345
+  3.4891  3.4992  5.8166  5.8166  5.8167  5.8347  5.8347  5.8348  7.5150
+  7.5151  7.5273  7.5306  7.5398  7.5399  7.8104  7.8109  7.8117  7.8365
+  7.8372  7.8382  8.4628  8.4629  8.4895  8.4901
+ bndfp:  kpt 11 of 111, k=  0.25000  0.00000  0.00000
+ -0.6120 -0.6099 -0.1419 -0.1108 -0.1093 -0.0893 -0.0708 -0.0557 -0.0546
+ -0.0486 -0.0172  0.0004  1.6747  1.6854  1.7685  1.7685  1.7893  1.7893
+  1.8968  1.9006  2.3857  2.4075  2.4826  2.4970  2.5476  2.5476  2.5575
+  2.5575  3.1200  3.1394  3.1566  3.1566  3.1818  3.1818  3.4485  3.4645
+  3.9405  3.9537  5.2795  5.2972  5.5978  5.5978  5.6170  5.6170  6.6040
+  6.6104  6.9174  6.9174  6.9333  6.9334  8.1013  8.1290  8.8510  8.8791
+  9.5182  9.5184  9.5434  9.5439 10.1761 10.2038
+ bndfp:  kpt 21 of 111, k=  0.50000  0.00000  0.00000
+ -0.4576 -0.4574 -0.1865 -0.1369 -0.0977 -0.0782 -0.0751 -0.0475 -0.0397
+ -0.0187 -0.0183  0.0126  1.4274  1.4274  1.4461  1.4461  1.4995  1.5117
+  1.5480  1.5724  1.9627  1.9793  2.9300  2.9300  2.9345  2.9345  2.9878
+  2.9971  3.1649  3.1811  3.5270  3.5270  3.5545  3.5546  3.5858  3.5991
+  4.5203  4.5319  4.6690  4.6879  5.1527  5.1527  5.1723  5.1723  5.9043
+  5.9126  6.9644  6.9646  6.9769  6.9769  8.5886  8.6195  8.8184  8.8500
+ 10.0346 10.0348 10.0608 10.0615 10.7216 10.7447
+ bndfp:  kpt 31 of 111, k=  0.75000  0.00000  0.00000
+ -0.3193 -0.2981 -0.2263 -0.1806 -0.0385 -0.0364 -0.0282 -0.0245 -0.0044
+  0.0200  0.0235  0.0278  0.9845  1.0050  1.1851  1.1851  1.1999  1.1999
+  1.4886  1.5238  1.8171  1.8291  3.2480  3.2594  3.4186  3.4186  3.4246
+  3.4246  3.6744  3.6830  3.6965  3.7049  4.0420  4.0420  4.0679  4.0679
+  4.2430  4.2654  4.6986  4.6986  4.7175  4.7175  4.9095  4.9221  6.0340
+  6.0452  6.8536  6.8540  6.8696  6.8696  7.7908  7.8134  8.4124  8.4413
+  8.6837  8.6837  8.7024  8.7026  9.8514  9.8724
+ bndfp:  kpt 41 of 111, k=  1.00000  0.00000  0.00000
+ -0.3002 -0.2663 -0.2436 -0.1984 -0.0243 -0.0164 -0.0145  0.0287  0.0444
+  0.0452  0.1555  0.1561  0.6736  0.7099  1.0943  1.0943  1.1081  1.1081
+  1.4644  1.5002  1.7899  1.8069  3.3013  3.3091  3.7132  3.7190  3.8955
+  3.8955  3.9050  3.9050  4.0736  4.0989  4.2022  4.2022  4.2235  4.2235
+  4.3199  4.3292  4.6223  4.6223  4.6417  4.6417  5.2855  5.3057  6.1041
+  6.1042  6.1241  6.1242  6.1290  6.1372  6.9748  6.9866  7.0368  7.0580
+  8.3224  8.3228  8.3397  8.3399  9.5304  9.5511
+ bndfp:  kpt 51 of 111, k=  0.86765  0.13235  0.13235
+ -0.2851 -0.2526 -0.2301 -0.1859 -0.0730 -0.0390 -0.0268 -0.0181  0.0150
+  0.0390  0.1622  0.1885  0.7936  0.8212  0.8753  0.8912  1.1723  1.1797
+  1.5744  1.6003  2.0064  2.0254  3.0747  3.0851  3.2736  3.2809  3.6874
+  3.7016  3.7663  3.7762  3.9641  3.9767  4.0906  4.1055  4.3525  4.3685
+  4.3728  4.3947  4.5566  4.5723  4.8452  4.8657  5.4262  5.4427  5.8997
+  5.9179  6.6191  6.6347  6.6933  6.7067  7.0356  7.0576  7.4920  7.5113
+  8.0848  8.1030  8.5097  8.5299  9.5662  9.5842
+ bndfp:  kpt 61 of 111, k=  0.72059  0.27941  0.27941
+ -0.2644 -0.2354 -0.1987 -0.1607 -0.1354 -0.0920 -0.0799 -0.0300 -0.0204
+  0.0351  0.1323  0.1704  0.5602  0.5935  1.1561  1.1728  1.4038  1.4160
+  1.6586  1.6735  2.5378  2.5515  2.6033  2.6169  2.7009  2.7115  3.1935
+  3.2096  3.5975  3.6142  3.7336  3.7445  3.8944  3.9080  4.2652  4.2806
+  4.5576  4.5792  4.7454  4.7615  5.5745  5.5912  5.5998  5.6239  5.6746
+  5.6858  6.4121  6.4323  6.9425  6.9609  7.0862  7.1043  7.8367  7.8619
+  8.8138  8.8363  9.1747  9.1809  9.2269  9.2339
+ bndfp:  kpt 71 of 111, k=  0.57353  0.42647  0.42647
+ -0.3038 -0.2734 -0.1315 -0.1168 -0.0942 -0.0892 -0.0666 -0.0617 -0.0225
+  0.0265  0.0340  0.0669  0.4170  0.4623  1.5855  1.5902  1.7379  1.7522
+  1.7752  1.7846  2.1745  2.1871  2.1923  2.2030  2.6546  2.6727  3.3019
+  3.3168  3.5343  3.5480  3.6520  3.6626  3.7924  3.8117  4.0114  4.0276
+  4.7694  4.7806  4.9173  4.9341  4.9966  5.0112  5.7486  5.7607  6.2110
+  6.2365  6.3266  6.3506  6.4612  6.4848  7.2622  7.2900  8.3210  8.3465
+  8.5552  8.5794  9.4287  9.4480  9.4668  9.4786
+ bndfp:  kpt 81 of 111, k=  0.44118  0.44118  0.44118
+ -0.3220 -0.2965 -0.1259 -0.1189 -0.0804 -0.0742 -0.0720 -0.0671 -0.0270
+ -0.0230  0.0290  0.0326  0.4647  0.5095  1.6785  1.6834  1.8608  1.8662
+  1.8777  1.8830  2.0667  2.0690  2.0906  2.0931  2.5618  2.5797  3.3863
+  3.3891  3.4018  3.4046  3.6524  3.6622  3.9328  3.9338  3.9513  3.9523
+  4.7525  4.7614  4.8752  4.8760  4.8915  4.8923  5.5934  5.6052  6.3159
+  6.3417  6.4918  6.4922  6.5151  6.5164  7.5560  7.5867  8.5537  8.5594
+  8.5897  8.5924  9.2624  9.2635  9.2837  9.2846
+ bndfp:  kpt 91 of 111, k=  0.29412  0.29412  0.29412
+ -0.4528 -0.4498 -0.1527 -0.1150 -0.1090 -0.1072 -0.0627 -0.0541 -0.0479
+ -0.0429  0.0059  0.0100  0.8990  0.9267  1.7684  1.7710  1.8845  1.8877
+  1.9027  1.9059  2.2323  2.2336  2.2469  2.2482  2.4797  2.4903  2.9100
+  2.9125  2.9282  2.9306  3.3561  3.3749  4.1908  4.1924  4.2083  4.2100
+  4.5539  4.5637  4.5784  4.5791  4.5956  4.5966  5.5345  5.5408  6.0888
+  6.1108  7.1957  7.1962  7.2103  7.2120  8.5430  8.5463  8.5764  8.5771
+  8.7892  8.8222  9.7935  9.7950  9.8132  9.8155
+ bndfp:  kpt 101 of 111, k=  0.14706  0.14706  0.14706
+ -0.6100 -0.6080 -0.1372 -0.1160 -0.1103 -0.0855 -0.0656 -0.0601 -0.0551
+ -0.0521 -0.0076 -0.0055  1.4695  1.4850  1.8608  1.8635  1.9728  1.9754
+  1.9897  1.9921  2.3951  2.3956  2.4074  2.4079  2.4646  2.4721  2.6878
+  2.6919  2.7112  2.7152  3.0451  3.0688  3.5845  3.5869  3.6033  3.6058
+  3.8475  3.8578  5.3024  5.3029  5.3204  5.3208  5.8860  5.9051  6.4089
+  6.4165  7.2066  7.2069  7.2185  7.2192  8.2245  8.2262  8.2518  8.2533
+  9.0695  9.0956  9.8860  9.8866  9.9136  9.9147
+ bndfp:  kpt 111 of 111, k=  0.00000  0.00000  0.00000
+ -0.6687 -0.6663 -0.1240 -0.1213 -0.1175 -0.0739 -0.0665 -0.0649 -0.0541
+ -0.0527 -0.0046 -0.0043  1.7751  1.7798  2.0843  2.0858  2.0953  2.0971
+  2.0985  2.0997  2.2449  2.2464  2.2481  2.2672  2.2692  2.2709  3.0135
+  3.0181  3.0294  3.0395  3.0441  3.0478  3.1138  3.1138  3.1345  3.1345
+  3.4891  3.4992  5.8166  5.8166  5.8167  5.8347  5.8347  5.8348  7.5150
+  7.5151  7.5273  7.5306  7.5398  7.5399  7.8104  7.8109  7.8117  7.8365
+  7.8372  7.8382  8.4628  8.4629  8.4895  8.4901
+ BNDFP:  evecs saved in file evec
+
+ Make and renormalize projectors for new qp ...
+ Exit 0 : --gprt~band,fn=syml2~rdsigr=sig2~mode=19 wrote diagonal sigma to file se 
+ CPU time:  49.678s   Wall clock 49.719s  at  17:25:22 26.07.2018  on  localhost.localdomai
+rdcmd:  lmfgws -vso=1 niso '--sfuned~units eV~readsek@useef@irrmesh@minmax~eps 0~se band@fn=syml2 nw=2 isp=1 range=-8,8'
+ ---------------------  START LMFGWS  ---------------------
+
+ rdctrl: reset global max nl from 4 to 5
+
+ rdctrl: reading basis parameters from file basp
+ ioorbp: read species Ni        RSMH,EH RSMH2,EH2 P PZ
+         reset nkaph from 2 to 3
+
+ LMFGWS:   nbas = 1  nspec = 1  verb 35
+ special:  sharm(m=-l:l)
+ pot:      spin-pol, XC:BH, read Sigma
+ float:    float P GW-style, v6-ebar
+ autoread: mto basis(4), pz(1), pnu(1)
+ noncoll:  Non-coll, L.S coupling
+ bz:       metal(5), tetra, invit 
+ susite:   (warning) no file eula ... nothing read
+
+ Automatic symmetry finder turned off.  Use: i*r3(1,1,-1) r4x
+
+                Plat                                  Qlat
+   0.000000   0.500000   0.500000       -1.000000   1.000000   1.000000
+   0.500000   0.000000   0.500000        1.000000  -1.000000   1.000000
+   0.500000   0.500000   0.000000        1.000000   1.000000  -1.000000
+   alat = 6.659398  Cell vol = 73.832033
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.65940   awald= 0.477   lmax=6
+         r1=  1.964   nkd= 135      q1=  5.926   nkg= 229
+
+ SGROUP: 48 symmetry operations from 2 generators
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+
+ SFUNED: generating qp for irr and full BZ from gw nkabc
+ BZMESH: 1728 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ BZMESH: 72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 247 inequivalent ones found
+
+
+ Entering the spectral function file editor. Parsing command-line options ...
+
+ Option : units eV
+ Units set to eV
+
+ Option : readsek@useef@irrmesh@minmax
+ Data from file se:  nq=111  nband=16  nsp=2  omega interval (-7.999819,7.999819) eV with 421 points  Ef=-0.492457
+ using file chemical potential, Ef=-0.492457 Ry = -6.70022 eV
+ min, max evals for all qp, spin 1
+  ib     low     high       ib     low     high       ib     low     high       ib     low     high
+   1   -2.398    3.128  |    5    4.857    6.370  |    9    5.930    7.304  |   13   12.180   30.852
+   2   -2.365    3.521  |    6    5.218    6.478  |   10    5.976    7.316  |   14   12.806   30.916
+   3    3.385    5.022  |    7    5.567    6.503  |   11    6.279    8.907  |   15   18.373   35.058
+   4    4.001    5.257  |    8    5.788    7.090  |   12    6.625    9.316  |   16   18.631   35.079
+ QSGW condition for 111 pts  (sig-vxc)@eQP>=9.185917 RMS=3.221763  shift <dw>=0 RMS=0  Adjust=F
+
+ Option : eps 0
+ Smearing set to 0 eV
+
+ Option : se band@fn=syml2 nw=2 isp=1 range=-8,8
+
+ ... make A(w) and sigma(w) for qpts read from file
+
+ rdqlst: 111 points in symmetry line mode
+ suqlst:  nq= 41   q1= 0.0000 0.0000 0.0000   q2= 1.0000 0.0000 0.0000
+ suqlst:  nq= 35   q1= 1.0000 0.0000 0.0000   q2= 0.5000 0.5000 0.5000
+ suqlst:  nq= 35   q1= 0.5000 0.5000 0.5000   q2= 0.0000 0.0000 0.0000
+ 
+ Spectral function for 111 qp  energy window (-7.9808,7.9998), 840 points (spacing=0.019)  eps=0
+ Exit 0 wrote spectral function to file spq2 
+ CPU time:  2.574s   Wall clock 3.012s  at  17:25:25 26.07.2018  on  localhost.localdomai

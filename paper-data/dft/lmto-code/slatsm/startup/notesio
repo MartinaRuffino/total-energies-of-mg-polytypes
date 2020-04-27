@@ -1,0 +1,123 @@
+C --- FORTRAN INPUT LIBRARY ---
+C 
+C The i/o library provides fortran support for unformatted input
+C resembling a NAMELIST statement, though it is more general.  As a
+C guiding philosophy, the execution a set of fortran programs is
+C intended to be governed by a single, small control file, that serves
+C the dual purpose of governing program execution and document what is
+C intended to calculate.  It is intended that this file is to be only
+C read.  Only portions of a control file might be used by a single
+C program; several programs can share a common control file. 
+C 
+C As with the fortran NAMELIST statement a quantity is identified by a
+C token, such as 'NSPIN='.  The "contents" of the token are a vector (of
+C length 0,1 or more) elements of cast char, logical, integer, real or
+C double: 'NSPIN= 1' is a typical input for the control file
+C 
+C Input tokens are actually separated into "categories" and data is read
+C category by category.  A token always belongs to a category and tokens
+C within different categories are inequivalent.  A new category begins
+C (and any previous category ends) as soon as a non-blank character
+C appears in the first column of a control file.  In the control file
+C 
+C HEADER  Example of the beginning of a typical
+C         control file
+C VERS    1
+C IO      SHOW=F HELP=F VERBOS=3 WKP=F
+C 
+C the category 'HEADER' begins with the 'H' and continues until the 'V'
+C in 'VERS', and so on.  Apart from this, input is essentially
+C free-format.  Categories need not be in any particular order, but only
+C the first occurence of two categories with equivalent names will be
+C read.  This is handy for keeping alternative input within one file. 
+C Categories can either be optional or mandatory; similarly tokens
+C within categories can be either optional or mandatory.  It is up to
+C the calling routine to handle optional input that is not found. 
+C 
+C Names of both tokens and categories end by specifying the last
+C character of the name, such as '=' in 'NSPIN='. 
+C 
+C 
+C --- Use of the routines ---
+C 
+C In practice the routines are called as followed: (1) routine rdfile is
+C called to load the entire control file into RAM; (2) a category is
+C sought and delimited by calling routine getcat; (3) a token is sought
+C and contents loaded by routine partok.  Step 3 is repeated for as many
+C elements within a category as are desired, and a new category may be
+C sought after the first is finished. 
+C 
+C Routines getcat and partok can be called in one of three "modes" (the
+C mode in effect is governed by variable optio).  In the first mode
+C getcat and partok do not attempt to search for anything; instead they
+C display what they would have searched for had the next mode been
+C selected.  In the next mode, they carry out the requested searches; in
+C the next they print out the contents of the variables corresponding to
+C the tokens (essentially an all-purpose output to verify what was
+C input).  Again, it is best to look at a practical implementation to
+C see how this, and many other small options can be used. 
+C 
+C 
+C --- Subcategories ---
+C 
+C There is a facility to further restrict the range of search for tokens
+C within a category.  Routine partok search between offsets iostart and
+C subsiz from the beginning of a category.  Unless otherwise specified,
+C subsiz defaults to the size of the whole category, but it is possible
+C to shrink subsiz by a call to routine subcat.  This is particularly
+C useful when looking for several occurences of the same token (and
+C related information) within a category
+C 
+C 
+C --- Other routines ---
+C 
+C Routine iprint is intended as a function that returns an integer used
+C to control how verbose the output is.  There is a stack of
+C levels; iprint returns the top of the stack.  A new value is pushed
+C onto the stack by calling pshprt; the previous value is popped by
+C calling popprt.  The top two levels can be toggled by calling togprt.
+C 
+C Routine fopna is the file opening routine; there are associated
+C entries fopn, fopnn, fopno, fxst, fhndl which when used in conjunction
+C with entry fadd, that file logical units with names, so that files
+C can be subsequently referenced by name only.
+C Routine fclose closes files; dfclose closes and deletes a file.
+C All files should be closed by a call to fclose. 
+C 
+C Subroutine Query provides a simple "interactive mode".  When query is
+C called, nothing happens unless the "query" switch has been set by a
+C call to entry initqu.  But if this switch has been set, the user has
+C an option to abort program execution, change the verbosity, turn on
+C the work array debug switch, or to change a value of a single number
+C passed to query.  There is also the option to reset the query switch
+C
+C There are several string-manipulation routines (copy, concatenate,
+C equality, display).
+C 
+C Routine finits performs machine-dependent initialization.
+C Routine fexit performs machine-dependent program termination.
+C
+C --- Variables with common meaning ---
+C In common block iolib:
+C   recoff: offset to recrd corresponding to first character in file
+C           (set by calling program before rdfile is called)
+C   reclen: length of file records
+C           (can be set in function recln before rdfile is called)
+C   nrecs:  number of file records (set by rdfile)
+C   maxlen: the maximum allowed number of characters in a category or
+C           token (set by calling program before rdfile is called)
+C   catbeg: offset to recrd demarcating beginning of a category
+C           (set whenever getcat is called)
+C   catsiz: the size of a category
+C           (set whenever getcat is called)
+C   subsiz: the size of a collection of tokens within a subcategory
+C           (defaults to catsiz when getcat is called;
+C            shrunk when subcat called)
+C   iend:   points to the first character after the last match
+C           (set whenever getcat or partok is called)
+C   ichoos,nchoos: index to current choice of possible inputs and
+C           total number of choices, respectively (see description)
+C   noerr:  error on return from getcat or partok; see getcat and partok
+C           (set whenever getcat or partok is called)
+C   optio:  0, 1, or 2 (see description)
+C ==============

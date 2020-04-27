@@ -1,0 +1,17 @@
+echo --- slatsm-to-risc: ccomp optimizing for RISC architecture ---
+
+echo '   ' slatsm-to-risc: ccomp for BLAS3 files: \
+     `egrep -l '^[Cc]#(ifdef[Cc]|elseif[Cc]).*BLAS3' *.f`
+foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|elseif[Cc]).*BLAS3' *.f` )
+  rm -f xx.f ; ccomp -uBLAS3 $i xx.f
+  ccomp -dBLAS3 xx.f $i
+end
+
+echo '   ' slatsm-to-risc: ccomp for DDOT files: \
+     `egrep -l '^[Cc]#(ifdef[Cc]|elseif[Cc]|ifndef ).*DDOT' *.f`
+foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|elseif[Cc]|ifndef ).*DDOT' *.f` )
+  rm -f xx.f ; ccomp -uDDOT $i xx.f
+  ccomp -dDDOT xx.f $i
+end
+
+rm -f xx.f

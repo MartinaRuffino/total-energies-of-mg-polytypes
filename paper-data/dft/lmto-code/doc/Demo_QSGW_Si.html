@@ -1,0 +1,503 @@
+<!DOCTYPE html><html>
+
+<head>
+<title>QSGW Demo</title>
+<style>
+
+/* For hyperlinks */
+a:link {color:#FF0000;}      /* unvisited link */
+a:link {color:#222288;}      /* unvisited link */
+a:visited {color:#228822;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
+a:link {text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;}
+a:active {text-decoration:underline;}
+
+body {
+       background-color:#ffffgg;
+     }
+ h1 {
+      color:#880000;
+      text-align:center;
+      font-size:12px;
+    }
+ h2 {
+      color:#bb3300;
+      font-size:120%;
+      font-weight:normal;
+      font-style:italic;
+    }
+
+ h3 {
+      color:#33bb00;
+      font-size:110%;
+      font-weight:normal;
+      font-style:italic;
+      text-indent: 0.5em;
+    }
+
+ h4 {
+      color:#000000;
+      font-size:100%;
+      font-weight:bold;
+      text-indent: 1.0em;
+    }
+
+ h5 {
+      color:#444488;
+      font-size:100%;
+      font-weight:bold;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+ hn {
+      color:#000000;
+      font-size:100%;
+      font-weight:normal;
+      font-style:normal;
+      text-indent: 1.5em;
+    }
+
+  P {
+<!--  font-family:"Times New Roman"; -->
+<!--  font-size:12px; -->
+<!--  color: red; -->
+    }
+
+  q {
+      color: red;
+    }
+
+  a {
+        color: blue;
+    }
+
+  tlarge {
+       <font-size="+1">
+    }
+
+  p.pos_left
+  {
+  position:relative;
+  left:-20px;
+  }
+
+  p.pos_right
+  {
+  position:relative;
+  left:20px;
+  right:520px;
+  }
+
+  div.ex
+  {
+  width:3in;
+  padding:10px;
+  border:5px solid gray;
+  margin:0px;
+  }
+
+</style>
+
+<!-- Enables the use of latex -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  });
+</script>
+
+<!--
+<script type="text/javascript"  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+-->
+<script type="text/javascript" src="/Users/markvanschilfgaarde/MathJax/MathJax.js"></script>
+
+</head>
+
+<h1><B><FONT size="+2">Demonstration of LDA and GW calculations for Si (v7.11)</FONT></B></h1>
+
+<h2><A name="intro"></A>Purpose</h2>
+
+This tutorial carries out an LDA calculation for Si,
+<A href="Building_FP_input_file.html">starting from an <FONT size="+1"><tt>init</tt></FONT> file</A>.
+
+Following this are demonstrations of both QS<i>GW</i> and 1-shot <i>GW</i> calculations.
+
+<br> This demo proceeds with the following sequence of &nbsp;<FONT size="+1"><tt>files</tt></FONT> + <b>programs</b>:
+<OL>
+<LI> <A href="#ctrl">LDA setup</A>:&nbsp; <FONT size="+1"><tt>init.si</tt></FONT> + <b>blm</b> &rarr; <FONT size="+1"><tt>ctrl.si</tt></FONT>  &nbsp;(make input file)
+<LI> <A href="#ldaselfconsistency">LDA self-consistency</A>: <FONT size="+1"><tt>ctrl.si</tt></FONT> + (<b>lmfa</b>, <b>lmf</b>) &rarr; <FONT size="+1"><tt>rst.si</tt></FONT> + <FONT size="+1"><tt>bnds.si</tt></FONT> &nbsp;(density and bands)
+<LI> <A href="#gwsetup"><i>GW</i> setup</A>:&nbsp; <FONT size="+1"><tt>ctrl.si</tt></FONT> + <b>lmfgwd</b> &rarr; <FONT size="+1"><tt>GWinput</tt></FONT>  &nbsp;(create <i>GW</i> input file)
+<LI> <A href="#qsgwcalc">QS<i>GW</i> self-consistency:</A>&nbsp; <FONT size="+1"><tt>(ctrl.si, rst.si, GWinput)</tt></FONT> + <b>lmgwsc</b> &rarr; <FONT size="+1"><tt>sigm, rst.si</tt></FONT>  &nbsp;(QS<i>GW</i> self-energy and density)
+<LI> a <A href="#gwoneshot">1-shot GW calculation as a perturbation to the LDA</A>
+&nbsp; <FONT size="+1"><tt>(ctrl.si, rst.si, GWinput)</tt></FONT> + <b>lmgw-1shot</b> &rarr; <FONT size="+1"><tt>QPU</tt></FONT> &nbsp;(<i>GW</i> QP shifts)
+</OL>
+
+<h2><A name="ctrl"></A>Create an initial <FONT size="+1"><tt>ctrl</tt></FONT> file</h2>
+
+<P> To get started, copy <FONT size="+1"><tt>doc/demos/qsgw-si/init.si</tt></FONT> to your working directory.
+
+Inspect the <FONT size="+1"><tt>init</tt></FONT> file and you will see it contains just the minimum structural information.  Then use the <b>blm</b> tool
+<pre>
+   blm --gw --nk=4 --nkgw=3 --gmax=5 init.si
+</pre>
+Generating input files using <b>blm</b> is described in detail in <A href="Building_FP_input_file.html">this tutorial</A>.
+
+<P> <b>blm</b> should generate file <FONT size="+1"><tt>actrl.si</tt></FONT>, which should be essentially the same as <FONT size="+1"><tt>doc/demos/qsgw-si/ctrl.si</tt></FONT>.
+(If this is not the case, something is wrong with your configuration.  You should not continue if your template does not agree with the one supplied.)
+
+<P> The command-line arguments are not essential, but they are there to supply quantities <b>blm</b> cannot determine automatically.
+You can supply them on the command-line; or at some later point you can supply them by editing input files.
+
+<h3><A name="gw"></A>The <FONT size="+1"><tt>--gw</tt></FONT> switch</h2>
+
+This switch tailors the <FONT size="+1"><tt>ctrl</tt></FONT> file for a <i>GW</i> calculation.
+To see how it affects the <FONT size="+1"><tt>ctrl</tt></FONT> file, try running <b>blm</b> without <FONT size="+1"><tt>--gw</tt></FONT>.
+
+<P> One consequence of <FONT size="+1"><tt>--gw</tt></FONT> is that <b>blm</b>
+autogenerates a <FONT size="+1"><tt>GW</tt></FONT> category.
+Its <A href="#gwsetup">tokens mostly hold parameters that go into the <i>GW</i> input file</A> (<FONT size="+1"><tt>GWinput</tt></FONT>), which will be used in the QS<i>GW</i> step when it is generated later.
+
+<P> <FONT size="+1"><tt>--gw</tt></FONT> also affects the <FONT size="+1"><tt>HAM_AUTOBAS</tt></FONT> tag;
+<pre>
+HAM     AUTOBAS[PNU=1 LOC=1 LMTO=5 MTO=4 GW=1]
+</pre>
+Turning <FONT size="+1"><tt>HAM_AUTOBAS_GW</tt></FONT> on affects several things,
+for example, the manner in which
+<A href="Building_FP_input_file.html#autobas"><b>lmfa</b> autogenerates basis set
+parameters</A>.  It sets envelope function energy <FONT size="+1"><tt>EH</tt></FONT> somewhat
+more negative than
+<A href="FPtutorial.html#spec">what is typical for the LDA</A>. This is not important for
+one-shot <i>GW</i> calculations, but does matter for QS<i>GW</i>, because
+<b>lmf</b> must
+be able to <A href="gw.html#sigintrp">interpolate the QS<i>GW</i> self-energy between <b>k</b> points</A>.
+Interpolation of the self-energy is a difficult thing to do computationally; it is necessary
+that <FONT size="+1"><tt>EH</tt></FONT> be sufficiently negative so
+that the envelope functions are sufficiently short-ranged.
+
+<h3><A name="nk"></A>k mesh for LDA</h2>
+
+<b>blm</b> <A href="Building_FP_input_file.html#bz">cannot automatically determine the <b>k</b> mesh</A>.
+You must supply it by editing the <FONT size="+1"><tt>ctrl</tt></FONT> file once you have it, or you can
+pass the information to <b>blm</b> through the command-line switch <FONT size="+1"><tt>--nk=#1[,#2,#3]</tt></FONT>.
+
+It is very important to monitor <b>k</b> convergence in BZ integrations.  Convergence is controlled by this mesh as well 
+see <A href="bzintegration.html">as well as some other factors</A>.
+
+<P>
+If <FONT size="+1"><tt>BZ_NKABC</tt></FONT> is not given a legitimate mesh (one, two or three positive integers)
+<b>lmf</b> will exit with this message:
+<pre>
+ Exit -1 bzmesh: illegal or missing k-mesh
+</pre>
+
+<h3><A name="nkgw"></A>k mesh for GW</h2>
+The <i>GW</i> input requires its own <b>k</b> mesh of three positive integers.
+As is the case with the LDA, it is very important to control <b>k</b> convergence;
+but the circumstances are somewhat different.  Usually a coarser mesh may be used
+because the self-energy generally varies much more smoothly with <b>k</b> than does
+the kinetic energy.  This is fortunate because <i>GW</i> calculations are much more expensive and
+moreover the CPU time scales as (<i>n</i><sub>1</sub><i>n</i><sub>2</sub><i>n</i><sub>3</sub>)<sup>2</sup>,
+in contrast to the LDA's <i>n</i><sub>1</sub><i>n</i><sub>2</sub><i>n</i><sub>3</sub> scaling.
+Monitoring <b>k</b> convergence is important.  Unfortunately there are no shortcuts and it can be time-consuming.
+
+<P>
+The <b>k</b> mesh data that the <i>GW</i> codes actually reads comes from the following tag in the <FONT size="+1"><tt>GWinput</tt></FONT> file:
+<pre>
+n1n2n3  #1  #2  #3 ! for GW BZ mesh
+</pre>
+
+<P>
+<b>lmfgwd</b> will set up a template <FONT size="+1"><tt>GWinput</tt></FONT> file for you.
+
+You can already at this stage supply data for the <FONT size="+1"><tt>n1n2n3</tt></FONT> tag,
+through the command-line argument <FONT size="+1"><tt>--nkgw=...</tt></FONT>.  This affects the &nbsp;<FONT size="+1"><tt>GW</tt></FONT>&nbsp; category in the <FONT size="+1"><tt>ctrl</tt></FONT> template it creates.
+Later, when <b>lmfgwd</b> generates a <FONT size="+1"><tt>GWinput</tt></FONT> template, it uses data in &nbsp;<FONT size="+1"><tt>GW</tt></FONT>&nbsp;
+to populate various tags (<FONT size="+1"><tt>n1n2n3</tt></FONT> among others) in <FONT size="+1"><tt>GWinput</tt></FONT>.
+Thus data given by <FONT size="+1"><tt>--nkgw=...</tt></FONT> eventually makes its way to <FONT size="+1"><tt>GWinput</tt></FONT> through
+<b>blm</b> &rarr; <b>lmfgwd</b> &rarr; <FONT size="+1"><tt>GWinput</tt></FONT>.
+
+<br>Alternatively, you can edit either the <FONT size="+1"><tt>ctrl</tt></FONT> or the <FONT size="+1"><tt>GWinput</tt></FONT> file later.
+
+<h3><A name="gmax"></A>G cutoff <FONT size="+1"><tt>GMAX</tt></FONT></h2>
+
+Another quantity <b>blm</b> cannot determine automatically is the plane-wave cutoff
+<FONT size="+1"><tt>GMAX</tt></FONT> for the interstitial charge density.  Once the basis
+has been set <b>lmfa</b> <A href="Building_FP_input_file.html#gmax">can find a reasonable value for you</A>.
+(It was in fact how the <FONT size="+1"><tt>GMAX</tt></FONT> was determined in the present example.)
+You can modify the <FONT size="+1"><tt>ctrl</tt></FONT> file later, e.g. after running <b>lmfa</b>, or
+set <FONT size="+1"><tt>GMAX</tt></FONT> through <b>blm</b> with
+<FONT size="+1"><tt>--gmax=#</tt></FONT>.
+
+<h3></A>Make the <FONT size="+1"><tt>ctrl</tt></FONT> file</h3>
+
+<b>blm</b> should generate file <FONT size="+1"><tt>actrl.si</tt></FONT>, which should be essentially the same as <FONT size="+1"><tt>doc/demos/qsgw-si/ctrl.si</tt></FONT>.
+
+<br> Invoking <b>blm</b> with
+<FONT size="+1"><tt>--nk=..</tt></FONT> and
+<FONT size="+1"><tt>--gmax=#</tt></FONT> is sufficient to make the template
+<FONT size="+1"><tt>actrl.si</tt></FONT> a working input file
+<FONT size="+1"><tt>ctrl.si</tt></FONT>.  You can copy
+<FONT size="+1"><tt>actrl.si</tt></FONT> to
+<FONT size="+1"><tt>ctrl.si</tt></FONT> as is.
+
+<P> For a fuller description of the <FONT size="+1"><tt>ctrl</tt></FONT> file, see the <A href="FPtutorial.html">FP tutorial</A>,
+and also the <A href="Building_FP_input_file.html">Building_FP_input_file.html</A>.
+
+
+<h2><A name="ldaselfconsistency"></A>A complete LDA calculation</h2>
+
+<pre>
+cp doc/demos/qsgw-si/{init,syml}.si .            &larr; <A href="Building_FP_input_file.html">This page</A> describes the init file; see <A href="ASAtutorial.html#bands">here</A> for the syml file
+rm -f mixm.si rst.si sigm                        &larr; in case they are already present: this demo starts from scratch
+blm --gw --nk=4 --nkgw=3 --gmax=5 init.si        &larr; as described <A href="#ctrl">above</A>
+cp actrl.si ctrl.si                              &larr; Copy template to input file
+lmfa si                                          &larr; Makes free atom density; also makes <A href="Building_FP_input_file.html#autobas">basp0</A> and suggests GMAX=5.0
+cp basp0.si basp.si                              &larr; Copy lmfa-generated basis parameters to file lmf reads
+lmf -vnit=20 si                                  &larr; Self-consistent LDA calculation for Si.
+lmf si --band:fn=syml                            &larr; LDA energy bands
+cp bnds.si bnds-lda.si                           &larr; rename file for future use
+</pre>
+
+The approximate self-consistent gap comes out to
+0.58&thinsp;eV as can be seen by inspecting the <A href="demos/qsgw-si/out.lmf.lda#gap">output of <b>lmf</b></A>.
+(This is actually the &Gamma;-X gap; the true gap is 0.44&thinsp;eV as can be seen by running <b>lmf</b> with a fine <i>k</i> mesh.)
+
+If you are only looking to carry out LDA calculations, this is the end of the tutorial.
+
+<h2><A name="gwsetup"></A>Setup for a QS<i>GW</i> calculation</h2>
+
+The <i>GW</i> package (both one-shot and QS<i>GW</i>) uses one main user-supplied input file, <FONT size="+1"><tt>GWinput</tt></FONT>.
+<P><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT>
+that the <i>GW</i> package does not make use of the &nbsp;<FONT size="+1"><tt>.si</tt></FONT>&nbsp; extension in the same way as the LDA package.
+Nevertheless it is still used because <b>lmf</b> and the GW package communicate with each other.
+
+<P> <b>lmfgwd</b> can create a template <FONT size="+1"><tt>GWinput</tt></FONT> for you.  Do this with
+<pre>
+echo -1 | lmfgwd si                              &larr; makes a GWinput file
+</pre>
+Be advised that <FONT size="+1"><tt>GWinput</tt></FONT> is a template only; you need to be careful about the parameters in it.
+
+<P> <b>lmfgwd</b> must choose default values for a number of critical parameters, some of which parameters cannot be automatically determined in a reliable way,
+e.g. the GW <A href="#nkgw">k-point mesh</A> defined by the <FONT size="+1"><tt>n1n2n3</tt></FONT> tag cannot be determined at all.
+You can supply certain key parameters the <FONT size="+1"><tt>GW</tt></FONT> category of the input file.
+<b>blm</b> autogenerated this category
+<pre>
+% const gcutb=2.7 gcutx=2.2 nkgw=3
+GW      NKABC={nkgw} GCUTB={gcutb} GCUTX={gcutx} DELRE=.01 .1 MKSIG=3 GSMEAR=0.003 PBTOL=1e-3
+</pre>
+The following tags appear in the newly created <FONT size="+1"><tt>GWinput</tt></FONT> file:
+<pre>
+n1n2n3  3  3  3 ! for GW BZ mesh
+QpGcut_psi 2.7  !|q+G| cutoff for eigenfunction
+QpGcut_cou 2.2  !|q+G| cutoff for coulomb int.
+</pre>
+<FONT size="+1"><tt>NKABC</tt></FONT>, <FONT size="+1"><tt>GCUTB</tt></FONT>, <FONT size="+1"><tt>GCUTX</tt></FONT> in the
+<FONT size="+1"><tt>GW</tt></FONT> category get translated into tags
+<FONT size="+1"><tt>n1n2n3</tt></FONT>, <FONT size="+1"><tt>QpGcut_psi</tt></FONT>, and <FONT size="+1"><tt>QpGcut_cou</tt></FONT>, respectively.
+
+These tags, and indeed the entire
+<FONT size="+1"><tt>GWinput</tt></FONT> file are explained in the
+<A href="GWpracticum.pdf">GW practicum tutorial</A>.
+
+<P> You are strongly advised to read the
+<A href="GWpracticum.pdf">GW practicum </A>, as well as the <A href="man033_ver1.pdf">GW manual</A>
+(even though it is a bit old) before attempting any calculations on your own.
+
+<h2><A name="qsgwcalc"></A>A QS<i>GW</i> calculation with shell script <FONT size="+1"><tt>lmgwsc</tt></FONT></h2>
+
+We are now ready for a QS<i>GW</i> calculation using the shell script <FONT size="+1"><tt>lmgwsc</tt></FONT>.  The <i>k</i> mesh of 3&times;3&times;3 divisions is rough, but it makes the
+calculation fast and for Si the results are reasonable.
+
+<pre>
+rm -f switches-for-lm mixsigma 				 &larr; Remove files that may affect the calculation
+lmgwsc --wt  --insul=4 --tol=2e-5 --maxit=2 -vnit=10 si  &larr; the QSGW calculation.  
+                                                           Invoke lmgwsc without arguments to see available command-line options.
+</pre>
+<IMG border-color:green height=22% width=22% ALIGN="right" style="border:20px solid white" SRC="demos/qsgw-si/bnds-si.gif"/>
+
+At this point you should have a file sigm residing in your working directory.
+Because <FONT size="+1"><tt>ctrl.si</tt></FONT> has <FONT size="+1"><tt>HAM_RDSIG</tt></FONT>=12, it will
+automatically read <FONT size="+1"><tt>sigm.si</tt></FONT> and effectively add it as an external potential.
+The actual file is <FONT size="+1"><tt>sigm</tt></FONT>; <FONT size="+1"><tt>lmgwsc</tt></FONT> makes a soft link
+to <FONT size="+1"><tt>sigm.si</tt></FONT> so <b>lmf</b> can read it.
+
+<P> Do a band pass substituting the QS<i>GW</i> exchange-correlation potential for the LDA one:
+<pre>
+lmf si -vnit=1 --rs=1,0    &larr; Generate Fermi level for QSGW potential.
+                             Confirm that density is nearly self-consistent.
+</pre>
+Inspect the <b>lmf</b> output and you can find that the <A href="demos/qsgw-si/out.lmf.qsgw#gap">&Gamma;-X gap is now 1.34&thinsp;eV</A>.
+
+<P> To make the QS<i>GW</i> energy bands, do:
+<pre>
+lmf si --band:fn=syml                            
+cp bnds.si bnds-qsgw.si
+</pre>
+The figure on the right compares <FONT size="+1"><tt>bnds-qsgw.si</tt></FONT> and <FONT size="+1"><tt>bnds-lda.si</tt></FONT>,
+along with a few experimentally determined values (circles).
+
+If you have the <b>plbnds</b> and <b>fplot</b> codes installed you
+can make this picture (sans experimental points) with the following:
+<pre>
+echo -13,10,5,10 | plbnds -fplot -ef=0 -scl=13.6 -dat=red bnds-qsgw.si
+echo -13,10,5,10 | plbnds -fplot -ef=0 -scl=13.6 -dat=blue bnds-lda.si 
+echo -13,10,5,10 | plbnds -fplot -ef=0 -scl=13.6 -lbl=L,G,X,W,G bnds-lda.si 
+\mv plot.plbnds plot.plbnds~
+echo "% char0 colg=1,bold=4,clip=1,col=.3,1,.2" >>plot.plbnds
+echo "% char0 colr=3,bold=4,clip=1,col=1,.2,.3" >>plot.plbnds
+echo "% char0 colb=2,bold=2,clip=1,col=.2,.3,1" >>plot.plbnds
+awk '{if ($1 == "-colsy") {sub("-qr","-lt {colg} -qr");sub("dat","green");sub("green","red");sub("colg","colr");print;sub("red","blue");sub("colr","colb");print} else {print}}' plot.plbnds~ >> plot.plbnds
+fplot -f plot.plbnds
+</pre>
+
+<P><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT> that the basis set for this
+calculation isn't quite converged.  For Si this is not much of an issue but
+it can matter a bit for other materials (making errors of order 0.1&thinsp;eV).
+The atom-centered LMTO
+basis set is sufficient for LDA calculations, but it is not quite
+adequate for <i>GW</i> (work is in progress for a next-generation basis which should address this limitation).
+To make the basis complete you should add 
+<A href="fp.html#floating">floating orbitals</A> (you cannot add
+(you cannot add <A href="fp.html#pmt">APWs</A> in the QS<i>GW</i> context because the <A href="gw.html#sigintrp">self-energy interpolator</A> does not work with delocalized orbitals).  Floating orbitals are like the
+<A href="ASAtutorial.html#STRUC">empty spheres often required by the ASA</A>, but they
+have 
+<A href="fp.html#floatingorbitals">no augmentation radius</A>.  
+You can <A href="lmto.html#section8.3">automatically locate them</A>
+using <A href="Command-line-options.html#section1lmchk">lmchk</A> 
+(the same way the empty sphere locator works for the ASA).
+
+<h2><A name="gwoneshot"></A>A 1-shot GW calculation with shell script <FONT size="+1"><tt>lmgw1-shot</tt></FONT></h2>
+
+One-shot calculations are perturbations to the LDA.
+They are simpler than QS<i>GW</i> calculations, because only the diagonal
+part of &Sigma; is normally calculated (this is an approximation).  On the other hand there is no longer the luxury of interpolating between <i>k</i> points.
+Thus the quasiparticle corrections to the LDA must be calculated on the mesh where the self-energies are calculated.
+
+<P> Inspecting GWinput, you can the mesh of 3&times;3&times;3 divisions yields four irreducible k points:
+<pre>
+*** q-points (must belong to mesh of points in BZ).
+  3
+  1     0.0000000000000000     0.0000000000000000     0.0000000000000000
+  2    -0.3333333333333333     0.3333333333333333     0.3333333333333333
+  3     0.0000000000000000     0.0000000000000000     0.6666666666666666
+  4    -0.3333333333333333     0.3333333333333333     1.0000000000000000
+</pre>
+They do not include the X point L points, points in which we particularly interested.  A 4&times;4&times;4 mesh does
+include these points.  Do the following:
+<pre>
+echo -1 | lmfgwd si -vnkgw=4
+</pre>
+Now 8 irreducible <i>k</i> points are made, including X (0,0,1) and L (-1/2,1/2,1/2).
+<pre>
+*** q-points (must belong to mesh of points in BZ).
+  3
+  1     0.0000000000000000     0.0000000000000000     0.0000000000000000
+  2    -0.2500000000000000     0.2500000000000000     0.2500000000000000
+  3    -0.5000000000000000     0.5000000000000000     0.5000000000000000
+  4     0.0000000000000000     0.0000000000000000     0.5000000000000000
+  5    -0.2500000000000000     0.2500000000000000     0.7500000000000000
+  6    -0.5000000000000000     0.5000000000000000     1.0000000000000000
+  7     0.0000000000000000     0.0000000000000000     1.0000000000000000
+  8     0.0000000000000000     0.5000000000000000     1.0000000000000000
+</pre>
+You can calculate QP corrections for all of these points.  But we will only calculate QP corrections at
+&Gamma;, X, and L in this tutorial.  The `<FONT size="+1"><tt>3</tt></FONT>' just below the `<FONT size="+1"><tt>q-points</tt></FONT>' line
+tells the GW codes how many points to calculate QP corrections for.  We stick with 3, but rearrange the order so that these three points
+are the first three.  Make the change with your text editor:
+<pre>
+*** q-points (must belong to mesh of points in BZ).
+  3
+  1     0.0000000000000000     0.0000000000000000     0.0000000000000000
+  3    -0.5000000000000000     0.5000000000000000     0.5000000000000000
+  7     0.0000000000000000     0.0000000000000000     1.0000000000000000
+  2    -0.2500000000000000     0.2500000000000000     0.2500000000000000
+  4     0.0000000000000000     0.0000000000000000     0.5000000000000000
+  5    -0.2500000000000000     0.2500000000000000     0.7500000000000000
+  6    -0.5000000000000000     0.5000000000000000     1.0000000000000000
+  8     0.0000000000000000     0.5000000000000000     1.0000000000000000
+
+</pre>
+This was done in <FONT size="+1"><tt>doc/demos/qsgw-si/GWinput-1shot</tt></FONT>.
+
+<P> Use script <FONT size="+1"><tt>lmgw-1shot</tt></FONT> for the 1-shot calculation:
+<pre>
+cp rst.lda rst.si sigm.si                         &larr; restore the LDA density
+rm -f sigm.si                                     &larr; remove the QSGW self-energy
+rm -f switches-for-lm                             &larr; remove, in case this file is present
+cp doc/demos/qsgw-si/GWinput-1shot GWinput        &larr; in case you didn't GWinput yourself
+lmgw1-shot --autoht --insul=4 -job= si-test si    &larr; this is the GW calculation
+</pre>
+QP levels are kept in a relatively user-friendly format in the <FONT size="+1"><tt>QPU</tt></FONT> file.
+<FONT size="+1"><tt>QPD</tt></FONT> holds the corresponding information for the second spin
+(spin polarized calculations only).
+<br> When you use the <FONT size="+1"><tt>--job=directory</tt></FONT> (it is optional), key files are saved in the named <FONT size="+1"><tt>directory</tt></FONT> (<FONT size="+1"><tt>si-test</tt></FONT>).
+<br><FONT size="+1"><tt>--insul=4</tt></FONT> tells the codes where to find the valence band maximum.
+Here the 4<sup>th</sup> state is used as a reference, so QP levels are given relative to it.
+<pre>
+                                   <FONT color="#ff0000">&darr;</FONT>      <FONT color="#ff0000">&darr;</FONT>      <FONT color="#ff0000">&darr;</FONT>                                   <FONT color="#0000ff">&darr;</FONT>     <FONT color="#0000ff">&darr;</FONT>      <FONT color="#00ff00">&darr;</FONT>
+           q               state  SEx   SExcore SEc    vxc    dSE  dSEnoZ  eLDA    eQP  eQPnoZ   eHF  Z    FWHM=2Z*Simg  ReS(elda)
+  0.00000  0.00000  0.00000  1  -17.47  -1.81   6.74 -12.47  -0.04  -0.07 -11.98 -12.02 -12.05 -19.08 0.65   1.25632    -12.53859
+  0.00000  0.00000  0.00000  2  -12.99  -1.96   1.34 -13.62   0.00   0.00   0.00   0.00   0.00  -1.63 0.78   0.00000    -13.61491
+  0.00000  0.00000  0.00000  3  -12.99  -1.96   1.34 -13.62   0.00   0.00   0.00   0.00   0.00  -1.63 0.78   0.00000    -13.61492
+  0.00000  0.00000  0.00000  4  -12.99  -1.96   1.34 -13.62   0.00   0.00   0.00   0.00   0.00  -1.63 0.78   0.00000    -13.61493
+  0.00000  0.00000  0.00000  5   -5.56  -1.42  -4.06 -11.82   0.60   0.77   2.51   3.10   3.28   7.05 0.77  -0.00095    -11.04486
+  0.00000  0.00000  0.00000  6   -5.56  -1.42  -4.06 -11.82   0.60   0.77   2.51   3.10   3.28   7.05 0.77  -0.00095    -11.04487
+  0.00000  0.00000  0.00000  7   -5.56  -1.42  -4.06 -11.82   0.60   0.77   2.51   3.10   3.28   7.05 0.77  -0.00095    -11.04488
+  0.00000  0.00000  0.00000  8   -5.85  -3.72  -4.62 -15.20   0.77   1.02   3.23   4.00   4.25   8.58 0.76  -0.00268    -14.18039
+ 
+ -0.50000  0.50000  0.50000  1  -16.86  -2.08   5.71 -13.15  -0.06  -0.09  -9.64  -9.71  -9.73 -15.73 0.72   1.00519    -13.23522
+ -0.50000  0.50000  0.50000  2  -14.88  -1.66   4.32 -12.12  -0.07  -0.10  -7.02  -7.09  -7.12 -11.73 0.71   0.39630    -12.21877
+ -0.50000  0.50000  0.50000  3  -13.21  -1.92   1.74 -13.30  -0.07  -0.09  -1.21  -1.27  -1.29  -3.32 0.77   0.00000    -13.39092
+ -0.50000  0.50000  0.50000  4  -13.21  -1.92   1.74 -13.30  -0.07  -0.09  -1.21  -1.27  -1.29  -3.32 0.77   0.00000    -13.39093
+ -0.50000  0.50000  0.50000  5   -5.81  -2.15  -3.91 -12.66   0.61   0.78   1.42   2.03   2.21   5.83 0.78   0.00000    -11.87333
+ -0.50000  0.50000  0.50000  6   -4.90  -0.99  -4.31 -10.98   0.60   0.78   3.28   3.88   4.06   8.08 0.77  -0.00675    -10.19728
+ -0.50000  0.50000  0.50000  7   -4.90  -0.99  -4.31 -10.98   0.60   0.78   3.28   3.88   4.06   8.08 0.77  -0.00675    -10.19729
+ -0.50000  0.50000  0.50000  8   -2.38  -0.59  -5.38  -8.87   0.41   0.52   7.58   7.98   8.10  13.19 0.78  -0.32632     -8.34118
+ 
+  0.00000  0.00000  1.00000  1  -16.00  -2.11   4.86 -13.20  -0.04  -0.06  -7.84  -7.88  -7.90 -13.04 0.70   0.55179    -13.25992
+  0.00000  0.00000  1.00000  2  -16.00  -2.11   4.86 -13.20  -0.04  -0.06  -7.84  -7.88  -7.90 -13.04 0.70   0.55179    -13.25984
+  0.00000  0.00000  1.00000  3  -13.42  -1.69   2.34 -12.59  -0.13  -0.18  -2.87  -3.01  -3.05  -5.68 0.74   0.00411    -12.76621
+  0.00000  0.00000  1.00000  4  -13.42  -1.69   2.34 -12.59  -0.13  -0.18  -2.87  -3.01  -3.05  -5.68 0.74   0.00411    -12.76621
+  0.00000  0.00000  1.00000  5   -5.04  -0.92  -3.68 -10.25   0.49   0.62   0.58   1.07   1.19   4.58 0.79   0.00000     -9.63521
+  0.00000  0.00000  1.00000  6   -5.04  -0.92  -3.68 -10.25   0.49   0.62   0.58   1.07   1.19   4.58 0.79   0.00000     -9.63529
+  0.00000  0.00000  1.00000  7   -3.67  -2.35  -6.67 -13.50   0.59   0.81  10.02  10.61  10.82  17.20 0.73  -0.65031    -12.69310
+  0.00000  0.00000  1.00000  8   -3.67  -2.35  -6.67 -13.50   0.59   0.81  10.02  10.61  10.82  17.20 0.73  -0.65031    -12.69310
+</pre> 
+
+The exchange and correlation terms are in the columns depicted by red arrows
+(<FONT color="#ff0000">&darr;</FONT>), with the exchange divided into core+valence parts.
+The total shift relative to the LDA (`<FONT size="+1"><tt>vxc</tt></FONT>') is given; the GW-LDA difference is added to the LDA
+to obtain QP levels (<FONT color="#0000ff">&darr;</FONT>).  There are two numbers, <FONT size="+1"><tt>eQP</tt></FONT> and <FONT size="+1"><tt>eQPnoZ</tt></FONT>.
+The `proper' number has the shift scaled by the <i>Z</i> factor (<FONT size="+1"><tt>eQP</tt></FONT>) but we have shown
+that
+<A href=http://link.aps.org/abstract/PRB/v74/e245125><FONT size="+1"><tt>eQPnoZ</tt></FONT> is a somewhat better choice</A>.
+This is because leaving out the <i>Z</i> factor accounts, in an approximate way, for self-consistency in <i>G</i>.
+
+<P> Shifts are typical for a 1-shot GW calculation in a semiconductor.
+The &Gamma;-X bandgap (1.07 eV) is an improvement over the LDA, but it
+is nevertheless smaller than experiment (1.32&thinsp; at 0K).  This
+tendency is a 
+<A href=http://link.aps.org/abstract/PRB/v74/e245125>universal feature of
+semiconductors</A>.  It was not recognized for a long time because
+pseudopotential calculations (nearly all calculations were
+pseudopotential based until about 2005) tend to put levels too high,
+and somewhat remarkably, yielded fortutitously good agreement with
+experiment in many cases.
+
+<P><FONT color="#33bb00"><I>*Note</I>&nbsp;</FONT>
+that the Hartree-Fock gap (<FONT color="#00ff00">&darr;</FONT>) is much too large.  This is approximately the correct 
+"<A href=http://link.aps.org/doi/10.1103/PhysRevLett.79.2089>exact exchange</A>" gap
+if the potential discontinuity is taken into account; see
+Gr&uuml;ning, Marini, Rubio, J. Chem. Phys. 124, 154108 (2006).
+
+</HTML>

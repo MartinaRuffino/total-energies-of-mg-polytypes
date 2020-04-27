@@ -1,0 +1,146 @@
+ -----------------------  START LMGF (80000K)  -----------------------
+#rf    3: fcc Fe in 3k structure  qss=0
+ HEADER Test of fcc fe, 2k and 3k structures
+
+ LMGF:     alat = 6.77942  nbas = 4  nspec = 1  vn 6.16  verb 31,20
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll, mag-forces: relax
+ asa:      no-ccor, gam-rep, two-c-H
+ bz:       metal, tetra, invit 
+ IOEULA:  reading l-independent Euler angles (file 14)
+
+ Automatic symmetry finder turned off.  Use: MX MY I
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+  Cell vol= 311.585401
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 6.77942   awald= 0.295
+         r1=  2.921   nkd=  93      q1=  3.474   nkg= 179
+
+ SGROUP: 8 symmetry operations from 3 generators
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  1 species split into 4 classes
+ Species  Class      Sites...
+ A        1:A        1
+          2:A2       2
+          3:A3       3
+          4:A4       4
+ 
+ BZMESH:  125 irreducible QP from 1000 ( 10 10 10 )  shift= T T T
+ TETIRR: sorting 6000 tetrahedra ... 2840 inequivalent ones found
+
+ Override file fermi level, use ef= -0.017196, delef= 0.004804
+
+  
+ ZMESH: nz=12 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.00,-0.0172
+
+ GETZV:  32 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000000   0.000000   0.000000   0.000000  -0.771747
+ A2         0.000000   0.000000   0.000000   0.000000  -0.771747
+ A3         0.000000   0.000000   0.000000   0.000000  -0.771747
+ A4         0.000000   0.000000   0.000000   0.000000  -0.771747
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.771747 (up-dn=0.002844)
+ cpudel    ...   Time this iter:  time(s):  0.160    total:  0.160s
+ QUERY: max it (def=1)? 
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P2
+          Euler angles:
+   ib   alpha      beta     gamma     class           z axis rotated to:
+    1  2.295133  1.779328  0.400000   A         -0.648283  0.732714 -0.207023
+    2 -0.320396  0.999388  0.000000   A2         0.798335 -0.264911  0.540817
+    3 -0.431088  2.454579  0.000000   A3         0.576206 -0.265020 -0.773144
+    4 -2.383792  3.017015  0.000000   A4        -0.090253 -0.085404 -0.992250
+
+ --- GFASA (gamma) : make qnu, density-matrix, idos 
+
+ dmatio: wrote density-matrix
+
+ GFASA:  integrated quantities to efermi = -0.017196
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   65.937954   12.921956   -2.574323    0.734866   -3.078044
+ spin 2   30.132343   19.115865   -4.238091    1.191220    3.115865
+  total   96.070297   32.037821   -6.812414    1.926087    0.037821
+         deviation from charge neutrality: 0.037821
+
+ gfzerq: ef=-0.0172  dq=0.0378  vold=0  dv=3.94e-4  vnew= 0.000394
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0172  dq=0.00228  vold=3.94e-4  dv=2.24e-5  vnew= 0.000371
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0172  dq=1.9e-5  vold=3.71e-4  dv=1.88e-7  vnew= 0.000371
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0172  dq=6.56e-11  vold=3.71e-4  dv=6.49e-13  vnew= 0.000371
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   73.931484   12.894747   -2.569067    0.734858   -3.105253
+ spin 2   27.880625   19.105253   -4.230818    1.191217    3.105253
+  total  101.812109   32.000000   -6.799886    1.926075    0.000000
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = 0.000371.  Cumulative shift = 0.000371
+ QUERY: redo gf pass (def=F)? 
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   *  1.085282 -1.215045  0.247008    0.085078 -0.044303 -1.644987  1.647782
+    2   * -1.299443  0.428325 -0.985960    0.089378 -0.002722 -1.684083  1.686455
+    3   * -0.837861  0.399920  1.095325    0.023033  0.013224 -1.435610  1.435856
+    4   *  0.165979  0.145130  1.429529    0.040976  0.008667 -1.445825  1.446431
+ <Mx>=-0.221511  <My>=-0.060418  <Mz>=0.446475  <M>=0.502053  <|M|>=1.554131
+
+ IORBTM:  orbital moments :
+ Class  Spec        spin   Moment decomposed by l ...
+    1    A            1    0.000000   -0.000774    0.034565
+    1    A            2    0.000000   -0.001512    0.111208
+ total moment for class   1:    0.143487
+    2    A            1    0.000000   -0.000714    0.024207
+    2    A            2    0.000000   -0.001412    0.114472
+ total moment for class   2:    0.136552
+    3    A            1    0.000000   -0.001276   -0.183182
+    3    A            2    0.000000   -0.001300    0.196168
+ total moment for class   3:    0.010409
+    4    A            1    0.000000   -0.000974   -0.180988
+    4    A            2    0.000000   -0.001011    0.194576
+ total moment for class   4:    0.011604
+ gfasa: vbar = 0.000371 adds d.c. term vbar * zval = 0.011874
+
+ gfasa (exit): vconst updated from 0.000000 to 0.000371
+
+ LMGF: ehf=-1.8182807  ehk=-1.8102565  sumev=-6.7998856  delsev=0.0144535
+ <Mx>=-0.221511  <My>=-0.060418  <Mz>=0.446475  <M>=0.502053  <|M|>=1.554131
+ QUERY: sdmod (def=1)?  QUERY: fscal (def=5)?  MAGTRQ:  mode 1 (follow forces)  fscal 5
+           local phi,d(theta)      alpha     beta          changed to
+  A      1.192049 -0.00831005    2.295133  1.779328    2.294237  1.737787
+  A2     1.449310 -0.00756417   -0.320396  0.999388   -0.314810  0.961853
+  A3     2.058861 -0.00184016   -0.431088  2.454579   -0.437824  2.446441
+  A4     1.648059 -0.00343074   -2.383792  3.017015   -2.393168  2.999906
+
+ Mixpqc: ic  ngrp  group
+     4 elts in group  1  Q= 8.000000
+ pvpqm1: elements to include in the mixing: Euler-angles
+  
+ mixing: mode=B  nmix=4  it 1 of 4  fnam=mq  wc=1  beta=1  wgt=1,1(2)
+ QUERY: mix-parms-block (def=0)?  QUERY: block-iter (def=0)?  PQMIX:  read 0 iter from file mq.  RMS DQ=1.13e-2
+ QUERY: beta (def=1)?  Exit 0  QUERY: beta (def=1)? 
+ CPU time:   18.004s     Wed Nov 28 10:52:32 2007   on waldo.eas.asu.edu
+ wkinfo:  used   241 K  workspace of 80000 K   in 228 K calls
+
+  ==== workspace ====     calls      == cpu time ===   depth 5
+  entry   mxin  mxout                per call  total
+      0      0    241        1      17.97      17.97   main
+    122    156    162        8       0.02       0.18   |--atscpp
+    123    162    241        1      17.70      17.70   `--gfasa
+    210    210    241       12       1.47      17.60      `--gfibz
+    231    231    237     1500       0.00       6.05         |--gf1kp
+    236    236    236     1500       0.00       0.73         |  |--bloch
+    237    237    237     3000       0.00       0.71         |  |--rotspn
+    237    237    237     1500       0.00       2.71         |  `--gf1kpn
+    241    241    241    42000       0.00      10.15         `--roth

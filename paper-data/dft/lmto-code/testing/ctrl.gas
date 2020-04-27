@@ -1,0 +1,258 @@
+To make, invoke
+        make lm lmsf1 lmchk lmstr lmdos
+To test invoke:
+        lmsf1 gas >& out.gas
+        lmovl --shell --angles gas >>& out.gas
+        lmstr gas >>& out.gas
+        rm -f mixm.gas; lm gas >>& out.gas
+        cp ../testing/syml.gas . ; lmbnd gas >>& out.gas
+        echo "501 -1.2 1.0" | lmdos gas >>& out.gas
+Compare using:
+        zdiff out.gas ../testing/out.gas.gz
+        zdiff dos.gas ../testing/dos.gas.gz
+.MASTER  JOB 1 a=1
+        JOB 2 a=2
+        JOB 3 a=3 b=77
+% const gamma=f nmto=0 ewald=t rdvext=0
+HAM     NMTO={nmto} KMTO=-.3 .1 .5 EWALD={ewald} RDVEXT={rdvext}
+
+# for Version 7:
+        NSPIN=1 REL=t QASA=0
+TEST    lmchk --shell --angles:sites=1,2:bonds=1,2,4 gas
+        lmstr gas --plot:line >/dev/null
+        cp plot.gas plot.line
+        lmstr --pr51 gas --plot:con
+        cp plot.gas plot.con
+#       fplot -ord x4 -map -inc 'abs(y)<.1' 1:nr plot.gas
+#       fplot -lt 1 -con 1e-6,1e-5,1e-4,1e-3,1e-2 -qr plot.gas -lt 2 -con -1e-6,-1e-5,-1e-4,-1e-3,-1e-2 -qr plot.gas
+        lm gas
+        lm gas --band~col=6,7,8~fn=syml
+        echo '501 -1.2 1.0' | lmdos gas
+TESTN   lmstr gas -vnmto=2
+        lm gas -vnmto=2 -vewald=t --band~col=11,12,13~fn=syml
+        mv bnds.gas bnds-ewald.gas
+        lm gas -vnmto=3 -vewald=f --band~col=11,12,13~fn=syml
+        mv bnds.gas bnds-rs.gas
+# To test, run: 
+# rdcmd '-f:#rdcmd:%2f' -cat:TESTLM --noerr ctrl.gas | tee out.gas
+TESTLM  lmstr gas --iactiv=no
+        lm gas -vlmarq=2 -vrdvext=2
+        cp vext0.gas vext.gas
+        lm gas -vrdvext=2 --band:fn=syml
+# Parallel version ...
+TESTMPI lmstr gas --iactiv=no
+        mpirun -n 8 lm gas -vlmarq=2 -vrdvext=2 -vmet=2
+        cp vext0.gas vext.gas
+        lm gas -vrdvext=2 --band:fn=syml
+TESTLM1  lmstr gas --iactiv=no
+        lm gas -vlmarq=1 -vrdvext=1
+        cp vext0.gas vext.gas
+        lm gas -vrdvext=1 --band:fn=syml
+PLSTR   lmstr gas --plot
+        fplot -lt 1 -con 1e-5,1e-4,1e-3,1e-2,1e-1 plot.gas -lt 2 -con -1e-5,-1e-4,-1e-3,-1e-2 plot.gas
+HEADER  GaAs with empty spheres with different downfoldings
+VERS    LMASA-6.0 LM:7 ASA:7
+IO      SHOW=f HELP=f VERBOS=40 WKP=F IACTIV=F
+OPTIONS NSPIN=1 REL=t LMH=F NRMIX=80 2 RQUAD=0
+        ASA[ ADNF=F CCOR=T NSPH=nsph GAMMA={gamma} ]
+CONST   a=10.69 nsph=0 met=nsph?2:1
+SYMGRP  R4X*I MX*I R3D M(1,1,0)
+.. To make DOS or bands, set metal=t.  Also need NEVMX=36 for full dos
+.BZ      TETRA NKABC=6 6 6 TOL=1E-6 METAL=f DOSWT=F EFMAX=10
+BZ      TETRA NKABC=6 6 6 TOL=1E-6 METAL=met DOSWT=T EFMAX=10 NEVMX=36 INVIT=f
+# for Version 7:
+ITER    MIX=B NIT=10 CONVC=1E-6 CONV=0 NRMIX=80 2 
+%ifdef lmarq==1
+	FIT[MODE=1 NBFIT=2 16 NBFITF=7 LAM=1 SCL=5 SHFT=1 WT=1,.1,.1]
+%endif
+%ifdef lmarq==2
+	FIT[MODE=2 NBFIT=1 16 NBFITF=6 LAM=1 SCL=5 SHFT=1 WT=1,.1,.1]
+%endif
+MIX     MODE=B
+% ifdef valslo
+STR     SHOW=T EQUIV=f ENV[MODE=1 NEL=2  EL=-.3 .0 .2]
+% endif
+STR     SHOW=T EQUIV=t
+#       RMAX=5
+% ifdef nmto>0
+#        NKAPS=2 KAPS=-.2 .1 RMAX=3.5 DOWATS=t DELTR=.1 LMAXW=4
+        MODE=2 NEL=3 EL=-.3 .0 .2 RMAX=4.0 DOWATS=t DELTR=.1 LMAXW=6
+	NKAPS=3 KAPS=-.3 .0 .2 RMAX=4.0 DOWATS=t DELTR=.1 LMAXW=6
+# for Version 7:
+#       IINV[NIT=3 NCUT=2 TOL=1e-5]
+        ENV[MODE=2 NEL=3  EL=-.3 .0 .2]
+% endif
+SCELL   PLAT= .5 .5 0   0 0 1   .5 -.5 0
+STRUC   NBAS=4 NCLASS=4 NSPEC=4 NL=3
+        ALAT=a PLAT=  0 .5 .5  .5  0 .5  .5 .5  0
+SITE    ATOM=GA POS=  0   0   0
+        ATOM=AS POS= .25 .25 .25
+        ATOM=E1 POS= .50 .50 .50
+        ATOM=E2 POS= .75 .75 .75
+CLASS   SCLWSR=1
+#       ATOM=GA  Z=31 R/W=.9 EREF=-3882.1256 IDMOD=0 3 1 A=0.03
+        ATOM=GA  Z=31 R/W=.9 EREF=-3882.1256 IDMOD=0 0 1 A=0.03
+% ifdef nmto>=2
+        HCR/R=.7 .7 .30 IDXDN=1 1 1
+% endif
+        IDXDN=1 1 2
+        ATOM=AS  Z=33 R/W=.9 EREF=-4515.4714 IDXDN=1 1 2 A=0.03
+        ATOM=E1  Z=0  R/W=.9 IDXDN=1 1 2 IDMOD=0 0 0     A=0.03 FRZC=-1,-1 FRZD=-3,-3
+        ATOM=E2  Z=0  R/W=.9 IDXDN=1 1 2                 A=0.03 FRZC=-2,-2 FRZD=-3,-3
+.START   FREE=F BEGMOM=t CNTROL=f RDVES=f
+---Downfolding all d orbitals (nonrel):  ETOT= -8309.10048 ---
+.START   FREE=F BEGMOM=t CNTROL=t
+        ATOM=GA    P=  4.8099938  4.5912737  4.1900000
+                   Q=  1.0045486  0.0000000  0.0358892
+                       1.1327512  0.0000000  0.0447098
+                       0.2017762 -0.0391784  0.0214561
+                   V= -0.0769080
+        ATOM=AS    P=  4.8827473  4.7901883  4.2188509
+                   Q=  1.5052384  0.0000000  0.0345851
+                       2.6274035  0.0000000  0.0492634
+                       0.0853220  0.0000000  0.0025321
+                   V= -0.0761180
+        ATOM=E1    P=  1.4098998  2.2440617  3.1496549
+                   Q=  0.2873896  0.0000000  0.0182650
+                       0.3473068  0.0000000  0.0218937
+                       0.1528347  0.0000000  0.0095279
+                   V=  0.0767010
+        ATOM=E2    P=  1.4032384  2.2426816  3.1485786
+                   Q=  0.2514932  0.0000000  0.0124573
+                       0.2900815  0.0000000  0.0145901
+                       0.1138544  0.0000000  0.0059492
+                   V=  0.0763250
+---Downfolding all d orbitals (rel):  ETOT=  -8389.11843 ---
+START   FREE=F BEGMOM=t CNTROL=t
+        ATOM=GA    P=  4.8167823  4.5910798  4.1900000
+                   Q=  1.0420688  0.0000000  0.0376472
+                       1.1170931  0.0000000  0.0465217
+                       0.2013042 -0.0456764  0.0256283
+                   V= -0.0748830
+        ATOM=AS    P=  4.8868060  4.7900756  4.2152179
+                   Q=  1.5374218  0.0000000  0.0364738
+                       2.6018229  0.0000000  0.0510495
+                       0.0848331  0.0000000  0.0026618
+                   V= -0.0752270
+        ATOM=E1    P=  1.4103092  2.2429247  3.1488624
+                   Q=  0.2830762  0.0000000  0.0190826
+                       0.3378133  0.0000000  0.0230518
+                       0.1497620  0.0000000  0.0102680
+                   V=  0.0746680
+        ATOM=E2    P=  1.4023491  2.2416796  3.1478739
+                   Q=  0.2483698  0.0000000  0.0128419
+                       0.2844520  0.0000000  0.0151445
+                       0.1119828  0.0000000  0.0063414
+                   V=  0.0754420
+---Downfolding all d orbitals (rel+nsph):  ETOT=  -8398.2174 ---
+START   FREE=F BEGMOM=t CNTROL=t
+        ATOM=GA    P=  4.8191655  4.5969614  4.1900000
+                   Q=  1.0499894  0.0000000  0.0374945
+                       1.1266510  0.0000000  0.0465949
+                       0.2035532 -0.0449275  0.0254214
+                   V= -0.0938747
+        ATOM=AS    P=  4.8876195  4.7933282  4.2164923
+                   Q=  1.5412964  0.0000000  0.0357442
+                       2.6287294  0.0000000  0.0505652
+                       0.0863687  0.0000000  0.0027179
+                   V= -0.0969099
+        ATOM=E1    P=  1.3941838  2.2366576  3.1468271
+                   Q=  0.2700320  0.0000000  0.0185161
+                       0.3266953  0.0000000  0.0225479
+                       0.1479288  0.0000000  0.0102190
+                   V=  0.0929161
+        ATOM=E2    P=  1.3833766  2.2343784  3.1455531
+                   Q=  0.2346616  0.0000000  0.0123323
+                       0.2737467  0.0000000  0.0146878
+                       0.1103479  0.0000000  0.0062537
+                   V=  0.0989200
+---Downfolding all d orbitals:  ETOT=  -8309.11740 (1.1 moms) ---
+START   FREE=F BEGMOM=t CNTROL=t RDVES=f
+          ATOM=GA    P=  4.8055964  4.5913052  4.1900000
+                     Q=  1.0037102  0.0000000  0.0376634
+                         1.1306571  0.0000000  0.0467126
+                         0.2020395 -0.0393772  0.0215465
+          ATOM=AS    P=  4.8709772  4.7914122  4.2190049
+                     Q=  1.5060356  0.0000000  0.0375423
+                         2.6325329  0.0000000  0.0516143
+                         0.0851527  0.0000000  0.0025203
+          ATOM=E1    P=  1.4118586  2.2425519  3.1495333
+                     Q=  0.2866844  0.0000000  0.0173240
+                         0.3467358  0.0000000  0.0219400
+                         0.1527617  0.0000000  0.0095280
+          ATOM=E2    P=  1.4082828  2.2456286  3.1484609
+                     Q=  0.2507523  0.0000000  0.0101807
+                         0.2893045  0.0000000  0.0161181
+                         0.1136332  0.0000000  0.0059405
+---Downfolding As and Empty sphere d's and Empty sphere p's:  ETOT=-8309.06600 ---
+START   FREE=F BEGMOM=t CNTROL=t
+          ATOM=GA    P=  4.811725  4.627228  3.912572
+                     Q=  1.037406  0.000000  0.049874
+                         1.230223  0.000000  0.062684
+                        10.021976  0.000000  0.021520
+          ATOM=AS    P=  4.873317  4.806438  4.192551
+                     Q=  1.503215  0.000000  0.055845
+                         2.647610  0.000000  0.095319
+                         0.099658  0.000000  0.014738
+          ATOM=E1    P=  1.419666  2.229205  3.148484
+                     Q=  0.286157  0.000000  0.025187
+                         0.331834  0.000000  0.027824
+                         0.159982  0.000000  0.012780
+          ATOM=E2    P=  1.402177  2.226875  3.144516
+                     Q=  0.259015  0.000000  0.019094
+                         0.293062  0.000000  0.025586
+                         0.129862  0.000000  0.014682
+---No Downfolding:  ETOT=  -8309.10670 ---
+START   FREE=F BEGMOM=t CNTROL=t
+          ATOM=GA    P=  4.816706  4.605621  3.923033
+                     Q=  1.039142  0.000000  0.037541
+                         1.188271  0.000000  0.044309
+                        10.055979  0.000000  0.024721
+          ATOM=AS    P=  4.881410  4.795250  4.207036
+                     Q=  1.537265  0.000000  0.049015
+                         2.602391  0.000000  0.075059
+                         0.101404  0.000000  0.014830
+          ATOM=E1    P=  1.411953  2.241744  3.148910
+                     Q=  0.284267  0.000000  0.018859
+                         0.345344  0.000000  0.025663
+                         0.156832  0.000000  0.011438
+          ATOM=E2    P=  1.399742  2.235746  3.145399
+                     Q=  0.257463  0.000000  0.014575
+                         0.302638  0.000000  0.027260
+                         0.129005  0.000000  0.025855
+---Old Downfolding As and Empty sphere d's:  ETOT=  -8309.09313 ---
+START   FREE=F BEGMOM=t CNTROL=t
+          ATOM=GA    P=  4.813137  4.614164  3.916618
+                     Q=  1.041253  0.000000  0.040976
+                         1.202112  0.000000  0.051094
+                        10.036563  0.000000  0.022553
+          ATOM=AS    P=  4.878771  4.799042  4.207035
+                     Q=  1.530982  0.000000  0.051118
+                         2.606535  0.000000  0.083304
+                         0.103476  0.000000  0.000000
+          ATOM=E1    P=  1.414039  2.238216  3.148902
+                     Q=  0.283871  0.000000  0.018687
+                         0.345664  0.000000  0.026269
+                         0.159344  0.000000  0.000000
+          ATOM=E2    P=  1.400056  2.235933  3.145392
+                     Q=  0.257264  0.000000  0.014799
+                         0.303550  0.000000  0.029294
+                         0.129386  0.000000  0.000000
+---Old Downfolding As and Empty sphere d's and Empty sphere p's:  ETOT=-8309.06373 ---
+START   FREE=F BEGMOM=t CNTROL=t
+          ATOM=GA    P=  4.808016  4.620603  3.911316
+                     Q=  1.032721  0.000000  0.049793
+                         1.227113  0.000000  0.062298
+                        10.018342  0.000000  0.021246
+          ATOM=AS    P=  4.872517  4.805025  4.206905
+                     Q=  1.499406  0.000000  0.056057
+                         2.635060  0.000000  0.094943
+                         0.106500  0.000000  0.000000
+          ATOM=E1    P=  1.414668  2.238347  3.149101
+                     Q=  0.283892  0.000000  0.024938
+                         0.344913  0.000000  0.000000
+                         0.159497  0.000000  0.000000
+          ATOM=E2    P=  1.395300  2.235905  3.145549
+                     Q=  0.256842  0.000000  0.019203
+                         0.305497  0.000000  0.000000
+                         0.130218  0.000000  0.000000

@@ -1,0 +1,241 @@
+#!/bin/tcsh
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+set srcdir = ~ms4/lm
+set destdir = ~ms4/lmf
+set destdir = ~/sam/lmf
+
+# echo compare against: $destdir
+
+cd $srcdir
+set slow
+set space = '        '
+alias ftnchek  ftnchek -usage=033 -f77=all -nonovice -nosixchar -arguments=none -truncation=no-type-demotion -f77=no-implicit-none -f77=no-automatic-array
+alias ftnchekc ftnchek -f77=no-double-complex -f77=no-intrinsic -f77=no-do-enddo -f77=no-cycle
+alias f 'set i = \!\!:1 ; ftnchekc $i | grep -v DIMAG | grep -v "Nonstandard intrinsic"'
+
+# set thisfile = $0
+# set thisdir = $thisfile:h
+# if ($thisdir == $thisfile) set thisdir = `pwd`
+
+alias f 'set i = \!\!:1 ; ftnchekc $i | grep -v DIMAG | grep -v "Nonstandard intrinsic"'
+alias cn 'cpnone $i $destdir/$i'
+alias d 'diff -I"implicit none" -w $i $destdir/$i'
+
+alias f 'fort -g -c -recursive -arch host -tune host -warn declarations -warn unused'
+alias f 'ifort -warn unused -g -132 -c'
+
+set recargs = `echo $argv | awk '{NF = NF-2; print}'`
+
+# --- Start reading switches here ---
+options:
+  if ( "$1" == "--quiet" ) then
+    shift; set quiet; set subs = all ; goto options
+  endif
+
+  if ( "$1" == "--qquiet" ) then
+    shift; set quiet; set qquiet; set subs = all; goto options
+  endif
+
+  if ( "$1" == "--cp" ) then
+    shift; set cpf; goto options
+  endif
+
+  if ( "$1" == "--fchk" ) then
+    shift; set fchk; goto options
+  endif
+
+  if ( "$1" == "-s" ) then
+    shift; set subs = $1; shift; goto options
+  endif
+
+  if ( "$1" == "--dslm" ) then
+    shift; set destdir = ~/sam/lm; goto options
+  endif
+
+  if ( "$1" == "--dslmf" ) then
+    shift; set destdir = ~/lmf; goto options
+  endif
+
+  if ( "$1" == "--r" ) then
+    shift; cd $destdir; set destdir = $srcdir; set srcdir = `pwd`; goto options
+  endif
+
+  if ($?subs) then
+    if ($subs == "all") then
+      set list = (. v7input subs nc optics sx gf pgf fp gwd gw dmft mol tb testing utils misc doc)
+again:
+      if ($?qquiet) then
+#       echo $0 $recargs -s $list[1]
+        $0 $recargs -s $list[1]
+        goto chk1e
+      endif
+
+      echo " "
+      query chk11 chk1e "run $0 $recargs -s $list[1]"
+chk11:
+      $0 $recargs -s $list[1]
+      echo "finished $0 $recargs -s $list[1]"
+chk1e:
+      shift list
+      if ($#list > 0) goto again
+      exit
+    endif
+    if (! -e $subs) goto message
+  else
+    goto message
+  endif
+
+  if (! $?qquiet)  echo ... source = $srcdir "  "  dest = $destdir
+
+
+  if (! $?qquiet) echo --------------------- list missing or different files, $subs ---------------
+  if ($subs == ".") then
+#   set verbose
+    set difflst = (configure structures.h structures77.h MakeMainMakefile lmv7.f utils/spectral.f utils/lm67.f utils/rdcmd.f)
+    if ($destdir == /home/ms4/sam/lmf) set difflst = (configure MakeMainMakefile lmv7.f utils/spectral.f utils/lm67.f utils/rdcmd.f)
+nextmain:
+    set i = $difflst[1]
+    if (`ls -1t $i $destdir/$i | head -1` == "$destdir/$i") then
+      if (! $?qquiet) echo ... file $destdir/$i newer than file $i ... not checked
+    else if ($?qquiet) then
+      echo $i
+    else
+      echo ............................................. file $i  ........................
+      diff -I'implicit none' -w $i $destdir/$i | head -60
+      query chkm1 chkme "copy file to $destdir/$i"
+chkm1:
+      echo cp  $i $destdir/$i
+           cp  $i $destdir/$i
+chkme:
+    endif
+
+   shift difflst
+   if ($#difflst > 0) goto nextmain
+   exit
+
+  else if ($?qquiet) then
+    echo $subs ...
+#     set verbose
+    set xlist = '-xMake.patch0 -xdotags -xno-check -xMake.inc -xsubs.a -xMake.patch -xTAGS'
+    if ($subs == subs) set xlist = "$xlist -xverlet.f -xiostr.f -xstructures.f"
+    if ($subs == nc) set xlist = "$xlist -xbndasa.f -xlmasa.f -xlmaux.f -xsecm2c.f -xsecmat.f"
+    if ($subs == optics) set xlist = "$xlist -xbndasa.f -xlmasa.f"
+    if ($subs == sx) set xlist = "$xlist -xlmasa.f -xsx/test.v2"
+    if ($subs == fp) set xlist = "$xlist -xctrl.copt.bk"
+    if ($subs == gf) set xlist = "$xlist -xlmasa-gf.f"
+    if ($subs == pgf) set xlist = "$xlist -xlmasa-gf.f -xatomsr.f"
+    if ($subs == tb) set xlist = "$xlist -xstructures.f -xmkstrx.f"
+    if ($subs == gwd) set xlist = "$xlist -xlmf2gw_0.f -xlmf2gw_2.f -xbndfp.f"
+    if ($subs == gw) set xlist = "$xlist -xlmfp.f -xbndfp.f"
+    if ($subs == utils) set xlist = "$xlist -xdval.f -xcmplmf -xlmgw -xlmgw1-shot -xlmgwsc -xcmpdist"
+    if ($subs == utils || $subs == testing || $subs == misc) then
+    diff -rq $xlist $subs $destdir/$subs | grep Only | awk -v subs=$subs '{printf "%s/%s\n", subs, $NF}'
+    else
+    diff -rq $xlist $subs $destdir/$subs | egrep '[.]f$' | grep Only | grep -v 'in $destdir' | awk -v subs=$subs '{printf "%s/%s\n", subs, $NF}'
+    endif
+    diff -rq $xlist $subs $destdir/$subs  | grep ' differ' | grep -v '~' | grep -v '.mod' | awk '{print $2}'
+    if (-e $subs/test) then
+      diff -x'ctrl*bk' -xzdiff -xadd0 -rq $subs/test $destdir/$subs/test | grep -v '~' | grep Only | awk -v subs=$subs/test '{printf "%s/%s\n", subs, $NF}'
+      diff -xzdiff -xadd0 -rq $subs/test $destdir/$subs/test | grep -v '~' | grep ' differ' | grep -v '~' | awk '{print $2}'
+    endif
+    exit
+  else
+
+    set xlist = "-xMake.patch0 -xdotags -xno-check -xSConscript"
+    if ($subs == subs) set xlist = "$xlist -xverlet.f -xiostr.f -xstructures.f"
+    if ($subs == nc) set xlist = "$xlist -xbndasa.f -xlmasa.f -xlmaux.f -xsecm2c.f -xsecmat.f"
+    if ($subs == optics) set xlist = "$xlist -xbndasa.f -xlmasa.f"
+    if ($subs == sx) set xlist = "$xlist -xlmasa.f -xsx/test.v2"
+    if ($subs == fp) set xlist = "$xlist -xctrl.copt.bk"
+    if ($subs == gf) set xlist = "$xlist -xlmasa-gf.f"
+    if ($subs == pgf) set xlist = "$xlist -xlmasa-gf.f -xatomsr.f"
+    if ($subs == tb) set xlist = "$xlist -xstructures.f -xmkstrx.f"
+    if ($subs == gwd) set xlist = "$xlist -xlmf2gw_0.f -xlmf2gw_2.f -xbndfp.f"
+    if ($subs == gw) set xlist = "$xlist -xlmfp.f -xbndfp.f"
+    if ($subs == utils) set xlist = "$xlist -xdval.f -xcmplmf"
+
+    diff $xlist -xsubs.a -xsubs-MPIK.a -xMake.patch -xMakefile.in -xMake.inc -xTAGS '-x*.[ha]' '-x*.mod' '-x*.fortran' -xarchive -rq $subs $destdir/$subs | awk '{if ($1=="Files") {print $1,$5,":",$2,$4} else if ($1=="Only") {sub(":",""); print $1,$2,$3,":",$3"/"$4} else print }'
+    set difflst = `diff $xlist -xsubs.a -xMake.patch -xMakefile.in -xMake.inc -xTAGS -xstructures.h '-x*.mod' '-x*.fortran' -xarchive -rq  $subs $destdir/$subs | grep differ | awk '{print $2}' `
+  endif
+
+  if ($#difflst == 0 || $?quiet) exit
+  echo
+  echo --------------------- compare file differences, $subs ---------------
+nextfile:
+    set i = $difflst[1]
+    set retval = 1
+    if ($subs != "." && -e $i:h/ccomp-dist) then
+      grep  $i:t  $i:h/ccomp-dist > /dev/null
+      set retval = $status
+    endif
+
+    echo
+    if ($retval == 0) then
+      if (`ls -1t $i $destdir/$i | head -1` == "$destdir/$i") then
+    	echo ... file $destdir/$i newer than file $i ... not checked
+      else
+        echo ............................................. file $i  ........................
+      	set cccmd = `grep  $i:t  $i:h/ccomp-dist | head -1`
+      	echo "(cd $i:h; ccomp $cccmd); \n diff -I'implicit none' $i~ $destdir/$i"
+      	      (cd $i:h; ccomp $cccmd >/dev/null)
+      	diff -I'implicit none' -w $i~ $destdir/$i | head -60
+      	rm $i~
+      endif
+    else
+      echo ............................................. file $i  ........................
+      diff -I'implicit none' -w $i $destdir/$i | head -60
+      if ($i:e != "f") goto chk2e
+      if (! $?fchk) goto chk2e
+      query chk21 chk2e "run ftnchek on file $i"
+chk21:
+     echo `which f` $i
+     f $i
+chk2e:
+      if (! $?cpf) goto chk3e
+      query chk31 chk3e "copy file to $destdir/$i"
+chk31:
+#     f90 allows implicit none ... ok to prserve
+#      cpnone $i $destdir/$i
+      cp $i $destdir/$i
+chk3e:
+    endif
+
+  shift difflst
+  if ($#difflst > 0) goto nextfile
+
+exit
+message:
+  echo "usage: cmplmf [--quiet | --qquiet] [--r] [--cp] [--fchk] -s subdir"
+  exit -1
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall

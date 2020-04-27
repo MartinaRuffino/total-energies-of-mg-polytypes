@@ -1,0 +1,58 @@
+# generate rho001.* from lmf, add switches
+# --wden:core=2:fn=myrho:l1=1,0,0,37:l2=0,1,0,37 
+# mcx ldarho.bzt atrho.bzt -- >rho_diff.bzt
+# mcx rho_diff.bzt -roll:0,19 >rho001
+
+
+fplot 
+
+# ... for (1/2,1/2,0), (0,0,1)
+ -frme:theta=2*pi/3 .4,1.3,0,.9
+
+# -x .8,2.6 -y .8,3.4 
+#   -xl rs(Ga) -yl rs(N)
+#   -tmx .2,1 -tmy .2,1
+
+# for color, total density
+#   -lt 1,col=.0,.1,1.,fill=0 -con .05 -qr rho001
+#   -lt 1,col=.2,.1,.8,fill=0 -con .10 -qr rho001
+#   -lt 1,col=.4,.1,.6,fill=0 -con .20 -qr rho001
+#   -lt 1,col=.5,.1,.5,fill=0 -con .30 -qr rho001
+#   -lt 1,col=.6,.1,.4,fill=0 -con .50 -qr rho001
+#   -lt 1,col=.8,.1,.2,fill=2 -con 1.0 -qr rho001
+#   -lt 1,col=1.,.1,0.,fill=2 -con 2.0 -qr rho001
+# .
+
+# for color, density difference
+  -lt 1,bold=3,col=.00,.1,1.,fill=0 -con  .001 -qr rho001
+  -lt 1,bold=3,col=.25,.1,.7,fill=0 -con  .002 -qr rho001
+  -lt 1,bold=3,col=.50,.1,.4,fill=0 -con  .005 -qr rho001
+  -lt 1,bold=3,col=.75,.1,.1,fill=0 -con  .010 -qr rho001
+# -lt 1,bold=3,col=1.0,.1,.2,fill=0 -con  .020 -qr rho001
+
+  -lt 3,bold=5,col=.1,.00,1.0,fill=0 -con -.001 -qr rho001
+  -lt 3,bold=5,col=.1,.25,.75,fill=0 -con -.002 -qr rho001
+  -lt 3,bold=5,col=.1,.50,.50,fill=0 -con -.005 -qr rho001
+  -lt 3,bold=5,col=.1,.75,.25,fill=0 -con -.010 -qr rho001
+  -lt 3,bold=5,col=.1,1.0,.00,fill=0 -con -.020 -qr rho001
+
+
+.
+
+#   -font h18
+#   -lblu  0.873,2.684:1 cc,rot=00 1
+#   -lblu  0.941,2.592:1 cc,rot=00 2
+#   -lblu  1.018,2.363:1 cc,rot=00 5
+#   -lblu  1.123,2.047:1 cc,rot=00 10
+#   -lblu  0.918,1.548:1 cc,rot=00 15
+#   -lblu  1.045,1.292:1 cc,rot=00 10
+#   -lblu  1.032,1.148:1 cc,rot=00 5
+#   -lblu  0.932,1.010:1 cc,rot=00 2
+#   -lblu  1.327,2.264:1 cc,rot=00 10
+#   -lblu  1.423,2.376:1 cc,rot=00 5
+#   -lblu  1.514,2.645:1 cc,rot=00 2
+#   -lblu  1.168,1.594:1 cc,rot=00 15
+#   -lblu  2.291,1.759:1 cc,rot=00 15
+#   -lblu  2.282,1.266:1 cc,rot=00 10
+#   -lblu  2.105,1.063:1 cc,rot=00 5
+#   -lblu  1.250,0.931:1 cc,rot=00 15

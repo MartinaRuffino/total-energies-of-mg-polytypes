@@ -1,0 +1,1343 @@
+#!/bin/csh -f
+#
+# Shell script to generate a Makefile for fortran programs.
+#
+# Makemakefile creates a Makefile to compile and link fortran programs, with
+# compiler switches and libraries dependent on certain machine characteristics.
+# The Makefile is written to standard output.
+#
+# Makemakefile only recognizes a limited set of compilers and environments.
+# There are several ways to set the characteristics as described in the help.
+# If your architecture does not match one supplied, please amend this script
+# accordingly and send your changes to Mark.vanSchilfgaarde@asu.edu
+# Makemakefile tries to encapsulate the machine architecture/compiler combination
+# into a single mnemonic.  For a list of mnemonics Makemakefile knows about,
+# type 'Makemakefile --show'
+#
+# See usage at end of this script for usage.
+#
+# Revisions
+#   9 Feb 09  --inc switch (for building Make.inc file)
+#  21 Jan 06  --in and --check switches
+#  11 Jul 03  -openmp switch for OPENMP now manual, not automatic
+#  19 Mar 03  Revised to better return compiler and linker names
+#   3 Jul 01  Revised compiler environment variable from 'F77' to 'FC'
+
+# --- Setup and defaults ---
+set dbgf = '#'; set nodbgf
+set thisfile = $0
+set thisdir = $thisfile:h
+if ($thisdir == $thisfile) set thisdir = `pwd`
+
+# --- Find machine mnemonic and set vars cc, fc to default compilers ---
+if ($#argv == 0) goto message
+set cc=cc fc=f77
+set mnemonic=$1
+switch ($1)
+  case --show:
+    goto show
+  case --:
+    set mnemonic='no'
+    set config=`$thisdir/config.guess`
+    shift
+    breaksw
+  case -*:
+    goto message
+  case AIX:
+  case POWER-PC:
+  case OSXI32:
+  case OSXI64:
+  case OSXI:
+  case AIX90:
+  case SGI:
+  case SGI4:
+  case SGI8:
+  case SGIO2:
+  case HP:
+  case DECA:
+  case DEC:
+  case APOLLO:
+  case CONVEX:
+  case CRAY:
+  case CRAY2:
+  case SUN:
+  case SUN-ULTRA:
+  case LINUXI:
+  case LINUX_PGI:
+  case LINUXA:
+  case LINUXF:
+  case LINUXPPC:
+  case INTEL_IFC:
+  case INTEL_IFORT:
+  case AMD64_IFORT:
+  case VANILLA:
+    shift
+    breaksw
+
+  First argument wasn't a recognized mnemonic. Try GNU machine configuration
+  default:
+    set config=`$thisdir/config.sub $1`
+    if ( $status != 0 ) then
+      $thisdir/echo_stderr "Makemakefile failed to resolve $1 into a machine mnemonic or configuration"
+      exit -1
+    endif
+#    echo "#     Makemakefile: using FC=$fc and $config"
+    set mnemonic='no'
+    shift
+endsw
+
+if ( $mnemonic == 'no' ) then
+  if ($?FC) then
+    set mnemonic=`$thisdir/machine-mnemonic $config -FC=$FC`
+    set retval = $status
+  else
+    set mnemonic=`$thisdir/machine-mnemonic $config -FC=`
+    set retval = $status
+  endif
+  if ( $retval != 0 ) then
+    $thisdir/echo_stderr "Makemakefile (warning) using mnemonic VANILLA for machine configuration $config"
+    set mnemonic = VANILLA
+  endif
+endif
+
+# --- Parse options ---
+set lib = "" outfile = '$@'
+# this is the default fortran and C compiler
+# if ($?FC) then
+#   set fc=$FC
+# else if ($?F77) then
+#   set fc=$F77
+# else
+#   set fc=f77
+# endif
+# set cc = cc
+
+options:
+if ($#argv > 0) then
+# echo "parsing argument $1"
+  switch ($1)
+    case "--show":
+      goto show
+
+    case "--getfc":
+      set getfc; shift; goto end-of-switches
+    case "--getcc":
+      set getcc; shift; goto end-of-switches
+    case "--check":
+      switch ($mnemonic)
+	case AIX:
+        case POWER-PC:
+        case OSXI:
+        case OSXI32:
+        case OSXI64:
+	case AIX90:
+	case SGI:
+	case SGI4:
+	case SGI8:
+	case SGIO2:
+	case HP:
+	case DECA:
+	case DEC:
+	case APOLLO:
+	case CONVEX:
+	case CRAY:
+	case CRAY2:
+	case SUN:
+	case SUN-ULTRA:
+	case LINUXI:
+	case LINUXPPC:
+	case LINUX_PGI:
+	case LINUXA:
+	case LINUXF:
+        case INTEL_IFC:
+        case AMD64_IFORT:
+        case INTEL_IFORT:
+	case VANILLA:
+          echo $mnemonic
+          set check
+          goto end-of-switches
+        default:
+          $thisdir/echo_stderr '...' Makemakefile : unrecognized mnemonic $mnemonic
+          exit -1
+	endsw
+      breaksw
+
+    case --module:
+      shift; set modulecmd = $1; shift;  goto options
+
+    case "--defs":
+    case "-defs":
+      shift; set defs; goto options
+
+    case "--inc":
+      shift ; set make_inc; goto options
+
+    case "--in":
+      shift ; set make_in; goto options
+
+    case "--*":
+      goto message
+
+    case "-i":
+      shift; set includestr = "$1" ; shift ; goto options
+    case "-openmp":
+      set openmp; shift; goto options
+    case "-f90":
+      set lf90; shift; goto options
+    case "-l":
+      shift ; set lib = "$lib $1"; shift ; goto options
+    case "-o":
+      shift ; set outfile = "$1"; shift ; goto options
+    case "-a":
+      set append; shift; goto options
+    case "-db":
+      set dbg ; set dbgf; set nodbgf = '#'; shift; goto options
+    case "-BIN":
+      if (! $?lbin) set lbin
+      shift ; set lbin = $1; shift ; goto options
+    case "-LIBSLA":
+      if (! $?lsla) set lsla
+      shift ; set lsla = ($lsla $1); shift ; goto options
+    case "-LIBLOC":
+      if (! $?lloc) set lloc
+      shift ; set lloc = ($lloc $1); shift ; goto options
+  endsw
+else
+  if (! $?defs) goto message
+endif
+end-of-switches:
+
+if ($#argv == 0 && $?defs == 0 && $?getfc == 0 && $?getcc == 0 && $?check == 0) goto message
+# --- Default compilers $fc and $cc, when they differ from cc and f77 ---
+switch ($mnemonic)
+  case AIX:
+    set cc=cc fc=xlf
+    if ($?FC) then
+      if ("$FC" == "xlf90") set lf90
+    endif
+    if ($?lf90) set fc=xlf90
+    breaksw
+  case AIX90:
+    set cc=cc fc=xlf90
+    breaksw
+  case POWER-PC:
+    set cc=gcc
+    set fc=xlf90
+    set LK=xlf90
+    breaksw
+  case OSXI:
+  case OSXI32:
+  case OSXI64:
+    set cc=gcc
+    set fc=gfortran
+    set LK=gfortran
+    breaksw
+  case SGI:
+#     set mp
+    breaksw
+  case SGI4:
+#     set mp
+    breaksw
+  case SGI8:
+#     set mp
+    if ($?FC) then
+      if ("$FC" == "f90") set lf90
+    endif
+    set fc=f90
+    if ($?lf90) set fc=f90
+    breaksw
+  case SGIO2:
+#     set mp
+    breaksw
+  case HP:
+    if ($?FC) then
+      if ("$FC" == "f90") set lf90
+    endif
+    if ($?lf90) set fc=f90
+    breaksw
+  case DECA:
+    if (! $?LK) set LK=cc
+    breaksw
+  case DEC:
+    breaksw
+  case APOLLO:
+    if (! $?LK) set LK=ld
+    breaksw
+  case CONVEX:
+   set fc=fc
+    breaksw
+  case CRAY:
+   set fc=f90
+    breaksw
+  case CRAY2:
+   set fc=cf77
+    breaksw
+  case SUN:
+    if ($?FC) then
+      if ("$FC" == "f90") set lf90
+    endif
+    if ($?lf90) set fc=f90
+    breaksw
+  case SUN-ULTRA:
+    breaksw
+  case LINUXI:
+    set fc=g77
+    breaksw
+  case LINUX_PGI:
+    set cc=pgcc fc=pgf77
+    if ($?FC) then
+      if ("$FC" == "pgf90") set lf90
+    endif
+    if ($?lf90) set fc=pgf90
+    breaksw
+  case LINUXA:
+    set fc=g77
+    breaksw
+  case LINUXF:
+    set fc=fort
+    breaksw
+  case LINUXPPC:
+    set fc=g77
+    breaksw
+  case INTEL_IFC
+    set cc=icc fc=ifc
+    breaksw
+  case INTEL_IFORT
+    set cc=icc fc=ifort
+    breaksw
+  case AMD64_IFORT
+    set cc=icc fc=ifort
+    breaksw
+  case VANILLA:
+    breaksw
+endsw
+
+if (! $?cc) set cc = none
+if (! $?fc) set fc = none
+if (! $?FC) set FC = "$fc"
+if (! $?CC) set CC = "$cc"
+if (x"$CC" == x) set CC = "$cc"
+if (x"$FC" == x) set FC = "$fc"
+
+if ($?append) goto Append
+
+# --------------- Handle request for fortran or C compiler name ---
+if ($?getfc != 0) then
+  echo $FC
+  exit 0
+endif
+if ($?getcc != 0) then
+  echo $CC
+  exit 0
+endif
+
+# --------------- Compiler definitions and flags ---------------
+if ($?check == 0) then
+echo "# --- Makemakefile: machine dependent compilers and flags ---"
+if ($?config != 0) then
+                   echo "#     machine configuration: $config"
+endif
+                   echo "#     machine mnemonic     : $mnemonic"
+if ($?defs) then
+                   echo "#     Use fortran compiler : $FC  (default = $fc)"
+                   echo "#     Use C compiler       : $CC  (default = $cc)"
+endif
+endif   #check
+if ($?check == 0) then
+echo "#"
+endif
+
+if ($?make_inc != 0) then
+echo
+echo 'TOPDIR =' `pwd`
+endif
+
+# --------------- C compiler and flags ---------------
+if ($?check == 0) then
+echo "MNEMONIC = $mnemonic"
+# set verbose
+echo '# ... C compiler and flags'
+set cflags
+switch ($mnemonic)
+  case LINUX*:
+      set cflags = "-DLINUX $cflags"
+      breaksw
+  default:
+endsw
+endif
+if ($?CC == 0) then
+  set CC="$cc"
+endif
+if ($?check == 0) then
+echo "CC = $CC"
+endif
+
+# set verbose
+
+# ... Silicon Graphics R8000, R10000, R12000
+if ($mnemonic == SGI8) then
+  if ("$CC" != cc) then
+    echo " ... $mnemonic compiler 'cc' is incompatible with user's choice '$CC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-c-compiler
+
+  echo $nodbgf"CFLAGS = $cflags -DSGI -D$mnemonic -64 -O"
+    echo $dbgf"CFLAGS = $cflags -DSGI -D$mnemonic -64 -g"
+
+# else if ($mnemonic == LINUXI || $mnemonic == LINUXA) then
+#     if (! ("$CC" == gcc || "$CC" == cc)) then
+#       echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+#       exit -1
+#     endif
+#     if ($?check == 1) goto end-of-c-compiler
+
+else if ($mnemonic == SGIO2 || $mnemonic == SGI4) then
+  if ("$CC" != cc) then
+    echo " ... $mnemonic compiler 'cc' is incompatible with user's choice '$CC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -DSGI -D$mnemonic -n32 -mips4 -O"
+    echo $dbgf"CFLAGS = $cflags -DSGI -D$mnemonic -n32 -mips4 -g"
+
+# ... Intel fortran with Intel C compiler
+else if (($mnemonic == INTEL_IFC || $mnemonic == INTEL_IFORT || $mnemonic == AMD64_IFORT) && "$CC" == "icc") then
+  if ($?check == 1) goto end-of-c-compiler
+
+  echo $nodbgf"CFLAGS = $cflags -D$mnemonic -O"
+    echo $dbgf"CFLAGS = $cflags -D$mnemonic -g"
+
+# ... Portland group Fortran compiler
+else if ($mnemonic == LINUX_PGI && "$CC" == "pgcc") then
+    if ($?check == 1) goto end-of-c-compiler
+    echo $nodbgf"CFLAGS = $cflags -D$mnemonic -fast -O2"
+
+# ... DEC C compiler under linux
+else if ($mnemonic =~ LINUXF && ("$CC" == ccc)) then
+  if ($?check == 1) goto end-of-c-compiler
+
+  echo $nodbgf"CFLAGS = $cflags -fast -O3 -arch host -tune host -recursive"
+    echo $dbgf"CFLAGS = $cflags -g -arch host -tune host -recursive"
+
+# ... AIX C compiler
+else if ($mnemonic =~ AIX*) then
+    if (! ("$CC" == gcc || "$CC" == cc)) then
+      echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+      exit -1
+    endif
+    if ($?check == 1) goto end-of-c-compiler
+    echo $nodbgf"CFLAGS = $cflags -DAIX -D$mnemonic -O"
+    echo $dbgf"CFLAGS = $cflags -DAIX -D$mnemonic -g"
+
+# ... POWER-PC compiler
+else if ($mnemonic == POWER-PC) then
+    if (! ("$CC" == gcc || "$CC" == cc)) then
+      echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+      exit -1
+    endif
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -D$mnemonic -O"
+    echo $dbgf"CFLAGS = $cflags -D$mnemonic -g"
+
+# ... Sun C compiler
+else if ($mnemonic =~ SUN*) then
+    if (! ("$CC" == gcc || "$CC" == cc)) then
+      echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+      exit -1
+    endif
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -DSUN -D$mnemonic -O"
+    echo $dbgf"CFLAGS = $cflags -DSUN -D$mnemonic -g"
+
+# ... Cray C compiler
+else if ($mnemonic =~ CRAY*) then
+    if (! ("$CC" == gcc || "$CC" == cc)) then
+      echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+      exit -1
+    endif
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -DCRAY -D$mnemonic -O"
+      echo $dbgf"CFLAGS = $cflags -DCRAY -D$mnemonic -g"
+
+# ... DEC alpha C compiler
+else if ($mnemonic =~ DECA) then
+    if (! ("$CC" == gcc || "$CC" == cc)) then
+      echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+      exit -1
+    endif
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -DDEC -D$mnemonic -O"
+    echo $dbgf"CFLAGS = $cflags -DDEC -D$mnemonic -g"
+
+# ... DEC C compiler
+else if ($mnemonic =~ DEC*) then
+    if (! ("$CC" == gcc || "$CC" == cc)) then
+      echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+      exit -1
+    endif
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -DDEC -D$mnemonic -O"
+    echo $dbgf"CFLAGS = $cflags -DDEC -D$mnemonic -g"
+
+# ... gnu gcc compiler for some known architectures
+else if (($mnemonic =~ LINUX* || $mnemonic == INTEL_IFC || $mnemonic == INTEL_IFORT || $mnemonic == AMD64_IFORT || $mnemonic == LINUX_PGI || $mnemonic =~ OSXI*) && ("$CC" == cc || "$CC" == gcc)) then
+
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -D$mnemonic -O -funroll-loops -w"
+      echo $dbgf"CFLAGS = $cflags -D$mnemonic -g"
+
+# ... non-gnu compiler for some known architectures
+else if (($mnemonic == INTEL_IFC || $mnemonic == INTEL_IFORT || $mnemonic == AMD64_IFORT || $mnemonic =~ LINUXF || $mnemonic == LINUX_PGI || $mnemonic == LINUXI || $mnemonic == LINUXA || \
+          $mnemonic == LINUXPPC )  && ! ("$CC" == cc || "$CC" == gcc)) then
+    echo " ... $mnemonic compiler cc is incompatible with user's choice '$CC'"
+    exit -1
+
+# ... generic C compiler
+else
+    if ($?check == 1) goto end-of-c-compiler
+
+    echo $nodbgf"CFLAGS = $cflags -D$mnemonic -O"
+      echo $dbgf"CFLAGS = $cflags -D$mnemonic -g"
+
+endif   # --- end of C compiler defs and flags ---
+end-of-c-compiler:
+
+# --------------- fortran compiler and flags, and linker ---------------
+if ($?check == 0) then
+echo -n '# ... Fortran compiler and flags, and linker'
+endif
+if ($?FC == 0) then
+  set FC="$fc"
+endif
+if ($?LK == 0) then
+  set LK="$FC"
+endif
+if ($mnemonic == VANILLA) then
+  if ($?check == 1) goto end-of-fortran-compiler
+  echo ' ... for VANILLA'
+  echo "FC = $FC"
+  echo $nodbgf'FFLAGS = -O'
+  echo $nodbgf'FFLAGS_LESS ='
+    echo $dbgf'FFLAGS = -g'
+    echo $dbgf'FFLAGS_LESS = -g'
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 = -O'
+    echo $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == DEC) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the DEC'
+  echo "FC = $FC"
+  echo $nodbgf'FFLAGS = -O -G 0'
+    echo $dbgf'FFLAGS = -g -G 0'
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 =  -O'
+    echo $dbgf'LKFLAGS1 =  -g'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == DECA) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the DEC Alpha'
+  echo "FC = $FC"
+  echo $nodbgf'FFLAGS_MORE = -fast -O5 -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS = -fast -O4 -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS = -fast -O3 -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS2 = -O -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS3 = -O1 -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS = -g -recursive'
+    echo $dbgf'FFLAGS_LESS = -g -recursive'
+    echo $dbgf'FFLAGS_LESS2 = -g -recursive'
+    echo $dbgf'FFLAGS_LESS3 = -g -recursive'
+# set notc
+  if ($?notc) then
+    echo "LK = $FC"
+    echo $nodbgf'#LKFLAGS1 = -non_shared -fast -O5 -arch host -tune host -recursive'
+    echo $nodbgf'LKFLAGS1 = -fast -arch host -tune host -recursive'
+      echo $dbgf'LKFLAGS1 = -g -recursive'
+  else
+  echo 'LK = cc'
+    echo $nodbgf'#LKFLAGS1 = -non_shared -fast -O4 -arch host -tune host'
+    echo $nodbgf'LKFLAGS1 = -fast -O4 -arch host -tune host'
+    echo $dbgf'LKFLAGS1 =  -g'
+  endif
+  echo 'LKFLAGS2 = -lUfor -lfor -lFutil -lm -lots'
+
+else if ($mnemonic =~ SGI*) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  if ($mnemonic == SGI)   set mflg = '-G 0 -mips2'
+  if ($mnemonic == SGI)   echo ' ... for an old SGI'
+  if ($mnemonic == SGI4)  set mflg = '-G 0 -mips2'
+  if ($mnemonic == SGI4)  echo ' ... for an SGI R4000'
+  if ($mnemonic == SGI8)  set mflg = '-G0 -mips4'
+  if ($mnemonic == SGI8)  echo ' ... for an SGI R8000, R10000, or R12000'
+  if ($mnemonic == SGIO2) set mflg = '-G 0 -n32 -mips4'
+  if ($mnemonic == SGIO2) echo ' ... for an SGI O2'
+  set sopt
+  if ($mnemonic == SGI4)  set sopt = "-sopt,-so=3,-r=3"
+  if ($mnemonic == SGI8)  set sopt = "-sopt,-so=3,-r=3"
+  if ($mnemonic == SGIO2) set sopt = "-sopt,-so=3,-r=3"
+# SGI has two different compiler versions, which complicates matters
+# Not all of these cases have been checked...user may need to tune this:
+  set compiler_name = `f77 -64 -version | & awk '{print $1}'`
+  switch ("$compiler_name")
+    case "Ragnarok":
+#       set mp
+      echo '# ... Using pre 7.x compiler'
+      breaksw
+
+    case "MIPSpro":
+    case "Mongoose":
+    case "f77:":
+      set sopt
+      set procid = `hinv | grep Processor | grep MHZ | head -1 | awk '{print $4}'`
+      if ($procid == 'MHZ') set procid = `hinv | grep Processor | grep MHZ | head -1 | awk '{print $5}'`
+      if ($procid == 'IP32') then
+        set procnam = `hinv | grep Processor | grep CPU | head -1 | awk '{print $3}'`
+        if ($procnam == 'R5000') set procid = {$procid}_5k
+        if ($procnam == 'R10000') set procid = {$procid}_10k
+      endif
+      set mflg = "$mflg -TARG:platform=$procid"
+      set sopt = "-OPT:IEEE_arithmetic=3:roundoff=3:Olimit=0:div_split=ON:alias=typed -LNO:opt=1"
+      if ($mnemonic == SGIO2) then
+        set mflg = "$mflg -n32"
+      else
+        set mflg = "$mflg -64"
+      endif
+      if ($?mp) then
+        set mp = "-mp"
+      else
+       set mp
+      endif
+      breaksw
+  endsw
+
+  if (! $?mp) then
+#     echo 'Makemakefile: compiler doesn''t follow expected patterns ... aborting'
+#     exit -1
+    set mpl
+  else
+    set mpl = "$mp"
+  endif
+
+  echo "FC = $FC"
+  echo $nodbgf"FFLAGS = $mflg -O3 $mpl $sopt"
+  echo $nodbgf"FFLAGS_LESS = $mflg -O $mpl"
+  echo $nodbgf"FFLAGS_LESS2 = $mflg -O1 $mpl"
+  echo $nodbgf"FFLAGS_NONE = $mflg -O0"
+    echo $dbgf"FFLAGS = $mflg -g -DEBUG:trap_uninitialized=ON $mpl"
+    echo $dbgf"FFLAGS_LESS = $mflg -g -DEBUG:trap_uninitialized=ON"
+    echo $dbgf"FFLAGS_NONE = $mflg -g -DEBUG:trap_uninitialized=ON"
+  echo "LK = $LK"
+  echo $nodbgf"LKFLAGS1 = $mflg -O3 $mpl $sopt"
+    echo $dbgf"LKFLAGS1 = $mflg -g $mpl"
+  echo "LKFLAGS2 ="
+
+else if ($mnemonic =~ SUN*) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the SUN running Solaris'
+  echo "FC = $FC"
+  set arch
+  if ($mnemonic == "SUN-ULTRA") set arch = "-cg92"
+  echo $nodbgf"FFLAGS = -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+  echo $nodbgf"FFLAGS_LESS = -fast -O2 -fsimple=2 -xnolibmopt $arch"
+  echo $nodbgf"FFLAGS_NONE = -fast -O1 -fsimple=0 -xnolibmopt $arch"
+    echo $dbgf"FFLAGS = -g -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+    echo $dbgf"FFLAGS_LESS = -g -fast -O2 -fsimple=2 -xnolibmopt $arch"
+    echo $dbgf"FFLAGS_NONE = -g -fast -O1 -fsimple=0 -xnolibmopt $arch"
+  echo "LK = $LK"
+# NB: avoid -xlibmopt; it can generate bad numbers, eg tan(-pi*4.05d0)
+  echo $nodbgf"LKFLAGS1 = -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+    echo $dbgf"LKFLAGS1 = -g -fast -O5 -depend -fsimple=2 -xnolibmopt $arch"
+  echo "LKFLAGS2 ="
+
+else if ($mnemonic == CONVEX) then
+  if (! ("$FC" == fc || "$FC" == fc)) then
+    echo " ... $mnemonic compiler (fc) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the CONVEX'
+  echo "FC = $FC"
+  echo 'FFLAGS = -g -O2 -tm c1'
+  echo 'FFLAGS_NONE = -g -tm c1'
+  echo "LK = $LK"
+  echo 'LKFLAGS1 = -g -O2 -tm c1'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic =~ AIX*) then
+  if (! ("$FC" == xlf || "$FC" == xlf90)) then
+    echo " ... $mnemonic compiler (xlf or xlf90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the IBM RS/6000'
+  echo "FC = $FC"
+  set OPT = "-O"
+  set OPT_LESS = " "
+  set OPT_LESS2 = " "
+  if ($mnemonic == AIX90) then
+    set OPT = "-O3 -qhot"
+    set OPT_LESS = "-O3"
+    set OPT_LESS2 = "-O"
+  endif
+  set extra
+# set extra = -qfixed
+  echo $nodbgf'FFLAGS = '"$OPT"' -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+  echo $nodbgf'FFLAGS_LESS = '"$OPT_LESS"' -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+  echo $nodbgf'FFLAGS_LESS2 = '"$OPT_LESS2"' -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+    echo $dbgf'FFLAGS = -g -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+    echo $dbgf'FFLAGS_LESS = -g -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+    echo $dbgf'FFLAGS_LESS2 = -g -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 = '"$OPT"' -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+    echo $dbgf'LKFLAGS1 = -g -qarch=pwr3 -qtune=pwr3 -qcache=auto -qstrict -qrecur -qcharlen=2000' $extra
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == CRAY) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the Cray YMP, C90, or J90'
+  echo "FC = $FC"
+  echo $nodbgf'FFLAGS = -dp -eRv -Oaggress,bl,scalar3,vector3,task0'
+  echo $nodbgf'FFLAGS_LESS = -dp -eRv -Oscalar2,vector2,task0'
+  echo $nodbgf'FFLAGS_NONE = -dp -eRv -Oscalar0,vector0,task0'
+    echo $dbgf'FFLAGS = -dp -eRv -g'
+    echo $dbgf'FFLAGS_LESS = -dp -eRv -g'
+    echo $dbgf'FFLAGS_NONE = -dp -eRv -g'
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 = -dp -eRv -Oaggress,bl,scalar3,vector3,task0'
+    echo $dbgf'LKFLAGS1 = -dp -eRv -g'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == CRAY2) then
+
+  if (! ("$FC" == cf77)) then
+    echo " ... $mnemonic compiler (cf77) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the Cray-2'
+  echo 'FC = cf77 -Wf"-dp" -Wf"-a stack" -Wf"-o recursive" '
+  echo $nodbgf'FFLAGS = -Z v'
+  echo $nodbgf'FFLAGS_LESS ='
+  echo $nodbgf'FFLAGS_NONE = -Wf"-o off"'
+    echo $dbgf'FFLAGS = -Wf"-e z"'
+    echo $dbgf'FFLAGS_LESS = -Wf"-e z"'
+    echo $dbgf'FFLAGS_NONE = -Wf"-e z"'
+  echo 'LK = cf77 -Wf"-dp" -Wf"-a stack" -Wf"-o recursive" '
+  echo 'LKFLAGS1 ='
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == POWER-PC) then
+  if (! ("$FC" == xlf || "$FC" == xlf90)) then
+    echo " ... $mnemonic compiler (xlf or xlf90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the POWER-PC'
+  echo "FC = $FC"
+  set OPT = "-O5"
+  set OPT_LESS = "-O3 "
+  set OPT_LESS2 = "-O0"
+  echo $nodbgf'FFLAGS = -O5 -qextname'
+  echo $nodbgf'FFLAGS_LESS = -O1 -g -qextname'
+    echo $dbgf'FFLAGS = -g -qextname'
+    echo $dbgf'FFLAGS_LESS = -O1 -g -qextname'
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 = -O5'
+    echo $dbgf'LKFLAGS1 = -g'
+
+else if ($mnemonic == APOLLO) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the Apollo'
+  echo "FC = $FC"
+  echo $nodbgf'FFLAGS = -O4'
+  echo $nodbgf'FFLAGS_LESS = -O1 -g'
+    echo $dbgf'FFLAGS = -W0,-dba -g'
+    echo $dbgf'FFLAGS_LESS = -O1 -g'
+  echo "LK = $LK"
+  echo 'LKFLAGS1 ='
+  echo 'LKFLAGS2 = -lU77 -lF77 -lI77'
+
+else if ($mnemonic == HP) then
+  if (! ("$FC" == f77 || "$FC" == f90)) then
+    echo " ... $mnemonic compiler (f77 or f90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the Hewlett-Packard ...'
+  echo "FC = $FC"
+  echo $nodbgf'FFLAGS = +U77 +escape +Oall'
+#  echo $nodbgf'FFLAGS = +U77 +Oall +B +E4'
+#  echo $nodbgf'FFLAGS = +U77 +OP4 +OPunroll +B +E4'
+#  echo $nodbgf'FFLAGS = +U77 +O4 +B +E4'
+  echo $nodbgf'FFLAGS_LESS = +U77 +escape -O'
+  echo $nodbgf'FFLAGS_LESS2 = +U77 +escape +O1'
+  echo $nodbgf'FFLAGS_MORE = +U77 +escape +Oall'
+#   echo $nodbgf'FFLAGS_LESS = +U77 -O +B +E4'
+#   echo $nodbgf'FFLAGS_LESS2 = +U77 +O1 +B +E4'
+#   echo $nodbgf'FFLAGS_MORE = +U77 +Oall +B +E4'
+#  echo $nodbgf'FFLAGS_MORE = +U77 +O4 +B +E4'
+    echo $dbgf'FFLAGS = +U77 +escape -g'
+    echo $dbgf'FFLAGS_LESS = +U77 +escape -g'
+    echo $dbgf'FFLAGS_LESS2 = +U77 +escape -g'
+    echo $dbgf'FFLAGS_MORE = +U77 +escape -g'
+#     echo $dbgf'FFLAGS = +U77 -g +B +E4'
+#     echo $dbgf'FFLAGS_LESS = +U77 -g +B +E4'
+#     echo $dbgf'FFLAGS_LESS2 = +U77 -g +B +E4'
+#     echo $dbgf'FFLAGS_MORE = +U77 -g +B +E4'
+  echo "LK = $LK"
+  echo 'LKFLAGS1 = +U77'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == LINUXF) then
+  if (! ("$FC" == fort)) then
+    echo " ... $mnemonic compiler (fort) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+  echo ' ... for Linux on a DEC alpha with DEC fort'
+  echo 'FC = fort'
+  echo $nodbgf'FFLAGS       = -O4 -fast -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_MORE  = -O5 -fast -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS  = -O3 -fast -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS2 = -O1 -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_LESS3 = -O1 -arch host -tune host -recursive'
+  echo $nodbgf'FFLAGS_NONE  = -O0 -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS       = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_MORE  = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_LESS  = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_LESS2 = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_LESS3 = -g -arch host -tune host -recursive'
+    echo $dbgf'FFLAGS_NONE  = -g -arch host -tune host -recursive'
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 = '
+  echo   $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == LINUX_PGI) then
+  if (! ("$FC" == pgf77 || "$FC" == pgf90)) then
+    echo " ... $mnemonic compiler (pgf77 or pgf90) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for Linux using Portland Group compilers'
+# override default compiler
+# f90 compiler
+  echo "FC = $FC"
+  if ($?lf90) then
+    if (! $?lloc) then
+      set lloc
+      if ($?LIBLOC) then
+        set lloc = ($LIBLOC)
+      endif
+    endif
+#     echo '# ... Workaround pgf90 v3.1 does not pass proper command-line args'
+#     echo '# ... Use pgf77 for linking;  add f90-specific libraries to LIBLOC'
+#     set lk = pgf77
+#     set lloc = ($lloc -lpgftnrtl -lpgf90 -lpgf90_rpm1 -lpgf902 -lpgf90rtl)
+  endif
+  if ("$FC" != pgf77 && "$FC" != pgf90) then
+    echo "Makemakefile: compiler $FC is not compatible with machine mnemonic LINUX_PGI"
+    exit -1
+  endif
+
+  echo $nodbgf'FFLAGS = -O4 -fast -Mrecursive'
+  echo $nodbgf'FFLAGS_LESS = -O3 -Mrecursive'
+  echo $nodbgf'FFLAGS_LESS2 = -O1 -Mrecursive'
+  echo $nodbgf'FFLAGS_NONE = -O0 -Mrecursive'
+    echo $dbgf'FFLAGS = -g -Mrecursive'
+    echo $dbgf'FFLAGS_LESS = -g -Mrecursive'
+    echo $dbgf'FFLAGS_NONE = -g -Mrecursive'
+  echo "LK = $LK"
+  echo $nodbgf'LKFLAGS1 = -O3'
+    echo $dbgf'LKFLAGS1 = -g'
+  echo 'LKFLAGS2 ='
+
+else if ($mnemonic == INTEL_IFC || $mnemonic == INTEL_IFORT || $mnemonic == AMD64_IFORT) then
+  if (! ("$FC" == ifc || "$FC" == ifort)) then
+    echo " ... $mnemonic compiler (ifc or ifort) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  echo ' ... for the INTEL IA32'
+  echo "FC = $FC"
+  if ("$FC" != ifc && "$FC" != ifort && "$FC" != f90) then
+    echo "Makemakefile: compiler $FC not compatible with mnemonic $mnemonic"
+    exit -1
+  endif
+  echo "LK = $LK"
+  if ($mnemonic == AMD64_IFORT) then
+    echo $nodbgf'FFLAGS = -O3 -cm -xW -WB'
+  else
+  set m
+  if ($?modulecmd == 1) then
+    set m = "-module $modulecmd"
+  endif
+  echo $nodbgf'FFLAGS = -O3 -xHost -132' $m
+  echo $nodbgf'FFLAGS_LESS0 = -O3 -132' $m
+  echo $nodbgf'FFLAGS_LESS = -O2 -132' $m
+  echo $nodbgf'FFLAGS_LESS2 = -O1 -132' $m
+  echo $nodbgf'FFLAGS_LESS3 = -O0 -132' $m
+  echo $nodbgf'FFLAGS_NONE = -g -132' -traceback $m
+    echo $dbgf'FFLAGS =      -g -132' -traceback $m
+    echo $dbgf'FFLAGS_LESS = -g -132' -traceback $m
+    echo $dbgf'FFLAGS_LESS2 = -g -132' -traceback $m
+    echo $dbgf'FFLAGS_LESS3 = -g -132' -traceback $m
+    echo $dbgf'FFLAGS_NONE = -g -132' -traceback $m
+  endif
+
+else if ("$mnemonic" =~ LINUX* || "$mnemonic" =~ OSXI*) then
+  if (! ("$FC" == f77 || "$FC" == g77 || "$FC" == gfortran || "$FC" == f95)) then
+    echo " ... $mnemonic compiler (f77 or g77) is incompatible with user's choice '$FC'"
+    exit -1
+  endif
+  if ($?check == 1) goto end-of-fortran-compiler
+
+  set lkswitch
+  set ftnswitch
+  if ("$FC" == gfortran || "$FC" == f95) then
+    if ("$mnemonic" =~ OSXI64) then
+      set ftnswitch = "-arch x86_64"
+      set lkswitch  = "-arch x86_64"
+    endif    
+  else
+    set ftnswitch = "-fno-globals -Wno-globals"
+  endif
+
+  echo ' ... for Linux using GNU compilers'
+  echo "FC = $FC"
+  set m
+  if ($?modulecmd == 1) then
+    set m = "-I $modulecmd"
+  endif
+  set ftnswitch = "-ffixed-line-length-132 $ftnswitch"
+  echo $nodbgf"FFLAGS = -march=native -Ofast -funroll-loops" $ftnswitch $m
+  echo $nodbgf"FFLAGS = -Ofast -funroll-loops" $ftnswitch $m
+  echo $nodbgf"FFLAGS_LESS0 = -Ofast -funroll-loops" $ftnswitch $m
+  echo $nodbgf"FFLAGS_LESS = -O2" $ftnswitch $m
+  echo $nodbgf"FFLAGS_LESS2 = -O1" $ftnswitch $m
+  echo $nodbgf"FFLAGS_NONE = -O0" $ftnswitch $m
+    echo $dbgf"FFLAGS = -g" $ftnswitch $m
+    echo $dbgf"FFLAGS_LESS = -g" $ftnswitch $m
+    echo $dbgf"FFLAGS_NONE = -g" $ftnswitch $m
+  echo "LK = $LK"
+  echo $nodbgf"LKFLAGS1 = $lkswitch"
+    echo $dbgf"LKFLAGS1 = -g $lkswitch"
+  echo 'LKFLAGS2 ='
+endif  # --- end of fortran compiler branch ---
+end-of-fortran-compiler:
+if ($?check == 1) exit
+
+# --- Top-level directory ---
+if ($?make_in != 0) then
+  echo "# --- Source directory.  Substitute second line if relative path desired ---"
+  echo 'srcdir = @srcdir@'
+  echo '#srcdir = .'
+endif
+
+# --------------- MPI compiler ---------------
+if ($?make_inc != 0) then
+  echo '# ... Path to, and MPI-specific arguments for the MPI fortran compiler'
+  echo 'F90M = @F90M@'
+endif
+
+# --------------- Variable definitions ---------------
+echo ' '
+echo '# --- Libraries LIBSLA,LIBLOC ---'
+# ... LIBSLA is whatever is passed as a switch
+if ($?make_in != 0 || $?make_inc != 0) then
+  echo 'LIBSLA = @LIBSLA@'
+  echo 'LIBSLA_MPI = @LIBSLA_MPI@'
+  echo 'LIBSLA_OPENMP = @LIBSLA_OPENMP@'
+else
+  if (! $?lsla) then
+    echo -n '# ... look for slatsm library'
+    if ($?LIBSLA != 0) then
+      echo -n  ... trying \"$LIBSLA\" ...
+      if (-r "$LIBSLA") then
+        set lsla = $LIBSLA
+        echo ' ok'
+      else
+        echo ' not readable'
+        set lsla
+      endif
+    else
+      echo '... nothing defined'
+      set lsla
+    endif
+  endif
+  echo 'LIBSLA = '$lsla
+  if ($?LIBSLA_MPI != 0) then
+    echo 'LIBSLA_MPI =' $LIBSLA_MPI
+  endif
+  if ($?LIBSLA_OPENMP != 0) then
+    echo 'LIBSLA_OPENMP =' $LIBSLA_OPENMP
+  endif
+endif
+
+# ... LIBLOC is whatever is passed as a switch
+if ($?make_in != 0 || $?make_inc != 0) then
+  echo 'LIBLOC = @LIBLOC@'
+  echo 'LIBLOC_MPI = @LIBLOC_MPI@'
+  echo 'LIBLOC_OPENMP = @LIBLOC_OPENMP@'
+else
+if (! $?lloc) then
+  echo -n '# ... look for LIBLOC libraries'
+# ... Use environment variable, if available
+  if ($?LIBLOC != 0) then
+    echo ' ...' found environment variable
+    set lloc = "$LIBLOC"
+# # ... Otherwise try to guess a library
+#   else if ($mnemonic == AIX || $mnemonic == AIX90) then
+#     echo ' ... try default'
+#     set lloc
+#     set dum = `/usr/bin/lslpp -l | grep -i essl`
+#     if ($#dum != 0) then
+#       set lloc = `echo $LIBSLA | sed "s/slatsm.a/myessl.a/"`
+#       if (-e /usr/lib/libesslp2.a) set lloc = `echo $LIBSLA | sed "s/slatsm.a/myesslp2.a/"`
+#     endif
+#   else if ($mnemonic =~ SGI* && $?mp) then
+#     echo  ' ... choose default'
+#     set lloc = "-mp -lcomplib.sgimath_mp"
+#   else if ($mnemonic =~ SGI*) then
+#     echo  ' ... choose default'
+#     set lloc = "-lcomplib.sgimath"
+#   else if ($mnemonic == DECA && -r /usr/lib/libdxml.a) then
+#     echo  ' ... choose default'
+#     set lloc = "-ldxml"
+#   else if ($mnemonic == LINUXF && -r /usr/lib/libcxml.a) then
+#     echo ' ... choose default'
+#     set lloc = "-lcxml"
+#   else if ($mnemonic =~ LINUX* && -r /usr/lib/libatlas.a) then
+#     echo ' ... choose default'
+#     set lloc = "-latlas"
+#   else if ($mnemonic == CRAY) then
+#     if ($?CRAYLIBS_YMP) then
+#       if (-e $CRAYLIBS_YMP/libsci.a) set lloc = "-lsci"
+#     endif
+  else
+    echo '... nothing defined'
+    set lloc
+  endif
+endif
+echo 'LIBLOC = '$lloc
+  if ($?LIBLOC_MPI != 0) then
+    echo 'LIBLOC_MPI =' $LIBLOC_MPI
+  endif
+  if ($?LIBLOC_OPENMP != 0) then
+    echo 'LIBLOC_OPENMP =' $LIBLOC_OPENMP
+  endif
+endif
+
+# if ($mnemonic =~ SGI* || $mnemonic =~ LINUX*) then
+#     set AFTER
+# endif
+set AFTER
+
+if ($?BEFORE && $?AFTER) then
+  echo 'LIBES = $(LIBLOC) $(LIBSLA) $(LIBLOC) '
+  echo 'LIBES_MPI = $(LIBLOC_MPI) $(LIBSLA_MPI) $(LIBLOC_MPI) '
+  echo 'LIBES_OPENMP = $(LIBLOC_OPENMP) $(LIBSLA) $(LIBLOC_OPENMP)'
+else if ($?AFTER) then
+  echo 'LIBES = $(LIBSLA) $(LIBLOC)'
+  echo 'LIBES_MPI = $(LIBSLA_MPI) $(LIBLOC_MPI)'
+  echo 'LIBES_OPENMP = $(LIBSLA) $(LIBLOC_OPENMP)'
+else
+  echo 'LIBES = $(LIBLOC) $(LIBSLA)'
+  echo 'LIBES_MPI = $(LIBLOC_MPI) $(LIBSLA)'
+  echo 'LIBES_OPENMP = $(LIBLOC_OPENMP) $(LIBSLA)'
+endif
+
+echo ' '
+echo '# --- Make rules ---'
+
+echo '.f.o: '
+echo '	$(FC) $(FFLAGS) -c $<'
+echo ' '
+
+echo '.c.o: '
+if ($?make_in != 0) then
+echo '	$(CC) $(CMFLAGS) -c $<'
+else
+echo '	$(CC) $(CFLAGS) -c $<'
+endif
+echo ' '
+
+echo '.f.a: '
+echo '	$(FC) $(FFLAGS) -c $<'
+echo '	ar rv $@ $%'
+echo '	rm -f $%'
+echo ' '
+
+echo '.c.a: '
+if ($?make_in != 0) then
+  echo '	$(CC) $(CMFLAGS) -c $<'
+else
+  echo '	$(CC) $(CFLAGS) -c $<'
+endif
+echo '	ar rv $@ $%'
+echo '	rm -f $%'
+echo ' '
+
+if ($?includestr) then
+ echo "# --- include string ---"
+ echo $includestr
+ echo ' '
+endif
+
+if ($?make_in != 0) then
+  echo "# --- Shell variables to be supplied by configure ---"
+  echo 'SHELL = @SHELL@'
+  echo 'RANLIB = @RANLIB@'
+  echo "# ... ccomp related"
+  echo "CCOMP = @CCOMP@"
+  echo 'CCOMPDIR = @CCOMPDIR@'
+  echo 'CCOMP_SW = @CCOMP_SW@'
+  echo "# ... for compilers such as xlf that output numbers 0.nnn as .nnn"
+  echo 'ADD0 = @ADD0@'
+  echo 'POSZER = @POSZER@'
+  echo "# ... Compiler extensions"
+  echo 'FC_IS_F90 = @FC_IS_F90@'
+  echo 'FC_AUTOARRAY = @FC_AUTOARRAY@'
+  echo 'FC_POINTER = @FC_POINTER@'
+  echo "# ... Fortran-C linkage"
+  echo 'FC_UPPERCASE = @FC_UPPERCASE@'
+  echo 'FC_UNDERSCORE = @FC_UNDERSCORE@'
+  echo 'NOPASSEDARGS = @NOPASSEDARGS@'
+  echo 'CMAIN = @CMAIN@'
+  echo # ... Machine-specific flags for compiling fmain.c"
+  echo 'CMFLAGS = $(CFLAGS) -DFC_UNDERSCORE=@FC_UNDERSCORE@ -DFC_UPPERCASE=@FC_UPPERCASE@ -DNOPASSEDARGS=@NOPASSEDARGS@ -DCMAIN=@CMAIN@ -DNARGFCALL=@NARGFCALL@ -DADD_TO_NARGFCALL=@ADD_TO_NARGFCALL@ -DARGFCALL=@ARGFCALL@'
+endif
+
+if ($?make_inc != 0) then
+  echo "# Shell variables to be supplied by configure:"
+  echo 'SHELL = @SHELL@'
+  echo 'RANLIB = @RANLIB@'
+  echo "# ... for compilers such as xlf that output numbers 0.nnn as .nnn"
+  echo 'ADD0 = @ADD0@'
+  echo 'POSZER = @POSZER@'
+  echo "# ... ccomp related"
+  echo 'CCOMPDIR = @CCOMPDIR@'
+  echo "CCOMP = @CCOMP@"
+  echo 'INAME = subs-to-'`echo $mnemonic | awk '{print tolower($1)}'`
+  echo "# ... Compiler extensions"
+  echo 'FC_IS_F90 = @FC_IS_F90@'
+endif
+
+if ($?defs) exit
+
+# --------------- Extract main and subs  ---------------
+set main = $argv[1]; shift; set subs = ""
+while ( $#argv )
+  if ($argv[1]:r != $main:r) set subs = "$subs $argv[1]:r.o"
+  shift
+end
+
+echo "# --- subprograms ---"
+echo 'SUBS =' $subs
+echo ''
+
+echo $main:r':	'$main:r.o '$(SUBS)'
+echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $lib '$(LIBES) $(LKFLAGS2) -o' "$outfile"
+echo ''
+
+exit 0
+
+# --------------- Append new main to existing Makefile ---------------
+Append:
+set main = $argv[1]; shift; set subs = ""
+
+if ($?openmp) then
+  echo ' '
+  echo $main:r':	'$main:r.o '$(SUBS)'
+  echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $lib '$(LIBES_OPENMP) $(LKFLAGS2) -o' "$outfile"
+  echo ' '
+else
+echo ' '
+echo $main:r':	'$main:r.o '$(SUBS)'
+echo '	$(LK) $(LKFLAGS1) $@.o $(SUBS)' $lib '$(LIBES) $(LKFLAGS2) -o' "$outfile"
+echo ' '
+endif
+
+exit
+
+# --------------- Help (error handling) ---------------
+message:
+cat <<EOF
+
+usage: Makemakefile MACHINE [switches] main[.fo] sub[.fo] [sub ...]
+   or  Makemakefile MACHINE --defs [-inc -db]
+   or  Makemakefile MACHINE --check
+   or  Makemakefile MACHINE --getfc
+   or  Makemakefile MACHINE --getcc
+   or  Makemakefile --show
+
+   Makemakefile creates a Makefile to compile and link fortran programs, with
+   compiler switches and libraries dependent on certain machine characteristics.
+   The Makefile is written to standard output.
+
+   MACHINE is one of the following:
+     - a machine mnemonic that describes a combination of machine OS and compiler.
+       To show the list Makemakefile knows about, invoke Makemakefile --show
+
+     - a GNU machine configuration, described in config.sub, of the type
+       CPU_TYPE-MANUFACTURER-OPERATING_SYSTEM.  Makemakefile takes this information
+       to infer a machine mnemonic (script $thisdir/machine-mnemonic).
+
+     - the string '--', in which case Makemakefile uses 'config.guess' to
+       find the appropriate GNU machine configuration.  'config.guess' automatically
+       generates a machine type CPU_TYPE-MANUFACTURER-OPERATING_SYSTEM, from which
+       Makemakefile attempts to find the machine mnemonic.
+
+       Makemakefile attempts to assign default C and fortran compilers from the mnemonic.
+       You can override these defaults using environment variables FC and CC.
+       However, if Makemakefile has a mnemonic but doesn't recognize the compiler,
+       it won't know how to assign compiler switches, and will fail.
+
+
+   Switches:
+     --def         generates the variable definitions only as a portion of
+                   a Makefile (make rules and compiler switches)
+
+     --inc         assumes this script is invoked by configure to create include 
+                   file 'Make.inc'.  It adds some shell variables whose value will be
+                   later substituted by 'configure'
+
+     --in          assumes this script is invoked by 'configure'.
+                   It adds some shell variables whose value will be later
+                   substituted by 'configure'
+
+     --check       prints to standard out the machine mnemonic if it recognizes it;
+                   otherwise returns with nonzero exit status
+
+     --getfc       prints to standard out the name of the fortran compiler if
+                   it can find one consistent with the machine mnemonic;
+                   otherwise returns with nonzero exit status
+
+     --getcc       prints to standard out the name of the C compiler if
+                   it can find one consistent with the machine mnemonic;
+                   otherwise returns with nonzero exit status
+
+     -f90          Use 'f90' as the default compiler
+
+     -openmp       Set libraries for parallel link (requires variable LIBLOC_OPENMP)
+
+     -db           compile without optimization and with debugging information
+
+     -i string     include string 'string' into Makefile
+                   No check is make that the string is valid.
+
+     -l lib        include library "lib" in the link
+
+     -o outfile    name executable "outfile"
+
+     -a            (append) skip declarations:
+                   Supply segment just to compile-and-link this main
+
+     -LIBSLA name  path name of library slatsm.a.  If this switch is missing,
+                   looks for environment variable LIBSLA.  If neither are
+                   present, Makemakefile chooses nothing.
+
+     -LIBLOC name  local libraries to include in link.  If this switch is missing,
+                   looks for environment variable LIBLOC.  If neither are
+                   present, Makemakefile tries to choose some defaults.
+
+EOF
+exit -1
+
+show:
+cat <<EOF
+Machine mnemonics Makemakefile knows about (this list is subject to change)
+   mnemonic    Computer                          Suggested LIBLOC
+   --------------------------------------------------------
+   AIX         IBM RS/6000                  	-lessl -lblas -lxlf90
+   AIX90       IBM RS/6000, xlf90 compiler  	-lessl -lblas -lxlf90
+   POWER-PC    The Mac Power Book G4        	-framework vecLib
+               default compiler: xlf90	  
+   OSXI        Darwin OS (Mac), gcc and gfortran
+   OSXI64      Darwin OS (Mac), gcc and gfortran, with -arch x86_64
+               Note: some implementations of gfortran require this switch
+               the distribution from Macports doesn't allow it.
+    
+   SGI         older SGI models	   
+   SGI4        SGI R4000, R4400             	-lblas or -lcomplib.sgimath or
+   SGI8        SGI R8000 (TFP chip)         	-mp -lcomplib.sgimath_mp
+   SGIO2       SGI R10000, mixed 32-64 bit  	-mp -lcomplib.sgimath_mp
+    
+   HP          HP 715, 735                  	-lvec -lblas -llapack
+               NB: compiler switches are set	 for hpux10.20.
+               If you have a older one, use 	the commented out +OP3 switches
+    
+   DECA        Dec alpha                    	-ldxml
+   DEC         Other Dec workstations	 
+    
+   APOLLO      Apollo DN-10000              	-lblas -lvec
+    
+   CONVEX      Convex                       	-lveclib
+    
+   CRAY        Cray YMP, C90, J90           	-lsci
+   CRAY2       Cray-2                       	-lsci
+
+   SUN         Sun workstations
+   SUN-ULTRA   Sun ULTRA workstations
+
+   ... the following are for linux machines using gnu g77 compiler
+   LINUXI      Linux on an Intel Pentium
+   LINUXPPC    Linux on a Power PC
+   LINUXA      Linux on DEC alpha
+
+   ... the following are for linux machines with custom compilers
+   LINUX_PGI   Portland Group compiler      -llapack -lblas
+   INTEL_IFC   Intel 32 bit ifc-7.0         -lmkl_lapack -lmkl_def -lguide -lpthread -lsvml -lPEPCF90
+   INTEL_IFORT Intel 32 bit ifort-8.0       -lsvml -openmp -lmkl_lapack -lmkl_ia32 -lpthread -laux32_intel
+   INTEL_AMD64 Intel 64 bit ifort-9.0 for AMD 64 Athlon and Opteron
+   LINUXF      DEC 'fort' compiler          -lcxml
+
+   VANILLA     Generic f77 compiler
+EOF

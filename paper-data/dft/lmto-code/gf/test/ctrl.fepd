@@ -1,0 +1,25 @@
+%const  nit=10 mldau=0.1 beta=0.1 gfmod=1
+VERS    LM=7.3 FP=7.3 ASA=7.3
+START   BEGMOM=T CNTROL=F
+ITER    MIX=B3,b={beta} UMIX={mldau} NIT={nit} CONV=1e-7 CONVC=1e-6
+HEADER  FePd
+IO      SHOW=f HELP=f VERBOS=31,20 WKP=F IACTIV=F
+HAM     QASA=0 NSPIN=2 REL=1 UDIAG=0 ELIND=-1
+GF      MODE={gfmod} 
+        GFOPTS=p3;omgmix=0.4;padtol=0.001;omgtol=1d-4;lotf;nitmax=30 DLM=12+20*0 BXY=1 TEMP=0.5
+STR     RMAX=4.0 
+CONST   nk=12 a0=7.275 c0=0.969
+STRUC   NBAS=2 NSPEC=2 NL=4
+        ALAT=a0
+        PLAT= 0.5 -0.5  0.0
+              0.5  0.5  0.0
+              0.0  0.0  c0
+SYMGRP  find
+SPEC    ATOM=Fe Z=26 R/W=1 IDXDN=1 1 1 2 A=.01 LMX=3 IDMOD=0 0 0 NTHET=32 BEFF=0.5
+        ATOM=Pd Z=46 R/W=1 IDXDN=1 1 1 2 A=.01 LMX=3 IDMOD=0 0 0 NTHET=0
+SITE    ATOM=Fe POS=0.0 0.0 0.0
+        ATOM=Pd POS=0.5 0.0 0.5*c0
+% const gamma=f
+OPTIONS ASA[CCOR=F GAMMA={gamma} TWOC=F]
+BZ      NKABC=nk BZJOB=0 METAL=1 TETRA=1
+        EMESH=81 10 -0.85 0.0 .5 .0

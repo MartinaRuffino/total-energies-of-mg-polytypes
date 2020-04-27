@@ -1,0 +1,15 @@
+------ Release of v39 ----
+* Major changes:
+  See ChangeLog in separate directories for fuller description of changes.
+
+  * Adapted to f90 compiler
+
+  * fft driver incorporated into library.
+    To date, it works with fftw, SGI FFT, or a (slow) generic FFT
+  
+* New routines 
+  dpdbyl.f fftz3.f gvgetf.f ppfac.f ymtrns.f zmcpy.f zqinvb.f
+
+* Files whose argument list changed:
+  hrmint.f
+

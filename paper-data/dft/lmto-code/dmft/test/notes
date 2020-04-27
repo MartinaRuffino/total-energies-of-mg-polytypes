@@ -1,0 +1,52 @@
+Files needed to run
+
+sig.inp
+ctrl.lsco
+basp.lsco
+indmfl.lsco
+sigm.lsco
+
+run lmfdmft
+
+CTQMC requires:
+delta.inp.lsco -> Delta.inp
+eimp1.lsco -> Eimp.inp
+PARAMS
+Trans.dat
+
+The contents of Eimp.inp eventually make its way into the CTQMC file PARAMS, which contains something like
+Ed  [-84.185170505, -83.709996585, -84.737178325, -85.187325195, -84.185170505, -83.709996585, -84.737178325, -85.187325195]
+Ed is Eimp - constant double counting.
+
+Note also PARAMS contains a line like:
+mu  84.185170505  	  # QMC chemical potential
+The parameter is just the first element in Ed*(-1) --- it is not the chemical potential
+
+These files are used by a script (written by Paolo, Lorenzo) which calls atom_d.py, and which creates actqmc.cix.
+
+It has information about impurity level.  Also reads
+
+
+Q1.  Duplication of delta.inp.lsco, Delta.inp   and eimp1.lsco, Eimp.inp
+     Can lmfdmft just write delta.lsco and eimp.lsco?  Let the scripts do the translating
+
+Q2.  sig.inp.  Lines appear in comment at header.  
+     Can we just write a file dmftsig.ext?  Let the scripts do the translating.
+
+Q3.  Can ncorrch be defined as the highest channel for a DMFT block?
+     Or should it be (2*l+1)*nsp?
+
+Q4.  compressproj has both orbmax and ndsig.  Are they distinct?
+
+What are the proper definitions of these variables?
+
+!r  ndsigi   Number of correlated orbitals in correlated block, including spin
+             Was called ncorrch
+!r  qsplit   Defines the basis used according to file legend qsplit in dmft
+!r  wndim    Size of sigind matrix for each cix block
+!r  csize    Number of independent components of sigind matrix for each cix block
+
+Q5.  What is  strans:  in compressproj?
+
+
+

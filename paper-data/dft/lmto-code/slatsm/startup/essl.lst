@@ -1,0 +1,20 @@
+*
+* List of ESSL routines used
+*
+dasum
+daxpy
+dcopy
+ddot
+dgemm
+dnrm2
+drot
+drotg
+dscal
+dswap
+idamax
+zaxpy
+zcopy
+zgeev
+zgemm
+zscal
+zswap

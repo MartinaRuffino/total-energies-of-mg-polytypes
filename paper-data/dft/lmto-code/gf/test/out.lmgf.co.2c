@@ -1,0 +1,85 @@
+ ----------------------  START LMGF  ----------------------
+ HEADER Master file for transition and other elemental metals
+
+ LMGF:     nbas = 2  nspec = 1  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, two-c-H, Q2:Power-moments
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000  -0.577350   0.000000
+   0.500000   0.866025   0.000000        0.000000   1.154701   0.000000
+   0.000000   0.000000   1.625000        0.000000   0.000000   0.615385
+   alat = 4.703135  Cell vol = 146.401791
+
+ LATTC:  as= 2.000   tol=1.00e-6   alat= 4.70314   awald= 0.379   lmax=6
+         r1=  3.068   nkd= 75       q1=  2.881   nkg= 135
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is hexagonal with 24 symmetry operations.
+ SYMCRY: crystal invariant under 24 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3z:(-1/2,0,0) r2z:(0,0,-0.8125) r2y:(1/2,0,0.8125)
+         i*r3z::(1/2,0,0) r2z::(0,0,-1/2) r2y::(1/2,0,1/2)
+ MKSYM:  found 24 space group operations ... includes inversion
+ BZMESH: 133 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 1758 inequivalent ones found
+
+ Override file fermi level, use ef= -0.021197, delef= 0.003803
+
+  
+ ZMESH: nz=12 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-0.9962,-0.0212
+
+ GETZV:  18 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000000   0.000000   0.000000   0.000000  -0.778132
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.778132 (up-dn=-0.019957)
+ cpudel    ...   Time this iter:  time(s):  0.103    total:  0.103s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+
+ --- GFASA : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = -0.021197
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   15.652533    7.411201   -1.430447    0.397970   -1.588799
+ spin 2    7.490157   10.630386   -2.381319    0.702601    1.630386
+  total   23.142690   18.041587   -3.811766    1.100571    0.041587
+ N(up)-N(dn)          -3.219186
+         deviation from charge neutrality: 0.041587
+ 
+ gfzerq: ef=-0.0212  dq=0.0416  vold=0  dv=0.0018  vnew= 0.001797
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0212  dq=0.00442  vold=0.0018  dv=2.14e-4  vnew= 0.002011
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0212  dq=7.64e-5  vold=0.00201  dv=3.62e-6  vnew= 0.002007
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+ gfzerq: ef=-0.0212  dq=8.32e-8  vold=0.00201  dv=3.94e-9  vnew= 0.002007
+ gippad: integrate 12 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   13.543052    7.384099   -1.415006    0.397955   -1.615901
+ spin 2    7.246564   10.615901   -2.359691    0.702595    1.615901
+  total   20.789616   18.000000   -3.774696    1.100550    0.000000
+ N(up)-N(dn)          -3.231802
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = 0.002007.  Cumulative shift = 0.002007
+
+ shift (2e-3) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = 0.002007 adds d.c. term vbar * zval = 0.0361239
+
+ gfasa (exit): vconst updated from 0.000000 to 0.002007
+
+ LMGF: ehf=-0.9887707  ehk=-0.9878135  sumev=-3.7746963  delsev=0.0405336
+  
+ mixing: mode=B  nmix=3  it 1 of 5  beta=1
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.18e-2
+ AMIX: nmix=0 mmix=8  nelts=24  beta=1  tm=10  rmsdel=1.18e-2
+h twoc=1 nit=1 nk=12 bzj=0 ccor=0 gfmod=1 ldmat=0 cbya=1.625 gamrep=0 mmom=-3.231802 ehf=-.9887707 ehk=-.9878135
+ Exit 0 LMGF:  quit = rho       
+ CPU time:  0.582s   Wall clock 0.618s  at  17:43:03 20.07.2018  on  ellery

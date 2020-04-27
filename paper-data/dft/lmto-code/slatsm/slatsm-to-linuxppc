@@ -1,0 +1,10 @@
+echo --- slatsm-to-linuxi : customization for Intel Linux ---
+
+source slatsm-to-linux_g77
+
+
+#echo '   ' slatsm-to-linuxi: special handling for dmach.f
+#rm -f xx.f ; ccomp -uLINUXI -uHP dmach xx.f; ccomp -dLINUXI xx.f dmach.f
+
+rm -f xx.f
+echo '   ' slatsm-to-linuxi : finished customization for Intel Linux

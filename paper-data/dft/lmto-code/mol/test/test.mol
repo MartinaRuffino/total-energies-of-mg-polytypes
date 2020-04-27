@@ -1,0 +1,852 @@
+#!/bin/tcsh -f
+
+# A shell script testing operation of the molecules program
+# set verbose
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias runrdcmd 'set retcall = \!\!:1; set rdcmdfmt = \!\!:2 ; set outfile = \!\!:3 ; set callarg = \!\!:4 ; goto runrdcmd'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias extract_res_n 'set retcall = \!\!:1; set testvar = \!\!:2 ; set refvar = \!\!:3 ; set keyword = \!\!:4  ; set arg_number = \!\!:5 ; set occur_number = \!\!:6 ; set sed_strn = \!\!:7 ; goto extract_res_n'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias cnvt_d_fmt  'set retcall = \!\!:1; set testvar = \!\!:2 ; set testval = \!\!:3 ; goto cnvt_d_fmt'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+# alias zcat 'cat'
+
+#alias mpix mpirun
+set failed = 0
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+set plot = `which fplot`
+if (-x "$plot") then
+  if `$plot -h | sed -n 1,1p | awk '{print ($2 == "fplot")}'` set have_fplot
+endif
+set mcx = `which mcx`
+if (-x "$mcx") then
+  if `$mcx --h |& sed -n 1,1p | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.04))}'` set have_mc
+endif
+set pldos = `which pldos`
+if (-x "$pldos") then
+  if `$pldos -h | sed -n 1,1p | awk '{print ($2 == "pldos")}'` set have_pldos
+endif
+# see if ghostscript is available
+set gs = `which gs`
+if (-x "$gs") then
+  if `$gs --help | sed -n 1,1p | awk '{print ($2 == "Ghostscript")}'` set have_ghostscript
+endif
+# see if gnu grep is available
+echo X | grep -A 1 X > & /dev/null
+set retval = $status
+if ($retval == 0) set gnu_grep
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.mol: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--veryclean":
+      set clean
+      set veryclean
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--noplot*":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+    case "--verb*":
+      set verb = 1
+      breaksw
+
+    case "--all":
+      set mater_lst = (h2o no2 h2op)
+      set joblist
+      while (`echo $1 | sed -e 's/\([0-9][0-9]*\)/-/'`  ==  "-")
+        set joblist = ($joblist $1)
+        shift
+      end
+      set pass
+      set failed
+      foreach i ($mater_lst)
+        $testfile `echo $allargs | sed s/--all//g | sed -e 's/\([0-9][0-9]*\)//g' | sed -e 's/-add/-add0/g'` $i $joblist
+        set retval = $status
+        if ($retval != 0) then
+          unset pass
+          set failed = ($failed $i)
+#  	  echo " $testfile : failed test $i ... aborting"
+#            exit -1
+        endif
+      end
+      if ($?clean) then
+        exit
+      else if ($?pass) then
+        echo "$space $testfile : all tests PASSED ($mater_lst)"
+        exit
+      else
+        echo "$space $testfile : checks FAILED for the following materials:  $failed"
+        exit -1
+      endif
+
+    default:
+      echo unrecognized switch $arg1
+      goto usage
+  endsw
+
+end
+
+echo ' '
+echo "         ---- test.mol: test molecules program lmmc ---"
+
+# --- use h2o as default in the absence of specific choice ---
+if ($#argv == 0) then
+  set ext = h2o
+  echo "$space .... no file extension specified; use input file ctrl.h2o"
+else
+  set ext = $argv[1]
+  shift
+endif
+
+if (! -e $testdir/ctrl.$ext) then
+   echo ' '
+   echo " test.mol aborting ... missing file $testdir/ctrl.$ext"
+   goto usage
+endif
+
+if ($ext == "h2o") then
+  echo '         Case h2o: a pair of H2O molecules.'
+  set cplst = ($testdir/{ctrl.h2o})
+  set dfmax1tol1 = 0.1
+  set dfmaxntol1 = 0.1
+else if ($ext == "h2op") then
+  echo '         Case h2op: a water molecule with classical multipoles.'
+  set cplst = ($testdir/{ctrl.h2op})
+  set dfmax1tol1 = 0.1
+  set dfmaxntol1 = 0.1
+else if ($ext == "no2") then
+  echo '         Case no2: spin-polarized NO2'
+  set cplst = ($testdir/{ctrl.no2})
+else
+  echo test.mol: No test case for $ext
+  exit -1
+endif
+endif
+
+if ( $?joblist == 0 ) then
+set joblist = ($argv)
+if ( $#joblist == 0 ) set joblist = (1 2 3 4)
+endif
+
+echo $joblist | grep 1 >/dev/null
+if ($status) goto chk1e
+cat <<EOF
+
+         --- Test 1.  Basic check of program lmmc ---
+         Checks that program lmmc produces the proper:
+           two-center fit
+           free-atom file
+           iterations in self-consistent cycle.
+
+EOF
+endif
+if ($?quiet) then
+else if ($ext == "h2o") then
+cat <<EOF
+         The h2o test also illustrates the following:
+
+         1.  forces
+
+         2.  FFT for XC potential
+
+         3.  gradient corrections
+
+EOF
+else if ($ext == "h2op") then
+cat <<EOF
+         The h2op test also illustrates the following:
+
+         1.  electrostatics from classical multipoles added to the QM molecule
+
+EOF
+else if ($ext == "no2") then
+cat <<EOF
+         The no2 test also illustrates the following:
+
+         1.  spin-polarization
+
+         2.  7-point quadrature for radial mesh
+
+EOF
+endif
+
+set refout=$testdir/out.lmmc.$ext.gz testout=out.lmmc.$ext
+if (! -e $refout) then
+  echo "$space ... skipping test : missing reference file $refout"
+  goto chk1e
+endif
+set pass
+query chk11 chk1e 'run this test'
+chk11:
+# ... Look for executables
+findcmd chk11a rdcmd "$path" "optional"
+chk11a:
+findcmd chk11b lmmc "$path" "$topdir"
+chk11b:
+
+#goto chk12
+
+# ... Setup: remove existing files and copy new ones
+echo "$space rm -f {mxs,mxi,p1,save,log}.$ext"
+             rm -f {mxs,mxi,p1,save,log}.$ext
+echo "$space cp $cplst ."
+             cp $cplst .
+
+#  goto chk12
+# ... Run lmmc test
+if (! $?clean) then
+  runrdcmd chk12 %11f $testout "-cat:TESTMOL --noerr ctrl.$ext"
+else
+  echo "$space rm -f $testout"
+               rm -f $testout
+  runrdcmd chk1e %11f . "-cat:CLEAN --noerr ctrl.$ext"
+endif
+chk12:
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+# ... Extract total energies, forces, magnetic moments 1st and last iter
+
+extract_res_n chk12a efa erfa "etot=" 4 0 etot=
+chk12a:
+extract_res_n chk12b ehf1 ehf1r "of.*ehf=" 6 1 ehf=
+chk12b:
+
+#  echo a $ehf1
+#  echo b $ehf1r
+#  exit
+
+extract_res_n chk12c ehfn ehfnr "of.*ehf=" 6 0 ehf=
+chk12c:
+extract_res_n chk12d dqn dqnr "sdiff=" 3 0 sdiff=
+chk12d:
+
+#  grep 'Maximum Harris force' $testout >/dev/null
+#  if (! $status) then
+#    set fmax1  = `cat $testout | grep 'Maximum Harris force' | sed -n 1,1p | awk '{print $5}'`
+#    set fmax1r = `zcat $refout | grep 'Maximum Harris force' | sed -n 1,1p | awk '{print $5}'`
+#    set fmaxn  = `cat $testout | grep 'Maximum Harris force' | tail -1 | awk '{print $5}'`
+#    set fmaxnr = `zcat $refout | grep 'Maximum Harris force' | tail -1 | awk '{print $5}'`
+#  endif
+
+grep mmom= $testout >/dev/null
+if (! $status) then
+set mmom1  =  `cat $testout      | grep mmom= | sed -n 1,1p | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+set mmom1r =  `zcat $refout | grep mmom= | sed -n 1,1p | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+set mmomn  =  `cat $testout      | grep mmom= | tail -1 | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+set mmomnr =  `zcat $refout | grep mmom= | tail -1 | awk '{sub(".*mmom=","");sub("ehf=.*",""); print $0}'`
+endif
+
+set ediff = `echo $efa $erfa  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} printf "%10.2E", k}'`
+if (! $?quiet) then
+  echo " "
+  echo "$space Total energy last free atom      = $efa"
+  echo "$space Total energy of reference        = $erfa"
+  echo "$space                    difference    =  $ediff"
+  echo ' '
+
+  echo "$space first iteration Harris energy    = $ehf1"
+  echo "$space first iteration reference energy = $ehf1r"
+  set ediff = `echo $ehf1 $ehf1r  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $ediff"
+
+#    echo "$space first iteration K-Sham energy    = $eks1"
+#    echo "$space first iteration reference energy = $eks1r"
+#    set ediff = `echo $eks1 $eks1r  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+#    echo "$space difference                       = $ediff"
+#    set ediff = `echo $ehf1 $eks1  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+#    echo "$space Harris - Kohn-sham difference    = $ediff"
+  if ($?fmax1) then
+  echo "$space first iteration maximum force    = $fmax1"
+  echo "$space first iteration reference force  = $fmax1r"
+  endif
+  if ($?mmom1) then
+    echo "$space first iteration magnetic moment  = $mmom1"
+    echo "$space first iteration reference moment = $mmom1r"
+    set mdiff = `echo $mmom1 $mmom1r  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+    echo "$space difference                       = $mdiff"
+  endif
+
+  echo " "
+  echo "$space last iteration Harris energy     = $ehfn"
+  echo "$space last iteration reference energy  = $ehfnr"
+  set ediff = `echo $ehfn $ehfnr  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $ediff"
+
+#    echo "$space last iteration K-Sham energy     = $eksn"
+#    echo "$space last iteration reference energy  = $eksnr"
+#    set ediff = `echo $eksn $eksnr  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+#    echo "$space difference                       = $ediff"
+#    set ediff = `echo $ehfn $eksn  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+#    echo "$space Harris - Kohn-sham difference    = $ediff"
+  if ($?fmaxn) then
+  echo "$space last iteration maximum force     = $fmaxn"
+  echo "$space last iteration reference force   = $fmaxnr"
+  endif
+  if ($?mmom1) then
+  echo "$space last iteration magnetic moment   = $mmomn"
+  echo "$space last iteration reference moment  = $mmomnr"
+  set mdiff = `echo $mmomn $mmomnr  | awk '{{k=($1-$2)>0?($1-$2):($2-$1);} print k}'`
+  echo "$space difference                       = $mdiff"
+  endif
+
+  echo " "
+  echo "$space last iter RMS input-output drho  = $dqn"
+  echo "$space last iter reference RMS drho     = $dqnr"
+  echo " "
+
+  zcat $refout | grep RELAX >/dev/null
+  if ($status == 0) then
+    call showout chk13 RELAX
+chk13:
+    echo ' '
+  endif
+
+  call zdiffiles chk14 "CPU -1 $testout $refout"
+chk14:
+endif
+
+if ($?defatol1 == 0) set defatol1 = 2e-6
+if ($?dehf1tol1 == 0) set dehf1tol1 = 2e-6
+if ($?dehf1toln == 0) set dehf1toln = 2e-6
+if ($?dmom1tol1 == 0) set dmom1tol1 = 1e-4
+if ($?dmomntol1 == 0) set dmomntol1 = 1e-4
+if ($?dfmax1tol1 == 0) set dfmax1tol1 = 0.1
+if ($?dfmaxntol1 == 0) set dfmaxntol1 = 0.1
+if ($?drmsqtol1 == 0) set drmsqtol1 = 1e-4
+
+# pass checks
+chk1c:
+
+# ... Check that FA total energy is within tol of reference
+compare_res chk1ca "FA etot (last species)" $efa $erfa $defatol1  pass
+chk1ca:
+
+compare_res chk1cb "1st  iter ehf" $ehf1 $ehf1r $dehf1tol1 pass
+chk1cb:
+
+if (! $?fmax1) goto chk1cc
+compare_res chk1cc "1st  iter max force" $fmax1 $fmax1r $dfmax1tol1 pass
+chk1cc:
+
+if (! $?mmom1) goto chk1cd
+compare_res chk1cd "1st  iter mmom" $mmom1 $mmom1r $dmom1tol1 pass
+chk1cd:
+
+compare_res chk1ce "last iter ehf" $ehfn $ehfnr $dehf1toln pass
+chk1ce:
+
+if ($?fmaxn) then
+compare_res chk1cf "last iter max force" $fmaxn $fmaxnr $dfmaxntol1 pass
+chk1cf:
+endif
+
+if ($?mmomn) then
+compare_res chk1cg "last iter mmom" $mmomn $mmomnr $dmomntol1 pass
+chk1cg:
+endif
+
+compare_res chk1ch "last iter RMS dq" $dqn $dqnr $drmsqtol1 pass
+chk1ch:
+
+# compare bnds to reference
+if (-e bnds.$ext) then
+set ndig = 4
+call zcmpnfiles chk1ci "$ndig bnds.$ext $testdir/bnds.$ext.gz"
+chk1ci:
+echo -n "$space ... files bnds.$ext and $testdir/bnds.$ext.gz equivalent to $ndig digits? ... "
+if ($retval == 0) then
+  echo  yes
+else
+#    set ndig = 4
+#    call zcmpnfiles chk1cj "$ndig bnds.$ext $testdir/bnds.$ext.gz"
+#    chk1cj:
+#    echo -n "no ... to $ndig digits? ... "
+  if ($retval == 0) then
+    echo yes
+  else if (`echo ' ' | awk -v ndiff=$retval -v ntot=$ncharfile '{print (100*ndiff/ntot<1.)}'` == 1) then
+    echo ok "($retval difference(s) of $ncharfile)"
+  else
+    echo no "($retval difference(s) remaining of $ncharfile)"
+    unset pass
+  endif
+endif
+endif
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED ($ext)"
+else
+    echo "$space test 1 FAILED ($ext)"
+    set failed = ($failed 1)
+endif
+
+chk1e:
+
+# --- Summary ---
+echo ' '
+if ($?clean) then
+    exit 0
+else if ($#failed <= 1) then
+    echo "$space all tests PASSED ($ext)"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit -1
+endif
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    echo " "
+    $callarg
+    set retval = $status
+    if ($retval != 0) goto cleanup
+    goto $quitjob
+  endif
+
+  if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+    set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+    echo "$space $callarg  >> $appfile"
+    $callarg >> $appfile
+    set retval = $status
+  else
+    echo "$space $callarg  > $outfile"
+    $callarg > $outfile
+    set retval = $status
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- extract_res_n --------------
+# Extracts nth token in a line containing a keyword
+# usage: extract_res_n retcall testvar refvar keyword arg_number occur_number sed_strn
+#   Variables testout and refout referring to file names must be set ($refout is gzipped file)
+#   keyword      : string line must contain
+#   testvar      : put result from file $testout into this variable
+#   refvar       : put result from file $refout (compressed) into this variable
+#   arg_number   : extracts $arg_number'th entry in line, as defined by awk
+#   occur_number : argument from $occur_number'th line; if zero, use last line
+#   sed_strn     : delete this string with from result before assigning
+exit
+extract_res_n:
+  set quitjob=$retcall
+# echo $retcall $testvar $refvar "$keyword" $arg_number $occur_number $sed_strn
+  set $testvar = `grep -E "$keyword" $testout | awk -v ncnt=0 -v num=$arg_number -v count=$occur_number '{ncnt+=1; if (ncnt==count || count == 0) {print $num}}' | sed "s/$sed_strn//" | tail -1`
+  set $refvar = `gunzip -c $refout | grep -E "$keyword" | awk -v ncnt=0 -v num=$arg_number -v count=$occur_number '{ncnt+=1; if (ncnt==count || count == 0) {print $num}}' | sed "s/$sed_strn//" | tail -1`
+  goto $quitjob
+
+# ---------------- runrdcmd --------------
+exit
+runrdcmd:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    $rdcmd -f:$rdcmdfmt $callarg
+    set retval = $status
+    echo ' '
+    if ($retval == 0) then
+      echo "$space Job(s) completed successfully"
+      goto $quitjob
+    endif
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      exit
+#      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space ... the following job(s) will be executed by invoking "\""rdcmd $callarg"\" "(> $outfile)"
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      echo "$space ... starting invocation of rdcmd:"
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg  >& $outfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >& $outfile
+      set retval = $status
+    endif
+  endif
+
+  if ($retval == 0) then
+    echo "$space Job(s) completed successfully; output in $outfile"
+    if ($?poszer) then
+      echo -n "         ..." ; $poszer $outfile
+    else if ($?add0) then
+      echo -n "         ..." ; $add0 $outfile
+    endif
+    goto $quitjob
+  else
+    echo "$space ...oops... the following command returned with nonzero exit status:"
+    echo -n "$space   "
+    grep $rdcmd:t{:} $outfile | tail -1 | sed 's/rdcmd:  //'
+    goto cleanup
+  endif
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space job returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting"
+  exit $retval
+
+# ---------------- diffiles --------------
+# calling argument should consist of four strings:
+# 1st string = string that terminates diff
+# 2nd string = integer that counts how many times terminator should occur before terminating
+# 3nd string = first file name
+# 4th string = second file name
+# example: call diffiles chk69 "CPU 3 $testout $refout"
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+#    echo difffiles : $quitjob $nend
+#    grep $endstr $files[1]
+
+  query diff11 $quitjob "compare $files"
+diff11:
+  diff $files | awk -v endstr=$endstr -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- zdiffiles --------------
+# calling argument should consist of four strings:
+# 1st string = string that terminates zdiff
+# 2nd string = integer that counts how many times terminator should occur before terminating
+#              -1 -> last occurence
+# 3nd string = first file name
+# 4th string = second file name
+# example: call zdiffiles chk69 "CPU 3 $testout $refout"
+exit
+zdiffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ( $?slow == 0 ) echo "$space ... compare $files"
+  query zdiff11 $quitjob "compare $files"
+zdiff11:
+  zdiff -Icpudel -Iwritten $files | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+  goto $quitjob
+
+# ---------------- compare_res --------------
+# Compares two numbers $testvar-$refvar and unsets $passvar if |testvar-refvar|<tol
+# usage: compares_res retcall keyword testvar refvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   refvar       : second number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar-refvar|<tol
+exit
+compare_res:
+  set quitjob=$retcall
+# echo $retcall $keyword $testvar $refvar $tol $passvar
+  echo -n "$space $keyword ($testvar) within tol ($tol) of reference ($refvar)? ... "
+  if (`echo $testvar $refvar | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- compare_res_0 --------------
+# Compares a number $testvar and unsets $passvar if |testvar|<tol
+# usage: compares_res_0 retcall keyword testvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar|<tol
+exit
+compare_res_0:
+  set quitjob=$retcall
+#  echo $retcall $keyword $testvar $tol $passvar
+ echo -n "$space $keyword ($testvar) smaller than tol ($tol)? ... "
+  if (`echo $testvar 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- zcmpnfiles --------------
+# Compares two files, treating each field as a number.
+# call arguments should contain 3 strings: n test-file reference-file
+# |n| = number of digits which numbers are truncated to.
+# If n<0, sort files before comparing them
+# Files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = number of differences in reduced files
+# Example :  call zcmpnfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpnfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+  if ($digits < 0) then
+    @ digits = - $digits
+    set lsort
+  endif
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+# set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; print "" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  if ($?lsort) then
+    $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn1
+    $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | sort | awk "$a" > $fn2
+  else
+    $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+    $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+  endif
+  set ncharfile = `wc $fn1 | awk '{print $3}'`
+  cmp $fn1 $fn2 >/dev/null
+  set retval = $status
+
+  if ($retval == 0) rm -f $fn1 $fn2
+  if ($retval == 0) goto $quitjob
+
+  set retval = `cmp -l $fn1 $fn2 |& grep -v EOF | wc | awk '{printf "%d", $1}'`
+  if ($retval == 0) set retval = '-1'
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- zcmpmfiles --------------
+# Compares two files, treating each field as a number.
+# Call arguments should contain 3 strings: no-digits test-file reference-file
+# files with .gz or .Z extensions are assumed to be gzipped.
+# Returns with retval = max numerical difference
+# Example :  call zcmpmfiles chk25 "6 dos-cls.$ext $testdir/dos-cls.$ext.gz"
+# Creates temporary files $tmpdir/tmp_compnfile_1 $tmpdir/tmp_compnfile_2
+exit
+zcmpmfiles:
+  set quitjob=$retcall
+  set zcmpnargs = ($callarg)
+  set digits = $zcmpnargs[1]
+# set a = ' { for (i = NF; i > 0; --i) printf " %.'$digits'f", $i; printf "\n" }'
+  set a = ' { for (i = 1; i <= NF; i++) { k = sprintf("%.'$digits'f",$i); if (k+k == 0) k = 0 ; printf "%s ", k}; printf "\n" }'
+
+  set fn1 = $tmpdir/tmp_compnfile_1
+  set fn2 = $tmpdir/tmp_compnfile_2
+  if ("$zcmpnargs[2]:e" == 'gz' || "$zcmpnargs[2]:e" == 'Z') then
+    set cat1 = 'gunzip -c'
+  else
+    set cat1 = cat
+  endif
+  if ("$zcmpnargs[3]:e" == 'gz' || "$zcmpnargs[3]:e" == 'Z') then
+    set cat2 = 'gunzip -c'
+  else
+    set cat2 = cat
+  endif
+
+  $cat1  $zcmpnargs[2] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn1
+  $cat2  $zcmpnargs[3] | sed s/D-/E-/g | sed s/D+/E+/g | awk "$a" > $fn2
+
+  set retval = `diff -y --width=300 $fn1 $fn2 | grep '|' | awk -v top=0 '{n=split($0,a,"|"); n1=split(a[1],b1); n2=split(a[2],b2); { j=0; while (j++ < n1) if (j <= n1 && j<=n2) {x = (b1[j]-b2[j])>0?(b1[j]-b2[j]):(b2[j]-b1[j]); top = (top-x)>0?top:x; }}} END {printf "%12.4e\n", top}'`
+  rm -f $fn1 $fn2
+  goto $quitjob
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg to line in file $refout":
+  grep $callarg $testout
+  if (`cat $testout | grep $callarg | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep $callarg
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+# ---------------- List tests --------------
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] name
+
+   name  material   tests
+    h2o   water     basic check of molecules code and gradient corrected funcional
+    no2    No2      basic check of molecules code for a spin polarized case
+    h2op  water     basic check with electrostatics from classical multipoles added to the QM molecule
+
+EOF
+exit
+
+# ---------------- usage: --------------
+usage:
+cat <<EOF
+ usage: test.mol [switches] [file-extension] [testcase-list]
+        e.g., "test.mol h2o 1"
+        If file-extension is missing, test.mol uses copt
+        Switches:
+        --list       lists the tests you can run
+        --quiet      runs tests with minimal output and without prompting user
+        --no-iactive runs tests without prompting user
+        --all        run through a default list of test cases
+        --noplot     skip any steps that generate a plot
+        --clean      clean up files generated by this script
+        --add0       add suppressed or leading zeros in output for real numbers \`.nnn'
+        --poszer     strips (-) sign from numbers represented as 0
+EOF
+exit -1

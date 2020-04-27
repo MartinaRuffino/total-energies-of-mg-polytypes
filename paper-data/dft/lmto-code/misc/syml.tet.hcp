@@ -1,0 +1,22 @@
+# Hexagonal case Gamma_h; see also syml.gam_h and Cracknell pp 88,107
+% const tet=1 cbya=tet^(3/2)*sqrt(8/3)
+% char  L "0    0     {.5/cbya}"
+% char  G "0    0      0"
+% char  A "0    0     {.5/cbya}"
+% char  M "{sqrt(1/3)}  0    0"
+% char  K "{sqrt(1/3)} {-1/3}  0"
+% char  H "{sqrt(1/3)} {-1/3} {.5/cbya}"
+% char  L "{sqrt(1/3)}  0 {.5/cbya}"
+# Alternative K (Cracknell)
+# % char  K "0 {-2/3}  0"
+# Alternative M (Cracknell)
+# % char  M "{sqrt(1/3)/2}  -1/2  0"
+
+81  {G} {K}   G to K
+41  {K} {M}   K to M
+51  {M} {G}   M to G
+41  {G} {A}   G to A
+81  {A} {H}   A to H
+41  {H} {L}   H to L
+91  {L} {G}   L to G
+0   0 0 0 0 0 0

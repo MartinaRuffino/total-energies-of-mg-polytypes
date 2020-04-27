@@ -1,0 +1,247 @@
+<HTML><HEAD><TITLE>Spin Orbit Coupling in lmf (7.9) </TITLE></HEAD><BODY bgcolor="#cccccc">
+<H1><B><FONT size="+2">Spin Orbit Coupling in <b>lm</b> and <b>lmf</b> (7.9)</FONT></B></H1>
+
+Programs <b>lm</b> and <b>lmf</b> can include spin-orbit coupling to the scalar
+Dirac hamiltonian.  At present <b>lm</b> has more functionality, e.g. it
+is a fully <B><A href="nc.html">noncollinear code</A></B>, with the
+ability to apply noncollinear external fields and also has the option to 
+use the fully relativistic Dirac equations, where spin orbit is not included
+perturbatively, but <b>lm</b> is limited to the Atomic Spheres approximation.
+
+At present, <b>lmf</b> has the ability to handle SO coupling by adding
+<i>&lambda;L&middot;S</i> to the scalar Dirac Hamiltonian.  (In what follows,
+&lambda; is implicit in wherever <i>L&middot;S</i> is mentioned.)
+
+At present
+the density is restricted to spin-diagonal parts.
+
+<P>  Turn on spin-orbit (SO) coupling with 
+<A href="tokens.html#HAMcat"><FONT size="+1"><tt>HAM_SO</tt></FONT></A>  where
+<FONT size="+1"><tt>SO</tt></FONT> is one of:
+
+<OL>
+<LI>  <FONT size="+1"><tt>SO=0</tt></FONT> :  No spin orbit coupling is included.
+
+<LI>  <FONT size="+1"><tt>SO=1</tt></FONT> :  Usual <i>L&middot;S</i> coupling.  The full <i>L&middot;S</i> is added to the
+       scalar Dirac hamiltonian.  Only the spin-diagonal parts of the density are retained at present
+
+<LI>  <FONT size="+1"><tt>SO=2</tt></FONT> :  <i>L<sub>z</sub>&middot;S<sub>z</sub></i> part of <i>L&middot;S</i>.
+      The hamiltonian is still spin diagonal so the spin channels remain distinct.
+
+<LI>  <FONT size="+1"><tt>SO=3</tt></FONT> :  <i>L<sub>z</sub>&middot;S<sub>z</sub></i> + (<i>L&middot;S</i>&minus;<i>L<sub>z</sub>&middot;S<sub>z</sub></i>),
+      with the last term included perturbatively in the eigenvalues only, as described <A href="#thirdorder">below</A>. This generates eigenvalues very similar to <i>L&middot;S</i> for a given potential,
+      but the eigenfunctions are generated from H<sub>0</sub>+<i>L<sub>z</sub>&middot;S<sub>z</sub></i> only.
+      As a result the eigenfunctions remain spin diagonal.  There is some effect on the density, but the approximation seems to be rather good.
+      The error in the eigenfunctions is second order in <i>L&middot;S</i>.
+      This mode has advantages, particularly when used in conjunction with <A href="gw.html"><B><i>GW</i></B></A>.
+
+
+</LI></OL>
+
+This Figure shows the valence bands of Fe near the Fermi level,
+calculated with SO coupling and without.  Bands with SO coupling are
+shown as purple (majority spin) and red (minority spin).  (Note the
+two spin channels are coupled, so neither has a sharply defined spin.
+Nevertheless except at crossing points the spins are nearly distinct.
+The projection onto spins is accomplished using <A
+href="ASAtutorial.html#bandweights">color weights</A>.)
+
+<BR><BR>
+
+Compare these
+bands to green and yellow dashed lines (majority and minority spins
+with <FONT size="+1"><tt>SO=0</tt></FONT>).  When <FONT
+size="+1"><tt>SO=0</tt></FONT> spins are strictly decoupled in both LDA and <i>GW</i>.
+
+
+<IMG WIDTH="450" ALIGN="LEFT" BORDER="0" SRC="felzso0vsso1.jpg"
+>
+
+<P>
+
+The <FONT size="+1"><tt>SO=0</tt></FONT> and <FONT size="+1"><tt>SO=1</tt></FONT> cases are very similar (Fe is a light element), but splittings can be seen.
+Note especially the splitting of the three states just above <i>E<sub>F</sub></i> at H
+(<i>E<sub>F</sub></i>=0 in the Figure), and the splitting of the <i>t</i><sub>2<i>g</i></sub> states at &Gamma; near &minus;2.3 eV.
+
+
+<IMG style="max-width:100%"  SRC="felzso0vsso1-fine.jpg" ALIGN="RIGHT">
+
+<P>
+
+The figure on the right enlarges the region <i>E<sub>F</sub></i> to better show the splittings, especially at H.
+
+<BR><BR>
+<BR><BR>
+<BR><BR>
+<BR><BR>
+The next figure compares <FONT size="+1"><tt>SO=2</tt></FONT> and <FONT size="+1"><tt>SO=1</tt></FONT> cases (the potential is kept fixed).
+
+
+<IMG WIDTH="450" style="max-width:100%"  SRC="felzso2vsso1.jpg" ALIGN="RIGHT">
+
+<BR>
+
+You can see that the splitting at H is well captured by the <i>L<sub>z</sub>&middot;S<sub>z</sub></i> part of <i>L&middot;S</i>.
+
+<P>
+There is a small splitting at &Gamma; near &minus;0.2 eV which <i>L<sub>z</sub>&middot;S<sub>z</sub></i> doesn't get quite right.
+Also you can see that there where two bands of the same spin cross in the <i>L<sub>z</sub>&middot;S<sub>z</sub></i> case,
+they get split with the full <i>L&middot;S</i>; see for example midway between H and N, near &minus;0.2 eV.
+
+
+<P>
+In the next figure <FONT size="+1"><tt>SO=3</tt></FONT> is comared to <FONT size="+1"><tt>SO=1</tt></FONT>.
+<IMG style="max-width:100%"  SRC="felzso3vsso1.jpg" ALIGN="LEFT">
+
+<P>
+
+The dashed lines almost perfectly overlay the solid ones, showing that the <FONT size="+1"><tt>SO=3</tt></FONT> approximation is nearly perfect,
+except where two degenerate levels of the same spin come together.
+Compare the region near &minus;1 eV between &Gamma; and H,
+or near &minus;0.9 eV between &Gamma; and P.  In the latter case, one crossing is not well described but the 
+agreement is subtantially improved relative to <FONT size="+1"><tt>SO=2</tt></FONT>.
+
+<BR><BR><BR>
+
+<FONT size="+1"><tt>SO=3</tt></FONT> also moves a little closer to the full <FONT size="+1"><tt>SO=1</tt></FONT> calculation
+of the magnetic moment and charge density.  In the Table below, the density was made self-consistent with <FONT size="+1"><tt>SO=1</tt></FONT>.
+In the <FONT size="+1"><tt>RMS DQ</tt></FONT> line, a one-shot calculation was performed with SO=0,1,2,3, and
+the data shows the deviation in density relative to the self-consistent <FONT size="+1"><tt>SO=1</tt></FONT> density after the first iteration.
+The fully self-consistent magnetic moments are also shown for each approximation.
+Evidently the <i>L<sub>z</sub>&middot;S<sub>z</sub></i> density and moment are further removed from the <FONT size="+1"><tt>SO=1</tt></FONT> result than with no SO coupling at all, while the <FONT size="+1"><tt>SO=3</tt></FONT> case is pretty close to the full result.
+
+
+
+<BR>
+<BR>
+<BR>
+
+<pre>
+RMS change in the density starting from a self-consistent density without spin orbit coupling
+SO             0        1         2         3
+RMS DQ         1.90e-5  0         3.13e-5   1.38e-5
+<i>M</i>              2.24765  2.24861   2.24689   2.24814
+</pre>
+
+Only a few checks have been made, but preliminary estimates of SO contribution to total energy seem to well described by <FONT size="+1"><tt>SO=3</tt></FONT>.
+For example, in the top level directory run the Fe test case :
+<pre>
+  fp/test/test.fp felz 4
+</pre>
+This test gives the following total energies.  (Note: there seems to be a term missing in the total energy when <FONT size="+1"><tt>SO=3</tt></FONT>.  This hasn't been worked out yet.)
+<pre>
+ case             ehf      orb moment
+ no SO       -2541.03436
+ LzSz        -2541.03450    -0.0492
+ L.S         -2541.03478    -0.0513
+ L.S (pert)  -2541.03478    -0.0492
+</pre>
+
+
+<H2><A name="thirdorder"><FONT size="+1">Perturbative inclusion of <i>L<sub>+</sub>&middot;S<sub>&minus;</sub></i> </FONT></A></H2>
+
+Because the Fe potential is magnetic the 
+the <i>L<sub>+</sub>&middot;S<sub>&minus;</sub></i> term is comparatively less important.  It occurs as second order in perturbation theory whereas
+<i>L<sub>z</sub>&middot;S<sub>z</sub></i> is first order.
+But when the potential is nonmagnetic the <i>L<sub>+</sub>&middot;S<sub>&minus;</sub></i> term is comparable to <i>L<sub>z</sub>&middot;S<sub>z</sub></i> because
+<i>&epsilon;</i><sub>+</sub>&minus;<i>&epsilon;</i><sub>&minus;</sub>
+vanishes for the same bands.  Thus the standard second order expression in perturbation theory,
+|<i>&lambda;L<sub>+</sub>&middot;S<sub>&minus;</sub></i>|<sup>2</sup>/(<i>&epsilon;</i><sub>+</sub>&minus;<i>&epsilon;</i><sub>&minus;</sub>), is not meaningful and should become
+&plusmn;<i>&lambda;L<sub>+</sub>&middot;S<sub>&minus;</sub></i>, which is is of the same order as the spin diagonal matrix element.
+
+<P> 
+
+Trying to avoid pitfalls when |<i>&lambda;L<sub>+</sub>&middot;S<sub>&minus;</sub></i>| is large compared to 
+|<i>&epsilon;</i><sub>+</sub>&minus;&epsilon;<sub>&minus;</sub>| is a bit subtle.
+Exact diagonalization has pitfalls because there is no general  way to unambiguously partition the eigenvalues into spin-up and spin-down parts,
+in other words, retain an unambiguous one-to-one correspondence between the eigenvalues and eigenfunctions.
+
+
+<P> 
+
+We solve the problem as follows.  First <i>H</i><sub>0</sub>+<i>L<sub>z</sub>&middot;S<sub>z</sub></i>
+ is diagonalized exactly, and the 
+<i>L<sub>+</sub>&middot;S<sub>&minus;</sub></i> parts are rotated to the basis of 
+<i>H</i><sub>0</sub>+<i>L<sub>z</sub>&middot;S<sub>z</sub></i> eigenfunctions. 
+The residual <i>L<sub>+</sub>&middot;S<sub>&minus;</sub></i> still has only off-diagonal blocks in spin space.
+Call the 12 block <i>V</i> with matrix element <i>V<sub>ij</sub></i>, the <i>i</i><sup>th</sup> spin-up eigenvalue
+<i>&epsilon;</i><sub>+<i>i</i></sub> and the 
+<i>j</i><sup>th</sup> spin-down eigenvalue <i>&epsilon;</i><sub>&minus;<i>j</i></sub>.
+
+<P>
+In second order perturbation theory, matrix element <i>V<sub>ij</sub></i> contributes a shift
+<FONT size="+1"><tt>
+<i>&delta;&epsilon;</i><sub>+<i>i</i></sub>=|<i>V<sub>ij</sub></i>|<sup>2</sup>/(<i>&epsilon;</i><sub>+<i>i</i></sub>&minus;&epsilon;<sub>&minus;<i>j</i></sub>)
+</tt></FONT>
+to <i>&epsilon;</i><sub>+<i>i</i></sub>.
+The difficulty, as noted, is that the denominator can vanish or be small.  But the standard technique to resolve this case, exact diagonalization, is problematic because it is no longer possible to assign a particular eigenvalue to a spin channel.  
+
+
+<P>
+
+Instead we choose to do exact diagonalization on a subset of the matrix 
+<i>V</i>: we diagonalize exactly the coupling <i>V<sub>ij</sub></i>
+between the two elements <i>&epsilon;</i><sub>+<i>i</i></sub> and
+&epsilon;<sub>&minus;<i>j</i></sub> only.  Thus, coupling involving
+two states alone is computed to all orders, while third order and
+higher order couplings that connect three inequivalent states is
+omitted.  This works very well in practice, but omits splittings when
+three different states all become degenerate.  You can see instances
+of this in the Fe figures, above.  The effects are minor, but readily
+seen.  It would be possible to include such couplings to still higher
+order, but this has not been done.
+
+
+<H2><A name="spin1"><FONT size="+1">When bands are not spin polarized: a case where SO coupling is large</FONT></A></H2>
+
+<IMG style="max-width:100%"  SRC="au-so310.jpg" ALIGN="LEFT">
+
+<IMG style="max-width:100%"  SRC="au-so210.jpg" ALIGN="RIGHT">
+
+To include SO coupling in the nonmagnetic case, you must make it
+magnetic by setting 
+<A href="tokens.html#HAMcat"><FONT size="+1"><tt>HAM_NSPIN=2</tt></FONT></A>.
+You must also set
+<FONT size="+1"><tt>HAM_SO</tt></FONT>.  
+The code will generate identical bands for spin-up and spin-down channels.
+
+You should not use <FONT size="+1"><tt>SO=2</tt></FONT> in such a case, even though it worked pretty well for Fe as we saw above.
+
+<P>
+
+To show how the different approximations work, consider Au -- a heavy element with large SO coupling.  The figures on the left and right compare the following approximations:
+<pre>
+SO          left    right
+0 (none)    blue    blue
+1 (<i>L&middot;S</i>)     red     red
+2 (<i>L<sub>z</sub>&middot;S<sub>z</sub></i>)    -      green 
+3 (pert)    green   -
+</pre>
+Circles are photoemission data.
+
+<P>
+Blue and red are very different: <i>L&middot;S</i> now generates shifts on the order of 1 eV.  
+
+<P>
+Comparing green and red in the right figure it is evident, <i>L<sub>z</sub>&middot;S<sub>z</sub></i> causes some splitting but it is
+a poor approximation to <i>L&middot;S</i>.
+
+<P>
+The perturbative approach, on the other hand, is rather good, even for this heavy element (compare green and red in the left figure).
+The difference is negligible on the scale of LDA errors (compare to photoemission data).
+
+With (<i>L&middot;S</i>) so large, the charge density is modified.  As the following table shows
+the perturbative <i>L&middot;S</i> approach captures only about 1/3 of the density shift: essentially the same shift as <i>L<sub>z</sub>&middot;S<sub>z</sub></i> gets.
+<pre>
+RMS change in the density starting from a self-consistent density without spin orbit coupling
+SO             0        1         2         3
+RMS DQ         3.74e-4  0         2.58e-4   2.56e-4
+</pre>
+
+Fortunately the perturbation in charge density is still small: the bands look essentially similar whether the potential is generated from the converged <FONT size="+1"><tt>SO=1</tt></FONT> density, or made self-consistent.
+
+All three approximations <FONT size="+1"><tt>SO=1,2,3</tt></FONT> work
+with <b>lmf</b>, for LDA or <A href="fp.html#ldaplusuextension">LDA+U</A> calculations.
+The
+<A href="gw.html">QS<i>GW</i></A> code at present requires the spin channels be kept separate and works with
+<FONT size="+1"><tt>SO=2,3</tt></FONT> only.

@@ -1,0 +1,29 @@
+echo --- slatsm-to-sgi8: ccomp to SGI-specific ---
+
+# echo '   ' slatsm-to-sgi8: ccomp for special SGI files: \
+#      `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SGI' *.f`
+# foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|ifndef |elseif[Cc]).*SGI' *.f` )
+#   rm -f xx.f ; ccomp -uSGI $i xx.f
+#   ccomp -dSGI xx.f $i; rm -f xx.f
+# end
+
+# echo '   ' slatsm-to-sgi8: ccomp for special SGI-PARALLEL files: \
+#      `egrep -l '^[Cc]#(ifdef[Cc]|elseif[Cc]).*SGI-PARALLEL' *.f | grep -v htrid`
+# foreach i ( `egrep -l '^[Cc]#(ifdef[Cc]|elseif[Cc]).*SGI-PARALLEL' *.f | grep -v htrid` )
+#   rm -f xx.f ; ccomp -uSGI-PARALLEL $i xx.f
+#   ccomp -dSGI-PARALLEL xx.f $i; rm -f xx.f
+# end
+
+echo '   ' slatsm-to-sgi8: if problems with htridx, load startup/htridx.SGI8.o into slatsm.a
+echo '   ' do test.slatsm 14 will verify whether your htridx.f compiles properly or not.
+echo '   ' to make the substitution, do:
+echo cp startup/htridx.SGI8.o htridx.o
+echo ar rv slatsm.a htridx.o
+
+# source slatsm-with-auto-array
+
+#set DORISC
+#set NOSLATSM = ( {dspfa,dspsl,dspdi,dsisl,dsifa,dsi}.f )
+
+# if (-e fmain.f) mv -f fmain.f fmain.fortran
+# rm -f xx.f

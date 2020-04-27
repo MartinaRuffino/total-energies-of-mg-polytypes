@@ -1,0 +1,633 @@
+#rdcmd:  lm --rs=1,0 -vnit=5 -vnk=12 fe --iactiv=no -vrdvext=2 -vlmfit=2 -vccor=f
+ -----------------------  START LM -----------------------
+ HEADER Study of iron
+
+ LM:       nbas = 1  nspec = 1  vn 7.11  verb 31,20
+ special:  LM fit to bands
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 5.406  Cell vol = 78.994732
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.40600   awald= 0.466
+         r1=  2.467   nkd= 137      q1=  4.689   nkg= 201
+
+ SGROUP: 48 symmetry operations from 3 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 1910 inequivalent ones found
+
+ iors  : read restart file (ascii, asa) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ GETZV:  8 valence electrons
+ATOM=FE   Z=26  Qc=18  R=2.661766  Qv=0  mom=2.28774  a=0.012  nr=827
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ FE         0.000000   0.000000   0.000000   0.000000  -0.768781
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.768781 (up-dn=0.018878)
+
+ LMFITMR: reading external pot. parameters file, format 0.
+ File Contains:  PPAR
+ Reading:  PPAR
+ LM: it 0 of 5  ehk0=-0.466602  pv=-0.0584  mmom=2.2877  seref=-2540.56813
+ cpudel    ...   Time this iter:  time(s):  0.186    total:  0.186s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 9 0 0 0
+
+ Levenberg-Marquardt mode 2:  fit ASA C+enu,Delta to data
+ Fit 8 parameters in 6 Rl channels.
+ LMFITMR: parameters to include in fit:
+   class        l isp    block   vary(C) vary(D)  ivar     C          Delta
+   1  FE        0  1      low      -1      -1       1   -0.263593    0.186088
+   1  FE        0  2      low      -1      -1       0   -0.228620    0.189789
+   1  FE        1  1      low      -2      -2       3    0.756217    0.172419
+   1  FE        1  2      low      -2      -2       0    0.792478    0.174334
+   1  FE        2  1      low       0       0       5   -0.183260    0.013424
+   1  FE        2  2      low       0       0       7   -0.017339    0.017232
+ LMASA:  saving initial vext0
+
+ Data mode 0: Fit to bands
+ bands file file contains nq=72, nband=30  efermi=0.108257
+ Fit to 8 bands.
+ Fermi weights:  cutoff=Ef+0.1 width=0.08 
+
+ LMASA: Find Ef for given parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6962 -0.2326 -0.2326 -0.2326 -0.1136 -0.1136  2.7424  2.7424  2.7424
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6692 -0.0802 -0.0802 -0.0802  0.0600  0.0600  2.8201  2.8201  2.8201
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.053018;   8.000000 electrons;  D(Ef):   16.345
+         Sum occ. bands:   -1.7418682  incl. Bloechl correction:   -0.001942
+         Mag. moment:       2.287744
+
+ Saved qp weights ...
+
+ LMASA: Make gradient of bands wrt parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6962 -0.2326 -0.2326 -0.2326 -0.1136 -0.1136  2.7424  2.7424  2.7424
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6692 -0.0802 -0.0802 -0.0802  0.0600  0.0600  2.8201  2.8201  2.8201
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+
+ LM fit:  Shift bands by 0.161275 Ry to align Fermi levels ...
+ Bands at first qp:
+ ref
+   -0.52746   -0.01535   -0.01534   -0.01533    0.04543    0.04544    1.98010    1.98010
+ fit
+   -0.53496   -0.07136   -0.07136   -0.07136    0.04764    0.04764    2.90366    2.90366
+ sig
+    1.00005    1.03010    1.03011    1.03011    1.06331    1.0633264473.6892064473.68920
+ Spin 2:
+ ref
+   -0.51136    0.09848    0.09851    0.09853    0.21441    0.21447    1.98918    1.98918
+ fit
+   -0.50791    0.08108    0.08108    0.08108    0.22127    0.22127    2.98136    2.98136
+ sig
+    1.00006    1.11962    1.11966    1.11969    1.44221    1.4424768239.2369468239.23694
+
+ LM fit, starting RMS error=0.0226  lambda=1
+ LMFITMR: changes in parameters
+   class        l     old C     old Delta       new C     new Delta             Change
+   1  FE        0   -0.263593    0.186088     -0.261786    0.184631      0.001807   -0.001457
+   1  FE        0   -0.228620+   0.189789+    -0.226813    0.188332      0.001807   -0.001457
+   1  FE        1    0.756217    0.172419      0.763883    0.169198      0.007666   -0.003221
+   1  FE        1    0.792478+   0.174334+     0.800143    0.171113      0.007666   -0.003221
+   1  FE        2   -0.183260    0.013424     -0.169755    0.011645      0.013504   -0.001779
+   1  FE        2   -0.017339    0.017232     -0.017030    0.015951      0.000308   -0.001281
+
+ LMASA: Find Ef for given parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6911 -0.2126 -0.2126 -0.2126 -0.1092 -0.1092  2.7337  2.7337  2.7337
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6640 -0.0754 -0.0754 -0.0754  0.0546  0.0546  2.8113  2.8113  2.8113
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.053281;   8.000000 electrons;  D(Ef):   16.044
+         Sum occ. bands:   -1.6230697  incl. Bloechl correction:   -0.001874
+         Mag. moment:       2.333981
+
+ Saved qp weights ...
+
+ LMASA: Make gradient of bands wrt parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6911 -0.2126 -0.2126 -0.2126 -0.1092 -0.1092  2.7337  2.7337  2.7337
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6640 -0.0754 -0.0754 -0.0754  0.0546  0.0546  2.8113  2.8113  2.8113
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+
+ LM fit:  Shift bands by 0.161538 Ry to align Fermi levels ...
+ Bands at first qp:
+ ref
+   -0.52746   -0.01535   -0.01534   -0.01533    0.04543    0.04544    1.98010    1.98010
+ fit
+   -0.52952   -0.05106   -0.05106   -0.05106    0.05237    0.05237    2.89519    2.89519
+ sig
+    1.00005    1.03010    1.03011    1.03011    1.06331    1.0633264473.6892064473.68920
+ Spin 2:
+ ref
+   -0.51136    0.09848    0.09851    0.09853    0.21441    0.21447    1.98918    1.98918
+ fit
+   -0.50248    0.08612    0.08612    0.08612    0.21617    0.21617    2.97281    2.97281
+ sig
+    1.00006    1.11962    1.11966    1.11969    1.44221    1.4424768239.2369468239.23694
+
+  LMFITMR:  iter 1  old RMS=0.0226  new RMS=0.0132  lambda=1
+ LMFITMR: changes in parameters
+   class        l     old C     old Delta       new C     new Delta             Change
+   1  FE        0   -0.261786    0.184631     -0.269676    0.181118     -0.007889   -0.003513
+   1  FE        0   -0.226813+   0.188332+    -0.234703    0.184819     -0.007889   -0.003513
+   1  FE        1    0.763883    0.169198      0.743767    0.170445     -0.020116    0.001247
+   1  FE        1    0.800143+   0.171113+     0.780027    0.172360     -0.020116    0.001247
+   1  FE        2   -0.169755    0.011645     -0.158272    0.010298      0.011484   -0.001347
+   1  FE        2   -0.017030    0.015951     -0.021215    0.014993     -0.004184   -0.000958
+
+ LMASA: Find Ef for given parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6908 -0.1962 -0.1962 -0.1962 -0.1046 -0.1046  2.7200  2.7200  2.7200
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6638 -0.0763 -0.0763 -0.0763  0.0462  0.0462  2.7976  2.7976  2.7976
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.056144;   8.000000 electrons;  D(Ef):   19.213
+         Sum occ. bands:   -1.5772909  incl. Bloechl correction:   -0.001631
+         Mag. moment:       2.309494
+
+ Saved qp weights ...
+
+ LMASA: Make gradient of bands wrt parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6908 -0.1962 -0.1962 -0.1962 -0.1046 -0.1046  2.7200  2.7200  2.7200
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6638 -0.0763 -0.0763 -0.0763  0.0462  0.0462  2.7976  2.7976  2.7976
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+
+ LM fit:  Shift bands by 0.164401 Ry to align Fermi levels ...
+ Bands at first qp:
+ ref
+   -0.52746   -0.01535   -0.01534   -0.01533    0.04543    0.04544    1.98010    1.98010
+ fit
+   -0.52643   -0.03177   -0.03177   -0.03177    0.05982    0.05982    2.88436    2.88436
+ sig
+    1.00005    1.03010    1.03011    1.03011    1.06331    1.0633264473.6892064473.68920
+ Spin 2:
+ ref
+   -0.51136    0.09848    0.09851    0.09853    0.21441    0.21447    1.98918    1.98918
+ fit
+   -0.49940    0.08813    0.08813    0.08813    0.21057    0.21057    2.96202    2.96202
+ sig
+    1.00006    1.11962    1.11966    1.11969    1.44221    1.4424768239.2369468239.23694
+
+  LMFITMR:  iter 2  old RMS=0.0132  new RMS=0.00791  lambda=0.2
+ LMFITMR: changes in parameters
+   class        l     old C     old Delta       new C     new Delta             Change
+   1  FE        0   -0.269676    0.181118     -0.279462    0.176186     -0.009787   -0.004933
+   1  FE        0   -0.234703+   0.184819+    -0.244490    0.179886     -0.009787   -0.004933
+   1  FE        1    0.743767    0.170445      0.726960    0.170081     -0.016807   -0.000364
+   1  FE        1    0.780027+   0.172360+     0.763220    0.171996     -0.016807   -0.000364
+   1  FE        2   -0.158272    0.010298     -0.158295    0.010054     -0.000024   -0.000244
+   1  FE        2   -0.021215    0.014993     -0.024009    0.014560     -0.002795   -0.000433
+
+ LMASA: Find Ef for given parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6892 -0.1953 -0.1953 -0.1953 -0.1059 -0.1059  2.7013  2.7013  2.7013
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6622 -0.0776 -0.0776 -0.0776  0.0414  0.0414  2.7789  2.7789  2.7789
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.059407;   8.000000 electrons;  D(Ef):   28.521
+         Sum occ. bands:   -1.5884921  incl. Bloechl correction:   -0.001542
+         Mag. moment:       2.285239
+
+ Saved qp weights ...
+
+ LMASA: Make gradient of bands wrt parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6892 -0.1953 -0.1953 -0.1953 -0.1059 -0.1059  2.7013  2.7013  2.7013
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6622 -0.0776 -0.0776 -0.0776  0.0414  0.0414  2.7789  2.7789  2.7789
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+
+ LM fit:  Shift bands by 0.167664 Ry to align Fermi levels ...
+ Bands at first qp:
+ ref
+   -0.52746   -0.01535   -0.01534   -0.01533    0.04543    0.04544    1.98010    1.98010
+ fit
+   -0.52155   -0.02763   -0.02763   -0.02763    0.06181    0.06181    2.86895    2.86895
+ sig
+    1.00005    1.03010    1.03011    1.03011    1.06331    1.0633264473.6892064473.68920
+ Spin 2:
+ ref
+   -0.51136    0.09848    0.09851    0.09853    0.21441    0.21447    1.98918    1.98918
+ fit
+   -0.49454    0.09010    0.09010    0.09010    0.20909    0.20909    2.94660    2.94660
+ sig
+    1.00006    1.11962    1.11966    1.11969    1.44221    1.4424768239.2369468239.23694
+
+  LMFITMR:  iter 3  old RMS=0.00791  new RMS=0.00748  lambda=0.04
+ LMFITMR: changes in parameters
+   class        l     old C     old Delta       new C     new Delta             Change
+   1  FE        0   -0.279462    0.176186     -0.281961    0.176401     -0.002498    0.000215
+   1  FE        0   -0.244490+   0.179886+    -0.246988    0.180101     -0.002498    0.000215
+   1  FE        1    0.726960    0.170081      0.704387    0.167648     -0.022573   -0.002433
+   1  FE        1    0.763220+   0.171996+     0.740647    0.169563     -0.022573   -0.002433
+   1  FE        2   -0.158295    0.010054     -0.161079    0.010061     -0.002783    0.000006
+   1  FE        2   -0.024009    0.014560     -0.026624    0.014431     -0.002614   -0.000129
+
+ LMASA: Find Ef for given parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6922 -0.1981 -0.1981 -0.1981 -0.1086 -0.1086  2.6660  2.6660  2.6660
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6652 -0.0797 -0.0797 -0.0797  0.0382  0.0382  2.7436  2.7436  2.7436
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.062605;   8.000000 electrons;  D(Ef):   19.529
+         Sum occ. bands:   -1.6125665  incl. Bloechl correction:   -0.001517
+         Mag. moment:       2.277156
+
+ Saved qp weights ...
+
+ LMASA: Make gradient of bands wrt parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6922 -0.1981 -0.1981 -0.1981 -0.1086 -0.1086  2.6660  2.6660  2.6660
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6652 -0.0797 -0.0797 -0.0797  0.0382  0.0382  2.7436  2.7436  2.7436
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+
+ LM fit:  Shift bands by 0.170862 Ry to align Fermi levels ...
+ Bands at first qp:
+ ref
+   -0.52746   -0.01535   -0.01534   -0.01533    0.04543    0.04544    1.98010    1.98010
+ fit
+   -0.52134   -0.02724   -0.02724   -0.02724    0.06226    0.06226    2.83688    2.83688
+ sig
+    1.00005    1.03010    1.03011    1.03011    1.06331    1.0633264473.6892064473.68920
+ Spin 2:
+ ref
+   -0.51136    0.09848    0.09851    0.09853    0.21441    0.21447    1.98918    1.98918
+ fit
+   -0.49434    0.09113    0.09113    0.09113    0.20909    0.20909    2.91447    2.91447
+ sig
+    1.00006    1.11962    1.11966    1.11969    1.44221    1.4424768239.2369468239.23694
+
+  LMFITMR:  iter 4  old RMS=0.00748  new RMS=0.00732  lambda=8e-3
+ LMFITMR: changes in parameters
+   class        l     old C     old Delta       new C     new Delta             Change
+   1  FE        0   -0.281961    0.176401     -0.286284    0.176120     -0.004324   -0.000281
+   1  FE        0   -0.246988+   0.180101+    -0.251312    0.179820     -0.004324   -0.000281
+   1  FE        1    0.704387    0.167648      0.694616    0.166326     -0.009771   -0.001322
+   1  FE        1    0.740647+   0.169563+     0.730876    0.168241     -0.009771   -0.001322
+   1  FE        2   -0.161079    0.010061     -0.164275    0.010069     -0.003197    0.000008
+   1  FE        2   -0.026624    0.014431     -0.029413    0.014401     -0.002789   -0.000030
+
+ LMASA: Find Ef for given parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6959 -0.2013 -0.2013 -0.2013 -0.1118 -0.1118  2.6492  2.6492  2.6492
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6689 -0.0824 -0.0824 -0.0824  0.0353  0.0353  2.7267  2.7267  2.7267
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065723;   8.000000 electrons;  D(Ef):   19.503
+         Sum occ. bands:   -1.6365366  incl. Bloechl correction:   -0.001516
+         Mag. moment:       2.277819
+
+ Saved qp weights ...
+
+ LMASA: Make gradient of bands wrt parameters ...
+
+ --- BNDASA : band pass (KKR-qout) ---
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6959 -0.2013 -0.2013 -0.2013 -0.1118 -0.1118  2.6492  2.6492  2.6492
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6689 -0.0824 -0.0824 -0.0824  0.0353  0.0353  2.7267  2.7267  2.7267
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+ SECMAT : Combined Correction switched off
+
+ LM fit:  Shift bands by 0.17398 Ry to align Fermi levels ...
+ Bands at first qp:
+ ref
+   -0.52746   -0.01535   -0.01534   -0.01533    0.04543    0.04544    1.98010    1.98010
+ fit
+   -0.52190   -0.02735   -0.02735   -0.02735    0.06222    0.06222    2.82317    2.82317
+ sig
+    1.00005    1.03010    1.03011    1.03011    1.06331    1.0633264473.6892064473.68920
+ Spin 2:
+ ref
+   -0.51136    0.09848    0.09851    0.09853    0.21441    0.21447    1.98918    1.98918
+ fit
+   -0.49489    0.09156    0.09156    0.09156    0.20929    0.20929    2.90072    2.90072
+ sig
+    1.00006    1.11962    1.11966    1.11969    1.44221    1.4424768239.2369468239.23694
+
+  LMFITMR:  iter 5  old RMS=0.00732  new RMS=0.00732  lambda=0
+
+  LMFITMR:  iter 5  starting RMS=0.0226  final RMS=0.00732  lambda=0
+            saving file vext0
+ LMFITMR: changes in parameters
+   class        l     old C     old Delta       new C     new Delta             Change
+   1  FE        0   -0.263593    0.186088     -0.286284    0.176120     -0.022691   -0.009969
+   1  FE        0   -0.228620+   0.189789+    -0.251312    0.179820     -0.022691   -0.009969
+   1  FE        1    0.756217    0.172419      0.694616    0.166326     -0.061601   -0.006093
+   1  FE        1    0.792478+   0.174334+     0.730876    0.168241     -0.061601   -0.006093
+   1  FE        2   -0.183260    0.013424     -0.164275    0.010069      0.018984   -0.003355
+   1  FE        2   -0.017339    0.017232     -0.029413    0.014401     -0.012075   -0.002831
+ Exit 0 finished fit 
+ CPU time:    1.049s   Wall clock    1.103s   08:21:11 15.04.2014        on phpdl1.ph.kcl.ac.uk
+#rdcmd:  cp vext0.fe vext.fe
+#rdcmd:  lm --rs=1,0 -vnit=5 -vnk=12 fe --iactiv=no -vrdvext=2 -vlmfit=0 -vccor=f --quit=band
+ -----------------------  START LM -----------------------
+ HEADER Study of iron
+
+ LM:       nbas = 1  nspec = 1  vn 7.11  verb 31,20
+ special
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 5.406  Cell vol = 78.994732
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.40600   awald= 0.466
+         r1=  2.467   nkd= 137      q1=  4.689   nkg= 201
+
+ SGROUP: 48 symmetry operations from 3 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 1910 inequivalent ones found
+
+ iors  : read restart file (ascii, asa) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ GETZV:  8 valence electrons
+ATOM=FE   Z=26  Qc=18  R=2.661766  Qv=0  mom=2.28774  a=0.012  nr=827
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ FE         0.000000   0.000000   0.000000   0.000000  -0.768781
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.768781 (up-dn=0.018878)
+
+ LMFITMR: reading external pot. parameters file, format 0.
+ File Contains:  PPAR
+ Reading:  PPAR
+ LM: it 0 of 5  ehk0=-0.466602  pv=-0.0584  mmom=2.2877  seref=-2540.56813
+ cpudel    ...   Time this iter:  time(s):  0.129    total:  0.129s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 9 0 0 0
+
+ --- BNDASA : iteration 1 (KKR-qout) ---
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6959 -0.2013 -0.2013 -0.2013 -0.1118 -0.1118  2.6492  2.6492  2.6492
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 72, k=  0.00000  0.00000  0.00000
+ -0.6689 -0.0824 -0.0824 -0.0824  0.0353  0.0353  2.7267  2.7267  2.7267
+
+ BZWTS : --- Tetrahedron Integration ---
+ BZINTS: Fermi energy:     -0.065723;   8.000000 electrons;  D(Ef):   19.503
+         Sum occ. bands:   -1.6365457  incl. Bloechl correction:   -0.001516
+         Mag. moment:       2.277817
+
+ Saved qp weights ...
+
+ LM: ehf=-0.3612870  ehk=-0.3605272  sumev=-1.6365457  delsev=0.1053154
+h nit=5 nk=12 rdvext=2 lmfit=0 ccor=0 mmom=2.2778174 ehf=-.361287 ehk=-.3605272
+ Exit 0 LM      : quit after bands 
+ CPU time:    0.161s   Wall clock    0.208s   08:21:11 15.04.2014        on phpdl1.ph.kcl.ac.uk
+#rdcmd:  lm --rs=1,0 -vnit=5 -vnk=12 fe --iactiv=no -vrdvext=2 -vlmfit=0 -vccor=f --band:fn=syml
+ -----------------------  START LM -----------------------
+ HEADER Study of iron
+
+ LM:       nbas = 1  nspec = 1  vn 7.11  verb 31,20
+ special
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor
+ bz:       metal, tetra 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 5.406  Cell vol = 78.994732
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.40600   awald= 0.466
+         r1=  2.467   nkd= 137      q1=  4.689   nkg= 201
+
+ SGROUP: 48 symmetry operations from 3 generators
+ MKSYM:  found 48 space group operations ... includes inversion
+ BZMESH:  72 irreducible QP from 1728 ( 12 12 12 )  shift= F F F
+ TETIRR: sorting 10368 tetrahedra ... 1910 inequivalent ones found
+
+ iors  : read restart file (ascii, asa) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ GETZV:  8 valence electrons
+ATOM=FE   Z=26  Qc=18  R=2.661766  Qv=0  mom=2.28774  a=0.012  nr=827
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ FE         0.000000   0.000000   0.000000   0.000000  -0.768781
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.768781 (up-dn=0.018878)
+
+ LMFITMR: reading external pot. parameters file, format 0.
+ File Contains:  PPAR
+ Reading:  PPAR
+ LM: it 0 of 5  ehk0=-0.466602  pv=-0.0584  mmom=2.2877  seref=-2540.56813
+ cpudel    ...   Time this iter:  time(s):  0.130    total:  0.130s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 9 0 0 0
+
+ --- BNDASA : iteration 1 (KKR-qout) ---
+
+ Read efermi from weights file : ef = -0.065723
+ suqlst: read qp for bands, mode 1
+
+ suqlst:  nq= 51   q1= 0.0000 0.0000 0.0000   q2= 1.0000 0.0000 0.0000
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  0.00000  0.00000  0.00000
+ -0.6959 -0.2013 -0.2013 -0.2013 -0.1118 -0.1118  2.6492  2.6492  2.6492
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  0.00000  0.00000  0.00000
+ -0.6689 -0.0824 -0.0824 -0.0824  0.0353  0.0353  2.7267  2.7267  2.7267
+
+ Read efermi from weights file : ef = -0.065723
+
+ suqlst:  nq= 51   q1= 1.0000 0.0000 0.0000   q2= 0.5000 0.5000 0.0000
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  1.00000  0.00000  0.00000
+ -0.3277 -0.3277 -0.0616 -0.0616 -0.0616  0.6720  0.6720  0.6720  1.6319
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  1.00000  0.00000  0.00000
+ -0.2468 -0.2468  0.0995  0.0995  0.0995  0.7112  0.7112  0.7112  1.7221
+
+ Read efermi from weights file : ef = -0.065723
+
+ suqlst:  nq= 51   q1= 0.0000 0.5000 0.5000   q2= 0.5000 0.5000 0.5000
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  0.00000  0.50000  0.50000
+ -0.3656 -0.2625 -0.1172 -0.1054 -0.0602 -0.0484  0.4215  1.6229  2.4919
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  0.00000  0.50000  0.50000
+ -0.3034 -0.1627 -0.0323  0.0267  0.0436  0.1159  0.5457  1.6802  2.5667
+
+ Read efermi from weights file : ef = -0.065723
+
+ suqlst:  nq= 51   q1= 0.5000 0.5000 0.5000   q2= 0.0000 0.0000 0.0000
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  0.50000  0.50000  0.50000
+ -0.2660 -0.2660 -0.2660 -0.1030 -0.1030  0.5928  0.5928  0.5928  0.7888
+ SECMAT : Combined Correction switched off
+ SECMAT:  kpt 1 of 51, k=  0.50000  0.50000  0.50000
+ -0.1820 -0.1820 -0.1820  0.0467  0.0467  0.6897  0.6897  0.6897  0.8521
+
+ Read efermi from weights file : ef = -0.065723
+ Exit 0 bndasa: finished bands 
+ CPU time:    0.159s   Wall clock    0.217s   08:21:11 15.04.2014        on phpdl1.ph.kcl.ac.uk

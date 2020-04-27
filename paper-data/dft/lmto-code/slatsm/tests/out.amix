@@ -1,0 +1,27 @@
+ AMIX: nmix=0 mmix=2  nelts=1  beta=0.9  tm=10  rmsdel=6.55e-1
+              Old            New         Diff          Mixed
+    1      0.300000      0.955336      0.655336      0.889803
+ iter           1 returned from amix: imix=           0
+ AMIX: nmix=1 mmix=2  nelts=1  beta=0.9  tm=10  rmsdel=2.6e-1
+   tj: 0.28423
+              Old            New         Diff          Mixed
+    1      0.889803      0.629565     -0.260238      0.722161
+ iter           2 returned from amix: imix=           1
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=2  nelts=1  beta=0.9  tm=10  rmsdel=2.82e-2
+   tj: 0.09783
+              Old            New         Diff          Mixed
+    1      0.722161      0.750379      0.028219      0.738560
+ iter           3 returned from amix: imix=           1
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=2  nelts=1  beta=0.9  tm=10  rmsdel=8.78e-4
+   tj:-0.03211
+              Old            New         Diff          Mixed
+    1      0.738560      0.739438      0.000878      0.739087
+ iter           4 returned from amix: imix=           1
+ AMIX: condition of normal eqns >100000. Reducing nmix to 1
+ AMIX: nmix=1 mmix=2  nelts=1  beta=0.9  tm=10  rmsdel=3.31e-6
+   tj: 0.00376
+              Old            New         Diff          Mixed
+    1      0.739087      0.739084     -0.000003      0.739085
+ iter           5 returned from amix: imix=           1

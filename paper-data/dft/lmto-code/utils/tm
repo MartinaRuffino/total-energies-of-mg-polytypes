@@ -1,0 +1,522 @@
+#!/usr/bin/env python
+# (desktop) taskmaster / (d)tm
+# d.pashov@gmail.com
+
+# py3's 'ConnectionRefusedError' is emulated as 'IOError; if err.errno == errno.ECONNREFUSED' in py2 (2.7.15)
+# tested on py 2.7.5, 2.7.15, 3.6.6
+
+import os
+import sys
+import time
+import errno
+import pickle
+import socket
+import struct
+import argparse
+import functools
+import threading
+import subprocess
+import multiprocessing
+
+
+pname = b'tm v0.10'
+
+if sys.version_info[0] > 2:
+    devnull = subprocess.DEVNULL
+else:
+    from codecs import open
+    devnull = open('/dev/null','rw')
+
+
+#These are only due to py2 lacking int.to_bytes and int.from_bytes
+def i2b(i):
+    b = struct.pack('>q',i)
+    return b
+def b2i(b):
+    return struct.unpack('>q',b)[0]
+
+tcols = dict(
+    endc = '\x1b[0m',  # stop a colour
+    redb = '\x1b[1;31m',
+    grnb = '\x1b[1;32m',
+    yelb = '\x1b[1;33m',
+    cynb = '\x1b[1;36m',
+
+    grn = '\x1b[32m',
+)
+
+def sendb(s, d):
+    #print ('send',d)
+    p = pickle.dumps(d)
+    #s.sendall(len(p).to_bytes(8,'big')+p)
+    s.sendall(i2b(len(p))+p)
+
+def recv(s,n):
+    b = []
+    bsz = 4096
+    c = 0
+    while True:
+        wc = min(bsz,n-c)
+        if wc == 0: break
+        d = s.recv(wc)
+        cn = len(d)
+        if cn == 0: break
+        b.append(d)
+        c += cn
+        if c > n:
+            raise IOError('got more than bargained for')
+    return b''.join(b)
+
+def recvb(s):
+    #n = int.from_bytes(s.recv(8),'big')
+    n = b2i(recv(s,8))
+    d = pickle.loads(recv(s,n))
+    #print ('recv', d)
+    return d
+
+def close(s):
+    try:
+        s.shutdown(socket.SHUT_RDWR)
+    except IOError as err:
+        if err.errno in [errno.EBADF, errno.ENOTCONN]:
+            pass
+        else:
+            print('s.shutdown',err)
+    s.close()
+
+def isfilex(fln):
+    return os.path.isfile(fln) and os.access(fln, os.X_OK)
+
+def mapcpuset(c,n):
+    #map 'n' processes/threads on the cpuset 'c'
+    #return the cpuset the job should run on
+    ms = subprocess.check_output(('hwloc-distrib --taskset --reverse --single --restrict 0x%x %d'%(c,n)).split())
+    return functools.reduce(lambda a,b: a|b, [int(i,0) for i in ms.split()])
+
+
+class job_t(object):
+    def __init__(self, n=1, N='', c=[], s='s', i=-1, o='/dev/null', w=None, a=None, j=None):
+        self.n = n; self.N = N; self.c = c; self.s = s; self.i = i; self.o = o; self.cm = 0x0
+        if w == None: self.w = os.getcwd()
+
+        #if a != None: # this does not work on rhel py 2.7.5 somehow...
+        if a is not None:
+            self.n = a.nproc; self.N = a.name; self.o = a.output; self.w = a.w
+
+            if len(a.command) == 1:
+                #if a.command[0].lstrip('-').isnumeric():
+                if a.command[0].lstrip('-').isdigit():
+                   self.c = []
+                   self.i = int(a.command[0])
+                   self.n = 0
+                else:
+                    self.c = a.command
+            elif len(a.command) == 0:
+                self.c = []; self.n = 0
+            else:
+                self.c = a.command
+
+        self.tq = time.time()
+        self.tr = 0.0
+        self.tc = 0.0
+
+        if j != None:
+            self.n = j.n; self.N = j.N; self.c = j.c; self.s = j.s; self.i = j.i; self.o = j.o; self.w = j.w; self.tq = j.tq; self.tr = j.tr; self.tc = j.tc; self.cm = j.cm
+            #print ('k ',self)
+
+    def tos(self, v=False):
+        s = self.s
+        if sys.stdout.isatty():
+            #c = dict(q='cynb', r='yelb', c='grnb', e='redb', t='redb')
+            c = dict(r='yelb', c='grn', e='redb', t='redb')
+            #if s in 'qrcet':
+            if s in 'rcet':
+                s = tcols[c[s]]+s+tcols['endc']
+        t = 0
+        if self.s == 'q':
+            t = time.time() - self.tq
+        elif self.s == 'r':
+            t = time.time() - self.tr
+        elif self.s in 'cet':
+            t = self.tc - self.tr
+
+        cm = bin(self.cm)[:1:-1]
+        cm = (cm + '0'*(multiprocessing.cpu_count()-len(cm))).replace('0','-').replace('1','+')
+
+        o = '%3d %s %3d %s %8.1f %s' % (self.i, self.N.ljust(22), self.n, s, t, cm)
+        if v: o += ' ' + ' '.join(self.c)
+        return o
+
+
+    def __str__(self):
+        return (self.tos())
+
+def client(sock, args):
+    j = job_t(a=args)
+    sendb(sock, j)
+    qid = recvb(sock)
+    #print ('qid',qid)
+    if qid > -1:
+        print("job %d submitted" % qid)
+    elif qid == -1:
+        js = recvb(sock)
+        if js != []:
+            o = 'id  name                 nproc s     time cpuset'
+            if args.longform: o += ' '*(multiprocessing.cpu_count()-6)+' command'
+            print(o)
+        for j in js:
+            print(j.tos(v=args.longform))
+    elif qid == -3:
+        print("invalid query")
+
+    #close(sock)
+
+class srv_t(object):
+    def __init__(self,sock,nct):
+        self.sock = sock
+        self.l = []
+        self.mtx = threading.Lock()
+        self.t = time.time()
+        self.nct = nct
+        self.ncf = self.nct
+        self.get_me_coat_indeed = False
+        self.cm = 0x0
+        try:
+            cm = subprocess.check_output('hwloc-calc --taskset all'.split())
+            self.cm = int(cm,0)
+        except:
+            pass
+
+    def add_job(self, j):
+        self.mtx.acquire()
+        j.s = 'q'
+        j.i = len(self.l)
+        self.l.append(j)
+        self.mtx.release()
+        return j.i
+
+    def sched(self):
+        time.sleep(2.0) # give chance to larger jobs to appear
+        while not self.get_me_coat():
+            self.mtx.acquire()
+            jw = [j for j in self.l if j.s in 'qr']
+            self.mtx.release()
+            js = sorted(jw, key=lambda j: j.n, reverse=True)
+            jr = [j for j in js if j.s == 'r']
+            jq = [j for j in js if j.s == 'q']
+
+            for j in jr:
+                r = j.p.poll()
+                if r != None:
+                    self.mtx.acquire()
+                    j.tc = time.time()
+                    j.s = 'c' if r == 0 else 'e'
+                    self.ncf += j.n
+                    self.cm ^= j.cm
+                    self.mtx.release()
+
+            for j in jq:
+                if self.ncf >= j.n or self.ncf == self.nct:
+                    cwd = os.getcwd()
+                    os.chdir(j.w)
+                    #print (j.w,isfilex(j.c[0]))
+                    if isfilex(j.c[0]):
+                        self.mtx.acquire()
+                        if self.cm != 0: j.cm = mapcpuset(self.cm, j.n)
+                        #stdout = open(j.o,'a')
+                        jofl = open(j.N + '.log','a')
+                        c = j.c
+                        if j.cm != 0x0: c = ('hwloc-bind 0x%x --'%j.cm).split() + j.c
+                        #j.p = subprocess.Popen(j.c, bufsize=0, preexec_fn=os.setsid, stdin=devnull, stdout=devnull, stderr=devnull)
+                        j.p = subprocess.Popen(c, bufsize=0, preexec_fn=os.setsid, close_fds=True, stdin=None, stdout=jofl, stderr=subprocess.STDOUT, shell=False)
+                        jofl.close()
+                        j.tr = time.time()
+                        j.s = 'r'
+                        self.ncf -= j.n
+                        self.cm ^= j.cm
+                        self.mtx.release()
+                    else:
+                        self.mtx.acquire()
+                        j.s = 'e'
+                        j.tr = time.time()
+                        j.tc = j.tr
+                        self.mtx.release()
+                    os.chdir(cwd)
+            time.sleep(0.1)
+
+        #print('cleanup')
+        self.mtx.acquire()
+        jr = [j for j in self.l if j.s == 'r']
+        self.mtx.release()
+
+        for j in jr:
+            self.mtx.acquire()
+            try:
+                r = j.p.poll()
+                if r == None:
+                    gid = os.getpgid(j.p.pid)
+                    os.killpg(gid, subprocess.signal.SIGHUP)
+                    if j.p.poll() == None: time.sleep(1.5)
+                    if j.p.poll() == None: os.killpg(gid, subprocess.signal.SIGTERM)
+                    if j.p.poll() == None: time.sleep(1.5)
+                    if j.p.poll() == None: os.killpg(os.getpgid(j.p.pid), subprocess.signal.SIGKILL)
+                    j.s = 't'
+                else:
+                    j.s = 'c' if r == 0 else 'e'
+                #print (j.N,j.p.poll())
+            except:
+                pass
+            j.tc = time.time()
+            self.mtx.release()
+
+    def listener(self):
+        while True:
+            conn, addr = self.sock.accept()
+            conn.sendall(pname)
+            j = recvb(conn)
+            if j == None:
+                close(conn)
+                continue
+            if j.n == 0 and j.c == ['q']:
+                # quitting
+                self.get_me_coat(True)
+                sendb(conn,-2)
+                #time.sleep(1)
+                #print('lexit')
+                break
+            #print('srv',j)
+            r = -1 # list query
+            if j.c != []:
+                r = -3 # invalid query
+                if j.n > 0: r = self.add_job(j)
+            sendb(conn, r)
+
+            if j.n == 0 and j.c == []:
+                if j.i > -1 and j.i < len(self.l):
+                    sendb(conn, [job_t(j=self.l[j.i])])
+                elif j.i == -1:
+                    sendb(conn, [job_t(j=i) for i in self.l])
+                else:
+                    sendb(conn, [])
+
+            close(conn)
+            self.t = time.time()
+        #close(self.sock)
+
+    def set_me_coat(self):
+        self.mtx.acquire()
+        self.get_me_coat_indeed = True
+        self.mtx.release()
+
+    def get_me_coat(self, indeed=False):
+        if not self.get_me_coat_indeed:
+            if indeed:
+                self.set_me_coat()
+            else:
+                empt = self.ncf == self.nct and len([1 for j in self.l if (j.s == 'q' or j.s == 'r')]) == 0
+                idle = time.time() - self.t > 10.0
+                if empt and idle:
+                    self.set_me_coat()
+        return self.get_me_coat_indeed
+
+    def run(self):
+        t_sched = threading.Thread(target=self.sched, name='qshd'); t_sched.start()
+        t_lisnr = threading.Thread(target=self.listener, name='qlsn'); t_lisnr.start()
+
+        while not self.get_me_coat(): time.sleep(2)
+
+        if t_lisnr.is_alive():
+            #qsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            qsock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            qsock.connect(self.sock.getsockname())
+            helo = recv(qsock,len(pname))
+            sendb(qsock, job_t(n=0,c=['q']))
+            msg = recvb(qsock)
+            close(qsock)
+        #print('joining')
+        t_lisnr.join()
+        t_sched.join()
+        #close(self.sock)
+
+def find_ncore():
+    ncore = multiprocessing.cpu_count()
+    if sys.platform.startswith('linux'):
+        #ncore = int(subprocess.check_output('lscpu -p=core'.split()).rsplit(None,1)[1])+1
+        lscpu_p = subprocess.Popen('lscpu -p=core'.split(), shell=False, stdout=subprocess.PIPE, stderr=devnull, stdin=devnull)
+        #ncore = int(lscpu_p.communicate()[0].rsplit(None,1)[1])+1
+        ncore = int(lscpu_p.communicate()[0].rsplit(None,1)[1].split(b',',1)[0])+1
+    elif sys.platform.startswith('darwin'):
+        sysctl_p = subprocess.Popen('sysctl -n hw.physicalcpu'.split(), shell=False, stdout=subprocess.PIPE)
+        ncore = int(sysctl_p.communicate()[0])
+    return ncore
+
+if __name__ == "__main__":
+
+    #host = "localhost"
+    #port = 36948
+
+    aprs = argparse.ArgumentParser(description='tm usage')
+    aprs.add_argument('-s', '--serve', action='store_true', help='server mode')
+    #aprs.add_argument('-p', '--port', metavar='port', type=int, help='port to use instead of default')
+    aprs.add_argument('-l', '--longform',action='store_true', help='list jobs in long form')
+    aprs.add_argument('-n', '--nproc', metavar = 'nproc', type=int, default=1, help='request nproc processes')
+    aprs.add_argument('-N','--name', type=str, metavar='NAME', default='', help="job name")
+    aprs.add_argument('-o','--output', default='/dev/null', type=str, metavar='outfile', help="write stdout and stderr to file")
+    aprs.add_argument('-w', default='.', type=str, metavar='workdir', help="where to execute the command")
+    #aprs.add_argument('-q','--query', nargs = '?', metavar='query', default=-1, type=int, help='show status of jobs')
+    aprs.add_argument('command', help="command", nargs='*')
+
+    args = aprs.parse_args()
+
+    srv_mode = args.serve
+    #if args.port != None: port = args.port
+
+    args.w = os.path.abspath(args.w)
+
+    #print (args)
+    #sys.exit(0)
+
+# bound ports of daemonised, backgrounded etc.. programs seem to be kept a few seconds after the programs exit, even if it took care to close them properly. This is quite annoying at times so moving to unix sockets.
+    #addr = host,port
+    #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM | socket.SOCK_CLOEXEC)
+
+    euid = os.geteuid()
+    addr = b'/tmp/tm-%d.sock' % euid
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+
+    if srv_mode:
+        if args.command != []:
+            print ("server mode does not accept any commands")
+            sys.exit(1)
+
+        sys.stdout.flush()
+        sys.stderr.flush()
+
+        os.chdir('/')
+
+        #py equiv of "exec > /tmp/tm.log 2>&1 < /dev/null"
+
+        log = '/tmp/tm-%d.log' % euid
+        stdin = open(os.devnull, 'r')
+        #stdout = open(os.devnull, 'a+')
+        #stderr = open(os.devnull, 'a+')
+        stdout = open(log, 'a+')
+
+        os.dup2(stdin.fileno(), sys.stdin.fileno())
+        os.dup2(stdout.fileno(), sys.stdout.fileno())
+        os.dup2(stdout.fileno(), sys.stderr.fileno())
+
+        bound = False
+        try:
+            sock.bind(addr)
+            bound = True
+        except IOError as err_bind:
+            if err_bind.errno == errno.EADDRINUSE:
+                #in use or a leftover?
+                if type(addr) == bytes:
+                    try:
+                        sock.connect(addr)
+                        #in use let's go away
+                        helo = recv(sock,len(pname))
+                        sendb(sock, None)
+                    except IOError as err_connect:
+                        if err_connect.errno == errno.ECONNREFUSED:
+                            #stale socket, clean up and recreate, if anything errs so be it.
+                            os.remove(addr)
+                            sock.bind(addr)
+                            bound = True
+                        else:
+                            raise err_connect
+            else:
+                raise err_bind
+        if bound:
+            sock.listen(512)
+            nct = find_ncore()
+            srv = srv_t(sock, nct)
+            srv.run()
+            close(sock)
+            if type(addr) == bytes:
+                os.remove(addr)
+
+        sys.exit(0)
+
+    connected = False
+    try:
+        sock.connect(addr)
+        connected = True
+    #except ConnectionRefusedError as err:
+    except IOError as err:
+        if err.errno == errno.ECONNREFUSED:
+            pass
+
+    if not connected:
+        cmd = [os.path.abspath(sys.argv[0]),'-s']
+        #if args.port == port: cmd.extend(['-p',str(port)])
+        subprocess.Popen(cmd,bufsize=0,close_fds=True,preexec_fn=os.setsid,stdin=None,stdout=None,stderr=None,cwd='/')
+
+
+    maxatts = 20
+    atts = 0
+    while not connected and atts < maxatts:
+        try:
+            sock.connect(addr)
+            connected = True
+        #except ConnectionRefusedError as err:
+        except IOError as err:
+            if err.errno == errno.ECONNREFUSED:
+                #print (err)
+                time.sleep(0.1)
+                atts += 1
+
+    if connected:
+        helo = b''
+        try:
+            helo = recv(sock,len(pname))
+        except IOError as err:
+            if err.errno != errno.ECONNRESET:
+                raise err
+        if helo == pname:
+            client(sock, args)
+        #close(sock)
+    else:
+        print ('could not connect to '+str(addr))
+
+
+#def send(s, d):
+    #p = pickle.dumps(d)
+    #s.send(len(p).to_bytes(16,'big'))
+    #s.sendall(p)
+
+#def recv(s):
+    #n = int.from_bytes(s.recv(16),'big')
+    #l = []
+    #b = 1024
+    #for i in range((n-1)//b+1):
+        #m = n%b if i == (n-1)//b else b
+        #l.append(s.recv(m))
+    #d = pickle.loads(b''.join(l))
+    #return d
+
+#def recv(s):
+    ##n = int.from_bytes(s.recv(8),'big')
+    #n = b2i(s.recv(8))
+    #return pickle.loads(b''.join([s.recv((n%recvsz) if i == (n-1)//recvsz else recvsz) for i in range((n-1)//recvsz+1)]))
+        #if os.fork() > 0: sys.exit(0)
+
+## decouple from parent environment
+#os.chdir('/')
+#os.setsid()
+#os.umask(0)
+
+#if os.fork() > 0: sys.exit(0)
+
+#sys.stdout.flush()
+#sys.stderr.flush()
+#si = open(os.devnull, 'r')
+#so = open(os.devnull, 'a+')
+#se = open(os.devnull, 'a+')
+
+#os.dup2(si.fileno(), sys.stdin.fileno())
+#os.dup2(so.fileno(), sys.stdout.fileno())
+#os.dup2(se.fileno(), sys.stderr.fileno())
+

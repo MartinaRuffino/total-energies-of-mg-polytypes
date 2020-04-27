@@ -1,0 +1,93 @@
+ test elind,elin2,beta,bet2,locm
+ strn = A,k=3,elind=.2,elin2=.3,locm=13,b=.7,b2=.4
+ mixing: mode=A  beta=.7  bet2=.4  elind=.2  elin2=.3  locm=13  kill=3  betv=.01
+      beta   0.70000   0.40000     elind   0.20000   0.30000      locm  13
+ strn = A,k=3,elind=.1
+ mixing: mode=A  beta=.7  elind=.1  kill=3  betv=.01
+      beta   0.70000   0.70000     elind   0.10000   0.10000      locm  13
+ -----
+ mixing: mode=B  nmix=30  nit=4  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.01
+ mixing: mode=A  nit=4  beta=1  elind=.1  kill=3  betv=.11
+ -----
+ mixing: mode=B  nmix=30  it 3 of 4  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.01
+iter=  3 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.0100 -1.0000
+  
+ mixing: mode=B  nmix=30  it 4 of 4  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.01
+iter=  4 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.0100 -1.0000
+  
+ mixing: mode=A  it 5 of 8  beta=1  elind=.1  kill=3  betv=.11
+iter=  5 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  3 betv,rmserr=  0.1100 -1.0000
+  
+ mixing: mode=A  it 6 of 8  beta=1  elind=.1  kill=3  betv=.11
+iter=  6 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  3 betv,rmserr=  0.1100 -1.0000
+  
+ mixing: mode=A  it 7 of 8  beta=1  elind=.1  kill=3  betv=.11
+iter=  7 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill= -3 betv,rmserr=  0.1100 -1.0000
+  
+ mixing: mode=A  it 8 of 8  beta=1  elind=.1  kill=3  betv=.22
+iter=  8 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  3 betv,rmserr=  0.2200 -1.0000
+  
+ mixing: mode=B  nmix=30  it 9 of 12  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter=  9 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100 -1.0000
+  
+ mixing: mode=B  nmix=30  it 10 of 12  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter= 10 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100 -1.0000
+  
+ mixing: mode=B  nmix=30  it 11 of 12  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter= 11 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100 -1.0000
+  
+ mixing: mode=B  nmix=30  it 12 of 12  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.22
+iter= 12 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.2200 -1.0000
+  
+ mixing: mode=B  nmix=30  nit=4  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.22
+ mixing: mode=A  nit=3  beta=1  elind=.1  kill=3  betv=.11
+ mixing: mode=A  err<.2  nit=2  beta=.88  elind=.1  betv=.11
+ -----
+ mixing: mode=A  it 3 of 4  beta=1  elind=.1  kill=3  betv=.11
+iter=  3 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  3 betv,rmserr=  0.1100  0.8653
+  
+ mixing: mode=A  it 4 of 4  beta=1  elind=.1  kill=3  betv=.22
+iter=  4 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill= -3 betv,rmserr=  0.2200  0.3965
+  
+ mixing: mode=A  err(.449)<.596  it 5 of 6  beta=.88  elind=.1  betv=.11
+iter=  5 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  0.8800 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.4490
+  
+ mixing: mode=A  err(.77)<.596  it 6 of 6(*)  beta=.88  elind=.1  betv=.11
+iter=  6 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  0.8800 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.7704
+  
+ mixing: mode=B  nmix=30  it 7 of 10  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter=  7 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100 -0.4314
+  
+ mixing: mode=B  nmix=30  it 8 of 10  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter=  8 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.1134
+  
+ mixing: mode=B  nmix=30  it 9 of 10  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter=  9 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.1206
+  
+ mixing: mode=B  nmix=30  it 10 of 10  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.22
+iter= 10 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.2200  0.0039
+  
+ mixing: mode=A  it 11 of 13  beta=1  elind=.1  kill=3  betv=.11
+iter= 11 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  3 betv,rmserr=  0.1100  0.2191
+  
+ mixing: mode=A  it 12 of 13  beta=1  elind=.1  kill=3  betv=.11
+iter= 12 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  3 betv,rmserr=  0.1100  0.6606
+  
+ mixing: mode=A  it 13 of 13  beta=1  elind=.1  kill=3  betv=.22
+iter= 13 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill= -3 betv,rmserr=  0.2200  0.3185
+  
+ mixing: mode=A  err(.00595)<.204  it 14 of 15  beta=.88  elind=.1  betv=.11
+iter= 14 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  0.8800 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.0059
+  
+ mixing: mode=A  err(.807)<.204  it 15 of 15(*)  beta=.88  elind=.1  betv=.11
+iter= 15 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  0.8800 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.8070
+  
+ mixing: mode=A  err(.484)<.204  it 16 of 15(*)  beta=.88  elind=.1  betv=.11
+iter= 16 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  0.8800 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.4839
+  
+ mixing: mode=A  err(.743)<.204  it 17 of 16(*)  beta=.88  elind=.1  betv=.11
+iter= 17 lbroy=F nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  0.8800 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100  0.7435
+  
+ mixing: mode=B  nmix=30  it 18 of 21  fnam=mxm  wc=11  beta=1  elind=.1  wgt=2,1(9)  betv=.11
+iter= 18 lbroy=T nmix=30 wgt=  2.0000  1.0000  9.0000 beta=  1.0000 mixnam=mxm      wc= 11.0000 nkill=  0 betv,rmserr=  0.1100 -0.0223
+  

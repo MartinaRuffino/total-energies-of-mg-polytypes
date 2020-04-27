@@ -1,0 +1,52 @@
+VERS    LMASA-6.0 LM:7 ASA:7
+# to test nlo use 
+TESTNLO lmstr sic 
+        lm -vnit=1 --quit=band -vnlo=20 -vnk=10 -vesc=0.073 sic 
+%const nlo=0 nit=0 nk=6 esc=0.073 idu=0
+IO      SHOW=f HELP=f VERBOS=30 WKP=F IACTIV=f
+HAM     NSPIN=1 REL=t QASA=0
+OPTIONS NSPIN=1  REL=t LMH=F ASA[ CCOR=t ADNF=F GAMMA=f ] SHARM=t
+SYMGRP  R4X*I M(1,-1,0) R3D
+BZ      METAL=1 TETRA=t GETQP=f DOSWT=T NPTS=400 DRNGE=-1.1 1.
+        TOL=1E-6 NEVMX=36 EFMAX=5  NKABC={nk} {nk} {nk} BZJOB=f INVIT=f
+OPTICS  MODE={nlo} NPTS=100 WINDOW=0 1 ESCISS={esc}
+        FILBND=1 4 EMPBND=5 25 
+        CHI2:1,1,2,3
+# version 7
+        CHI2[NCHI2=1 AXES=1,2,3]
+        JDOS=f PART=t
+STR     RMAX=3.05
+CONST   a=8.2392 u=0.25  
+STRUC   NBAS=4 NSPEC=4 NL=4
+        ALAT=a PLAT=  0 .5 .5  .5  0 .5  .5 .5  0
+SITE    ATOM=SI POS=  0   0   0
+        ATOM=C  POS=  u u u
+        ATOM=E1 POS=  0.5 0.5 0.5
+        ATOM=E2 POS= 1-u 1-u 1-u
+CLASS   ATOM=SI  Z=14  R/W=1 CONF=3 3 3 4 IDXDN=1 1 1 1 A=.03 IDU={idu} 0 0 0 UH=0.15
+        ATOM=C   Z=6   R/W=1 CONF=2 2 3 4 IDXDN=1 1 1 1 A=.03
+        ATOM=E1  Z=0   R/W=1 CONF=1 2 3 4 IDXDN=1 1 1 1 A=.03 
+        ATOM=E2  Z=0   R/W=1 CONF=1 2 3 4 IDXDN=1 1 1 2 A=.03 IDU={idu} 0 0 0 UH=0.15
+ITER    NMIX=2 BETA=1 NOMAD=f NIT={nit} CONVC=1E-6 CONV=0
+MIX     NMIX=2 BETA=1 NOMAD=f
+START   NIT={nit} CNVG=1E-6 FREE=f BEGMOM=t CNTROL=t RDVES=f
+        ATOM=SI       P=  3.7580911  3.5889994  3.2718811  4.1268194
+                      Q=  0.7177919  0.0000000  0.0453526
+                          1.0059740  0.0000000  0.0609343
+                          0.2230302  0.0000000  0.0136629
+                          0.0254756  0.0000000  0.0020985
+        ATOM=C        P=  2.8324625  2.7628179  3.1998484  4.1152095
+                      Q=  1.3041629  0.0000000  0.0553694
+                          2.9596829  0.0000000  0.0976401
+                          0.0540527  0.0000000  0.0024536
+                          0.0077512  0.0000000  0.0008358
+        ATOM=E1       P=  1.4474728  2.2653139  3.1583418  4.1071294
+                      Q=  0.3262723  0.0000000  0.0262882
+                          0.3934309  0.0000000  0.0305610
+                          0.1400323  0.0000000  0.0085582
+                          0.0254008  0.0000000  0.0014720
+        ATOM=E2       P=  1.5145477  2.2889043  3.1647443  4.1093881
+                      Q=  0.3404922  0.0000000  0.0234431
+                          0.3432151  0.0000000  0.0246474
+                          0.1128748  0.0000000  0.0066501
+                          0.0203604  0.0000000  0.0011548

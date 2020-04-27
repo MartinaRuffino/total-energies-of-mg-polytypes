@@ -1,0 +1,107 @@
+#!/bin/tcsh
+
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+
+set path = ($topdir $topdir/utils $path)
+set mcx = `which mcx`
+if (-x "$mcx") then
+  if `$mcx --h |& grep mc | grep vsn | awk '{print ($7 == "(vsn" && ($8 * 1 >= 1.04))}'` set have_mc
+endif
+if (! $?have_mc) then
+  echo "test.srgf (abort) : missing mcx"
+  exit -1
+endif
+
+echo '... test GF+SO in various screening transformations'
+echo "   "  $testdir/test.gf --quiet fept 7
+echo "   "  cp $testdir/rsta.fept.lmgf.idxf=1 rsta.fept
+$testdir/test.gf --quiet fept 7 > fept-7
+cp $testdir/rsta.fept.lmgf.idxf=1 rsta.fept
+echo "... run lmgf fept -vso=0 -vnk=8 -vnc=1 -vntht=0 -vnit=-1 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0716710 --quit=rho --rs=1,0 > out.lmgf"
+echo "   "  rm -f mixm.fept vshft.fept eula.fept
+rm -f mixm.fept vshft.fept eula.fept
+lmgf fept -vso=0 -vnk=8 -vnc=1 -vntht=0 -vnit=-1 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0716710 --quit=rho --rs=1,0 > out.lmgf
+set tol = `cat out.lmgf | vextract . DQ`
+echo "    RMS DQ for lmgf, no SO: " $tol
+if (`echo $tol 0 | awk -v tol=.000001 '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo "   " scalar rel GF test for no SO PASSED
+else
+  echo "   " scalar rel GF test for no SO FAILED
+endif
+echo
+
+
+echo '... perform the following perturbative SO calculations, mode 1 for gam = 0 1 2 4 5'
+set gam = 0
+echo '    lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 > /dev/null'
+          lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 > /dev/null
+echo '    lmgf fept -vgamma=$gam -vso=1 -vrel=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=20 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > $gam-so-job1'
+foreach gam (0 1 2 4 5)
+echo "   "  rm -f mixm.fept vshft.fept save.fept eula.fept
+rm -f mixm.fept vshft.fept save.fept eula.fept
+lmgf fept -vgamma=$gam -vso=1 -vrel=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=20 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > $gam-so-job1
+end
+echo "    RMS DQ for each of the 5 perturbative SO, mode 1 calculations : " `grep DQ  *-so-job1 | vextract . DQ`  '  ' fluctuation \
+     `grep DQ  *-so-job1 | vextract . DQ | $mcx . -p -s1/nr -rsum -av avg -pop -e1 'sqrt(((x1-avg+1e-9)^2/nr))'  -rsum | tail -1`
+echo "    sumev  for each of the 5 perturbative SO, mode 1 calculations :  " `grep sumev= *-so-job1 | vextract . sumev`  '  ' fluctuation \
+     `grep sumev=  *-so-job1 | vextract . sumev | $mcx . -p -s1/nr -rsum -av avg -pop -e1 'sqrt(((x1-avg+1e-9)^2/nr))'  -rsum | tail -1`
+set tol = `grep sumev=  *-so-job1 | vextract . sumev | $mcx . -p -s1/nr -rsum -av avg -pop -e1 'sqrt(((x1-avg+1e-9)^2/nr))'  -rsum | tail -1`
+echo "   " Deviation in sumev for 5 SO tests averaged relative the gamma=alpha result: $tol
+if (`echo $tol 0 | awk -v tol=.000001 '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo "   " scalar rel GF test with perturbative SO mode 1 PASSED
+else
+  echo "   " scalar rel GF test with perturbative SO mode 1 FAILED
+endif
+echo
+
+echo '... run the following perturbative SO calculations, with SOC scaled to 0, mode 10 for gam = 0 2 5'
+echo '    lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 > /dev/null'
+          lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 > /dev/null
+echo '    lmgf fept -vgamma=$gam -vso=1 -vrel=1 -vgfmod=10 -vnk=8 -vnc=1 -vntht=0 -vnit=20 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > $gam-so-job10'
+touch 0-so0-job10
+echo "   " rm -f mixm.fept eula.fept vshft.fept save.fept ?-so0-job10
+rm -f mixm.fept eula.fept vshft.fept save.fept ?-so0-job10
+echo "   " cp $testdir/socscl.fept .
+cp $testdir/socscl.fept .
+lmgf fept -vso=1 -vrel=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > /dev/null
+foreach gam (0 2 5)
+lmgf fept -vgamma=$gam -vso=1 -vrel=1 -vgfmod=10 -vnk=8 -vnc=1 -vntht=0 -vnit=20 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > $gam-so0-job10
+end
+set tol = `grep -A 1 '2/3 J' *-so0-job10 | grep job10- | awk '{print $NF}' | $mcx . -p -s1/nr -rsum -av avg -pop -e1 'sqrt((x1-avg+1e-9)^2/nr)' -rsum | tail -1`
+echo "    2/3 J for each of the 5 perturbative SO, mode 10 calculations : (fluctuation)" $tol
+grep -A 2 '2/3 J' *-so0-job10 | grep -v '2/3 J'
+echo "   " Deviation in 2/3 J for 3 SO tests : $tol
+grep -A 2 '2/3 J' *-so0-job10 | grep -v '2/3 J' > /dev/null
+set retval = $status
+if ($retval == 0 && `echo $tol 0 | awk -v tol=0 '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo "    scalar rel GF test with perturbative SO mode 10 (SOC scaled to 0) tol = 0 PASSED"
+else
+  echo "   " scalar rel GF test with perturbative SO mode 10 (SOC scaled to 0) tol = 0 FAILED
+endif
+echo
+
+echo '... run the following perturbative SO calculations, mode 10 for gam = 0 2 5'
+echo '    lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 > /dev/null'
+          lmgf fept -vrel=1 -vso=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -vbegmom=2 > /dev/null
+echo '    lmgf fept -vgamma=$gam -vso=1 -vrel=1 -vgfmod=10 -vnk=8 -vnc=1 -vntht=0 -vnit=20 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > $gam-so-job10'
+touch 0-so-job10
+echo "   " rm -f mixm.fept eula.fept vshft.fept save.fept ?-so-job10
+rm -f mixm.fept eula.fept vshft.fept save.fept socscl.fept ?-so-job10
+lmgf fept -vso=1 -vrel=1 -vgfmod=1 -vnk=8 -vnc=1 -vntht=0 -vnit=0 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > /dev/null
+foreach gam (0 2 5)
+lmgf fept -vgamma=$gam -vso=1 -vrel=1 -vgfmod=10 -vnk=8 -vnc=1 -vntht=0 -vnit=20 --pr31,30 -vidxf=1 --iactiv=no -ef=-0.0693026 --quit=rho > $gam-so-job10
+end
+set tol = `grep -A 1 '2/3 J' *-so-job10 | grep job10- | awk '{print $NF}' | $mcx . -p -s1/nr -rsum -av avg -pop -e1 'sqrt((x1-avg+1e-9)^2/nr)' -rsum | tail -1`
+echo "    2/3 J for each of the 5 perturbative SO, mode 10 calculations : (fluctuation)" $tol
+grep -A 2 '2/3 J' *-so-job10 | grep -v '2/3 J'
+echo "   " Deviation in 2/3 J for 3 SO tests : $tol
+grep -A 2 '2/3 J' *-so-job10 | grep -v '2/3 J' > /dev/null
+set retval = $status
+if ($retval == 0 && `echo $tol 0 | awk -v tol=9.0 '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+  echo "    scalar rel GF test with perturbative SO mode 10 tol < 9.0 PASSED"
+else
+  echo "   " scalar rel GF test with perturbative SO mode 10 FAILED
+endif
+echo

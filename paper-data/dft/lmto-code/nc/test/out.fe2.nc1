@@ -1,0 +1,188 @@
+rdcmd:  rm -f eula.fe2 bfield.fe2
+rdcmd:  rdfile -vth=5 eula0.fe2 > eula.fe2
+rdcmd:  lm fe2 -vnit=-1 -vfile=2 -vnc=t -vbf=f --pr41,20
+ -----------------------  START LM -----------------------
+ HEADER Study of Fe
+ IOSITE: read pos,vel,eula,vshft,ipl,irlx from file unit 14
+
+ LM:       nbas = 2  nspec = 1  vn 7.11.d  verb 41,20
+ special
+ pot:      spin-pol, XC:BH
+ noncoll:  Non-coll
+ bz:       metal, tetra 
+ IOEULA:   reading l-independent Euler angles (file 15)
+
+ Automatic symmetry finder turned off.  Use: R2Y R2X I
+
+                Plat                                  Qlat
+   1.000000   0.000000   0.000000        1.000000   0.000000   0.000000
+   0.000000   1.000000   0.000000        0.000000   1.000000   0.000000
+   0.000000   0.000000   1.000000        0.000000   0.000000   1.000000
+   alat = 5.42  Cell vol = 159.220088
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.42000   awald= 0.369
+         r1=  3.015   nkd= 123      q1=  3.598   nkg= 179
+
+ SGROUP: 8 symmetry operations from 3 generators
+ MKSYM:  found 8 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  1 species split into 2 classes
+ Species  Class      Sites...
+ A        1:A        1
+          2:A2       2
+ aiocls class A: nothing read
+ aiocls class A2: nothing read
+ aiocls class A: nothing read
+ aiocls class A2: nothing read
+ BZMESH:  4096 irreducible QP from 27000 ( 30 30 30 )  shift= F F F
+ TETIRR: sorting 162000 tetrahedra ... 81000 inequivalent ones found
+
+ GETZV:  16 valence electrons
+ATOM=A    Z=26  Qc=18  R=2.668659  Qv=0.000015  mom=2.28831  a=0.03  nr=331
+ATOM=A2   Z=26  Qc=18  R=2.668659  Qv=-0.000016  mom=2.28867  a=0.03  nr=331
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000015   0.000000  -0.000012   0.000000  -0.764881
+ A2        -0.000016   0.000000   0.000012   0.000000  -0.764881
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764881 (up-dn=0.016672)
+ LM: it 0 of 1  ehk0=-0.929746  pv=-0.1306  mmom=4.5726  seref=-5081.1362
+ cpudel    ...   Time this iter:  time(s):  0.217    total:  0.217s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 18 0 0 0
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   -      18     0     0    18    18       0
+          Euler angles:
+   ib   alpha      beta     gamma     class           z axis rotated to:
+    1  0.000000  0.043633  0.000000   A          0.043619  0.000000  0.999048
+    2  0.000000 -0.043633  0.000000   A2        -0.043619  0.000000  0.999048
+
+ --- BNDASA : iteration 1 (noncol) ---
+
+ AMAGNC: magnetic moments from Euler angles and sphere charges:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   0 -0.000597  0.000000 -0.013675    0.000000  0.000000 -0.013688  0.013688
+    1   1 -0.002462  0.000000 -0.056397    0.000000  0.000000 -0.056451  0.056451
+    1   2  0.102874  0.000000  2.356200    0.000000  0.000000  2.358445  2.358445
+    1   *  0.099815  0.000000  2.286128    0.000000  0.000000  2.288306  2.288306
+
+    2   0  0.000596  0.000000 -0.013659    0.000000  0.000000 -0.013672  0.013672
+    2   1  0.002463  0.000000 -0.056404    0.000000  0.000000 -0.056458  0.056458
+    2   2 -0.102889  0.000000  2.356553    0.000000  0.000000  2.358798  2.358798
+    2   * -0.099830  0.000000  2.286490    0.000000  0.000000  2.288669  2.288669
+
+ <Mx>=-0.000008  <My>=0.000000  <Mz>=2.286309  <M>=2.286309  <|M|>=2.288487
+
+ subzi: tetrahedron integration of bands; tetrahedron integration of density
+
+ SECMAT:  kpt 1 of 4096, k=  0.00000  0.00000  0.00000
+ -0.6972 -0.6686 -0.4046 -0.4046 -0.2915 -0.2915 -0.2231 -0.2231 -0.2231
+ -0.1230 -0.1230 -0.0673 -0.0673 -0.0673 -0.0536 -0.0536 -0.0536  0.0438
+  0.0438  0.1228  0.1228  0.1228  0.7284  0.7284  0.7284  0.7690  0.7690
+  0.7690  1.3937  1.4640  2.3949  2.3949  2.3949  2.4623  2.4623  2.4623
+ nev, nevmx, ldim=  23  26  36  ev(nev) = 0.72844  efmax = 0.5
+         Est E_f           Window        Tolerance  DOS(E_f)
+        -0.056036  -0.056510  -0.055781   0.000729  32.441423
+        -0.056036  -0.056043  -0.056036   0.000007  32.289723
+        -0.056036  -0.056036  -0.056036   0.000000  32.299396
+ BZINTS: Fermi energy:     -0.056036;  16.000000 electrons;  D(Ef):   32.299
+         Sum occ. bands:   -3.4877927  incl. Bloechl correction:   -0.000377
+         spin weights not available ... no spin moment calculated
+
+ Saved qp weights ...
+ IOMOMS: file contains:  bands  doswts  moments  spin density matrix
+         nl=3  nsp=2  nspc=2  nkp=4096  ldim=18
+
+ IORBTM:  orbital moments :
+ class spec        spin   Moment decomposed by l ...
+    1    A            1    0.000000    0.000000    0.118507
+    1    A            2    0.000000    0.000000   -0.275651
+    1  L+ - L-  -0.157143
+    2    A            1    0.000000    0.000000    0.118561
+    2    A            2    0.000000    0.000000   -0.275649
+    2  L+ - L-  -0.157088
+
+ AMAGNC: magnetic moments from density matrix:
+                global coordinates               local coordinates
+   ib   l    Mx        My        Mz          Mx        My        Mz        |M|
+    1   0  0.001339  0.000000 -0.013760    0.001938  0.000000 -0.013688  0.013825
+    1   1  0.001487  0.000000 -0.056570    0.003953  0.000000 -0.056451  0.056589
+    1   2  0.088657  0.000000  2.356815   -0.014230  0.000000  2.358439  2.358482
+    1   *  0.091483  0.000000  2.286486   -0.008339  0.000000  2.288300  2.288315
+
+    2   0 -0.001337  0.000000 -0.013743   -0.001935  0.000000 -0.013672  0.013808
+    2   1 -0.001436  0.000000 -0.056575   -0.003902  0.000000 -0.056458  0.056593
+    2   2 -0.088684  0.000000  2.357177    0.014219  0.000000  2.358801  2.358844
+    2   * -0.091457  0.000000  2.286859    0.008382  0.000000  2.288671  2.288687
+
+ <Mx>=0.000013  <My>=0.000000  <Mz>=2.286672  <M>=2.286672  <|M|>=2.288501
+
+ Harris energy:  sumev= -3.487793
+ rhov=     -8122.901926   ekin=      5149.014520   eref=    -5081.136200
+ rhoep=     -214.519801   utot=    -10016.557680   ehar=       -0.926761
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764881 (up-dn=0.016672)
+
+ Kohn-Sham energy:  sumev= -3.487793
+ rhov=     -8122.901875   ekin=      5149.014469   eref=    -5081.136200
+ rhoep=     -214.519796   utot=    -10016.557634   ehks=       -0.926761
+
+ LM: ehf=-0.9267612  ehk=-0.9267612  sumev=-3.4877927  delsev=0.0029850
+
+ CLASS L    Q0         Q1         Q2         EB         POLD       PNU
+   1   0  0.315328   0.000000   0.005103
+          0.315328   0.000000   0.005103  -0.000001   4.649307   4.649307
+   1   1  0.366015   0.000000   0.004971
+          0.366015   0.000000   0.004971   0.000000   4.395365   4.395365
+   1   2  4.462818   0.000000   0.044630
+          4.462818   0.000000   0.044630   0.000000   3.873409   3.873409
+   1   0  0.329016   0.000000   0.004780
+          0.329016   0.000000   0.004780  -0.000001   4.659281   4.659281
+   1   1  0.422466  -0.000001   0.005668
+          0.422466   0.000000   0.005668  -0.000002   4.421764   4.421764
+   1   2  2.104379  -0.000001   0.010143
+          2.104379   0.000000   0.010143   0.000000   3.681524   3.681525
+   2   0  0.315339   0.000000   0.005105
+          0.315339   0.000000   0.005105  -0.000001   4.649318   4.649318
+   2   1  0.366016   0.000000   0.004970
+          0.366016   0.000000   0.004970   0.000000   4.395368   4.395368
+   2   2  4.462969   0.000000   0.044632
+          4.462969   0.000000   0.044632   0.000000   3.873416   3.873416
+   2   0  0.329011   0.000000   0.004780
+          0.329011   0.000000   0.004780  -0.000001   4.659277   4.659277
+   2   1  0.422475  -0.000001   0.005668
+          0.422475   0.000000   0.005668  -0.000002   4.421763   4.421763
+   2   2  2.104168  -0.000002   0.010140
+          2.104168   0.000000   0.010140  -0.000001   3.681500   3.681500
+  
+ mixing: mode=A  nmix=4  beta=.2
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.05e-6
+ AMIX: nmix=0 mmix=8  nelts=48  beta=0.2  tm=10  rmsdel=1.05e-6
+              Old            New         Diff          Mixed
+   17      5.342144      5.342145      0.000001      5.342144
+   18      0.135683      0.135682     -0.000001      0.135683
+   19      4.643705      4.643709      0.000004      4.643706
+   20      1.667673      1.667669     -0.000004      1.667672
+   27      0.455625      0.455625      0.000000      0.455625
+   43      4.643671      4.643667     -0.000004      4.643670
+   44      1.667922      1.667924      0.000002      1.667923
+
+ GETZV:  16 valence electrons
+ATOM=A    Z=26  Qc=18  R=2.668659  Qv=0.000017  mom=2.2883  a=0.03  nr=331
+ATOM=A2   Z=26  Qc=18  R=2.668659  Qv=-0.000017  mom=2.28867  a=0.03  nr=331
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A          0.000017   0.000000  -0.000012   0.000000  -0.764881
+ A2        -0.000017   0.000000   0.000013   0.000000  -0.764881
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.764881 (up-dn=0.016672)
+ Magnetization from sphere program: 4.572618  from output rho: 4.573344
+ SV:   1 1.048D-06 0.2000 4.103E-07      -0.92676121 4.573344 L
+
+   it  1  of  1    ehf=      -0.926761   ehk=      -0.926761
+                rms dq=  0.000001        tol= 0.000004   more=F
+c nit=-1 file=2 nc=1 bf=0 mmom=4.5733444 ehf=-.9267612 ehk=-.9267612
+ cpudel    ...   Time this iter:  time(s):  4.61     total:  4.83s
+
+ Jolly good show !  You converged to rms DQ=  0.000000
+ Exit 0 LM 
+ CPU time:    4.827s   Wall clock    4.867s   12:01:50 12.05.2015        on phpdl1.ph.kcl.ac.uk

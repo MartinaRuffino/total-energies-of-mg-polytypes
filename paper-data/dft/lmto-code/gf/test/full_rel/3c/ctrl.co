@@ -1,0 +1,36 @@
+%const  nit=30 begmom=nit<=0
+HEADER  Co, check of fully relativistic code
+VERS    LMASA-6 LM:7 ASA:7
+IO      SHOW=f HELP=f VERBOS=31,20 WKP=F IACTIV=F
+GF      MODE=1 GFOPTS=emom;p3
+%const rel=1 gamma=t so=t twoc=f
+STR     RMAXS=7
+CONST   a=6.758 nk=16 
+STRUC   NBAS=1 NSPEC=1 NL=3 TET=1 ALAT=a 
+        ALAT=a  PLAT= 0 .5 .5
+	             .5  0 .5
+	             .5 .5  0 
+%ifdef sym
+SYMGRP  R4Z
+%endif
+SYMGRP  find
+% const nr=1501
+SPEC    ATOM=A Z=27 R=2.641002 IDXDN=1 1 1 IDMOD=0 0 0 A=0.01 NR={nr}
+SITE    ATOM=A POS=0.0 0.0 0.0
+HAM     XCFUN=2 NSPIN=2 REL={rel} NONCOL=F SO={so} QASA=0
+OPTIONS NSPIN=2 REL={rel} XCFUN=2 SO={so} SHARM=T NONCOL=F 
+        ASA[ GAMMA={gamma} CCOR=f TWOC={twoc} ]
+%const  ef=-0.057447
+BZ      NKABC=nk nk nk BZJOB=0 NPTS=1001 DOS=-1 0.6 
+        TETRA=1 METAL=1 INVIT=F SAVDOS=T
+        EMESH=12 10 {ef-0.85} {ef} .5 .0
+ITER    MIX=A3,b=0.5 NIT={abs(nit)} CONVC=1d-5 CONV=0
+START   BEGMOM={begmom} CNTROL={nit<=0}
+        ATOM=A        P=  4.6696461  4.4042206  3.8779197
+                          4.6751357  4.4282186  3.7619384
+                      Q=  0.3240193  0.0000000  0.0060376
+                          0.3615226  0.0000000  0.0053889
+                          4.6538021 -0.0000004  0.0417009
+                          0.3385866  0.0000000  0.0058597
+                          0.4288997 -0.0000001  0.0069791
+                          2.8931697 -0.0000003  0.0214902

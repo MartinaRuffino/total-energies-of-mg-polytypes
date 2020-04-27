@@ -1,0 +1,152 @@
+<HTML><HEAD><TITLE>Self Consistency(v7.8) </TITLE></HEAD><BODY bgcolor="#cccccc">
+<H1><B><FONT size="+2">Self Consistency (v7.8)</FONT></B></H1>
+
+<A name="selfconsistency"><FONT color="#bb3300"><I>Self-Consistency in Electronic Structure</I>&nbsp;</FONT></A>.
+
+Closely linked to density-functional theory, and approximations to it,
+is the idea of self-consistency.  Interacting particles give off a
+field, and interact with the field other particles generate.  The
+field a particle senses controls its motion, which in turn affects the
+field it generates.  Mean-field theories link the field a particle
+generates to the field it senses in a self-consistent manner.  For the
+field to be time-independent and the effective field must be some
+average field.  Thus in the mean-field approximation a particle moves
+in an average effective external field
+<i>V</i><sup>eff</sup>(<b>r</b>) which determines the particles'
+motion, which in turn determines <i>V</i><sup>eff</sup>(<b>r</b>).
+Each feeds the other; the condition for which both are satisfied is
+the self-consistency condition.
+
+<P><P>
+
+<A name="ldaselfconsistency"><FONT color="#bb3300"><I>Self-Consistency in Density-functional Theory</I>&nbsp;</FONT></A>.
+
+Practical implementations of DFT, such as the LDA are instances of a
+mean-field theory.  Formally the density <i>n</i> is determined by
+minimization of a total energy functional <i>E</i>[<i>n</i>].  In
+principle it could be done through iterating trial densities
+<i>n</i><sub>in</sub> until the point of minimum energy is found.  In
+practice this is not possible because realistic schemes must calculate
+the kinetic energy contribution to
+<i>E</i>[<i>n</i>] via an effective non-interacting Schrodinger
+equation.  An effective one-particle potential
+<i>V</i><sup>eff</sup>(<b>r</b>) is generated from the functional derivative
+<i>V</i><sup>eff</sup>(<b>r</b>)=&delta;<i>E</i>[<i>n</i>]/&delta;<i>n</i>(<b>r</b>).  
+<i>V</i><sup>eff</sup>(<b>r</b>) defines a one-particle Hamiltonian
+which generates a new density <i>n</i><sub>out</sub>, which differs
+from
+<i>n</i><sub>in</sub>.  Self-consistency is reached when an
+<i>n</i><sub>out</sub>=<i>n</i><sub>in</sub>.  This density is also
+the one for which <i>E</i>[<i>n</i>] is minimum, or at least
+stationary, for certain formulations.  The codes here implement the
+standard functional, called the "Hohenberg Kohn" or HK functional, for
+which energy is a minimum, and also the "Harris-Foulkes" or HF
+functional (M. Foulkes and R. Haydock, <i>Phys. Rev.</i> B39, 12520
+(1989)), for which for which the energy is stationary at
+self-consistency, though typically it is a maximum point.
+
+<P><P>
+
+LDA+<i>U</i> theory, an extension to LDA, is also a mean-field theory.
+At sites where <i>U</i> is added there is a self-consistency condition on
+the site <b>density matrix</b>, which must be incorporated together with the standard
+charge self-consistency.
+
+<P><P>
+
+<A name="ncselfconsistency"><FONT color="#bb3300"><I>Self-Consistency in Noncollinear Magnetism</I>&nbsp;</FONT></A>.
+
+In noncollinear extensions to standard DFT, the density turns into a 2&times;2
+matrix, for which at any point <b>r</b> the density may be decomposed into
+linear combinations of Pauli matrices.  The decomposition defines the x,y,z
+components of the spin density.  Using the connection between Pauli matrices and
+cartesian coordinates, the spin density represented as spin amplitude and
+direction.  This is how it is represented externally.  Internally it is
+represented at times either as (amplitude, direction), or (when constructing the
+hamiltonian or charge density) as a 2&times;2 matrix.  Noncollinear magnetism is
+implemented at present in the ASA only, and the spin orientation a site is
+assumed to be constant for the whole site.  Self-consistency in this context
+means that the spin at each site is rotated so that the off-diagonal part of the
+2&times;2 spin density matrix vanish.
+
+<P><P>
+
+<A name="cpaselfconsistency"><FONT color="#bb3300"><I>Self-Consistency in the Coherent Potential Approximation</I>&nbsp;</FONT></A>&nbsp;
+
+Alloys consist of different kinds of atoms sitting at a given lattice site, or
+in the magnetic version, an atom of a particular type (e.g. Fe) with different
+spin configurations.  The CPA replaces a statistical ensemble of atoms with
+which is taken to be an average, or composite of the true atoms.  CPA theory is
+a way to construct the "average" properties of a composite atom, in an optimal
+manner, by constructing an the average scattering properties of a site.  The
+theory is naturally formulated in the language of Green's functions.  In version
+7.8 the CPA has been implemented in the ASA for both magnetic and chemical
+disorder, in program <b>lmgf</b>.  Thus <b>lmgf</b> requires two kinds of
+self-consistency: an outer loop for charge and an inner loop for the CPA
+condition.  See <B><A href="cpa.html">cpa.html.</A></B>
+
+<P><P>
+
+<A name="noneqselfconsistency"><FONT color="#bb3300"><I>Self-Consistency in nonequilibrium transport</I>&nbsp;</FONT></A>&nbsp;
+<b>lmpg</b> is a Green's function code, similar to <b>lmgf</b> but designed for
+layered systems (periodic in two dimensions but not in the third).  One of the
+best uses of this method is its ability to calculate transport in the
+Landauer-Buttiker framework.  Outside the small bias regime, the potential must
+be determined self-consistently under nonequilibrium conditions.  The
+implementation in lmpg is described <A
+href=http://link.aps.org/abstract/PRB/v76/e165106> here</A>.
+
+
+<P><P>
+
+<A name="qsgwselfconsistency"><FONT color="#bb3300"><I>The Quasiparticle Self-Consistent GW Approximation</I>&nbsp;</FONT></A>&nbsp;
+
+This set of packages provide a front end to an all-electron <i>GW</i> code,
+which works in tandem with this package to implement the quasiparticle
+self-consistent GW approximation (QS<i>GW</i>) described in
+<i>Phys. Rev.</i> B 76, 165106 (2007).  Self-consistency has a different purpose
+here.  It is based on a kind of self-consistent perturbation theory, where the
+self-consistency is used to construct an optimal non-interacting hamiltonian by
+minimizing the difference between it and the many-body hamiltonian, within the
+<i>GW</i> approximation.  QS<i>GW</i> describes optical properties in a wide
+range of materials rather well, including cases where the local-density and
+LDA-based <i>GW</i> approximations fail qualitatively.  Self-consistency
+dramatically improves agreement with experiment, and is sometimes essential.
+QS<i>GW</i> avoids some formal and practical problems encountered in
+conventional self-consistent <i>GW</i>, which is more akin to the mean-field
+self-consistency desribed earlier.  QS<i>GW</i> handles both itinerant and
+correlated electrons on an equal footing, without any ambiguity about how a
+localized state is defined, or how double-counting terms should be subtracted.
+Weakly correlated materials such as Na and <i>sp</i> semiconductors are
+described with uniformly high accuracy.  Discrepancies with experiment are small
+and systematic, and can be explained in terms of the approximations made.
+
+<P><P>
+
+<A name="tbeselfconsistency"><FONT color="#bb3300"><I>Self-Consistency in Tight-binding models</I>&nbsp;</FONT></A>&nbsp;
+
+Typically empirical tight-binding models, for which the form of matrix
+elements is postulated, ignore self-consistency.  However, the effects
+of charge transfer can be important, and the quality tight-binding
+models can be vastly improved with minimal complexity added to the
+hamiltonian (M. W. Finnis et al, <i>Phys. Rev. Lett.</i> 81, 5149
+(1998)).  
+
+This package's implementation of empirical tight-binding hamiltonians,
+<b>tbe</b>, has a facility for including electrostatic interactions in
+a self-consistent manner.  Site charges are accumulated from
+eigenvectors, which is used to make a Madelung potential
+
+Typically tight-binding models ignore self-consistency; however,
+<b>tbe</b> has a capability to include
+<A href="tbe.html#section3">potential changes from charge transfer in a
+self-consistent manner</A>. The site charges generate an
+electrostatic potential through a Madelung matrix, and must be
+determined self-consistently.
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+# from http://cst-www.nrl.navy.mil/lattice/struk/c33.html
+# Bi2Te3 from Wyckoff
+% const a=4.3835 c=30.487 uTe=0.788 uBi=0.40
+# Bi2Se3 from Wyckoff
+% const a=4.138  c=28.64  uTe=0.794 uBi=0.399
+# Bi2Se3 by LDA total energy minimization: essentially same as Bi2Te3
+% const a=4.138  c=28.64  uTe=0.788 uBi=0.400
+# Bi2Te2S from Wyckoff.  Bond lengths come out as Wyckoff says.
+% const a=4.316 c=30.01 uTe=0.788 uBi=0.392
+LATTICE
+   SPCGRP=R-3M
+   UNITS=A
+   A={a} C={c}
+# This one is for Bi2Te3
+SITE
+
+#   rhombohedral cell, multiples of lattice vectors
+#     ATOM=Te X=0     0     0
+#     ATOM=Te X={uTe-1} {uTe-1} {uTe}
+#     ATOM=Bi X={uBi-1} {uBi-1} {uBi}
+
+#   From Wyckoff, basis vectors as multiples of conventional cell
+    ATOM=Te C=0     0    0
+    ATOM=Te C=0     0   {uTe}
+    ATOM=Bi C=0     0   {uBi}
+
+#   Alternative, in cartesian coordinates
+#   ATOM=Te POS= 0.0000000   0.0000000   0.0000000
+#   ATOM=Te POS=-0.5000000  -0.8660254   1.4616199
+#   ATOM=Bi POS= 0.5000000   0.8660254   0.8030878
+
+# This one is for Bi2Te2S
+SITE
+    ATOM=S  C=0     0    0
+    ATOM=Te C=0     0   {uTe}
+    ATOM=Bi C=0     0   {uBi}

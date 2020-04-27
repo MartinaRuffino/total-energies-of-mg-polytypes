@@ -1,0 +1,23 @@
+# Body centered tetragonal.  From http://lamp.tu-graz.ac.at/~hadley/ss1/bzones/tetbc.php
+% const cbya=1
+# In units of RLV
+% char  G "0    0     0   "
+% char  X "0.5  0     0   "
+% char  Z "0.5  0.5  -0.5 "
+% char  N "0    0.5   0   "
+% char  P "0.25 0.25  0.25"
+
+# In Cartesian coordinates, units 2*pi/a
+% char  G "0    0    0   "
+% char  X "0.5  0.5  0   "
+% char  Z "1    0    0   "
+% char  N "0.5  0    {1/cbya/2}"
+% char  P "0.5  0.5  {1/cbya/2}"
+
+41  {Z} {G}   Z to G    line Sigma
+29  {G} {X}   G to X    line Delta
+21  {X} {P}   X to P    line W
+21  {P} {N}   P to N    line Q
+29  {N} {G}   N to G    
+35  {G} {P}   G to P    
+# 41  {Z} {X}   Z to X  line Y

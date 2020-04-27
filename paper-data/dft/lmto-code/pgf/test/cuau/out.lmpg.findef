@@ -1,0 +1,388 @@
+ ----------------------  START LMPG  ----------------------
+#rf  355: a=7.66, avw=2.99349982
+ HEADER Master file for transition and other elemental metals
+
+ LMPG:     nbas = 15  nspec = 2  verb 31,20
+ special:  forces, scr-rho-out(model eps)
+ pot:      XC:BH
+ asa:      gam-rep, Q2:Power-moments
+ bz:       metal, tetra 
+ pgf:      self-consistent leads  via LU decmpsn
+
+ PGFSET: 15 principal layers, 15+1+1 sites.  Normal: 0 0 1
+   PL |   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
+ size |   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+  PLV |   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   PL  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ Site  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+
+ LATTIC:  Padding Plat(3) with end principal layers: 
+   0.000000   0.000000   8.660254 Plat(3) as input
+   0.707107   0.408248   0.577350 PlatL:  angle (deg) with Plat(3) = 54.73561
+   0.707107   0.408248   0.577350 PlatR:  angle (deg) with Plat(3) = 54.73561
+   2.828427   1.632993  10.969655 Plat(3) including double padding
+
+                Plat                                  Qlat
+   0.707107   0.000000   0.000000        1.414214  -0.816497  -0.243095
+   0.353553   0.612372   0.000000        0.000000   1.632993  -0.243095
+   2.828427   1.632993  10.969655        0.000000   0.000000   0.091161
+   alat = 7.66  Cell vol = 2134.911706
+
+ xlgen: added missing plat: ivck= 0 0 1  rmax=   4.922  rpad*rmax=   0.000
+
+ LATTC:  as= 2.000   tol=1.00e-10   alat= 7.66000   awald= 0.155   lmax=6
+         r1=  4.922   nkd= 507      q1=  2.072   nkg= 213
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is orthorhombic with 8 symmetry operations.
+ SYMCRY: crystal invariant under 4 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         m(1/2,sqrt(3)/2,0) m(-1/2,sqrt(3)/2,0)
+         m(1/2,sqrt(3)/2,0) m(-1/2,sqrt(3)/2,0)
+         (warning) 4 group ops supplied but generators create 6 ops
+ MKSYM (warning): generators create more than ngmx=48 group ops ...
+ SGROUP: 6 symmetry operations from 2 generators
+ MKSYM:  found 6 space group operations
+         no attempt to add inversion symmetry
+
+ SPLCLS:  2 species split into 15 classes
+ Species  Class      Sites...
+ A        1:A        1
+          3:A2       2
+          5:A3       3
+          7:A4       4
+          9:A5       5
+         11:A6       6
+         13:A7       7
+         15:A8       8
+ B        2:B        9
+          4:B2       10
+          6:B3       11
+          8:B4       12
+         10:B5       13
+         12:B6       14
+         14:B7       15
+         15 classes for embedding region + 2 for padding layers
+  2D-reciprocal vectors:
+    1.414214   -0.816497    0.000000
+    0.000000    1.632993    0.000000
+ BZMESH: 15 irreducible QP from 64 ( 8 8 1 )  shift= F F F
+  
+ ZMESH: nz=15 (ellipse)  ecc,eps=0.8,0.3  e1,e2=-1.00,0.00
+
+ GETZV:  187 valence electrons
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A9         0.000000   0.000000   0.000000   0.000000  -0.707174
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.707174
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ B8         0.000000   0.000000   0.000000   0.000000  -0.611547
+ Sum Q=0.000000  Emad=0.000000(0.000000)  Vmtz=-0.611547
+
+ shifts added to bulk ES potential:  vconst(L)=0.000000   vconst(R)=0.000000
+ cpudel    ...   Time this iter:  time(s):  0.139    total:  0.139s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 153 0 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 153 0 0 0
+
+ --- PGFASA ( gamma, bigemb ) ---
+ bulk L,R GF: find neutral Ef and qnu, idos,  using P3
+   PL   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
+  1st   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+ nbas   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+ ndim   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9
+ ldim   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9
+  L+I   9   9   9   9   9   9   9   9   9   9   9   9   9   9   9
+  PLV   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+ 
+ using ef=0.0000000  vconst=0.0000000 vconst(L)=0.0000000 vconst(R)=0.0000000
+ 
+ iz = 1 of 15  z = -0.999875 0.002240  wz = 6.41836e-4 0.00572959  q= 0 0 0
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    2.170555   11.363724   -4.524885    2.071246    0.363724
+     15    5.451584   11.902800   -4.452316    1.790743    0.902800
+ All PL    7.622139   23.266524   -8.977201                1.266524
+ PL tot    7.622139   23.266524   -8.977201                1.266524
+ Deviations from charge neutrality:
+   Left end layer       0.363724
+   Right end layer      0.902800
+   Embedded layers      0.000000
+   Sum of all layers    1.266524
+ 
+ gfzerq: ef=0  dq=0.364  vold=0  dv=0.168  vnew= 0.167572  layer -1
+ gfzerq: ef=0  dq=0.903  vold=0  dv=0.166  vnew= 0.165603  layer 15
+         average <dq>=0.688  <dv>=0.167 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-0.388  vold=0.168  dv=0.0865  vnew= 0.081075  layer -1
+ gfzerq: ef=0  dq=0.263  vold=0.166  dv=0.068  vnew= 0.233616  layer 15
+         average <dq>=0.331  <dv>=0.0778 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.207  vold=0.0811  dv=0.0322  vnew= 0.113302  layer -1
+ gfzerq: ef=0  dq=0.0248  vold=0.234  dv=0.00708  vnew= 0.240695  layer 15
+         average <dq>=0.147  <dv>=0.0233 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-0.0754  vold=0.113  dv=0.00942  vnew= 0.103885  layer -1
+ gfzerq: ef=0  dq=-7.48e-4  vold=0.241  dv=2.07e-4  vnew= 0.240488  layer 15
+         average <dq>=0.0533  <dv>=0.00666 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.105  vold=0.104  dv=0.00553  vnew= 0.109414  layer -1
+ gfzerq: ef=0  dq=2.39e-5  vold=0.24  dv=6.4e-6  vnew= 0.240495  layer 15
+         average <dq>=0.0739  <dv>=0.00391 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-0.02  vold=0.109  dv=0.00107  vnew= 0.108344  layer -1
+ gfzerq: ef=0  dq=1.24e-8  vold=0.24  dv=3.32e-9  vnew= 0.240495  layer 15
+         average <dq>=0.0142  <dv>=7.57e-4 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.0144  vold=0.108  dv=4.66e-4  vnew= 0.10881  layer -1
+ gfzerq: ef=0  dq=3.55e-15  vold=0.24  dv=7.77e-16  vnew= 0.240495  layer 15
+         average <dq>=0.0102  <dv>=3.3e-4 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-6.76e-4  vold=0.109  dv=2.1e-5  vnew= 0.108789  layer -1
+ gfzerq: ef=0  dq=-3.73e-14  vold=0.24  dv=8.1e-15  vnew= 0.240495  layer 15
+         average <dq>=4.78e-4  <dv>=1.48e-5 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=8.16e-6  vold=0.109  dv=2.5e-7  vnew= 0.10879  layer -1
+ gfzerq: ef=0  dq=2.31e-14  vold=0.24  dv=5.02e-15  vnew= 0.240495  layer 15
+         average <dq>=5.77e-6  <dv>=1.77e-7 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-3.07e-9  vold=0.109  dv=9.4e-11  vnew= 0.10879  layer -1
+ gfzerq: ef=0  dq=-3.55e-15  vold=0.24  dv=7.77e-16  vnew= 0.240495  layer 15
+         average <dq>=2.17e-9  <dv>=6.64e-11 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    4.464761   11.000000   -3.391392    2.050183    0.000000
+     15    4.597929   11.000000   -1.653346    1.769592    0.000000
+ All PL    9.062690   22.000000   -5.044738                0.000000
+ PL tot    9.062690   22.000000   -5.044738                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=0  vold=0.109  dv=0  vnew= 0.10879  layer -1
+ gfzerq: ef=0  dq=-3.55e-15  vold=0.24  dv=7.77e-16  vnew= 0.240495  layer 15
+         average <dq>=2.51e-15  <dv>=5.5e-16 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ potential shift L PL =  0.108790 > padtol.  Cumulative shift =  0.108790
+ potential shift R PL =  0.240495 > padtol.  Cumulative shift =  0.240495
+ shift (0.24) exceeded Pade tolerance (0.01) ... redo GF pass
+
+ iz = 1 of 15  z = -0.999875 0.002240  wz = 6.41836e-4 0.00572959  q= 0 0 0
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    7.060898   10.832089   -3.291971    1.211064   -0.167911
+     15    6.552561   11.008146   -1.697497    0.316162    0.008146
+ All PL   13.613458   21.840235   -4.989469               -0.159765
+ PL tot   13.613458   21.840235   -4.989469               -0.159765
+ Deviations from charge neutrality:
+   Left end layer      -0.167911
+   Right end layer      0.008146
+   Embedded layers      0.000000
+   Sum of all layers   -0.159765
+ 
+ gfzerq: ef=0  dq=-0.168  vold=0  dv=0.0238  vnew= -0.02378  layer -1
+ gfzerq: ef=0  dq=0.00815  vold=0  dv=0.00124  vnew= 0.001243  layer 15
+         average <dq>=0.119  <dv>=0.0168 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00468  vold=-0.0238  dv=6.44e-4  vnew= -0.023136  layer -1
+ gfzerq: ef=0  dq=0.00145  vold=0.00124  dv=2.69e-4  vnew= 0.001512  layer 15
+         average <dq>=0.00346  <dv>=4.94e-4 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00146  vold=-0.0231  dv=2.86e-4  vnew= -0.02285  layer -1
+ gfzerq: ef=0  dq=-3.13e-5  vold=0.00151  dv=5.66e-6  vnew= 0.001506  layer 15
+         average <dq>=0.00103  <dv>=2.02e-4 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=2.21e-5  vold=-0.0229  dv=1.2e-5  vnew= -0.022838  layer -1
+ gfzerq: ef=0  dq=-8.89e-9  vold=0.00151  dv=1.61e-9  vnew= 0.001506  layer 15
+         average <dq>=1.57e-5  <dv>=8.52e-6 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-3.83e-5  vold=-0.0228  dv=7.63e-6  vnew= -0.022846  layer -1
+ gfzerq: ef=0  dq=-1.24e-14  vold=0.00151  dv=1.87e-15  vnew= 0.001506  layer 15
+         average <dq>=2.71e-5  <dv>=5.4e-6 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-2.86e-9  vold=-0.0228  dv=5.71e-10  vnew= -0.022846  layer -1
+ gfzerq: ef=0  dq=1.24e-14  vold=0.00151  dv=1.87e-15  vnew= 0.001506  layer 15
+         average <dq>=2.02e-9  <dv>=4.04e-10 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    4.376559   11.000000   -3.540397    1.210581    0.000000
+     15    6.658817   11.000000   -1.681187    0.316207    0.000000
+ All PL   11.035376   22.000000   -5.221583                0.000000
+ PL tot   11.035376   22.000000   -5.221583                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=7.11e-15  vold=-0.0228  dv=1.62e-15  vnew= -0.022846  layer -1
+ gfzerq: ef=0  dq=-1.07e-14  vold=0.00151  dv=1.6e-15  vnew= 0.001506  layer 15
+         average <dq>=9.06e-15  <dv>=1.61e-15 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ potential shift L PL = -0.022846 > padtol.  Cumulative shift =  0.085944
+ potential shift R PL =  0.001506 > padtol.  Cumulative shift =  0.242001
+ shift (0.023) exceeded Pade tolerance (0.01) ... redo GF pass
+
+ iz = 1 of 15  z = -0.999875 0.002240  wz = 6.41836e-4 0.00572959  q= 0 0 0
+
+ PGFASA: integrated quantities from G
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    5.547891   11.004905   -3.538559    1.365673    0.004905
+     15    6.916877   10.998934   -1.680998    0.311087   -0.001066
+ All PL   12.464768   22.003840   -5.219557                0.003840
+ PL tot   12.464768   22.003840   -5.219557                0.003840
+ Deviations from charge neutrality:
+   Left end layer       0.004905
+   Right end layer     -0.001066
+   Embedded layers      0.000000
+   Sum of all layers    0.003840
+ 
+ gfzerq: ef=0  dq=0.00491  vold=0  dv=8.84e-4  vnew= 0.000884  layer -1
+ gfzerq: ef=0  dq=-0.00107  vold=0  dv=1.54e-4  vnew= -0.000154  layer 15
+         average <dq>=0.00355  <dv>=6.35e-4 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-7.7e-4  vold=8.84e-4  dv=1.2e-4  vnew= 0.000764  layer -1
+ gfzerq: ef=0  dq=-1.76e-4  vold=-1.54e-4  dv=3.05e-5  vnew= -0.000185  layer 15
+         average <dq>=5.59e-4  <dv>=8.75e-5 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=2.11e-6  vold=7.64e-4  dv=3.29e-7  vnew= 0.000765  layer -1
+ gfzerq: ef=0  dq=2.62e-7  vold=-1.85e-4  dv=4.53e-8  vnew= -0.000184  layer 15
+         average <dq>=1.51e-6  <dv>=2.35e-7 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=-5.26e-11  vold=7.65e-4  dv=8.17e-12  vnew= 0.000765  layer -1
+ gfzerq: ef=0  dq=-8.38e-12  vold=-1.84e-4  dv=1.45e-12  vnew= -0.000184  layer 15
+         average <dq>=3.76e-11  <dv>=5.87e-12 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+     -1    5.719269   11.000000   -3.530007    1.365633    0.000000
+     15    6.837566   11.000000   -1.682995    0.311081    0.000000
+ All PL   12.556835   22.000000   -5.213001                0.000000
+ PL tot   12.556835   22.000000   -5.213001                0.000000
+ Deviations from charge neutrality:
+   Left end layer       0.000000
+   Right end layer      0.000000
+   Embedded layers      0.000000
+   Sum of all layers    0.000000
+ 
+ gfzerq: ef=0  dq=1.6e-14  vold=7.65e-4  dv=2.8e-15  vnew= 0.000765  layer -1
+ gfzerq: ef=0  dq=1.78e-15  vold=-1.84e-4  dv=2.6e-16  vnew= -0.000184  layer 15
+         average <dq>=1.14e-14  <dv>=1.99e-15 
+ gippad: integrate 15 points corr. from dv shift: idos, qnu
+ potential shift L PL =  0.000765  Cumulative shift =  0.086709
+ potential shift R PL = -0.000184  Cumulative shift =  0.241816
+
+ shift (7.6e-4) within Pade tolerance (0.01, tolq=0) ... accept Pade correction to G
+
+ pgfasa: vbar = 0.086709, 0.241816 adds d.c. term vbar * zval = 3.613774
+
+ pgfasa (exit): vconst updated from 0.000000(L), 0.000000(R) to 0.086709(L), 0.241816(R)
+ setting sumev=0 for now
+
+ LMPG: ehf=4.6758163  ehk=4.6758058  sumev=0.0000000  delsev=8.8268206
+ enutod (warning) ic=1 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=1 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=2 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=3 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=4 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=5 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=6 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=7 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=8 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=9 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=10 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=11 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=12 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=13 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=13 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=13 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=14 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=14 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=14 l=2 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=15 l=0 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=15 l=1 q0=0.000 < 0 ... no shift
+ enutod (warning) ic=15 l=2 q0=0.000 < 0 ... no shift
+  
+ mixing: mode=A  nmix=1  beta=.4  kill=4
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=2.97e-5
+ AMIX: nmix=0 mmix=8  nelts=24  beta=0.4  tm=10  rmsdel=2.97e-5
+
+ GETZV:  187 valence electrons
+ATOM=A9   Z=79  Qc=68  R=2.993500  Qv=0  a=0.025  nr=493
+ATOM=B8   Z=29  Qc=18  R=2.993500  Qv=0  a=0.025  nr=415
+
+ ES potential for infinitely repeating L princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ A9         0.000000   0.000000   0.086709   0.086709  -0.620466
+ Sum Q=0.000000  Emad=0.000000(0.000000) Vconst=0.086709  Vmtz=-0.620466
+
+ ES potential for infinitely repeating R princ layer:
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ B8         0.000000   0.000000   0.241816   0.241816  -0.369734
+ Sum Q=0.000000  Emad=0.000000(0.000000) Vconst=0.241816  Vmtz=-0.369734
+
+ shifts added to bulk ES potential:  vconst(L)=0.086709   vconst(R)=0.241816
+ SV:   1  2.969e-5 0.4000  2.272e-5       4.67580581 0.000000 L
+
+   it  1  of 30    ehf=       4.675816   ehk=       4.675806
+                rms dq=  0.000030    tol= 0.000030  more=F
+c pgf=2 beta=.4 file=1 gamma=1 rw=1 rwcu=1 nit=30 nk=8 nk2=1 bzj=0 scr=44 ehf=4.6758163 ehk=4.6758058
+ cpudel    ...   Time this iter:  time(s):  0.499    total:  0.639s
+
+ Jolly good show !  You converged to rms DQ=  0.000023
+ Exit 0 LMPG 
+ CPU time:  0.639s   Wall clock 0.689s  at  20:04:39 25.06.2018  on  localhost.localdomai
+     calls      === cpu time ===  depth 5
+                per call   total
+        1       0.64       0.64   main
+       11       0.00       0.01   |--madmat
+        6       0.01       0.04   |--atscpp
+        1       0.45       0.45   `--pgfasa
+     1350       0.00       0.40      `--pgsif
+     1350       0.00       0.40         `--pgbevl
+     1350       0.00       0.02            |--plham
+     4050       0.00       0.02            |  `--bloch
+     1350       0.00       0.32            |--pgblkk
+     1350       0.00       0.28            |  `--zgeevs
+     1350       0.00       0.06            `--pgbulk

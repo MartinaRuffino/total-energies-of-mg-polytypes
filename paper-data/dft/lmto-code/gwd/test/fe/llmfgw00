@@ -1,0 +1,124 @@
+ -----------------------  START LMFGWD (80000K)  -----------------------
+#rf  211: (file atparms) Fe : Z1=26 eref=-2540.5681 mom=2.2 rsm=1.3 rsmd=.95
+ HEADER Master file for multinary TM compounds, suitable for GW
+
+ LMFGWD:   nbas = 1  nspec = 1  vn 7.5(LMFGWD 7.5)  verb 31,20
+ special:  forces
+ pot:      spin-pol, XC:BH, read Sigma
+ auto:     Pfloat:v6(CG v6)  Autoread:  none
+ bz:       metal(5), tetra 
+
+                Plat                                  Qlat
+  -0.500000   0.500000   0.500000        0.000000   1.000000   1.000000
+   0.500000  -0.500000   0.500000        1.000000   0.000000   1.000000
+   0.500000   0.500000  -0.500000        1.000000   1.000000   0.000000
+   alat = 5.408  Cell vol = 79.082439
+
+ LATTC:  as= 2.000   tol=1.00E-08   alat= 5.40800   awald= 0.466
+         r1=  2.467   nkd= 137      q1=  4.689   nkg= 201
+
+ SGROUP: 1 symmetry operations from 0 generators
+ SYMLAT: Bravais system is cubic with 48 symmetry operations.
+ SYMCRY: crystal invariant under 48 symmetry operations for tol=1e-5
+ GROUPG: the following are sufficient to generate the space group:
+         i*r3d r2(1,1,0)
+         i*r3d r2(1,1,0)
+ MKSYM:  found 48 space group operations
+         no attempt to add inversion symmetry
+
+ species data:  augmentation                           density
+ spec       rmt   rsma lmxa kmxa      lmxl     rg   rsmv  kmxv foca   rfoca
+ Fe       2.225  0.890    4    4         4  0.556  1.112    15    1   0.890
+
+ MSHSIZ: mesh has 11 x 11 x 11 divisions; length 0.426, 0.426, 0.426
+         generated from gmax = 9.0 a.u. : 959 vectors of 1331 (72%)
+
+ GVLIST: gmax = 9 a.u. created 959 vectors of 1331 (72%)
+         mesh has 11 x 11 x 11 divisions; length 0.426, 0.426, 0.426
+ SGVSYM: 38 symmetry stars found for 959 reciprocal lattice vectors
+ 
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 30 0 25 20
+ kappa   Low   Int   High  L+I  L+I+H  Neglected
+   1      16     0     9    16    25       0
+   2       9     0    16     9    25       0
+   3       5     0     0     5     5      20
+  all     30     0    25    30    55      20
+ suham :  25 augmentation channels, 25 local potential channels  Maximum lmxa=4
+
+ sugcut:  make orbital-dependent reciprocal vector cutoffs for tol=1.0e-6
+ spec      l    rsm    eh     gmax    last term    cutoff
+  Fe       0*   1.30  -0.40   5.718    1.14E-06     249 
+  Fe       1    1.30  -0.40   6.080    2.15E-06     321 
+  Fe       2    0.95  -0.40   8.983    1.67E-06     959*
+  Fe       3    1.30  -0.40   6.806    1.18E-06     429 
+  Fe       0*   1.30  -1.20   5.718    1.14E-06     249 
+  Fe       1    1.30  -1.20   6.080    2.15E-06     321 
+  Fe       2    0.95  -1.20   8.983    1.67E-06     959*
+ 
+
+ iors  : read restart file (binary, mesh density) 
+         use from  restart file: ef window, positions, pnu 
+         ignore in restart file: *
+
+ --- BNDFP:  begin iteration 1 of 1 ---
+
+ Make potential without XC part ...
+
+ avg es pot at rmt= 0.661309  avg sphere pot= 0.596706  vconst=-0.661309
+
+ site  1  z= 26.0  rmt= 2.22485  nr=383   a=0.025  nlml=25  rg=0.556  Vfloat=T
+ sm core charge = 0.939394 (sphere) + 0.022003 (spillout) = 0.961397
+ potential shift to crystal energy zero:    0.000038
+
+
+ avg es pot at rmt= 0.661309  avg sphere pot= 0.596706  vconst=-0.661309
+
+ site  1  z= 26.0  rmt= 2.22485  nr=383   a=0.025  nlml=25  rg=0.556  Vfloat=T
+ sm core charge = 0.939394 (sphere) + 0.022003 (spillout) = 0.961397
+ potential shift to crystal energy zero:    0.000038
+
+
+ RDSIGM: read file sigm and create COMPLEX sigma(R) by FT ...
+         Sigm will be approximated by:  diagonal Sigma for high and low states 
+         Approximate sigma for energies E(lda)>2.5
+         For high states read constant sigii from sigm file 
+         sigm file has 29 irreducible QP: nk = ( 8 8 8 )  shift= F F F
+         average SE read from sigm file:  0.158701 0.174054
+ hft2rs: make neighbor table for r.s. hamiltonian using range = 8 * alat
+ pairc:   4279 pairs total  4279 is max cluster size
+ hft2rs: found 512 connecting vectors out of 512 possible for FFT
+ symiax: enlarged neighbor table from 512 to 597 pairs (48 symops)
+
+ q-points in full BZ where sigma calculable ...
+ BZMESH:  512 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ Irr. qp for which sigma is calculated ...
+ BZMESH:  29 irreducible QP from 512 ( 8 8 8 )  shift= F F F
+ 
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.672  max Im(hrs) = 5.51e-10
+ hft2rs created hrs:  ndhrs=30  max Re(hrs) = 0.675  max Im(hrs) = 7.71e-10
+ check FT s(R) against s(q) ... maximum error = 1.8e-15 < tol (5e-6)
+ check FT s(R) against s(q) ... maximum error = 2.1e-15 < tol (5e-6) spin 2
+ rsmsym: symmetrizing complex s(1..597) using 48 group operations
+ symstr: max asymmetry = 1.11e-16
+ check FT s(R) against s(q) ... maximum error = 3.6e-15
+ check FT s(R) against s(q) ... maximum error = 3.6e-15 spin 2
+
+ subzi: sampling integration of bands; sampling integration of density
+        sampling integration uses:  N=0  W=0.002  ef0=0.105689
+
+
+ Start first of two band passes ...
+  lmfgw: input one of the following jobs:
+   -1 : creates files GWinput, QPNT, QIBZ, Q0P, QGpsi, QGcou, KPTin1BZ
+    0 : init mode; creates files SYMOPS, LATTC, CLASS, NLAindx, ldima
+    1 : GW driver mode; creates files gwb,gw1,gw2,gwa,vxc,evec,rhoMT.*,normchk
+    4 : band mode 
+    5 : eigenvalue-only mode 
+  job?
+
+ gw setup, job 0
+
+ Creating files SYMOPS, LATTC, CLASS, NLAindx, ldima
+
+ OK! lmfgw generated files, job 0

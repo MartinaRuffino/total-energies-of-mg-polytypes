@@ -1,0 +1,4 @@
+ spectral mode, write data to file spf.fe, gnuplot format
+ 10 bands  window=(-4,4)  nw=1469  nq=249 of 253  Atop=10  Amax*Ascl=59.3  escl=1
+ Make figure with the command shown.  gnu creates file  spf.ps
+ gnuplot gnu.plt

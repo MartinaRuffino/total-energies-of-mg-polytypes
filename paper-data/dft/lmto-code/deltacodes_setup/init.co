@@ -1,0 +1,20 @@
+HEADER unknown compound
+LATTICE
+#       SPCGRP=1
+#       A=2.4968  B=2.4968  C=4.03081   ALPHA=90  BETA=90  GAMMA=60
+% const a=2.4968
+        ALAT={a}  UNITS=A
+        PLAT=    1.0000000    0.0000000    0.0000000
+                 0.5000000    0.8660254    0.0000000
+                 0.0000000    0.0000000    1.6143904
+SITE
+     ATOM=Co       X=     0.0000000    0.0000000    0.0000000
+     ATOM=Co       X=     0.3333333    0.3333333    0.5000000
+SPEC
+     ATOM=Co Z=27 MMOM=0 0 2 
+
+
+
+
+
+

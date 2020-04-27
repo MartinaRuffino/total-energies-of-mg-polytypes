@@ -1,0 +1,19 @@
+# fcds shostr.f
+# fcds config.f
+fcds asaddq.f
+fcds hamfb3.f
+fcds roth.f
+fcds rothnc.f
+fcds bloch.f
+fcds mksbet.f
+fcds hmltns.f
+fcds pqmix.f
+fcds trs.f
+fcds yyhmul.f
+fcds asldau.f
+fcds suqlst.f
+fcds rdeq.f
+fcds scrmom.f
+fcds plm2pa.f
+fcds prjrsp.f
+fcds rsmsym.f

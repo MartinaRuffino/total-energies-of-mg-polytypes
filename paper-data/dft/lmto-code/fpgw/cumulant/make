@@ -1,0 +1,20 @@
+#!/bin/bash
+# Type ./make to make the serial spfcn executable.
+# Use ./make -mpi to make mpi source, but you will need to have access to dynamic libraries, i.e., openmpi etc.
+if [ "X$1" == "X-mpi" ]
+then
+	FLAGS='-O2 -ffree-line-length-none -fcheck=bounds'
+	F90='mpif90'
+	cp parallel.src par.f90
+else
+	FLAGS='-O0 -ffree-line-length-none -fcheck=bounds'
+	F90='gfortran'
+	cp sequential.src par.f90
+fi
+srcs='m_par.f90 par.f90 polint.f90 terp.f90 terpc.f90 str.f90 str2dp.f90'
+target='spfcn2.f90'
+for src in $srcs
+do
+	$F90 -c $FLAGS $src 
+done
+gfortran $FLAGS -o ../bin/spfcn spfcn2.f90 *.o

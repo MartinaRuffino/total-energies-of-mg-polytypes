@@ -1,0 +1,26 @@
+--- ASA Green's function package (v6.11) ---
+
+This package implements the ASA local spin-density approximation using
+Green's functions.  It adds a program `lmgf' to the ASA suite, which
+plays approximately the same role as the LMTO-ASA band program `lm'.
+
+--- Installation ---
+To install, invoke `configure' with --enable-gf
+
+--- Documentation ---
+See file doc/gf.html for documentation.
+
+--- Test cases and examples ---
+
+Shell script gf/test/testgf checks out various branches of lmgf; it
+also is convenient to illustrate some of the features in lmgf.  You
+can run this script for one of the following cases:
+
+  gf/test/test.gf co    (hcp Co)
+  gf/test/test.gf fccfe (fcc fe, noncollinear case)
+  gf/test/test.gf mnpt  (MnPt3)
+  gf/test/test.gf mnn   (MnN in the ZB structure)
+  gf/test/test.gf nife  (INVAR alloy FeNi--- this takes a long time to run!)
+
+You can invoke all tests with
+  gf/test/test.gf --all

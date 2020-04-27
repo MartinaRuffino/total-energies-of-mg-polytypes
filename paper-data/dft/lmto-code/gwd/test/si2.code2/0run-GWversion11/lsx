@@ -1,0 +1,369 @@
+  --- Choose modes below ------------
+   Sx(1) Sc(2) ScoreX(3) 
+   [option --- (+ QPNT.{number} ?)] 
+  Add 1000, eg, 1001 is diagonal only mode for one-shot Z=1
+  --- Put number above ! ------------
+ hsfp0_sc: VerNum= xxx: mode=  1
+  ixc nz=           1           0
+  ### readin BZDATA ###
+  read_bzdata           8           3          27          48           2
+          48
+  nqbz =           8
+  nqibz ngrp=           3          48
+  symgrp=
+   UseSYMOPSfile                                                                
+                                          
+  alat natom=   10.2600000000000                2
+  nspin nl nnv nnc =           1           5           2           2
+  divisions along reciprocal base vectors G1 G2 G3=           2           2
+           2
+  --- READIN nw from NW. nw=          86
+  --- Freq ---
+     dw   =  2.000000000000000E-002
+     niw  =           6
+     delta= -1.000000000000000E-004
+     esmr =  3.000000000000000E-003
+  goto prod
+ <... > 
+ lx=  0 readin tolerance=  0.100D-04
+ lx=  1 readin tolerance=  0.100D-04
+ lx=  2 readin tolerance=  0.100D-04
+ lx=  3 readin tolerance=  0.100D-04
+ lx=  4 readin tolerance=  0.100D-04
+ lx=  5 readin tolerance=  0.100D-04
+ lx=  6 readin tolerance=  0.100D-04
+ lx=  7 readin tolerance=  0.100D-04
+ lx=  8 readin tolerance=  0.100D-04
+ --- prod section: lcutmx tolbas=  4  1.000D-05  1.000D-05  1.000D-05  1.000D-05  1.000D-05  1.000D-05  1.000D-05  1.000D-05  1.000D-05
+  --- valence product basis section
+  1  0  1  1  1
+  1  0  2  0  0
+  1  1  1  1  1
+  1  1  2  0  0
+  1  2  1  1  1
+  1  2  2  0  0
+  1  3  1  0  1
+  1  3  2  0  0
+  1  4  1  0  0
+  1  4  2  0  0
+  2  0  1  1  1
+  2  0  2  0  0
+  2  1  1  1  1
+  2  1  2  0  0
+  2  2  1  1  1
+  2  2  2  0  0
+  2  3  1  0  1
+  2  3  2  0  0
+  2  4  1  0  0
+  2  4  2  0  0
+  --- core product basis section
+  1  0  1  0  0  0  0
+  1  0  2  0  0  0  0
+  1  1  1  0  0  0  0
+  2  0  1  0  0  0  0
+  2  0  2  0  0  0  0
+  2  1  1  0  0  0  0
+  ### incwf=-1 Use ForSxc for core
+  nw from rgwinaf=          86
+  rcore2 : ic=           1
+  rcore : goto loop over l n
+  rcore2 : ic=           2
+  rcore : goto loop over l n
+  symgrp==UseSYMOPSfile
+ CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.00000 (wall)
+ genallcf_v3
+  iSigma_en=           3
+  status 1=          -3
+  status 2=          -1
+  status 3=          -1
+  nbmx ebmx from GWinput= 9999999 9999999  0.25000D+01  0.10000D+11
+  hsfp0: end of genallcf_v3
+  --- Exchange mode --- 
+  --- computational conditions --- 
+    deltaw  =     0.020000
+    esmr    =     0.003000
+    alat voltot =    10.260000   270.011394
+    niw nw dw   =     6    86     0.020000
+ init_readeigen:
+ read(ifiqg)          16          92   2.70000000000000                8
+ read EValue: nband_ev,nqi,nsp_ev          26           7           1
+   --- Readingin CLASS info ---
+         1         1
+         2         1
+  mptauof: search miat tiat for wave function rotation
+  ngcmx ngpmx=          73          92
+  rdpp_v3: 
+  ppbrd size           5           4           5           2           1
+  rdpp mdimx=          79
+  rotcg:
+  rotdlmm:
+  rotcg end:
+  rdpp_v3:end 
+  end of read QGcou
+  efsimplef2(gaussian mode):start
+  ia z(ic)=           1   14.0000000000000     
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           0           2           2
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           1           1           6
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           2           0          10
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           3           0          14
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           4           0          18
+  ia z(ic)=           2   14.0000000000000     
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           0           2           2
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           1           1           6
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           2           0          10
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           3           0          14
+  l (konfig(l,ic)-l-1) 2*(2l+1)=           4           0          18
+  valn=   8.00000000000000     
+           1           1 -0.692059429443744       0.250000000000000     
+           2          27 -0.521736214015454        1.25000000000000     
+           3          53 -0.389795956426161        2.00000000000000     
+           4          54 -0.389795956255590        2.75000000000000     
+           5          28 -0.329782529996704        3.75000000000000     
+           6          55 -2.459692572679706E-002   4.50000000000000     
+           7          56 -2.459692542349120E-002   5.25000000000000     
+           8          29  9.747710849177169E-002   6.25000000000000     
+           9          30  9.747830368586267E-002   7.25000000000000     
+          10           2  0.185196640971059        7.50000000000000     
+          11           3  0.185198017487851        7.75000000000000     
+          12           4  0.185198172112086        8.00000000000000     
+ 
+          13          57  0.230931402061103        8.75000000000000     
+          14          58  0.230931402907811        9.50000000000000     
+ valx at efini=  0.208064787086595        8.00000000000001     
+  efsimplef2(gauss):end
+  Ef=  0.208064787086595     
+  wgt nocc=   1.00000000000000        8.00000000000000     
+  ef    =  0.208064787086595     
+  esmr  =  3.000000000000000E-003
+  valn  =   8.00000000000000     
+  ntot  =   8.00000000000000     
+  eftrue=  0.208064787086595     
+  end of readin @MNLA_CPHI: norbtx=          20
+ init_readeigen2: table for rotation of cphi
+  KeepEigen=T; readin geig and cphi into m_readeigen
+  mrelc /= 0 file=
+ GEIG                                                                    9568
+  mrelc /= 0 file=
+ CPHI                                                                   10400
+  ifgeig ifcphi=          14          15
+ calculate sigma for at most  26 bands out of  26 available.  ef  =  0.208065  eftrue  =  0.208065
+ Target iq q=    1   0.0000   0.0000   0.0000
+ Target iq q=    2  -0.5000   0.5000   0.5000
+ Target iq q=    3   0.0000   0.0000   1.0000
+  ***
+    1   3  26  nspin  nq  ntq
+ spin = 2   nbloch ngp ngc= 158  89  65  nqbz =     8  nqibz =     3   ef=    0.2081 Rydberg
+ 0.2000000000000000D-01 <= deltaw(Hartree)
+ 0.1026000000000000D+02 <= alat
+ 0.2080647870865949D+00 <= ef 
+ 0.3000000000000000D-02 <= esmr
+  OPEN VXCFP 
+  rsexx ldim,nqbz          26           7
+    1  0.00000D+00  0.00000D+00  0.00000D+00
+    2 -0.50000D+00  0.50000D+00  0.50000D+00
+    3  0.00000D+00  0.00000D+00  0.10000D+01
+    4 -0.25000D-01  0.25000D-01  0.25000D-01
+    5  0.47500D+00  0.52500D+00 -0.47500D+00
+    6  0.97500D+00  0.25000D-01  0.25000D-01
+    7 -0.52500D+00  0.52500D+00  0.52500D+00
+ 
+ j iq isp=  1   1 1  q=  0.0000  0.0000  0.0000  eig=  -12.2469  Sxc(LDA)=  -12.4746
+ j iq isp=  2   1 1  q=  0.0000  0.0000  0.0000  eig=   -0.3111  Sxc(LDA)=  -13.5931
+ j iq isp=  3   1 1  q=  0.0000  0.0000  0.0000  eig=   -0.3111  Sxc(LDA)=  -13.5931
+ j iq isp=  4   1 1  q=  0.0000  0.0000  0.0000  eig=   -0.3111  Sxc(LDA)=  -13.5931
+ j iq isp=  5   1 1  q=  0.0000  0.0000  0.0000  eig=    2.2347  Sxc(LDA)=  -11.7748
+ j iq isp=  6   1 1  q=  0.0000  0.0000  0.0000  eig=    2.2347  Sxc(LDA)=  -11.7748
+ j iq isp=  7   1 1  q=  0.0000  0.0000  0.0000  eig=    2.2347  Sxc(LDA)=  -11.7748
+ j iq isp=  8   1 1  q=  0.0000  0.0000  0.0000  eig=    2.9364  Sxc(LDA)=  -15.2221
+ j iq isp=  9   1 1  q=  0.0000  0.0000  0.0000  eig=    7.6321  Sxc(LDA)=  -10.8873
+ j iq isp= 10   1 1  q=  0.0000  0.0000  0.0000  eig=    7.6321  Sxc(LDA)=  -10.8873
+ j iq isp= 11   1 1  q=  0.0000  0.0000  0.0000  eig=    8.4413  Sxc(LDA)=  -10.4110
+ j iq isp= 12   1 1  q=  0.0000  0.0000  0.0000  eig=   14.8152  Sxc(LDA)=  -11.7589
+ j iq isp= 13   1 1  q=  0.0000  0.0000  0.0000  eig=   14.8152  Sxc(LDA)=  -11.7589
+ j iq isp= 14   1 1  q=  0.0000  0.0000  0.0000  eig=   14.8152  Sxc(LDA)=  -11.7589
+ j iq isp= 15   1 1  q=  0.0000  0.0000  0.0000  eig=   20.6865  Sxc(LDA)=   -9.0292
+ j iq isp= 16   1 1  q=  0.0000  0.0000  0.0000  eig=   25.0583  Sxc(LDA)=  -12.1881
+ j iq isp= 17   1 1  q=  0.0000  0.0000  0.0000  eig=   25.0583  Sxc(LDA)=  -12.1881
+ j iq isp= 18   1 1  q=  0.0000  0.0000  0.0000  eig=   26.4311  Sxc(LDA)=  -14.3614
+ j iq isp= 19   1 1  q=  0.0000  0.0000  0.0000  eig=   26.4311  Sxc(LDA)=  -14.3614
+ j iq isp= 20   1 1  q=  0.0000  0.0000  0.0000  eig=   26.4312  Sxc(LDA)=  -14.3613
+ j iq isp= 21   1 1  q=  0.0000  0.0000  0.0000  eig=   36.9083  Sxc(LDA)=  -11.1665
+ j iq isp= 22   1 1  q=  0.0000  0.0000  0.0000  eig=   36.9083  Sxc(LDA)=  -11.1664
+ j iq isp= 23   1 1  q=  0.0000  0.0000  0.0000  eig=   36.9083  Sxc(LDA)=  -11.1664
+ j iq isp= 24   1 1  q=  0.0000  0.0000  0.0000  eig=   38.3573  Sxc(LDA)=  -10.7953
+ j iq isp= 25   1 1  q=  0.0000  0.0000  0.0000  eig=   38.3573  Sxc(LDA)=  -10.7953
+ j iq isp= 26   1 1  q=  0.0000  0.0000  0.0000  eig=   38.3575  Sxc(LDA)=  -10.7952
+ j iq isp=  1   2 1  q= -0.5000  0.5000  0.5000  eig=   -9.9295  Sxc(LDA)=  -13.1489
+ j iq isp=  2   2 1  q= -0.5000  0.5000  0.5000  eig=   -7.3178  Sxc(LDA)=  -12.1364
+ j iq isp=  3   2 1  q= -0.5000  0.5000  0.5000  eig=   -1.5046  Sxc(LDA)=  -13.2750
+ j iq isp=  4   2 1  q= -0.5000  0.5000  0.5000  eig=   -1.5046  Sxc(LDA)=  -13.2750
+ j iq isp=  5   2 1  q= -0.5000  0.5000  0.5000  eig=    1.1351  Sxc(LDA)=  -12.6613
+ j iq isp=  6   2 1  q= -0.5000  0.5000  0.5000  eig=    3.0770  Sxc(LDA)=  -11.1268
+ j iq isp=  7   2 1  q= -0.5000  0.5000  0.5000  eig=    3.0770  Sxc(LDA)=  -11.1268
+ j iq isp=  8   2 1  q= -0.5000  0.5000  0.5000  eig=    8.9001  Sxc(LDA)=  -10.1971
+ j iq isp=  9   2 1  q= -0.5000  0.5000  0.5000  eig=   10.5745  Sxc(LDA)=  -11.1645
+ j iq isp= 10   2 1  q= -0.5000  0.5000  0.5000  eig=   10.5745  Sxc(LDA)=  -11.1645
+ j iq isp= 11   2 1  q= -0.5000  0.5000  0.5000  eig=   11.4431  Sxc(LDA)=  -13.1082
+ j iq isp= 12   2 1  q= -0.5000  0.5000  0.5000  eig=   12.4248  Sxc(LDA)=  -12.6104
+ j iq isp= 13   2 1  q= -0.5000  0.5000  0.5000  eig=   12.4248  Sxc(LDA)=  -12.6104
+ j iq isp= 14   2 1  q= -0.5000  0.5000  0.5000  eig=   13.7671  Sxc(LDA)=  -13.9046
+ j iq isp= 15   2 1  q= -0.5000  0.5000  0.5000  eig=   20.0117  Sxc(LDA)=  -11.9692
+ j iq isp= 16   2 1  q= -0.5000  0.5000  0.5000  eig=   21.1391  Sxc(LDA)=  -11.5740
+ j iq isp= 17   2 1  q= -0.5000  0.5000  0.5000  eig=   23.0279  Sxc(LDA)=  -12.3752
+ j iq isp= 18   2 1  q= -0.5000  0.5000  0.5000  eig=   23.0279  Sxc(LDA)=  -12.3752
+ j iq isp= 19   2 1  q= -0.5000  0.5000  0.5000  eig=   26.3718  Sxc(LDA)=  -13.6790
+ j iq isp= 20   2 1  q= -0.5000  0.5000  0.5000  eig=   26.3718  Sxc(LDA)=  -13.6789
+ j iq isp= 21   2 1  q= -0.5000  0.5000  0.5000  eig=   29.4717  Sxc(LDA)=  -10.5926
+ j iq isp= 22   2 1  q= -0.5000  0.5000  0.5000  eig=   33.5130  Sxc(LDA)=  -11.3323
+ j iq isp= 23   2 1  q= -0.5000  0.5000  0.5000  eig=   33.5130  Sxc(LDA)=  -11.3322
+ j iq isp= 24   2 1  q= -0.5000  0.5000  0.5000  eig=   36.2912  Sxc(LDA)=  -10.8072
+ j iq isp= 25   2 1  q= -0.5000  0.5000  0.5000  eig=   36.2912  Sxc(LDA)=  -10.8071
+ j iq isp= 26   2 1  q= -0.5000  0.5000  0.5000  eig=   40.5452  Sxc(LDA)=  -10.5955
+ j iq isp=  1   3 1  q=  0.0000  0.0000  1.0000  eig=   -8.1344  Sxc(LDA)=  -13.2036
+ j iq isp=  2   3 1  q=  0.0000  0.0000  1.0000  eig=   -8.1344  Sxc(LDA)=  -13.2036
+ j iq isp=  3   3 1  q=  0.0000  0.0000  1.0000  eig=   -3.1655  Sxc(LDA)=  -12.5755
+ j iq isp=  4   3 1  q=  0.0000  0.0000  1.0000  eig=   -3.1655  Sxc(LDA)=  -12.5755
+ j iq isp=  5   3 1  q=  0.0000  0.0000  1.0000  eig=    0.3111  Sxc(LDA)=  -10.3144
+ j iq isp=  6   3 1  q=  0.0000  0.0000  1.0000  eig=    0.3111  Sxc(LDA)=  -10.3144
+ j iq isp=  7   3 1  q=  0.0000  0.0000  1.0000  eig=    9.8325  Sxc(LDA)=  -13.4277
+ j iq isp=  8   3 1  q=  0.0000  0.0000  1.0000  eig=    9.8325  Sxc(LDA)=  -13.4277
+ j iq isp=  9   3 1  q=  0.0000  0.0000  1.0000  eig=   10.9166  Sxc(LDA)=  -11.4255
+ j iq isp= 10   3 1  q=  0.0000  0.0000  1.0000  eig=   10.9166  Sxc(LDA)=  -11.4255
+ j iq isp= 11   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2110  Sxc(LDA)=  -11.2996
+ j iq isp= 12   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2110  Sxc(LDA)=  -11.2996
+ j iq isp= 13   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2908  Sxc(LDA)=  -14.6085
+ j iq isp= 14   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2908  Sxc(LDA)=  -14.6085
+ j iq isp= 15   3 1  q=  0.0000  0.0000  1.0000  eig=   20.3738  Sxc(LDA)=  -10.8877
+ j iq isp= 16   3 1  q=  0.0000  0.0000  1.0000  eig=   20.3738  Sxc(LDA)=  -10.8877
+ j iq isp= 17   3 1  q=  0.0000  0.0000  1.0000  eig=   24.1880  Sxc(LDA)=  -11.3401
+ j iq isp= 18   3 1  q=  0.0000  0.0000  1.0000  eig=   24.1880  Sxc(LDA)=  -11.3401
+ j iq isp= 19   3 1  q=  0.0000  0.0000  1.0000  eig=   24.5088  Sxc(LDA)=  -12.5892
+ j iq isp= 20   3 1  q=  0.0000  0.0000  1.0000  eig=   24.5088  Sxc(LDA)=  -12.5892
+ j iq isp= 21   3 1  q=  0.0000  0.0000  1.0000  eig=   24.6905  Sxc(LDA)=  -13.3151
+ j iq isp= 22   3 1  q=  0.0000  0.0000  1.0000  eig=   24.6905  Sxc(LDA)=  -13.3151
+ j iq isp= 23   3 1  q=  0.0000  0.0000  1.0000  eig=   29.4440  Sxc(LDA)=  -10.3885
+ j iq isp= 24   3 1  q=  0.0000  0.0000  1.0000  eig=   29.4440  Sxc(LDA)=  -10.3885
+ j iq isp= 25   3 1  q=  0.0000  0.0000  1.0000  eig=   44.2730  Sxc(LDA)=  -10.9258
+ j iq isp= 26   3 1  q=  0.0000  0.0000  1.0000  eig=   44.2730  Sxc(LDA)=  -10.9258
+ reading QOP
+  *** nqibz nq0i_total=           3           1
+  Used k number in Q0P =           1
+  1      1.000000       -0.025000      0.025000      0.025000
+allq0i=F   1  1     0.12500
+allq0i=F   1  2     0.12500
+allq0i=F   1  3     0.12500
+allq0i=F   1  4     0.12500
+allq0i=F   1  5     0.12500
+allq0i=F   1  6     0.12500
+allq0i=F   1  9     0.12500
+allq0i=F   1 10     0.12500
+  *** tot num of q near 0   =   8.00000000000000     
+  sum(wgt0) from Q0P=  0.100000D+01
+ --- freq01x:  ix    x    freqw(a.u.)---
+               1   0.0338  28.6163
+               2   0.1694   4.9034
+               3   0.3807   1.6268
+               4   0.6193   0.6147
+               5   0.8306   0.2039
+               6   0.9662   0.0349
+  sum of nonzero iirk=           8           8
+ NOTE:TimeReversal not yet implemented in hsfp0.sc.m.F
+=== goto eibzgen === used timereversal=F
+eibzgen: TimeReversalSwitch ngrp=  F 48
+iq=       1 # of EIBZ: Full=      48 Used(TimeR 1 or -1)= 48=48+ 0 neibz=       3
+iq=       2 # of EIBZ: Full=      12 Used(TimeR 1 or -1)= 12=12+ 0 neibz=       4
+iq=       3 # of EIBZ: Full=      16 Used(TimeR 1 or -1)= 16=16+ 0 neibz=       4
+ nqbz,  sum(neibz(iq)), sum(ngwt)=sum(nqbz)=       8     11     24     24
+ do 1001 ip  1  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.12700 (wall)
+ do 1100 kx  1  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.00000 (wall)
+  KeepPPOVL=T; keep PPOVL in m_read_ppovl
+ngb nn no=   223   223   223
+ do 1100 kx  2  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.03200 (wall)
+ do 1100 kx  3  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.01900 (wall)
+ do 1001 ip  2  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.02300 (wall)
+ do 1100 kx  1  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.00000 (wall)
+ do 1100 kx  2  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.02100 (wall)
+ do 1100 kx  3  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.04700 (wall)
+ do 1001 ip  3  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.02100 (wall)
+ do 1100 kx  1  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.00000 (wall)
+ do 1100 kx  2  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.02600 (wall)
+ do 1100 kx  3  out of   3  k-points  CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.02200 (wall)
+
+ Max dynamic allocation sxcf_fal3_scz:      0 MB
+
+ hsfp0_sc: read files from ext=.si2           7  qp made by           1  threads
+ 
+ j iq isp=  1   1 1  q=  0.0000  0.0000  0.0000  eig=  -12.2469  Sx=  -17.5700
+ j iq isp=  2   1 1  q=  0.0000  0.0000  0.0000  eig=   -0.3111  Sx=  -14.7989
+ j iq isp=  3   1 1  q=  0.0000  0.0000  0.0000  eig=   -0.3111  Sx=  -14.7989
+ j iq isp=  4   1 1  q=  0.0000  0.0000  0.0000  eig=   -0.3111  Sx=  -14.7989
+ j iq isp=  5   1 1  q=  0.0000  0.0000  0.0000  eig=    2.2347  Sx=   -4.8221
+ j iq isp=  6   1 1  q=  0.0000  0.0000  0.0000  eig=    2.2347  Sx=   -4.8221
+ j iq isp=  7   1 1  q=  0.0000  0.0000  0.0000  eig=    2.2347  Sx=   -4.8221
+ j iq isp=  8   1 1  q=  0.0000  0.0000  0.0000  eig=    2.9364  Sx=   -5.0502
+ j iq isp=  9   1 1  q=  0.0000  0.0000  0.0000  eig=    7.6321  Sx=   -4.0903
+ j iq isp= 10   1 1  q=  0.0000  0.0000  0.0000  eig=    7.6321  Sx=   -4.0903
+ j iq isp= 11   1 1  q=  0.0000  0.0000  0.0000  eig=    8.4413  Sx=   -2.3612
+ j iq isp= 12   1 1  q=  0.0000  0.0000  0.0000  eig=   14.8152  Sx=   -2.4061
+ j iq isp= 13   1 1  q=  0.0000  0.0000  0.0000  eig=   14.8152  Sx=   -2.4061
+ j iq isp= 14   1 1  q=  0.0000  0.0000  0.0000  eig=   14.8152  Sx=   -2.4061
+ j iq isp= 15   1 1  q=  0.0000  0.0000  0.0000  eig=   20.6865  Sx=   -1.1343
+ j iq isp= 16   1 1  q=  0.0000  0.0000  0.0000  eig=   25.0583  Sx=   -2.1063
+ j iq isp= 17   1 1  q=  0.0000  0.0000  0.0000  eig=   25.0583  Sx=   -2.1063
+ j iq isp= 18   1 1  q=  0.0000  0.0000  0.0000  eig=   26.4311  Sx=   -2.3783
+ j iq isp= 19   1 1  q=  0.0000  0.0000  0.0000  eig=   26.4311  Sx=   -2.3783
+ j iq isp= 20   1 1  q=  0.0000  0.0000  0.0000  eig=   26.4312  Sx=   -2.3783
+ j iq isp=  1   2 1  q= -0.5000  0.5000  0.5000  eig=   -9.9295  Sx=  -17.1198
+ j iq isp=  2   2 1  q= -0.5000  0.5000  0.5000  eig=   -7.3178  Sx=  -14.9753
+ j iq isp=  3   2 1  q= -0.5000  0.5000  0.5000  eig=   -1.5046  Sx=  -14.6324
+ j iq isp=  4   2 1  q= -0.5000  0.5000  0.5000  eig=   -1.5046  Sx=  -14.6324
+ j iq isp=  5   2 1  q= -0.5000  0.5000  0.5000  eig=    1.1351  Sx=   -4.9938
+ j iq isp=  6   2 1  q= -0.5000  0.5000  0.5000  eig=    3.0770  Sx=   -4.4397
+ j iq isp=  7   2 1  q= -0.5000  0.5000  0.5000  eig=    3.0770  Sx=   -4.4397
+ j iq isp=  8   2 1  q= -0.5000  0.5000  0.5000  eig=    8.9001  Sx=   -2.3951
+ j iq isp=  9   2 1  q= -0.5000  0.5000  0.5000  eig=   10.5745  Sx=   -3.7773
+ j iq isp= 10   2 1  q= -0.5000  0.5000  0.5000  eig=   10.5745  Sx=   -3.7773
+ j iq isp= 11   2 1  q= -0.5000  0.5000  0.5000  eig=   11.4431  Sx=   -3.8535
+ j iq isp= 12   2 1  q= -0.5000  0.5000  0.5000  eig=   12.4248  Sx=   -3.5219
+ j iq isp= 13   2 1  q= -0.5000  0.5000  0.5000  eig=   12.4248  Sx=   -3.5219
+ j iq isp= 14   2 1  q= -0.5000  0.5000  0.5000  eig=   13.7671  Sx=   -3.0752
+ j iq isp= 15   2 1  q= -0.5000  0.5000  0.5000  eig=   20.0117  Sx=   -2.2711
+ j iq isp= 16   2 1  q= -0.5000  0.5000  0.5000  eig=   21.1391  Sx=   -2.3266
+ j iq isp= 17   2 1  q= -0.5000  0.5000  0.5000  eig=   23.0279  Sx=   -2.1785
+ j iq isp= 18   2 1  q= -0.5000  0.5000  0.5000  eig=   23.0279  Sx=   -2.1785
+ j iq isp= 19   2 1  q= -0.5000  0.5000  0.5000  eig=   26.3718  Sx=   -2.3642
+ j iq isp= 20   2 1  q= -0.5000  0.5000  0.5000  eig=   26.3718  Sx=   -2.3642
+ j iq isp= 21   2 1  q= -0.5000  0.5000  0.5000  eig=   29.4717  Sx=   -1.2464
+ j iq isp= 22   2 1  q= -0.5000  0.5000  0.5000  eig=   33.5130  Sx=   -1.3503
+ j iq isp= 23   2 1  q= -0.5000  0.5000  0.5000  eig=   33.5130  Sx=   -1.3503
+ j iq isp=  1   3 1  q=  0.0000  0.0000  1.0000  eig=   -8.1344  Sx=  -16.3206
+ j iq isp=  2   3 1  q=  0.0000  0.0000  1.0000  eig=   -8.1344  Sx=  -16.3206
+ j iq isp=  3   3 1  q=  0.0000  0.0000  1.0000  eig=   -3.1655  Sx=  -14.3858
+ j iq isp=  4   3 1  q=  0.0000  0.0000  1.0000  eig=   -3.1655  Sx=  -14.3858
+ j iq isp=  5   3 1  q=  0.0000  0.0000  1.0000  eig=    0.3111  Sx=   -4.1962
+ j iq isp=  6   3 1  q=  0.0000  0.0000  1.0000  eig=    0.3111  Sx=   -4.1962
+ j iq isp=  7   3 1  q=  0.0000  0.0000  1.0000  eig=    9.8325  Sx=   -3.7012
+ j iq isp=  8   3 1  q=  0.0000  0.0000  1.0000  eig=    9.8325  Sx=   -3.7012
+ j iq isp=  9   3 1  q=  0.0000  0.0000  1.0000  eig=   10.9166  Sx=   -4.1683
+ j iq isp= 10   3 1  q=  0.0000  0.0000  1.0000  eig=   10.9166  Sx=   -4.1683
+ j iq isp= 11   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2110  Sx=   -3.3402
+ j iq isp= 12   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2110  Sx=   -3.3402
+ j iq isp= 13   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2908  Sx=   -3.7799
+ j iq isp= 14   3 1  q=  0.0000  0.0000  1.0000  eig=   13.2908  Sx=   -3.7799
+ j iq isp= 15   3 1  q=  0.0000  0.0000  1.0000  eig=   20.3738  Sx=   -2.0053
+ j iq isp= 16   3 1  q=  0.0000  0.0000  1.0000  eig=   20.3738  Sx=   -2.0053
+ j iq isp= 17   3 1  q=  0.0000  0.0000  1.0000  eig=   24.1880  Sx=   -1.5327
+ j iq isp= 18   3 1  q=  0.0000  0.0000  1.0000  eig=   24.1880  Sx=   -1.5327
+ j iq isp= 19   3 1  q=  0.0000  0.0000  1.0000  eig=   24.5088  Sx=   -2.0197
+ j iq isp= 20   3 1  q=  0.0000  0.0000  1.0000  eig=   24.5088  Sx=   -2.0197
+ j iq isp= 21   3 1  q=  0.0000  0.0000  1.0000  eig=   24.6905  Sx=   -2.4321
+ j iq isp= 22   3 1  q=  0.0000  0.0000  1.0000  eig=   24.6905  Sx=   -2.4321
+ j iq isp= 23   3 1  q=  0.0000  0.0000  1.0000  eig=   29.4440  Sx=   -1.5083
+ j iq isp= 24   3 1  q=  0.0000  0.0000  1.0000  eig=   29.4440  Sx=   -1.5083
+
+ Max dynamic allocation sxcf_fal3_scz:      0 MB
+
+ CPU=       0.0000 secs    0.0 mins.   Since last call:     0.000000 sec      0.05000 (wall)
+ hsfp0_sc :  Wall clock time      0.0m  Processor time      0.0m
+
+ ----  OK! hsfp0_sc: Exchange mode

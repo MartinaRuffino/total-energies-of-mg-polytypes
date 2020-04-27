@@ -1,0 +1,1139 @@
+#!/bin/tcsh -f
+
+# This file is a shell script to test that fully relativistic Green function works
+
+alias call 'set retcall = \!\!:2 ; set callarg = \!\!:3 ; goto \!\!:1'
+alias runjob 'set retcall = \!\!:1; set outfile = \!\!:2 ; set callarg = \!\!:3 ; goto runjob'
+alias runrdcmd 'set retcall = \!\!:1; set rdcmdfmt = \!\!:2 ; set outfile = \!\!:3 ; set callarg = \!\!:4 ; goto runrdcmd'
+alias findcmd  'set retcall = \!\!:1 ; set prog_cmd = \!\!:2 ; set path_name = \!\!:3 ; set make_path = \!\!:4 ; goto findcmd'
+alias compare_res 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set refvar = \!\!:4 ; set tol = \!\!:5 ; set passvar = \!\!:6 ; goto compare_res'
+alias compare_res_0 'set retcall = \!\!:1; set keyword = \!\!:2 ; set testvar = \!\!:3 ; set tol = \!\!:4 ; set passvar = \!\!:5 ; goto compare_res_0'
+alias cnvt_d_fmt  'set retcall = \!\!:1; set testvar = \!\!:2 ; set testval = \!\!:3 ; goto cnvt_d_fmt'
+alias query 'set retcall = \!\!:1 ; set retcall2 = \!\!:2 ; set callarg = \!\!:3 ; goto query'
+
+set allargs = ($argv)
+
+set a
+set slow
+set testfile = $0
+set testdir = $testfile:h
+set topdir  = `cd $testdir/../..; pwd`
+set tmpdir = $cwd
+set space = '        '
+set failed = 0
+alias zcat 'gunzip -c'
+alias zcat 'cat'
+
+#alias mpix mpirun
+set failed = 0
+alias zdiff diff
+set nmpi = 4
+
+# Prepend current working-directory, top-level and related dir to path
+set path = ($cwd $topdir $topdir/utils $topdir/testing $path)
+
+set allargs = "$argv"
+if (`echo $argv | awk '{i=0; j=0; while (i++<NF) {if ($i == "--all") {j = 1}}; print j}'` == 1) goto all
+
+# --- Pick off switches ---
+while (`echo $1 | sed -e 's/\(.\).*/\1/' `  ==  "-")
+
+  set arg1 = $1; shift
+  if ($?verb) echo test.frgf: parsing switch $arg1
+  switch ($arg1)
+    case "--quiet":
+      set quiet
+      unset slow
+      breaksw
+    case "--add0":
+      set add0 = `which add0`
+      if (! -x "$add0") then
+        echo "test.dmft (abort): missing add0"
+        exit
+      endif
+      breaksw
+    case "--poszer":
+      set poszer = `which poszer`
+      if (! -x "$poszer") then
+        echo "test.dmft (abort): missing poszer"
+        exit
+      endif
+      breaksw
+    case "--MPIK":
+      set MPIK
+      breaksw
+    case "--clean":
+      set clean
+      breaksw
+    case "--noexec":
+      set noexec
+      breaksw
+    case "--veryclean":
+      set clean
+      set veryclean
+      breaksw
+    case "--downfold":
+      set downfold
+      breaksw
+    case "--no-iact*":
+      unset slow
+      breaksw
+    case "--haveout":
+      set haveout
+      breaksw
+    case "--list":
+      goto showtests
+      breaksw
+    case "--noplot":
+      set noplot
+      set have_pldos
+      unset have_pldos
+      set have_fplot
+      unset have_fplot
+      breaksw
+    case "--verb*":
+      set verb = 1
+      breaksw
+
+    default:
+      goto usage
+  endsw
+
+end
+
+echo ' '
+echo "         ---- test.frgf : test lmgf in fully relativistic mode ---"
+
+# --- use ni as default in the absence of specific choice ---
+if ($#argv == 0) then
+  set ext = ni
+  echo "$space .... no file extension specified; use input file ctrl.ni"
+else
+  set ext = $argv[1]
+  shift
+endif
+
+# Set joblisti = jobs set up for given material and copy lists
+if ($ext == "ni") then
+  set joblisti = (1)
+  set rmlst = ({ctrl,log,mixm,a,moms,sdot,str,vshft,wkp}.$ext)
+else if ($ext == "fe") then
+  set joblisti = (1)
+  set rmlst = ({ctrl,log,mixm,a,moms,sdot,str,vshft,wkp}.$ext)
+else if ($ext == "co") then
+  set joblisti = (0)
+  set rmlst = ({ctrl,log,mixm,a,moms,sdot,str,vshft,wkp}.$ext)
+else if ($ext == "fept") then
+  set joblisti = (2)
+  set rmlst = ({ctrl,log,mixm,co,pt,moms,sdot,str,vshft,wkp}.$ext)
+  set cplst = ( $testdir/full_rel/3c/{ctrl.$ext,rsta.fept.lmgf.ntht=0,rsta.fept.lmgf.ntht=6} )
+  set dqtol2 = 1e-6
+  set dmtol2 = 1e-5
+  set detol2 = 2e-6
+endif
+if ( $?joblist == 0 ) then
+set joblist = ($argv)
+if ( $#joblist == 0 ) set joblist = (1 2)
+endif
+
+echo $joblist | grep 1 >/dev/null
+if ($status) goto chk1e
+echo $joblisti | grep 1 >/dev/null
+if ($status) goto chk1e
+cat <<EOF
+
+         --- Test 1: Self-consistent lmgf calculations with 2-center hamiltonian ---
+EOF
+if ("$ext" == ni) then
+cat <<EOF
+             test of Ni, fcc
+EOF
+else if ("$ext" == fe) then
+cat <<EOF
+             test of Fe, bcc
+EOF
+else if ("$ext" == co) then
+cat <<EOF
+             test of Co, fcc
+EOF
+endif
+cat <<EOF
+	     The spin and orbital magnetic moment of $ext is calculated with a
+             SECOND-order fully relativistic Green function. The result is compared to
+             that of a TWO-center fully relativistic Hamiltonian.
+             Test DESTROYS or overwrites *.$ext.
+
+EOF
+if ($ext == "ni") then
+cat <<EOF
+             Ni test uses a 7-point quadrature for radial mesh (RQUAD=2)
+
+EOF
+endif
+if ($ext == "fe") then
+cat <<EOF
+             Fe test demonstrates shftef switch (modifies Fermi level in lieu of adding site potential shifts)
+
+EOF
+endif
+cat <<EOF
+
+	     You can verify that relativistic Dirac is representation-independent for gamma=0,1,2,4,5.
+             After this test completes, do the following:
+               foreach gam (0 1 2 4 5)
+                 rm -f mixm.$ext
+                 lmgf -vsym=t -vrel=2 -vnit=1 -vgamma=\$gam --pr41,41 $ext --fileef  --quit=rho | tee \$gam
+               end
+
+             Compare files 0,1,2,4,5.
+             Confirm that the last 5 lines in the save file are identical; also confirm that RMS DQ is the same
+
+EOF
+
+set pass
+set refout=$testdir/full_rel/2c/out.$ext.frgf testout=out.$ext
+
+echo ' '
+query chk11 chk1e 'run this test'
+chk11:
+if ($a == "s") goto chk1e
+# ... Look for executables
+findcmd chk11a lmgf "$path" "$topdir"
+chk11a:
+findcmd chk11b lm "$path" "$topdir"
+chk11b:
+findcmd chk11c lmstr "$path" "$topdir"
+chk11c:
+
+# If output already available, just run through checks
+if ($?haveout) goto chk15
+
+echo "$space rm -f $rmlst"
+             rm -f $rmlst
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk1e
+endif
+
+echo " "
+echo "$space ... set up ASA strux"
+# ... remove related files
+echo "$space rm -f {ctrl,a,eula,log,mixm,out,save,sdot,str,sv,vshft,moms,wkp,dos,shfac}.$ext"
+             rm -f {ctrl,a,eula,log,mixm,out,save,sdot,str,sv,vshft,moms,wkp,dos,shfac}.$ext
+if ($?clean) then
+  echo "$space rm -f $testout"
+               rm -f $testout
+  goto chk1e
+endif
+
+echo "$space cp $testdir/full_rel/2c/{ctrl.$ext} ."
+             cp $testdir/full_rel/2c/{ctrl.$ext} .
+runjob chk12 $testout "lmstr -vrel=1 -vnit=1 $ext"
+chk12:
+
+echo " "
+echo "$space ... Set up initial scalar Dirac potential"
+runjob chk13a ">>$testout" "lm -vsym=t -vrel=1 -vnit=0 -vgamma=0 --pr30 $ext"
+chk13a:
+
+echo " "
+echo "$space ... Scalar relativistic band calculation (with SO coupling), show approximately self-consistent"
+echo "$space rm -f vshft.$ext mixm.$ext"
+rm -f vshft.$ext mixm.$ext
+runjob chk13b ">>$testout" "lm -vrel=1 -vnit=1 -vgamma=t $ext --pr31 --quit=rho"
+chk13b:
+
+echo " "
+echo "$space ... Scalar relativistic Green's function, show already self-consistent"
+echo "$space rm -f vshft.$ext mixm.$ext"
+rm -f vshft.$ext mixm.$ext
+runjob chk14a ">>$testout" "lmgf -vsym=t -vrel=1 -vnit=1 -vgamma=0 $ext --pr31 --quit=rho"
+chk14a:
+
+if ("$ext" == "fe") then
+echo " "
+echo "$space ... Estimate initial potential, moments and ppars from scalar moments"
+echo "$space rm -f vshft.$ext mixm.$ext"
+rm -f vshft.$ext mixm.$ext
+runjob chk14d ">>$testout" "lmgf -vsym=t -vrel=2 -vnit=-1 -vgamma=0 $ext --pr41,45"
+chk14d:
+else
+echo " "
+echo "$space ... One pass fully relativistic Green function to set initial moments and ppar's"
+echo "$space rm -f vshft.$ext mixm.$ext"
+rm -f vshft.$ext mixm.$ext
+runjob chk14b ">>$testout" "lmgf -vsym=t -vrel=2 -vnit=1 -vgamma=0 $ext --pr41,45 -vbegmom=2"
+chk14b:
+endif
+
+echo " "
+echo "$space ... Fully relativistic Green function, self-consistent"
+echo "$space rm -f vshft.$ext mixm.$ext"
+rm -f vshft.$ext mixm.$ext
+runjob chk14c ">>$testout" "lmgf -vsym=t -vrel=2 -vnit=-20 --pr41,41 $ext"
+chk14c:
+
+echo " "
+echo "$space ... Fully relativistic band calculation"
+echo "$space rm -f mixm.$ext"
+rm -f mixm.$ext
+runjob chk13c ">>$testout" "lm -vsym=t -vrel=2 -vnit=1 --pr41,41 -vgamma=t $ext --quit=band"
+chk13c:
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testout
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testout
+endif
+
+# Debugging entry point when output is already available
+chk15:
+
+set orbsrb = `extract-lines 'START LM ' Exit 2 $testout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnsrb = `extract-lines 'START LM ' Exit 2 $testout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+set dqlm =   `extract-lines 'START LM ' Exit 2 $testout | awk -v varlst="DQ" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+
+set orbsrbr = `extract-lines 'START LM ' Exit 2 $refout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnsrbr = `extract-lines 'START LM ' Exit 2 $refout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+
+set orbfrb = `extract-lines 'START LM ' Exit 3 $testout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnfrb = `extract-lines 'START LM ' Exit 3 $testout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+
+set orbfrbr = `extract-lines 'START LM ' Exit 3 $refout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnfrbr = `extract-lines 'START LM ' Exit 3 $refout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+
+set sumevsrg = `extract-lines 'START LMGF' Exit 1 $testout | grep 'sumev=' | tail -1 | awk '{match($0,"sumev=[^ ]*"); print substr($0,RSTART+6,RLENGTH-6)}'`
+set sumevfrg = `extract-lines 'START LMGF' Exit 3 $testout  | grep  'Harris energy:' | awk '{print $4}' | tail -1`
+
+set sumevsrgr = `extract-lines 'START LMGF' Exit 1 $refout | grep 'sumev=' | tail -1 | awk '{match($0,"sumev=[^ ]*"); print substr($0,RSTART+6,RLENGTH-6)}'`
+set sumevfrgr = `extract-lines 'START LMGF' Exit 3 $refout  | grep  'Harris energy:' | awk '{print $4}' | tail -1`
+
+set sumevsrb = `extract-lines 'START LM ' Exit 2 $testout | grep 'sumev=' | tail -1 | awk '{match($0,"sumev=[^ ]*"); print substr($0,RSTART+6,RLENGTH-6)}'`
+set sumevfrb = `extract-lines 'START LM ' Exit 3 $testout  | grep bands: | awk '{print $4}'`
+
+set orbsrg = `extract-lines 'START LMGF' Exit 1 $testout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnsrg = `extract-lines 'START LMGF' Exit 1 $testout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+set dqgf = `extract-lines 'START LMGF' Exit 1 $testout | awk -v varlst="DQ" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+
+set orbfr = `extract-lines 'START LMGF' Exit 3 $testout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnfrg = `extract-lines 'START LMGF' Exit 3 $testout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+set dqgfr1 = `extract-lines 'START LMGF' Exit 3 $testout | egrep "SV:"  | head -1 | awk '{print $3}'`
+set dqgfr = `extract-lines 'START LMGF' Exit 3 $testout | egrep "SV:"  | tail -1 | awk '{print $3}'`
+
+set orbfrr = `extract-lines 'START LMGF' Exit 3 $refout | grep "L+ - L-" | tail -1 | awk '{print $5}'`
+set spnfrr = `extract-lines 'START LMGF' Exit 3 $refout | awk -v varlst="mmom" -v key=. 'BEGIN { nv=split(varlst,vars); } ; { if (! match($0,key)) next ; outstr = " " ; i = 0; while (i++ < nv) {vari = sprintf("%s%s",vars[i],"=[^ \t]*"); k=length(vars[i])+1; if (! match($0,vari)) next ; outstr = sprintf("%s %s",outstr,substr($0,RSTART+k,RLENGTH-k))} print outstr }' | tail -1`
+
+set tol=1e-6
+
+if (! $?quiet) then
+  echo " "
+  echo    "$space Spin moment, scalar relativistic GF          =  $spnsrg"
+  echo -n "$space Spin moment, fully relativistic GF           =  $spnfrg"
+  if (`echo $spnfrg $spnfrr | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo "  reference value = $spnfrr"
+  endif
+
+  echo    "$space Spin moment, scalar relativistic bands       =  $spnsrb"
+  echo -n "$space Spin moment, fully relativistic bands        =  $spnfrb"
+  if (`echo $spnfrb $spnfrbr | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo "  reference value = $spnfrbr"
+  endif
+
+  echo " "
+  echo    "$space Orbital moment, scalar relativistic GF       = $orbsrg"
+  echo -n "$space Orbital moment, fully relativistic GF        = $orbfr"
+  if (`echo $orbfr $orbfrr | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo "  reference value = $orbfrr"
+  endif
+
+  echo    "$space Orbital moment, scalar relativistic bands    = $orbsrb"
+  echo -n "$space Orbital moment, fully relativistic bands     = $orbfrb"
+  if (`echo $orbfrb $orbfrbr | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo "  reference value = $orbfrbr"
+  endif
+
+  echo " "
+  echo -n "$space Band sum, scalar relativistic GF             = $sumevsrg"
+  if (`echo $sumevsrg $sumevsrgr | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo "  reference value = $sumevsrgr"
+  endif
+
+  echo -n "$space Band sum, fully relativistic  GF             = $sumevfrg"
+  if (`echo $sumevfrg $sumevfrgr | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo "  reference value = $sumevfrgr"
+  endif
+
+  echo    "$space Band sum, scalar relativistic bands          = $sumevsrb"
+  echo    "$space Band sum, fully relativistic bands           = $sumevfrb"
+
+
+  echo " "
+  echo "$space RMS dq, band calculation from lmgf potential = $dqlm"
+  echo "$space RMS dq, 1st iteration   relativistic GF      = $dqgfr1"
+  echo "$space RMS dq, self-consistent relativistic GF      = $dqgfr"
+
+endif
+
+echo ' '
+call zdiffiles chk16 "CPU -1 $testout $refout"
+chk16:
+
+echo "$space ... automatic pass checks"
+compare_res chk16b "Compare fr gf orbital magnetic moments:" $orbfr $orbfrr 0.00001 pass
+chk16b:
+compare_res chk16c "Compare fr gf spin magnetic moments:" $spnfrg $spnfrr 0.001 pass
+chk16c:
+compare_res chk16d "Compare fr band orbital magnetic moments:"  $orbfrb $orbfrbr 0.00001 pass
+chk16d:
+compare_res chk16e "Compare fr band spin magnetic moments:" $spnfrb $spnfrbr 0.001 pass
+chk16e:
+compare_res_0 chk16f "last iter relativistic GF RMS dq" $dqgfr 3D-6 pass
+chk16f:
+
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 1 PASSED"
+else
+    echo "$space test 1 FAILED"
+    set failed = ($failed 1)
+endif
+chk1e:
+
+echo $joblist | grep 2 >/dev/null
+if ($status) goto chk2e
+echo $joblisti | grep 2 >/dev/null
+if ($status) goto chk2e
+
+cat <<EOF
+
+         --- Test 2: Self-consistent lmgf calculation with 3-center hamiltonian ---
+
+EOF
+
+# 	     You can verify that relativistic Dirac is representation-independent for gamma=0,1,2,4,5.
+#              After this test completes, do the following:
+
+#                foreach gam (0 1 2 4 5)
+#                rm -f vshft.$ext mixm.$ext
+#                lmgf -vsym=t -vrel=2 -vnit=1 -vgamma=\$gam --pr45,41 $ext --iactiv=no --quit=rho | tee \$gam
+#                end
+
+#              Compare files 0,1,2,4,5.
+#              Confirm that the last 5 lines in the save file are identical; also confirm that RMS DQ is the same
+
+
+
+set pass
+if (! -e $testdir/full_rel/3c/ctrl.$ext) then
+   echo ' '
+   echo " test.frgf skipping test ... missing file $testdir/full_rel/3c/ctrl.$ext"
+   goto chk2e
+endif
+set testoutsrgf = out.sr.lmgf testoutfrgf = out.fr.lmgf
+set refoutsrgf = $testdir/full_rel/3c/out.sr.$ext refoutfrgf = $testdir/full_rel/3c/out.fr.$ext
+
+echo ' '
+query chk21 chk2e 'run this test'
+chk21:
+set pass
+if ($a == "s") goto chk2e
+
+# ... Look for executables
+findcmd chk21a rdcmd "$path" "$topdir"
+chk21a:
+findcmd chk21b lm "$path" "$topdir"
+chk21b:
+findcmd chk21c lmstr "$path" "$topdir"
+chk21c:
+findcmd chk21d lmgf "$path" "$topdir"
+chk21d:
+set lmgf = lmgf
+if ($?MPIK) then
+  set lmgf = "mpirun -n $nmpi lmgf"
+endif
+
+if ($?haveout) goto chk2haveout
+
+echo "$space ... set up starting conditions for 3c hamiltonian"
+touch ctrl.$ext
+echo "$space rm -f *.$ext "
+             rm -f *.$ext
+echo "$space cp $cplst ."
+             cp $cplst .
+
+if ($?clean) then
+  touch rsta.$ext.dum
+  echo "$space rm -f $testoutsrgf $testoutfrgf ctrl.$ext rsta.$ext rsta.$ext.*"
+               rm -f $testoutsrgf $testoutfrgf ctrl.$ext rsta.$ext rsta.$ext.*
+  goto chk2e
+endif
+
+if ("$ext" == fept) then
+echo " "
+echo "$space ... Scalar relativistic band calculation (with SO coupling), show approximately self-consistent"
+rm -f vshft.$ext mixm.$ext
+if ($?MPIK) then
+runrdcmd chk23b %11f $testoutsrgf "-cat:GFMPIK --noerr ctrl.$ext"
+endif
+runrdcmd chk23b %11f $testoutsrgf "-cat:GFTEST --noerr ctrl.$ext"
+chk23b:
+
+echo " "
+echo "$space ... self-consistent fully relativistic Green function"
+if ($?MPIK) then
+runrdcmd chk23c %11f $testoutfrgf "-cat:FRMPIK --noerr ctrl.$ext"
+endif
+runrdcmd chk23c %11f $testoutfrgf "-cat:FRTEST --noerr ctrl.$ext"
+chk23c:
+
+if ($retval == -2) goto chk26a
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testoutsrgf
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testoutsrgf
+endif
+
+if ($?add0) then
+  echo -n "         ..." ; $add0 $testoutfrgf
+else if ($?poszer) then
+  echo -n "         ..." ; $poszer $testoutfrgf
+endif
+
+chk2haveout:
+
+echo ' '
+call zdiffiles chk25a "CPU -1 $testoutsrgf $refoutsrgf"
+chk25a:
+
+call zdiffiles chk25b "CPU -1 $testoutfrgf $refoutfrgf"
+chk25b:
+
+if ("$ext" == fept) then
+  set dqsc     = (`extract-lines 'START LMGF' Exit 1 $testoutsrgf | grep 'RMS DQ=' | awk '{print $9}' | sed 's/DQ=//'`)
+  set dqsf     = (`extract-lines 'START LMGF' Exit 3 $testoutsrgf | grep 'RMS DQ=' | awk '{print $9}' | sed 's/DQ=//'`)
+  set dqsa     = (`extract-lines 'START LMGF' Exit 4 $testoutsrgf | grep 'RMS DQ=' | awk '{print $9}' | sed 's/DQ=//'`)
+
+  set amomsc   = (`extract-lines 'START LMGF' Exit 1 $testoutsrgf | vextract x mmom `)
+  set amomscr  = (`extract-lines 'START LMGF' Exit 1 $refoutsrgf | vextract x mmom `)
+  set amomsf   = (`extract-lines 'START LMGF' Exit 3 $testoutsrgf | vextract x mmom `)
+  set amomsfr  = (`extract-lines 'START LMGF' Exit 3 $refoutsrgf | vextract x mmom `)
+  set amomsa   = (`extract-lines 'START LMGF' Exit 4 $testoutsrgf | vextract x mmom `)
+  set amomsar  = (`extract-lines 'START LMGF' Exit 4 $refoutsrgf | vextract x mmom `)
+
+  set orbmsc   = (`extract-lines 'START LMGF' Exit 1 $testoutsrgf | grep L+ | awk '{print $NF}'`)
+  set orbmscr  = (`extract-lines 'START LMGF' Exit 1 $refoutsrgf  | grep L+ | awk '{print $NF}'`)
+  set orbmsf   = (`extract-lines 'START LMGF' Exit 3 $testoutsrgf | grep L+ | awk '{print $NF}'`)
+  set orbmsfr  = (`extract-lines 'START LMGF' Exit 3 $refoutsrgf  | grep L+ | awk '{print $NF}'`)
+  set orbmsa   = (`extract-lines 'START LMGF' Exit 4 $testoutsrgf | grep L+ | awk '{print $NF}'`)
+  set orbmsar  = (`extract-lines 'START LMGF' Exit 4 $refoutsrgf  | grep L+ | awk '{print $NF}'`)
+
+  set dqfc     = (`extract-lines 'START LMGF' Exit 2 $testoutfrgf | grep 'RMS DQ=' | awk '{print $9}' | tail -1 | sed 's/DQ=//'`)
+  set dqfa     = (`extract-lines 'START LMGF' Exit 3 $testoutfrgf | grep 'RMS DQ=' | awk '{print $9}' | tail -1 | sed 's/DQ=//'`)
+
+  set amomfc   = (`extract-lines 'START LMGF' Exit 2 $testoutfrgf | vextract c mmom `)
+  set amomfcr  = (`extract-lines 'START LMGF' Exit 2 $refoutfrgf | vextract c mmom `)
+  set amomfa   = (`extract-lines 'START LMGF' Exit 3 $testoutfrgf | vextract c mmom `)
+  set amomfar  = (`extract-lines 'START LMGF' Exit 3 $refoutfrgf | vextract c mmom `)
+
+  set orbmfc   = (`extract-lines 'START LMGF' Exit 2 $testoutfrgf | grep L+ | tail -2 | awk '{print $NF}'`)
+  set orbmfcr  = (`extract-lines 'START LMGF' Exit 2 $refoutfrgf  | grep L+ | tail -2 | awk '{print $NF}'`)
+  set orbmfa   = (`extract-lines 'START LMGF' Exit 3 $testoutfrgf | grep L+ | tail -2 | awk '{print $NF}'`)
+  set orbmfar  = (`extract-lines 'START LMGF' Exit 3 $refoutfrgf  | grep L+ | tail -2 | awk '{print $NF}'`)
+
+  set ehfsc   = (`extract-lines 'START LMGF' Exit 1 $testoutsrgf | vextract x ehf `)
+  set ehfscr  = (`extract-lines 'START LMGF' Exit 1 $refoutsrgf | vextract x ehf `)
+  set ehfsa   = (`extract-lines 'START LMGF' Exit 4 $testoutsrgf | vextract x ehf `)
+  set ehfsar  = (`extract-lines 'START LMGF' Exit 4 $refoutsrgf | vextract x ehf `)
+
+  set ehffc   = (`extract-lines 'START LMGF' Exit 2 $testoutfrgf | vextract c ehf `)
+  set ehffcr  = (`extract-lines 'START LMGF' Exit 2 $refoutfrgf | vextract c ehf `)
+  set ehffa   = (`extract-lines 'START LMGF' Exit 3 $testoutfrgf | vextract c ehf `)
+  set ehffar  = (`extract-lines 'START LMGF' Exit 3 $refoutfrgf | vextract c ehf `)
+
+endif
+
+if (! $?quiet) then
+if ("$ext" == fept) then
+
+  echo "$space SR lmgf collinear RMS DQ              = $dqsc"
+  echo "$space SR lmgf rotate density, spin, RMS DQ  = $dqsf"
+  echo "$space SR lmgf anticollinear RMS DQ          = $dqsa"
+  echo "$space FR lmgf collinear RMS DQ last it      = $dqfc"
+  echo "$space FR lmgf anticollinear RMS DQ last it  = $dqfa"
+
+  echo " "
+  echo    "$space Compare lmgf spin moments (collinear, anticollinear), (scalar and full Dirac)"
+  echo -n "$space SR magnetic moment,  collinear     = $amomsc"
+  if (`echo $amomsc $amomscr | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $amomscr"
+  endif
+
+  echo -n "$space ditto, flip density, rotate axis   = $amomsf"
+  if (`echo $amomsf $amomsfr | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $amomsfr"
+  endif
+
+  echo -n "$space SR magnetic moment,  anticollinear = $amomsa"
+  if (`echo $amomsa $amomsar | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $amomsar"
+  endif
+
+  echo -n "$space FR magnetic moment,  collinear     = $amomfc"
+  if (`echo $amomfc $amomfcr | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $amomfcr"
+  endif
+
+  echo -n "$space FR magnetic moment,  anticollinear = $amomfa"
+  if (`echo $amomfa $amomfar | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $amomfar"
+  endif
+
+  echo
+  set diff = `echo $amomsc $amomsa | awk '{{k=($1-$2)} print k}'`
+  echo    "$space SR(coll) SR(anticoll) difference   = $diff"
+
+  set diff = `echo $amomfc $amomfa | awk '{{k=($1-$2)} print k}'`
+  echo    "$space FR(coll) FR(anticoll) difference   = $diff"
+
+  set diff = `echo $amomsc $amomfc | awk '{{k=($1-$2)} print k}'`
+  echo    "$space SR-FR difference (both coll)       = $diff"
+
+  echo " "
+  echo    "$space Compare corresponding orbital moments"
+  echo -n "$space SR orbital  moment,  collinear     = $orbmsc"
+  echo
+  # if (`echo $orbmsc $orbmscr | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  # echo " ... agrees with reference"
+  # else
+  # echo " ... reference value = $orbmscr"
+  # endif
+
+  echo -n "$space SR orbital  moment,  anticollinear = $orbmsa"
+  echo
+  # if (`echo $orbmsa $orbmsar | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  # echo " ... agrees with reference"
+  # else
+  # echo " ... reference value = $orbmsar"
+  # endif
+
+  echo -n "$space FR orbital  moment,  collinear     = $orbmfc"
+  echo
+  # if (`echo $orbmfc $orbmfcr | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  # echo " ... agrees with reference"
+  # else
+  # echo " ... reference value = $orbmfcr"
+  # endif
+
+  echo -n "$space FR orbital  moment,  anticollinear = $orbmfa"
+  echo
+  # if (`echo $orbmfa $orbmfar | awk -v tol=$dmtol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  # echo " ... agrees with reference"
+  # else
+  # echo " ... reference value = $orbmfar"
+  # endif
+
+  echo " "
+  echo -n "$space SR HF total energy,  collinear     = $ehfsc"
+  if (`echo $ehfsc $ehfscr | awk -v tol=$detol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $ehfscr"
+  endif
+
+  echo -n "$space SRHF total energy,  anticollinear  = $ehfsa"
+  if (`echo $ehfsa $ehfsar | awk -v tol=$detol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $ehfsar"
+  endif
+
+  echo " "
+  echo -n "$space FR HF total energy,  collinear     = $ehffc"
+  if (`echo $ehffc $ehffcr | awk -v tol=$detol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $ehffcr"
+  endif
+
+  echo -n "$space FR HF total energy, anticollinear  = $ehffa"
+  if (`echo $ehffa $ehffar | awk -v tol=$detol2 '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+  echo " ... agrees with reference"
+  else
+  echo " ... reference value = $ehffar"
+  endif
+
+  echo
+  set diff = `echo $ehfsc $ehfsa | awk '{{k=($1-$2)} print k}'`
+  echo    "$space SR(coll) SR(anticoll) difference   = $diff"
+
+  set diff = `echo $ehffc $ehffa | awk '{{k=($1-$2)} print k}'`
+  echo    "$space FR(coll) FR(anticoll) difference   = $diff"
+
+  set diff = `echo $ehfsc $ehffc | awk '{{k=($1-$2)} print k}'`
+  echo    "$space SR-FR difference (both coll)       = $diff"
+
+endif
+endif
+
+call qprint chk26 "$space ... automatic pass checks :"
+chk26:
+compare_res_0 chk26a "last iter collinear, relativistic GF RMS dq" $dqfc 3D-6 pass
+chk26a:
+compare_res_0 chk26b "last iter anticollinear, relativistic GF RMS dq" $dqfa 3D-6 pass
+chk26b:
+
+compare_res chk26c "Compare scalar Dirac collinear spin magnetic moments:" $amomsc $amomscr $dmtol2 pass
+chk26c:
+compare_res chk26d "Compare full   Dirac collinear spin magnetic moments:" $amomfc $amomfcr $dmtol2 pass
+chk26d:
+
+if ($?clean) then
+else if ($?pass) then
+    echo "$space test 2 PASSED"
+else
+    echo "$space test 2 FAILED"
+    set failed = ($failed 2)
+endif
+chk2e:
+
+# --- Summary ---
+echo ' '
+if ($?clean) then
+    exit 0
+else if ($#failed <= 1) then
+    echo "$space $testfile : all tests PASSED"
+    echo " "
+    exit 0
+else
+    shift failed
+    echo "$space $testfile : These tests FAILED:" $failed
+    echo " "
+    exit -1
+endif
+
+# ---------------- qprint (print only quiet not set) --------------
+exit
+qprint:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo "$callarg"
+  goto $quitjob
+
+# ---------------- showout --------------
+exit
+showout:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  echo ' '
+  echo "$space ... Compare $callarg to line(s) in file $refout":
+  grep $callarg $testout
+  if (`cat $testout | grep $callarg | wc | awk '{print $1}'` > 1) echo ' ---'
+  zcat $refout | grep $callarg
+  goto $quitjob
+
+# ---------------- cnvt_d_fmt --------------
+# converts exponential format #.##D## or #.##d## to #.##E##
+# usage: cnvt_d_fmt retcall testvar testval
+exit
+cnvt_d_fmt:
+  set quitjob = $retcall
+  set $testvar = `echo $testval | sed s/D/E/ | sed s/d/E/`
+  goto $quitjob
+
+# ---------------- compare_res --------------
+# Compares two numbers $testvar-$refvar and unsets $passvar if |testvar-refvar|<tol
+# usage: compares_res retcall keyword testvar refvar tol passvar
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   refvar       : second number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar-refvar|<tol
+exit
+compare_res:
+  set quitjob=$retcall
+# echo $retcall $keyword $testvar $refvar $tol $passvar
+  echo -n "$space $keyword ($testvar) within tol ($tol) of reference ($refvar)? ... "
+  if (`echo $testvar $refvar | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);tl=1.001*tol} print (k<=tl)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- compare_res_0 --------------
+# Compares a number $testvar and unsets $passvar if |testvar|<tol
+# usage: compares_res_0 retcall keyword testvar tol passvar
+# Example:
+# compare_res_0 chk274a "Max deviation in pdos from reference" $retval $pdostol pass
+#   keyword      : label (for printout)
+#   testvar      : first number
+#   tol          : tolerance
+#   passvar      : $passvar is unset if |testvar|<tol
+exit
+compare_res_0:
+  set quitjob=$retcall
+#  echo $retcall $keyword $testvar $tol $passvar
+  set toll = `echo $tol | sed s/d/e/  | sed s/D/e/`
+  set testvarl = `echo $testvar | sed s/d/e/  | sed s/D/e/`
+  echo -n "$space $keyword ($testvar) within tol ($toll)? ... "
+  if (`echo $testvarl 0 | awk -v tol=$toll '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+ echo -n "$space $keyword ($testvar) smaller than tol ($tol)? ... "
+  if (`echo $testvar 0 | awk -v tol=$tol '{{k=($1-$2)>0?($1-$2):($2-$1);} print (k<=tol)}'`) then
+    echo yes
+  else
+    echo no
+    unset $passvar
+  endif
+  goto $quitjob
+
+# ---------------- runjob --------------
+exit
+runjob:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    echo "$space $callarg"
+    set retval = -2; if ($?noexec) goto $quitjob
+    echo " "
+    $callarg
+    set retval = $status
+    if ($retval != 0) goto cleanup
+    goto $quitjob
+  endif
+
+  if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+    set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+    echo "$space $callarg  >> $appfile"
+    set retval = -2; if ($?noexec) goto $quitjob
+    echo "$space $callarg" >> $appfile
+    $callarg >> $appfile
+    set retval = $status
+  else
+    echo "$space $callarg  > $outfile"
+    set retval = -2; if ($?noexec) goto $quitjob
+    echo "$space $callarg" > $outfile
+    $callarg >> $outfile
+    set retval = $status
+  endif
+  if ($retval != 0) goto cleanup
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+if ($found == 'no' && $make_path != "no") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- runrdcmd --------------
+exit
+runrdcmd:
+  set quitjob=$retcall
+  if ($outfile == ".") then
+    $rdcmd -f:$rdcmdfmt $callarg
+    set retval = $status
+    echo ' '
+    if ($retval == 0) then
+      echo "$space Job(s) completed successfully"
+      goto $quitjob
+    endif
+  else
+    if (`echo $outfile | awk '{print substr($1,1,2)}'` == '>>') then
+      set appfile = `echo $outfile | awk '{print substr($1,3)}'`
+      echo "$space $callarg  >> $appfile"
+      exit
+#      $callarg >> $appfile
+      set retval = $status
+    else
+      echo "$space ... the following job(s) will be executed by invoking "\""rdcmd $callarg"\" "(> $outfile)"
+      $rdcmd -f:$rdcmdfmt --n $callarg
+      echo "$space ... starting invocation of rdcmd:"
+      echo "$space $rdcmd '-f:#rdcmd:%2f' $callarg  >& $outfile"
+      $rdcmd '-f:rdcmd:%2f' $callarg >& $outfile
+      set retval = $status
+    endif
+  endif
+
+  if ($retval == 0) then
+    echo "$space Job(s) completed successfully; output in $outfile"
+    if ($?poszer) then
+      echo -n "         ..." ; $poszer $outfile
+    else if ($?add0) then
+      echo -n "         ..." ; $add0 $outfile
+    endif
+    goto $quitjob
+  else
+    echo "$space ...oops... the following command returned with nonzero exit status:"
+    echo -n "$space   "
+    grep $rdcmd:t{:} $outfile | tail -1 | sed 's/rdcmd:  //'
+    goto cleanup
+  endif
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space job returned with error status $retval"
+  if ($retval != 0) echo "$space ... $testfile aborting"
+  exit $retval
+
+# ---------------- diffiles --------------
+# calling argument should consist of four strings:
+# 1st string = string that terminates diff
+# 2nd string = integer that counts how many times terminator should occur before terminating
+# 3nd string = first file name
+# 4th string = second file name
+# example: call diffiles chk69 "CPU 3 $testout $refout"
+exit
+diffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+  if ($nend == "-1") then
+    set nend = `grep $endstr $files[1] | wc | awk '{print $1}'`
+  endif
+
+#    echo difffiles : $quitjob $nend
+#    grep $endstr $files[1]
+
+  query diff11 $quitjob "compare $files"
+diff11:
+  diff $files | awk -v endstr=$endstr -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  goto $quitjob
+
+# ---------------- zdiffiles --------------
+# calling argument should consist of four strings:
+# 1st string = string that terminates zdiff
+# 2nd string = integer that counts how many times terminator should occur before terminating
+#              -1 -> last occurence
+# 3nd string = first file name
+# 4th string = second file name
+# example: call zdiffiles chk69 "CPU 3 $testout $refout"
+exit
+zdiffiles:
+  set quitjob=$retcall
+  if ($?quiet) goto $quitjob
+  set files = ($callarg)
+  set endstr = $files[1]
+  shift files
+  set nend = $files[1]
+  shift files
+
+  if ($nend == "-1") then
+    set nend = `grep "$endstr" $files[1] | wc | awk '{print $1}'`
+  endif
+
+  if ( $?slow == 0 ) echo "$space ... compare $files"
+  query zdiff11 $quitjob "compare $files"
+zdiff11:
+  zdiff -Icpudel -Iwritten $files | awk -v endstr="$endstr" -v nend=$nend -v endl=0 -v endr=0 '{if ($1 == "<" && endl < nend) print ; if ($1 == ">" && endr < nend) print ; if ($1 == ">" || $1 == "<" || endl >= nend && endr >= nend) ; else {print} ; if ($1 == "<" && $2 == endstr) {endl+=1}; if ($1 == ">" && $2 == endstr) {endr+=1};}' | sed -n 1,50p
+  echo " "
+  goto $quitjob
+
+# ---------------- findcmd --------------
+# Finds an executable program within the supplied path
+# Usage: findcmd return_label executable_command path_name make_path
+# If $executable_command is not found, findcmd does one of the following:
+# If make_path = 'no' : returns silently.
+# Otherwise findcmd aborts with a message, which assumes
+# $make_path is the path where $executable_command is made.
+exit
+findcmd:
+set found = 'no'
+foreach ac_dir ($path_name)
+ if (-x $ac_dir/$prog_cmd) then
+   set $prog_cmd = $ac_dir/$prog_cmd
+   set found = 'yes'
+   break
+ endif
+end
+if (! $?quiet) then
+  if ($found == 'yes') echo "$space ... using executable $ac_dir/$prog_cmd"
+  if ($found == 'no')  echo "$space ... no executable $prog_cmd found in path"
+endif
+
+# echo make_path $make_path
+
+if ($found == 'no' && $make_path != "optional") then
+  echo "  "
+  echo "  Sorry, $testfile cannot find program '"$prog_cmd"' it needs to execute."
+  echo "  '"$prog_cmd"' was not found in supplied path, or in the following:"
+  echo "        $topdir"
+# echo "  ... This script ($testfile) requires binary "'"rdcmd"'" to run."
+  echo "  You must create or put '"$prog_cmd"' in your path before invoking this script."
+  echo "  Normally '"$prog_cmd"' is created as part of the installation process."
+  echo "  Invoking '"make $prog_cmd"' in $make_path should create it."
+  echo "  $testfile aborting ..."
+  exit -1
+endif
+goto $retcall
+
+# ---------------- query --------------
+exit
+query:
+  unset skip
+  if ($?slow != 0) then
+    echo "$space"'*'"hit <return> to $callarg, s <return> to skip it."
+    set a = ($<)
+    if ($a == "") goto $retcall
+    switch ($a)
+      case "quit":
+      case "q":
+      case "a":
+        exit
+      case "i":
+        unset slow
+        breaksw
+      case "s":
+        set skip
+        breaksw
+      case "t":
+        time
+        goto query
+      default:
+        echo 'q to quit; i unsets slow; s skips this job, t shows time'
+        goto query
+    endsw
+  endif
+  if ($?skip) goto $retcall2
+  goto $retcall
+
+# ---------------- cleanup --------------
+exit
+cleanup:
+  if ($retval != 0) echo "$space"'*'"job $callarg[1] returned with error status $retval"
+  if ($retval != 0) echo "$space unacceptable error status ... $testfile aborting"
+  exit $retval
+
+# --- Handle --all switch recursively --
+all:
+  set allargs = (`echo $argv |  sed s/--all//g`)
+  set mater_lst = (ni fe fept)
+  echo "$space $testfile : checks for materials :"  $mater_lst
+  set jobargs joblist
+  while ($#allargs)
+    set jobargs = ($jobargs `echo $allargs[1] | awk '{if (match($1,"-") && (RSTART == 1)) print $1}'`)
+    set joblist = ($joblist `echo $allargs[1] | awk '{if (match($1,"-") && (RSTART == 1)) { } else {print $1}}'`)
+    shift allargs
+  end
+  set failed; unset failed
+  foreach i ($mater_lst)
+     echo  ' '
+     echo  ' ' $testfile $jobargs $i $joblist
+               $testfile $jobargs $i $joblist
+     set retval = $status
+     if ($retval != 0) then
+       if (! $?failed) set failed
+       set failed = ($failed $i)
+#        echo " $testfile : failed test $i ... aborting"
+#        exit -1
+     endif
+  end
+
+  if ($?failed) then
+    echo " $testfile : these checks FAILED:  $failed"
+    exit -1
+  endif
+exit 0
+
+# ---------------- List tests --------------
+exit 0
+showtests:
+cat <<EOF
+  Usage: invoke with:   $testfile [switches] name
+
+   name    tests
+    fe     Fully relativistic GF calculation for Fe (lmgf)
+           and both fully and scalar relativistic band code (lm)
+    ni     Fully relativistic GF calculation for Ni (lmgf)
+           and both fully and scalar relativistic band code (lm)
+    co     Fully relativistic GF calculation for Co (lmgf)
+           and both fully and scalar relativistic band code (lm)
+
+  jobs:  1: 2-center LMTO hamiltonian
+         2: 3-center LMTO hamiltonian
+
+EOF
+
+# ---------------- usage: --------------
+exit 0
+usage:
+cat <<EOF
+
+ usage: test.frgf [switches] [file-extension] [testcase-list]
+        e.g., "test.frgf fe 1"
+        If file-extension is missing, test.frgf uses ni
+        Switches:
+        --list       lists the tests you can run
+        --quiet      runs tests with minimal output and without prompting user
+        --no-iactive runs tests without prompting user
+        --all        run through all the test cases set up
+        --noplot     skip any steps that generate a plot'
+        --clean      clean up files generated by this script
+        --add0       add suppressed or leading zeros in output for real numbers \`.nnn'
+        --poszer     strips (-) sign from numbers represented as 0
+EOF
+exit -1

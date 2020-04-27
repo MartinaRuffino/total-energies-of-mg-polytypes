@@ -1,0 +1,1148 @@
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 8  nspec = 4  verb 31,20
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gam-rep, Q2:Power-moments
+ bz:       metal, tetra, invit 
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.627000        0.000000   0.000000   0.614628
+   alat = 6.030246  Cell vol = 308.974913
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.03025   awald= 0.296   lmax=6
+         r1=  3.276   nkd= 101      q1=  3.100   nkg= 161
+
+ SGROUP: 12 symmetry operations from 2 generators
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+ BZMESH: 14 irreducible QP from 108 ( 6 6 3 )  shift= F F F
+  
+ ZMESH: nz=14 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.30,0.00
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.231379  mom=-2.02097  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.149519  mom=0.12257  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.232806  mom=-0.0122  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.148092  mom=-0.05141  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.231379   0.000000   1.029602  -0.028475  -0.844987
+ A1        -0.149519   0.000000   0.066631  -0.088378  -0.970242
+ EC1        0.232806   0.000000  -0.234507   0.096905  -0.587242
+ EA1        1.148092   0.000000  -0.919659   0.024331  -0.690813
+ Sum Q=0.000000  Emad=0.098771(-2.388240)  Vmtz=-0.789938 (up-dn=0.016694)
+ LMGF: it 0 of 0  ehk0=-1.764216  pv=-0.7499  mmom=-3.924  seref=-4841.941
+ cpudel    ...   Time this iter:  time(s):  0.190    total:  0.190s
+ QUERY: maxit (def=0)?  QUERY: maxit (def=1)? 
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.703818    9.488663   -4.401371    3.240977   -2.511337
+ spin 2   34.183268   13.792559   -4.967760    3.226714    1.792559
+  total   56.887085   23.281222   -9.369131    6.467691   -0.718778
+ N(up)-N(dn)          -4.303896
+         deviation from charge neutrality: -0.718778
+ 
+ gfzerq: ef=0  dq=0.719  vold=0  dv=0.0126  vnew= -0.012635
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.0934  vold=-0.0126  dv=0.00145  vnew= -0.011182
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.0111  vold=-0.0112  dv=1.93e-4  vnew= -0.01099
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.43e-4  vold=-0.011  dv=2.5e-6  vnew= -0.010987
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=5.96e-8  vold=-0.011  dv=1.04e-9  vnew= -0.010987
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   34.716795    9.794333   -4.507799    3.241087   -2.205667
+ spin 2   23.594954   14.205667   -5.122458    3.226748    2.205667
+  total   58.311749   24.000000   -9.630256    6.467834    0.000000
+ N(up)-N(dn)          -4.411334
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.010987.  Cumulative shift = -0.010987
+
+ shift (-0.011) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ QUERY: redo gf pass (def=F)?  QUERY: redo gf pass (def=F)?  gfasa: vbar = -0.010987 adds d.c. term vbar * zval = -0.2636889
+
+ gfasa (exit): vconst updated from 0.000000 to -0.010987
+
+ LMGF: ehf=-1.7906987  ehk=-1.7918963  sumev=-9.6302564  delsev=-0.2901712
+ enutod (warning) ic=4 l=2 q2=-0.02317 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.2214 q2=-0.005915.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=3  beta=.4
+ PQMIX:  read 0 iter from file mixm.  RMS DQ=1.44e-2
+ QUERY: beta (def=0.4)?  AMIX: nmix=0 mmix=8  nelts=96  beta=0.4  tm=10  rmsdel=1.44e-2
+ QUERY: redo, nmix= (def=0)?  Exit 0  QUERY: redo, nmix= (def=0)? 
+ CPU time:  0.476s   Wall clock 0.513s  at  19:48:45 21.07.2018  on  ellery
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 8  nspec = 4  verb 31,20
+ special:  eps^-1
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gam-rep, Q2:Power-moments
+ bz:       metal, tetra, invit 
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.627000        0.000000   0.000000   0.614628
+   alat = 6.030246  Cell vol = 308.974913
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.03025   awald= 0.296   lmax=6
+         r1=  3.276   nkd= 101      q1=  3.100   nkg= 161
+
+ SGROUP: 12 symmetry operations from 2 generators
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+ BZMESH: 14 irreducible QP from 108 ( 6 6 3 )  shift= F F F
+
+ IOVSHF: read file vshft: ef=0  vconst=-0.010987
+  
+ ZMESH: nz=14 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.30,0.00
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.231379  mom=-2.02097  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.149519  mom=0.12257  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.232806  mom=-0.0122  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.148092  mom=-0.05141  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.231379   0.000000   1.018615  -0.039462  -0.855974
+ A1        -0.149519   0.000000   0.055644  -0.099365  -0.981229
+ EC1        0.232806   0.000000  -0.245494   0.085918  -0.598229
+ EA1        1.148092   0.000000  -0.930646   0.013344  -0.701800
+ Sum Q=0.000000  Emad=0.098771(-2.388240) Vconst=-0.010987  Vmtz=-0.800925 (up-dn=0.016694)
+ LMGF: it 0 of 0  ehk0=-1.764216  pv=-0.7499  mmom=-3.924  seref=-4841.941
+ cpudel    ...   Time this iter:  time(s):  0.633    total:  0.633s
+ QUERY: maxit (def=0)?  QUERY: maxit (def=1)? 
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   32.144995    9.799199   -4.507371    3.338974   -2.200801
+ spin 2   25.948868   14.221948   -5.122020    3.337508    2.221948
+  total   58.093863   24.021147   -9.629390    6.676482    0.021147
+ N(up)-N(dn)          -4.422748
+         deviation from charge neutrality: 0.021147
+ 
+ gfzerq: ef=0  dq=0.0211  vold=0  dv=3.64e-4  vnew= 0.000364
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00145  vold=3.64e-4  dv=2.34e-5  vnew= 0.000341
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=8.59e-5  vold=3.41e-4  dv=1.31e-6  vnew= 0.000342
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.25e-7  vold=3.42e-4  dv=1.91e-9  vnew= 0.000342
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   33.520051    9.787805   -4.504016    3.338971   -2.212195
+ spin 2   19.697876   14.212195   -5.117197    3.337508    2.212195
+  total   53.217927   24.000000   -9.621213    6.676478    0.000000
+ N(up)-N(dn)          -4.424391
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = 0.000342.  Cumulative shift = 0.000342
+
+ shift (3.4e-4) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ QUERY: redo gf pass (def=F)?  Exit 0  QUERY: redo gf pass (def=F)? 
+ CPU time:  3.487s   Wall clock 3.524s  at  19:48:49 21.07.2018  on  ellery
+         /home/ms4/lm/lmgf mnn -vnit=15 -vscr=223 -vzb=f -vccor=f -vgfmod=1 -vnk=6 -vidx=2 -vbzj=0 -vgamma=t --no-iactiv
+ ----------------------  START LMGF  ----------------------
+
+ LMGF:     nbas = 8  nspec = 4  verb 31,20
+ special:  scr-rho-out
+ pot:      spin-pol, XC:BH
+ asa:      no-ccor, gam-rep, Q2:Power-moments
+ bz:       metal, tetra, invit 
+
+                Plat                                  Qlat
+   0.000000  -1.000000   0.000000        0.577350  -1.000000   0.000000
+   0.866025   0.500000   0.000000        1.154701   0.000000   0.000000
+   0.000000   0.000000   1.627000        0.000000   0.000000   0.614628
+   alat = 6.030246  Cell vol = 308.974913
+
+ LATTC:  as= 2.000   tol=1.00e-8   alat= 6.03025   awald= 0.296   lmax=6
+         r1=  3.276   nkd= 101      q1=  3.100   nkg= 161
+
+ SGROUP: 12 symmetry operations from 2 generators
+ MKSYM:  found 12 space group operations; adding inversion generated 24 ops
+ BZMESH: 14 irreducible QP from 108 ( 6 6 3 )  shift= F F F
+
+ IOVSHF: read file vshft: ef=0  vconst=-0.010987
+  
+ ZMESH: nz=14 (ellipse)  ecc,eps=0.5,0.5  e1,e2=-1.30,0.00
+
+ GETZV:  24 valence electrons
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.231379   0.000000   1.018615  -0.039462  -0.855974
+ A1        -0.149519   0.000000   0.055644  -0.099365  -0.981229
+ EC1        0.232806   0.000000  -0.245494   0.085918  -0.598229
+ EA1        1.148092   0.000000  -0.930646   0.013344  -0.701800
+ Sum Q=0.000000  Emad=0.098771(-2.388240) Vconst=-0.010987  Vmtz=-0.800925 (up-dn=0.016694)
+ cpudel    ...   Time this iter:  time(s):  0.163    total:  0.163s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   32.144997    9.799199   -4.507371    3.338974   -2.200801
+ spin 2   25.948858   14.221948   -5.122020    3.337507    2.221948
+  total   58.093855   24.021148   -9.629390    6.676482    0.021148
+ N(up)-N(dn)          -4.422749
+         deviation from charge neutrality: 0.021148
+ 
+ gfzerq: ef=0  dq=0.0211  vold=0  dv=3.64e-4  vnew= 0.000364
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00145  vold=3.64e-4  dv=2.34e-5  vnew= 0.000341
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=8.59e-5  vold=3.41e-4  dv=1.31e-6  vnew= 0.000342
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.25e-7  vold=3.42e-4  dv=1.91e-9  vnew= 0.000342
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   33.520041    9.787805   -4.504016    3.338970   -2.212195
+ spin 2   19.697879   14.212195   -5.117197    3.337508    2.212195
+  total   53.217920   24.000000   -9.621213    6.676478    0.000000
+ N(up)-N(dn)          -4.424391
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = 0.000342.  Cumulative shift = 0.000342
+
+ shift (3.4e-4) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = 0.000342 adds d.c. term vbar * zval = 0.0082061
+
+ gfasa (exit): vconst updated from -0.010987 to -0.010645
+
+ LMGF: ehf=-1.7898602  ehk=-1.7910118  sumev=-9.6212130  delsev=-0.0174403
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=5.81e-5  screened dv=2.70e-5
+ SCRMOM: unscreened dq=5.41e-2  screened dq=1.75e-1
+ enutod (warning) ic=4 l=2 q2=-0.02324 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.2080 q2=-0.005529.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 1 iter from file mixm.  RMS DQ=4.40e-2
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=4.4e-2
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.255375  mom=-2.52336  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.129251  mom=0.09466  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.241878  mom=-0.01961  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.142747  mom=-0.10874  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.255375   0.000000   1.040790  -0.037905  -0.850733
+ A1        -0.129251   0.000000   0.038420  -0.095577  -0.981251
+ EC1        0.241878   0.000000  -0.253265   0.091061  -0.604709
+ EA1        1.142747   0.000000  -0.925444   0.014151  -0.698888
+ Sum Q=0.000000  Emad=0.098135(-2.430356) Vconst=-0.010645  Vmtz=-0.798493 (up-dn=0.029566)
+ Magnetization from sphere program: -5.114100  from output rho: -4.424391
+ SV:   1  4.396e-2 0.8000  6.958e-2      -1.79101176-4.424391 L
+
+   it  1  of 15    ehf=      -1.789860   ehk=      -1.791012
+                rms dq=  0.043965    tol= 0.000010  more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-4.4243908 ehf=-1.7898602 ehk=-1.7910118
+ cpudel    ...   Time this iter:  time(s):  0.333    total:  0.496s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.154748    9.421871   -4.437327    3.348549   -2.578129
+ spin 2   19.076465   14.389129   -5.150330    3.244404    2.389129
+  total   40.231212   23.811000   -9.587656    6.592953   -0.189000
+ N(up)-N(dn)          -4.967257
+         deviation from charge neutrality: -0.189
+ 
+ gfzerq: ef=0  dq=0.189  vold=0  dv=0.0047  vnew= -0.004698
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.0619  vold=-0.0047  dv=0.00229  vnew= -0.006984
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00863  vold=-0.00698  dv=3.71e-4  vnew= -0.007354
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00195  vold=-0.00735  dv=1.08e-4  vnew= -0.007462
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=4.85e-5  vold=-0.00746  dv=2.76e-6  vnew= -0.007465
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.89e-7  vold=-0.00747  dv=5e-8  vnew= -0.007465
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   10.670493    9.483078   -4.508272    3.348683   -2.516922
+ spin 2   21.748918   14.516923   -5.257727    3.244361    2.516923
+  total   32.419411   24.000001   -9.765999    6.593044    0.000001
+ N(up)-N(dn)          -5.033844
+         deviation from charge neutrality: 0.000001
+
+ gfasa:  potential shift this iter = -0.007465.  Cumulative shift = -0.007465
+
+ shift (-0.0075) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.007465 adds d.c. term vbar * zval = -0.1791618
+
+ gfasa (exit): vconst updated from -0.010645 to -0.018110
+
+ LMGF: ehf=-1.7928325  ehk=-1.7930911  sumev=-9.7659992  delsev=-0.1594106
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=7.98e-5  screened dv=3.97e-5
+ SCRMOM: unscreened dq=1.57e-2  screened dq=1.96e-2
+ enutod (warning) ic=4 l=2 q2=-0.05671 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.4106 q2=-0.02303.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 2 iter from file mixm.  RMS DQ=7.65e-3  last it=4.40e-2
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=7.65e-3
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.249603  mom=-2.47182  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.124503  mom=0.1011  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.233432  mom=-0.01779  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.140675  mom=-0.12249  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.249603   0.000000   1.028177  -0.045559  -0.859772
+ A1        -0.124503   0.000000   0.026718  -0.102356  -0.988556
+ EC1        0.233432   0.000000  -0.253032   0.079270  -0.605899
+ EA1        1.140675   0.000000  -0.931706   0.006184  -0.705392
+ Sum Q=0.000001  Emad=0.095233(-2.409978) Vconst=-0.018110  Vmtz=-0.805619 (up-dn=0.026678)
+ Magnetization from sphere program: -5.022009  from output rho: -5.033844
+ SV:   2  7.654e-3 0.8000  7.812e-3      -1.79309112-5.033844 L
+
+   it  2  of 15    ehf=      -1.792833   ehk=      -1.793091
+ From last iter    ehf=      -1.789860   ehk=      -1.791012
+ diffe(q)= -0.002972 (0.007654)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0338443 ehf=-1.7928325 ehk=-1.7930911
+ cpudel    ...   Time this iter:  time(s):  3.40     total:  3.90s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.403270    9.459493   -4.515065    3.435502   -2.540507
+ spin 2   18.787223   14.495953   -5.221723    3.273334    2.495953
+  total   40.190493   23.955446   -9.736788    6.708836   -0.044554
+ N(up)-N(dn)          -5.036460
+         deviation from charge neutrality: -0.044554
+ 
+ gfzerq: ef=0  dq=0.0446  vold=0  dv=0.00111  vnew= -0.001109
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00599  vold=-0.00111  dv=1.72e-4  vnew= -0.001281
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=2.37e-4  vold=-0.00128  dv=6.51e-6  vnew= -0.001274
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=2.09e-7  vold=-0.00127  dv=5.75e-9  vnew= -0.001274
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   20.560783    9.482756   -4.527157    3.435526   -2.517244
+ spin 2   15.885965   14.517244   -5.240184    3.273325    2.517244
+  total   36.446748   24.000000   -9.767341    6.708851    0.000000
+ N(up)-N(dn)          -5.034488
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.001274.  Cumulative shift = -0.001274
+
+ shift (-0.0013) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.001274 adds d.c. term vbar * zval = -0.0305857
+
+ gfasa (exit): vconst updated from -0.018110 to -0.019385
+
+ LMGF: ehf=-1.7930417  ehk=-1.7929955  sumev=-9.7673410  delsev=-0.0261219
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=6.03e-6  screened dv=3.03e-6
+ SCRMOM: unscreened dq=4.83e-3  screened dq=4.09e-3
+ ENUTOD ic=4 l=2 eb=-0.3561 q2=-4.399e-4.  Try EB=-0.2675 for q2=2.673e-6
+ enutod (warning) ic=4 l=2 q2=-0.06545 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.4549 q2=-0.02905.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 3 iter from file mixm.  RMS DQ=2.56e-3  last it=7.65e-3
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=2.56e-3
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.246792  mom=-2.46749  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.124175  mom=0.10109  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.23199  mom=-0.01747  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.138977  mom=-0.13193  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.246792   0.000000   1.024481  -0.046840  -0.861191
+ A1        -0.124175   0.000000   0.025232  -0.103502  -0.989844
+ EC1        0.231990   0.000000  -0.252966   0.077285  -0.606171
+ EA1        1.138977   0.000000  -0.931683   0.004812  -0.706166
+ Sum Q=0.000000  Emad=0.094661(-2.400300) Vconst=-0.019385  Vmtz=-0.806675 (up-dn=0.026860)
+ Magnetization from sphere program: -5.031614  from output rho: -5.034488
+ SV:   3  2.557e-3 0.8000  1.629e-3      -1.79299545-5.034488 L
+
+   it  3  of 15    ehf=      -1.793042   ehk=      -1.792995
+ From last iter    ehf=      -1.792833   ehk=      -1.793091
+ diffe(q)= -0.000209 (0.002557)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0344877 ehf=-1.7930417 ehk=-1.7929955
+ cpudel    ...   Time this iter:  time(s):  0.305    total:  4.20s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.435543    9.456230   -4.530947    3.462827   -2.543770
+ spin 2   18.826465   14.504592   -5.222923    3.264631    2.504592
+  total   40.262008   23.960822   -9.753870    6.727458   -0.039178
+ N(up)-N(dn)          -5.048362
+         deviation from charge neutrality: -0.039178
+ 
+ gfzerq: ef=0  dq=0.0392  vold=0  dv=9.73e-4  vnew= -0.000973
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=0.00465  vold=-9.73e-4  dv=1.31e-4  vnew= -0.001104
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.5e-4  vold=-0.0011  dv=4.07e-6  vnew= -0.0011
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=7.53e-8  vold=-0.0011  dv=2.05e-9  vnew= -0.0011
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   20.437954    9.476368   -4.541380    3.462849   -2.523632
+ spin 2   16.095928   14.523632   -5.238865    3.264622    2.523632
+  total   36.533883   24.000000   -9.780245    6.727470    0.000000
+ N(up)-N(dn)          -5.047265
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.0011.  Cumulative shift = -0.0011
+
+ shift (-0.0011) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.001100 adds d.c. term vbar * zval = -0.0263976
+
+ gfasa (exit): vconst updated from -0.019385 to -0.020484
+
+ LMGF: ehf=-1.7930365  ehk=-1.7930397  sumev=-9.7802451  delsev=-0.0222763
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.92e-6  screened dv=8.44e-7
+ SCRMOM: unscreened dq=2.59e-3  screened dq=2.53e-3
+ enutod (warning) ic=4 l=2 q2=-0.006960 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.2996 q2=-0.004805.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07117 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.4814 q2=-0.03312.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 4 iter from file mixm.  RMS DQ=1.64e-3  last it=2.56e-3
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=1.64e-3
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.246364  mom=-2.46928  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.123241  mom=0.10119  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.231056  mom=-0.01736  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.138548  mom=-0.13824  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.246364   0.000000   1.023011  -0.047942  -0.862345
+ A1        -0.123241   0.000000   0.023312  -0.104454  -0.990790
+ EC1        0.231056   0.000000  -0.253210   0.075711  -0.606566
+ EA1        1.138548   0.000000  -0.932488   0.003654  -0.707036
+ Sum Q=0.000000  Emad=0.094280(-2.398106) Vconst=-0.020484  Vmtz=-0.807621 (up-dn=0.027388)
+ Magnetization from sphere program: -5.047391  from output rho: -5.047265
+ SV:   4  1.638e-3 0.8000  1.007e-3      -1.79303970-5.047265 L
+
+   it  4  of 15    ehf=      -1.793036   ehk=      -1.793040
+ From last iter    ehf=      -1.793042   ehk=      -1.792995
+ diffe(q)=  0.000005 (0.001638)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0472647 ehf=-1.7930365 ehk=-1.7930397
+ cpudel    ...   Time this iter:  time(s):  3.38     total:  7.58s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.400852    9.469755   -4.542875    3.480953   -2.530245
+ spin 2   18.804876   14.519641   -5.230723    3.260665    2.519641
+  total   41.205728   23.989396   -9.773598    6.741618   -0.010604
+ N(up)-N(dn)          -5.049887
+         deviation from charge neutrality: -0.010604
+ 
+ gfzerq: ef=0  dq=0.0106  vold=0  dv=2.57e-4  vnew= -0.000257
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=7.73e-4  vold=-2.57e-4  dv=2.02e-5  vnew= -0.000278
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=4.46e-6  vold=-2.78e-4  dv=1.16e-7  vnew= -0.000277
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.02e-10  vold=-2.77e-4  dv=2.65e-12  vnew= -0.000277
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   20.855182    9.475226   -4.545510    3.480958   -2.524774
+ spin 2   16.204607   14.524774   -5.234748    3.260663    2.524774
+  total   37.059789   24.000000   -9.780258    6.741621    0.000000
+ N(up)-N(dn)          -5.049547
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000277.  Cumulative shift = -0.000277
+
+ shift (-2.8e-4) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000277 adds d.c. term vbar * zval = -0.0066589
+
+ gfasa (exit): vconst updated from -0.020484 to -0.020762
+
+ LMGF: ehf=-1.7929994  ehk=-1.7929977  sumev=-9.7802581  delsev=-0.0049707
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=2.76e-7  screened dv=1.15e-7
+ SCRMOM: unscreened dq=1.53e-3  screened dq=1.36e-3
+ enutod (warning) ic=4 l=2 q2=-0.01183 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.4008 q2=-0.008372.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07502 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5005 q2=-0.03613.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 5 iter from file mixm.  RMS DQ=9.64e-4  last it=1.64e-3
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=9.64e-4
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245943  mom=-2.46827  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.123144  mom=0.10209  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.230866  mom=-0.01717  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.13822  mom=-0.14144  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245943   0.000000   1.022376  -0.048215  -0.862618
+ A1        -0.123144   0.000000   0.022965  -0.104700  -0.991076
+ EC1        0.230866   0.000000  -0.253309   0.075342  -0.606647
+ EA1        1.138220   0.000000  -0.932510   0.003363  -0.707175
+ Sum Q=0.000000  Emad=0.094188(-2.396532) Vconst=-0.020762  Vmtz=-0.807830 (up-dn=0.027606)
+ Magnetization from sphere program: -5.049584  from output rho: -5.049547
+ SV:   5  9.642e-4 0.8000  5.392e-4      -1.79299774-5.049547 L
+
+   it  5  of 15    ehf=      -1.792999   ehk=      -1.792998
+ From last iter    ehf=      -1.793036   ehk=      -1.793040
+ diffe(q)=  0.000037 (0.000964)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0495471 ehf=-1.7929994 ehk=-1.7929977
+ cpudel    ...   Time this iter:  time(s):  0.304    total:  7.89s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.513370    9.470437   -4.547717    3.489353   -2.529563
+ spin 2   18.839057   14.522266   -5.230154    3.256363    2.522266
+  total   41.352428   23.992703   -9.777871    6.745716   -0.007297
+ N(up)-N(dn)          -5.051829
+         deviation from charge neutrality: -0.007297
+ 
+ gfzerq: ef=0  dq=0.0073  vold=0  dv=1.76e-4  vnew= -0.000176
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=4.96e-4  vold=-1.76e-4  dv=1.29e-5  vnew= -0.000189
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.89e-6  vold=-1.89e-4  dv=4.87e-8  vnew= -0.000189
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   20.910673    9.474199   -4.549514    3.489357   -2.525801
+ spin 2   16.261444   14.525801   -5.232900    3.256361    2.525801
+  total   37.172117   24.000000   -9.782415    6.745718    0.000000
+ N(up)-N(dn)          -5.051601
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000189.  Cumulative shift = -0.000189
+
+ shift (-1.9e-4) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000189 adds d.c. term vbar * zval = -0.0045424
+
+ gfasa (exit): vconst updated from -0.020762 to -0.020951
+
+ LMGF: ehf=-1.7929866  ehk=-1.7929867  sumev=-9.7824148  delsev=-0.0032062
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.37e-7  screened dv=5.69e-8
+ SCRMOM: unscreened dq=8.04e-4  screened dq=7.08e-4
+ enutod (warning) ic=4 l=2 q2=-0.01433 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.4548 q2=-0.01062.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07695 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5100 q2=-0.03769.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 6 iter from file mixm.  RMS DQ=5.19e-4  last it=9.64e-4
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=5.19e-4
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245725  mom=-2.46787  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.123011  mom=0.10239  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.23067  mom=-0.01712  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.138065  mom=-0.14329  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245725   0.000000   1.021999  -0.048405  -0.862817
+ A1        -0.123011   0.000000   0.022664  -0.104864  -0.991239
+ EC1        0.230670   0.000000  -0.253317   0.075054  -0.606676
+ EA1        1.138065   0.000000  -0.932584   0.003161  -0.707297
+ Sum Q=0.000000  Emad=0.094109(-2.395691) Vconst=-0.020951  Vmtz=-0.807979 (up-dn=0.027758)
+ Magnetization from sphere program: -5.051784  from output rho: -5.051601
+ SV:   6  5.188e-4 0.8000  2.817e-4      -1.79298671-5.051601 L
+
+   it  6  of 15    ehf=      -1.792987   ehk=      -1.792987
+ From last iter    ehf=      -1.792999   ehk=      -1.792998
+ diffe(q)=  0.000013 (0.000519)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.051601 ehf=-1.7929866 ehk=-1.7929867
+ cpudel    ...   Time this iter:  time(s):  3.36     total:  11.2s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.641144    9.472033   -4.550378    3.493908   -2.527967
+ spin 2   18.862918   14.524390   -5.230317    3.254038    2.524390
+  total   41.504061   23.996423   -9.780695    6.747947   -0.003577
+ N(up)-N(dn)          -5.052357
+         deviation from charge neutrality: -0.003577
+ 
+ gfzerq: ef=0  dq=0.00358  vold=0  dv=8.62e-5  vnew= -0.000086
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=2.26e-4  vold=-8.62e-5  dv=5.83e-6  vnew= -0.000092
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=4.01e-7  vold=-9.2e-5  dv=1.03e-8  vnew= -0.000092
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   20.978430    9.473878   -4.551252    3.493910   -2.526122
+ spin 2   16.307166   14.526122   -5.231652    3.254038    2.526122
+  total   37.285596   24.000000   -9.782904    6.747948    0.000000
+ N(up)-N(dn)          -5.052244
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000092.  Cumulative shift = -0.000092
+
+ shift (-9.2e-5) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000092 adds d.c. term vbar * zval = -0.0022079
+
+ gfasa (exit): vconst updated from -0.020951 to -0.021043
+
+ LMGF: ehf=-1.7929737  ehk=-1.7929738  sumev=-9.7829041  delsev=-0.0013643
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=4.74e-8  screened dv=1.96e-8
+ SCRMOM: unscreened dq=5.02e-4  screened dq=4.25e-4
+ enutod (warning) ic=4 l=2 q2=-0.01575 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.4858 q2=-0.01201.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07803 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5154 q2=-0.03859.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 7 iter from file mixm.  RMS DQ=2.91e-4  last it=5.19e-4
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=2.91e-4
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245557  mom=-2.46733  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122998  mom=0.10256  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.23057  mom=-0.01709  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137985  mom=-0.1443  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245557   0.000000   1.021761  -0.048499  -0.862917
+ A1        -0.122998   0.000000   0.022563  -0.104951  -0.991327
+ EC1        0.230570   0.000000  -0.253316   0.074912  -0.606688
+ EA1        1.137985   0.000000  -0.932617   0.003063  -0.707351
+ Sum Q=0.000000  Emad=0.094074(-2.395147) Vconst=-0.021043  Vmtz=-0.808052 (up-dn=0.027838)
+ Magnetization from sphere program: -5.052308  from output rho: -5.052244
+ SV:   7  2.910e-4 0.8000  1.690e-4      -1.79297376-5.052244 L
+
+   it  7  of 15    ehf=      -1.792974   ehk=      -1.792974
+ From last iter    ehf=      -1.792987   ehk=      -1.792987
+ diffe(q)=  0.000013 (0.000291)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.052244 ehf=-1.7929737 ehk=-1.7929738
+ cpudel    ...   Time this iter:  time(s):  0.289    total:  11.5s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.697594    9.472669   -4.551914    3.496520   -2.527331
+ spin 2   18.876379   14.525249   -5.230221    3.252782    2.525249
+  total   41.573973   23.997918   -9.782135    6.749302   -0.002082
+ N(up)-N(dn)          -5.052580
+         deviation from charge neutrality: -0.002082
+ 
+ gfzerq: ef=0  dq=0.00208  vold=0  dv=5.01e-5  vnew= -0.00005
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.28e-4  vold=-5.01e-5  dv=3.29e-6  vnew= -0.000053
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.3e-7  vold=-5.34e-5  dv=3.34e-9  vnew= -0.000053
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.013610    9.473744   -4.552421    3.496521   -2.526256
+ spin 2   16.322420   14.526256   -5.230995    3.252781    2.526256
+  total   37.336030   24.000000   -9.783416    6.749303    0.000000
+ N(up)-N(dn)          -5.052513
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000053.  Cumulative shift = -0.000053
+
+ shift (-5.3e-5) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000053 adds d.c. term vbar * zval = -0.0012807
+
+ gfasa (exit): vconst updated from -0.021043 to -0.021097
+
+ LMGF: ehf=-1.7929675  ehk=-1.7929678  sumev=-9.7834164  delsev=-0.0006554
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.85e-8  screened dv=7.64e-9
+ SCRMOM: unscreened dq=2.88e-4  screened dq=2.48e-4
+ enutod (warning) ic=4 l=2 q2=-0.01654 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.5029 q2=-0.01281.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07861 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5184 q2=-0.03909.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.61e-4  last it=2.91e-4
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=1.61e-4
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245455  mom=-2.46696  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122985  mom=0.10264  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.230499  mom=-0.01708  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137941  mom=-0.14486  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245455   0.000000   1.021618  -0.048554  -0.862977
+ A1        -0.122985   0.000000   0.022500  -0.105000  -0.991374
+ EC1        0.230499   0.000000  -0.253304   0.074823  -0.606686
+ EA1        1.137941   0.000000  -0.932638   0.003005  -0.707383
+ Sum Q=0.000000  Emad=0.094051(-2.394819) Vconst=-0.021097  Vmtz=-0.808095 (up-dn=0.027884)
+ Magnetization from sphere program: -5.052504  from output rho: -5.052513
+ SV:   8  1.613e-4 0.8000  9.884e-5      -1.79296777-5.052513 L
+
+   it  8  of 15    ehf=      -1.792967   ehk=      -1.792968
+ From last iter    ehf=      -1.792974   ehk=      -1.792974
+ diffe(q)=  0.000006 (0.000161)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0525125 ehf=-1.7929675 ehk=-1.7929678
+ cpudel    ...   Time this iter:  time(s):  3.36     total:  14.9s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.734934    9.473139   -4.552752    3.497942   -2.526861
+ spin 2   18.883647   14.525726   -5.230156    3.252060    2.525726
+  total   41.618581   23.998865   -9.782908    6.750002   -0.001135
+ N(up)-N(dn)          -5.052588
+         deviation from charge neutrality: -0.001135
+ 
+ gfzerq: ef=0  dq=0.00113  vold=0  dv=2.73e-5  vnew= -0.000027
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=6.9e-5  vold=-2.73e-5  dv=1.76e-6  vnew= -0.000029
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=3.78e-8  vold=-2.9e-5  dv=9.66e-10  vnew= -0.000029
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.038471    9.473725   -4.553027    3.497943   -2.526275
+ spin 2   16.329474   14.526275   -5.230578    3.252060    2.526275
+  total   37.367945   24.000000   -9.783605    6.750003    0.000000
+ N(up)-N(dn)          -5.052550
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000029.  Cumulative shift = -0.000029
+
+ shift (-2.9e-5) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000029 adds d.c. term vbar * zval = -0.0006966
+
+ gfasa (exit): vconst updated from -0.021097 to -0.021126
+
+ LMGF: ehf=-1.7929636  ehk=-1.7929639  sumev=-9.7836050  delsev=-0.0002473
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=6.60e-9  screened dv=2.72e-9
+ SCRMOM: unscreened dq=1.72e-4  screened dq=1.45e-4
+ enutod (warning) ic=4 l=2 q2=-0.01698 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.5123 q2=-0.01326.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07893 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5201 q2=-0.03938.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=8.99e-5  last it=1.61e-4
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=8.99e-5
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245391  mom=-2.46672  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122985  mom=0.10269  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.230459  mom=-0.01708  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137917  mom=-0.14517  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245391   0.000000   1.021533  -0.048584  -0.863011
+ A1        -0.122985   0.000000   0.022472  -0.105029  -0.991401
+ EC1        0.230459   0.000000  -0.253297   0.074774  -0.606684
+ EA1        1.137917   0.000000  -0.932650   0.002973  -0.707401
+ Sum Q=0.000000  Emad=0.094038(-2.394624) Vconst=-0.021126  Vmtz=-0.808118 (up-dn=0.027910)
+ Magnetization from sphere program: -5.052549  from output rho: -5.052550
+ SV:   9  8.987e-5 0.8000  5.759e-5      -1.79296395-5.052550 L
+
+   it  9  of 15    ehf=      -1.792964   ehk=      -1.792964
+ From last iter    ehf=      -1.792967   ehk=      -1.792968
+ diffe(q)=  0.000004 (0.000090)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0525502 ehf=-1.7929636 ehk=-1.7929639
+ cpudel    ...   Time this iter:  time(s):  0.290    total:  15.2s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.754373    9.473377   -4.553230    3.498751   -2.526623
+ spin 2   18.887733   14.525961   -5.230107    3.251668    2.525961
+  total   41.642107   23.999339   -9.783337    6.750419   -0.000661
+ N(up)-N(dn)          -5.052584
+         deviation from charge neutrality: -0.000661
+ 
+ gfzerq: ef=0  dq=6.61e-4  vold=0  dv=1.59e-5  vnew= -0.000016
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=3.99e-5  vold=-1.59e-5  dv=1.02e-6  vnew= -0.000017
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.27e-8  vold=-1.69e-5  dv=3.24e-10  vnew= -0.000017
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.052072    9.473719   -4.553391    3.498751   -2.526281
+ spin 2   16.332308   14.526281   -5.230352    3.251668    2.526281
+  total   37.384380   24.000000   -9.783743    6.750419    0.000000
+ N(up)-N(dn)          -5.052562
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000017.  Cumulative shift = -0.000017
+
+ shift (-1.7e-5) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000017 adds d.c. term vbar * zval = -0.0004056
+
+ gfasa (exit): vconst updated from -0.021126 to -0.021142
+
+ LMGF: ehf=-1.7929615  ehk=-1.7929619  sumev=-9.7837430  delsev=-0.0000563
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=2.43e-9  screened dv=1.01e-9
+ SCRMOM: unscreened dq=1.00e-4  screened dq=8.37e-5
+ enutod (warning) ic=4 l=2 q2=-0.01724 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.5174 q2=-0.01351.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07910 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5211 q2=-0.03955.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=5.00e-5  last it=8.99e-5
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=5e-5
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245352  mom=-2.46657  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122985  mom=0.10271  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.230434  mom=-0.01707  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137904  mom=-0.14535  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245352   0.000000   1.021482  -0.048602  -0.863030
+ A1        -0.122985   0.000000   0.022456  -0.105045  -0.991416
+ EC1        0.230434   0.000000  -0.253291   0.074744  -0.606682
+ EA1        1.137904   0.000000  -0.932658   0.002955  -0.707411
+ Sum Q=0.000000  Emad=0.094031(-2.394508) Vconst=-0.021142  Vmtz=-0.808132 (up-dn=0.027925)
+ Magnetization from sphere program: -5.052558  from output rho: -5.052562
+ SV:  10  5.005e-5 0.8000  3.331e-5      -1.79296187-5.052562 L
+
+   it 10  of 15    ehf=      -1.792961   ehk=      -1.792962
+ From last iter    ehf=      -1.792964   ehk=      -1.792964
+ diffe(q)=  0.000002 (0.000050)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0525618 ehf=-1.7929615 ehk=-1.7929619
+ cpudel    ...   Time this iter:  time(s):  3.36     total:  18.5s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.766036    9.473527   -4.553498    3.499203   -2.526473
+ spin 2   18.890038   14.526093   -5.230081    3.251450    2.526093
+  total   41.656075   23.999620   -9.783580    6.750653   -0.000380
+ N(up)-N(dn)          -5.052565
+         deviation from charge neutrality: -0.00038
+ 
+ gfzerq: ef=0  dq=3.8e-4  vold=0  dv=9.12e-6  vnew= -0.000009
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=2.28e-5  vold=-9.12e-6  dv=5.83e-7  vnew= -0.00001
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=4.16e-9  vold=-9.71e-6  dv=1.06e-10  vnew= -0.00001
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.060361    9.473724   -4.553591    3.499203   -2.526276
+ spin 2   16.333697   14.526276   -5.230222    3.251450    2.526276
+  total   37.394058   24.000000   -9.783813    6.750653    0.000000
+ N(up)-N(dn)          -5.052552
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.00001.  Cumulative shift = -0.00001
+
+ shift (-9.7e-6) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000010 adds d.c. term vbar * zval = -0.0002330
+
+ gfasa (exit): vconst updated from -0.021142 to -0.021152
+
+ LMGF: ehf=-1.7929602  ehk=-1.7929607  sumev=-9.7838127  delsev=0.0000510
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=8.82e-10  screened dv=3.64e-10
+ SCRMOM: unscreened dq=5.91e-5  screened dq=4.84e-5
+ enutod (warning) ic=4 l=2 q2=-0.01739 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.5201 q2=-0.01364.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07918 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5217 q2=-0.03965.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=2.79e-5  last it=5.00e-5
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=2.79e-5
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245329  mom=-2.46649  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122987  mom=0.10272  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.23042  mom=-0.01707  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137896  mom=-0.14544  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245329   0.000000   1.021452  -0.048612  -0.863042
+ A1        -0.122987   0.000000   0.022448  -0.105055  -0.991424
+ EC1        0.230420   0.000000  -0.253288   0.074727  -0.606681
+ EA1        1.137896   0.000000  -0.932662   0.002944  -0.707417
+ Sum Q=0.000000  Emad=0.094027(-2.394439) Vconst=-0.021152  Vmtz=-0.808139 (up-dn=0.027933)
+ Magnetization from sphere program: -5.052552  from output rho: -5.052552
+ SV:  11  2.794e-5 0.8000  1.927e-5      -1.79296065-5.052552 L
+
+   it 11  of 15    ehf=      -1.792960   ehk=      -1.792961
+ From last iter    ehf=      -1.792961   ehk=      -1.792962
+ diffe(q)=  0.000001 (0.000028)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0525525 ehf=-1.7929602 ehk=-1.7929607
+ cpudel    ...   Time this iter:  time(s):  0.288    total:  18.8s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, P0(0), idos 
+ Energy integration : pade=1
+
+ GFP0IO: wrote file PSTA
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.772566    9.473612   -4.553652    3.499461   -2.526388
+ spin 2   18.891359   14.526164   -5.230066    3.251329    2.526164
+  total   41.663924   23.999775   -9.783718    6.750791   -0.000225
+ N(up)-N(dn)          -5.052552
+         deviation from charge neutrality: -0.000225
+ 
+ gfzerq: ef=0  dq=2.25e-4  vold=0  dv=5.39e-6  vnew= -0.000005
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.35e-5  vold=-5.39e-6  dv=3.44e-7  vnew= -0.000006
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=1.45e-9  vold=-5.74e-6  dv=3.7e-11  vnew= -0.000006
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.065083    9.473728   -4.553707    3.499461   -2.526272
+ spin 2   16.334337   14.526272   -5.230149    3.251329    2.526272
+  total   37.399419   24.000000   -9.783856    6.750791    0.000000
+ N(up)-N(dn)          -5.052545
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000006.  Cumulative shift = -0.000006
+
+ shift (-5.7e-6) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000006 adds d.c. term vbar * zval = -0.0001377
+
+ gfasa (exit): vconst updated from -0.021152 to -0.021158
+
+ LMGF: ehf=-1.7929595  ehk=-1.7929599  sumev=-9.7838562  delsev=0.0001075
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=3.24e-10  screened dv=1.34e-10
+ SCRMOM: unscreened dq=3.49e-5  screened dq=2.81e-5
+ enutod (warning) ic=4 l=2 q2=-0.01749 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.5214 q2=-0.01370.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07922 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5221 q2=-0.03971.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=1.58e-5  last it=2.79e-5
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=1.58e-5
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245315  mom=-2.46643  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122988  mom=0.10273  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.230411  mom=-0.01707  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137892  mom=-0.1455  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245315   0.000000   1.021434  -0.048618  -0.863049
+ A1        -0.122988   0.000000   0.022443  -0.105061  -0.991429
+ EC1        0.230411   0.000000  -0.253285   0.074717  -0.606680
+ EA1        1.137892   0.000000  -0.932665   0.002938  -0.707421
+ Sum Q=0.000000  Emad=0.094024(-2.394398) Vconst=-0.021158  Vmtz=-0.808144 (up-dn=0.027938)
+ Magnetization from sphere program: -5.052545  from output rho: -5.052545
+ SV:  12  1.581e-5 0.8000  1.119e-5      -1.79295993-5.052545 L
+
+   it 12  of 15    ehf=      -1.792960   ehk=      -1.792960
+ From last iter    ehf=      -1.792960   ehk=      -1.792961
+ diffe(q)=  0.000001 (0.000016)    tol= 0.000000 (0.000010)   more=T
+i nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0525448 ehf=-1.7929595 ehk=-1.7929599
+ cpudel    ...   Time this iter:  time(s):  3.36     total:  22.2s
+
+ Makidx:  hamiltonian dimensions Low, Int, High, Negl: 36 36 0 0
+ SUHAM : 2nd generation ASA; potential functions P3
+
+ --- GFASA (gamma) : make qnu, idos 
+ Energy integration : pade=1
+
+ GFASA:  integrated quantities to efermi = 0
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   22.776364    9.473661   -4.553742    3.499611   -2.526339
+ spin 2   18.892143   14.526205   -5.230059    3.251262    2.526205
+  total   41.668508   23.999866   -9.783801    6.750873   -0.000134
+ N(up)-N(dn)          -5.052544
+         deviation from charge neutrality: -0.000134
+ 
+ gfzerq: ef=0  dq=1.34e-4  vold=0  dv=3.21e-6  vnew= -0.000003
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=8.01e-6  vold=-3.21e-6  dv=2.05e-7  vnew= -0.000003
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+ gfzerq: ef=0  dq=5.13e-10  vold=-3.41e-6  dv=1.31e-11  vnew= -0.000003
+ gippad: integrate 14 points corr. from dv shift: idos, qnu
+
+ Corrections to integrated quantities estimated by Pade interpolation
+     PL      D(Ef)      N(Ef)       E_band      2nd mom      Q-Z
+ spin 1   21.067826    9.473730   -4.553775    3.499611   -2.526270
+ spin 2   16.334693   14.526270   -5.230108    3.251262    2.526270
+  total   37.402520   24.000000   -9.783883    6.750873    0.000000
+ N(up)-N(dn)          -5.052539
+         deviation from charge neutrality: 0
+
+ gfasa:  potential shift this iter = -0.000003.  Cumulative shift = -0.000003
+
+ shift (-3.4e-6) within Pade tolerance (0.03, tolq=0) ... accept Pade correction to G
+
+ gfasa: vbar = -0.000003 adds d.c. term vbar * zval = -0.0000819
+
+ gfasa (exit): vconst updated from -0.021158 to -0.021161
+
+ LMGF: ehf=-1.7929591  ehk=-1.7929595  sumev=-9.7838830  delsev=0.0001394
+ iores: read psta, file nsp=2 nspc=1
+ SCRMOM: unscreened dv=1.19e-10  screened dv=4.91e-11
+ SCRMOM: unscreened dq=2.07e-5  screened dq=1.65e-5
+ enutod (warning) ic=4 l=2 q2=-0.01755 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=-0.5221 q2=-0.01373.  Try EB=0.0000 for q2=0.000
+ enutod (warning) ic=4 l=2 q2=-0.07924 < 0 ... reset to 0
+ ENUTOD ic=4 l=2 eb=0.5223 q2=-0.03976.  Try EB=0.0000 for q2=0.000
+  
+ mixing: mode=A  nmix=0  beta=.8
+ PQMIX:  read 8 iter from file mixm.  RMS DQ=9.23e-6  last it=1.58e-5
+ AMIX: nmix=0 mmix=8  nelts=96  beta=0.8  tm=10  rmsdel=9.23e-6
+
+ GETZV:  24 valence electrons
+ATOM=C1   Z=25  Qc=18  R=2.327579  Qv=-1.245306  mom=-2.4664  a=0.03  nr=319
+ATOM=A1   Z=7  Qc=2  R=1.929165  Qv=-0.122988  mom=0.10273  a=0.03  nr=227
+ATOM=EC1  Z=0  Qc=0  R=1.404935  Qv=0.230406  mom=-0.01707  a=0.03  nr=59
+ATOM=EA1  Z=0  Qc=0  R=2.432425  Qv=1.137889  mom=-0.14553  a=0.03  nr=83
+
+ Class        Qtot       Qbak       Vmad     Vh(Rmax)    V(Rmax)
+ C1        -1.245306   0.000000   1.021423  -0.048621  -0.863053
+ A1        -0.122988   0.000000   0.022440  -0.105064  -0.991432
+ EC1        0.230406   0.000000  -0.253284   0.074711  -0.606679
+ EA1        1.137889   0.000000  -0.932666   0.002934  -0.707423
+ Sum Q=0.000000  Emad=0.094023(-2.394372) Vconst=-0.021161  Vmtz=-0.808147 (up-dn=0.027941)
+ Magnetization from sphere program: -5.052540  from output rho: -5.052539
+ SV:  13  9.231e-6 0.8000  6.558e-6      -1.79295948-5.052539 L
+
+   it 13  of 15    ehf=      -1.792959   ehk=      -1.792959
+ From last iter    ehf=      -1.792960   ehk=      -1.792960
+ diffe(q)=  0.000000 (0.000009)    tol= 0.000000 (0.000010)   more=F
+c nit=15 scr=223 zb=0 ccor=0 gfmod=1 nk=6 idx=2 bzj=0 gamma=1 mmom=-5.0525394 ehf=-1.7929591 ehk=-1.7929595
+ cpudel    ...   Time this iter:  time(s):  0.289    total:  22.5s
+
+ Jolly good show !  You converged to rms DQ=  0.000007
+ Exit 0 LMGF 
+ CPU time:  22.481s   Wall clock 22.517s  at  19:49:11 21.07.2018  on  ellery

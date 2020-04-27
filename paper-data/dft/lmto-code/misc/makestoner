@@ -1,0 +1,9 @@
+#!/bin/tcsh
+
+# Invoke from directory ./lm to create an executable lm-stoner.
+
+if (-e main) cd main
+ccomp -dSTONER ../subs/bndasa.f bndasa-stoner.f
+ccomp -dSTONER ../subs/asa2c.f  asa2c-stoner.f
+ccomp -dSTONER lm.f lm-stoner.f
+make SUBS='bndasa-stoner.o asa2c-stoner.o ../subs/subs.a' lm-stoner
