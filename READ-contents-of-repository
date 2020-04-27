@@ -1,0 +1,8 @@
+This repository contains input files used for the calculation of total energies to be employed in the calculation of
+stacking fault energies via the use of Ising-like models and supercells.
+Two total energy methods were used: the generalised pseudopotential theory (GPT) and density functional theory (DFT) 
+in the LMTO implementation.
+The binary code for the GPT as well as pair potentials can be found in paper-data/gpt/gpt-binary .
+The binary codes for LMTO-DFT can be found in paper-data/dft/lmto-code.
+Input files for each total enery calculation method are organised by polytype (2H, 4H, etc.), used for Ising-like models.
+Supercell input files are found in the "supercell-2h" subdirectories for each total energy calculation method.
